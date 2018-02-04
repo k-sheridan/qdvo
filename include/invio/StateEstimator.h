@@ -8,12 +8,11 @@
 #ifndef INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
 #define INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
 
-// x, y, z, qw, qx, qy, qz, b_dx, b_dy, b_dz, b_wx, b_wy, b_wz, b_ax, b_ay, b_az, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
-#define BASE_STATE_SIZE 22
-#define SPARSE_THRESH 1e-8
-#define SPARSE_EPS 1e-5
+//State: x, y, z, qw, qx, qy, qz, b_dx, b_dy, b_dz, b_wx, b_wy, b_wz, b_ax, b_ay, b_az, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
 
 #include <Feature.h>
+
+#include <Params.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -22,16 +21,19 @@
 #include <Eigen/SparseCholesky>
 #include <Eigen/Cholesky>
 
+/*
+ * this class provides a hybrid method of bundle adjustment and an ekf to estimate the state of the camera
+ * it also allows an imu to be fused into the estimates
+ */
+
 class StateEstimator {
 public:
 	StateEstimator();
 
 	Eigen::Matrix<float, BASE_STATE_SIZE, 1> base_mu; // this is the part of the state which always remains. It contains position, vel, orientation etc.
+	Eigen::Matrix<float, BASE_STATE_SIZE, BASE_STATE_SIZE> base_Sigma; // stores the current uncertainty and correlations for the state
 
 	std::list<Feature> features; // stores the current best guess about the state of the features
-
-	//must always be kept in sync with the feature vector
-	Eigen::SparseMatrix<float> Sigma; // stores the current uncertainty and correlations for the state (including feature positions)
 
 	ros::Time t; // store the current time of the state
 
@@ -51,8 +53,6 @@ public:
 
 	Eigen::SparseMatrix<float> numericallyLinearizeProcess(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_mu, std::list<Feature>& features, float dt);
 
-	Eigen::SparseMatrix<float> formFeatureMeasurementMap(std::vector<bool> measured);
-
 	Eigen::Matrix2f getFeatureHomogenousCovariance(int index);
 	float getFeatureDepthVariance(int index);
 
@@ -62,7 +62,9 @@ public:
 
 	void fixSigma();
 
-	double getHuberWeight(double chi)
+	double getHuberWeight(double chi);
+
+
 
 	Eigen::SparseMatrix<float> getMetric2PixelMap(Eigen::Matrix3f& K);
 	Eigen::SparseMatrix<float> getPixel2MetricMap(Eigen::Matrix3f& K);

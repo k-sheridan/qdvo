@@ -32,6 +32,7 @@
 #include <Params.h>
 
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 class Frame; // need to tell the feature that there is something called frame
 
@@ -39,11 +40,18 @@ class Feature {
 private:
 
 	Eigen::Vector2f bearing; // [u, v] (u and v are in homogenous coord)
-	float inv_depth;
+	float depth_inv; // [I use an inverse depth paramaterization]
 
-	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous reference feature position
+	float depth_inv_sigma; // the variance of this features depth
 
-	bool delete_flag;
+	Eigen::Matrix<float, BASE_STATE_SIZE, 1> feature_covariance; // the uncertainty correlations with the base state
+
+	bool delete_flag; // should this feature be deleted?
+
+
+	//KLT
+	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
+
 
 public:
 
@@ -79,18 +87,25 @@ public:
 	bool flaggedForDeletion(){return this->delete_flag;}
 	void setDeleteFlag(bool in){this->delete_flag = in;}
 
-	void setNormalizedPixel(Eigen::Vector2f in){
-		this->mu(0) = in(0);
-		this->mu(1) = in(1);
+	void setBearing(Eigen::Vector2f in){
+		this->bearing(0) = in(0);
+		this->bearing(1) = in(1);
 	}
 
-	void setDepth(float in){
-		this->mu(2) = in;
+	void setDepth(float depth){
+		this->depth_inv = 1.0/depth;
 	}
 
-	void setMu(Eigen::Vector3f in){this->mu = in;}
+	void setDepthInv(float inv_depth){
+		this->depth_inv = inv_depth;
+	}
 
-	Eigen::Vector3f& getMu(){return this->mu;}
+	void setMu(Eigen::Vector3f in){this->bearing(0) = in(0); this->bearing(2) = in(1); this->depth_inv = in(2);}
+
+	Eigen::Vector3f& getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(0), this->depth_inv);}
+
+	float& depth_inv_ref(){return this->depth_inv;}
+	Eigen::Matrix<float, BASE_STATE_SIZE, 1>& feature_covariance_ref(){return this->feature_covariance;}
 
 };
 

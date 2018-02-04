@@ -13,10 +13,13 @@ Feature::Feature() {
 
 Feature::Feature(Eigen::Vector2f homogenous, float depth){
 	this->last_result_from_klt_tracker = homogenous;
-	this->mu(0) = homogenous.x();
-	this->mu(1) = homogenous.y();
-	this->mu(2) = depth;
+	this->bearing = homogenous;
+	this->depth_inv = 1.0/depth;
 	this->delete_flag = false;
+
+	// set variance
+	this->feature_covariance.setZero() // no correlations initially
+	this->depth_inv_sigma = DEFAULT_POINT_DEPTH_VARIANCE;
 }
 
 Feature::~Feature() {
@@ -24,13 +27,13 @@ Feature::~Feature() {
 }
 
 Eigen::Vector2f Feature::getNormalizedPixel(){
-	return Eigen::Vector2f(this->mu(0), this->mu(1));
+	return this->bearing;
 }
 
 float Feature::getDepth(){
-	return mu(2);
+	return 1.0/this->depth_inv;
 }
 
 cv::Point2f Feature::getPixel(const Frame& f){
-	return cv::Point2f(f.K(0)*this->mu(0) + f.K(2), f.K(4)*this->mu(1) + f.K(5));
+	return cv::Point2f(f.K(0)*this->bearing(0) + f.K(2), f.K(4)*this->bearing(1) + f.K(5));
 }

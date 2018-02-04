@@ -621,38 +621,6 @@ void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> mea
 
 }
 
-/*
- * form the mapping between our measurement of feature positions (homogenous) and the state
- * the measured vector is used to tell this function which features were not observed in this measurement
- */
-Eigen::SparseMatrix<float> StateEstimator::formFeatureMeasurementMap(std::vector<bool> measured){
-
-	ROS_ASSERT(measured.size() == this->features.size()); // sanity check
-
-	std::vector<int> indexes;
-	for(size_t i = 0; i < measured.size(); i++){
-		if(measured.at(i)){
-			indexes.push_back(i*3+BASE_STATE_SIZE); //this is the index of each measured feature's u in the state
-		}
-	}
-
-	// the mapping from the state to the feature measurement vector
-	Eigen::SparseMatrix<float> H((indexes.size()*2), (BASE_STATE_SIZE + this->features.size() * 3));
-
-	H.reserve(indexes.size() * 2); // reserve memory for the elements
-
-	//int index = BASE_STATE_SIZE; // index of the first feature
-
-	int measurement_index = 0;
-	for(auto e : indexes){
-		H.insert(measurement_index, e) = 1.0;
-		measurement_index++;
-		H.insert(measurement_index, e+1) = 1.0;
-		measurement_index++;
-	}
-
-	return H;
-}
 
 Eigen::Matrix2f StateEstimator::getFeatureHomogenousCovariance(int index){
 	int start = BASE_STATE_SIZE + index * 3;
