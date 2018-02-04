@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 	ros::param::param<double>("~default_point_depth", DEFAULT_POINT_DEPTH, D_DEFAULT_POINT_DEPTH);
 
 
-	TightlyCoupledEKF tc_ekf = TightlyCoupledEKF();
+	StateEstimator tc_ekf = StateEstimator();
 
 	std::vector<Eigen::Vector2f> features;
 	features.push_back(Eigen::Vector2f(0.1, 0.1));

@@ -146,8 +146,8 @@ void VIO::addFrame(Frame f) {
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
 
 		// set the time if this is the first message
-		if(this->tc_ekf.t == ros::Time(0)){
-			this->tc_ekf.t = f.t;
+		if(this->state_estimator.t == ros::Time(0)){
+			this->state_estimator.t = f.t;
 		}
 
 		this->replenishFeatures((this->frame_buffer.front()));
@@ -157,13 +157,13 @@ void VIO::addFrame(Frame f) {
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
 
 		//set the predicted pose of the current frame
-		float dt = (f.t - this->tc_ekf.t).toSec();
+		float dt = (f.t - this->state_estimator.t).toSec();
 
 		ROS_ASSERT(dt >= 0);
-		this->tc_ekf.process(dt);
-		this->tc_ekf.t = f.t;
+		this->state_estimator.process(dt);
+		this->state_estimator.t = f.t;
 
-		if(this->tc_ekf.features.size()) // run update if we have enough features
+		if(this->state_estimator.features.size()) // run update if we have enough features
 		{
 			// attempt to flow features into the next frame if there are features
 			this->updateStateWithNewImage(this->frame_buffer.at(1), this->frame_buffer.front());
@@ -212,9 +212,9 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	std::vector<bool> pass;
 
 	//run the klt tracker
-	this->tracker.findNewFeaturePositions(lf, cf, this->tc_ekf.previousFeaturePositionVector(), this->tc_ekf.features, new_positions, covariance_estimate, pass);
+	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	this->tc_ekf.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
 
 }
 
@@ -231,9 +231,9 @@ void VIO::replenishFeatures(Frame& f) {
 		img = f.img;
 	}
 
-	ROS_DEBUG_STREAM("current 2d feature count: " << tc_ekf.features.size());
+	ROS_DEBUG_STREAM("current 2d feature count: " << state_estimator.features.size());
 
-	if (tc_ekf.features.size() < (size_t)NUM_FEATURES) {
+	if (state_estimator.features.size() < (size_t)NUM_FEATURES) {
 
 		std::vector<Eigen::Vector2f> new_features;
 
@@ -241,7 +241,7 @@ void VIO::replenishFeatures(Frame& f) {
 
 		cv::FAST(img, fast_kp, FAST_THRESHOLD, true);
 
-		int needed = NUM_FEATURES - tc_ekf.features.size();
+		int needed = NUM_FEATURES - state_estimator.features.size();
 
 		ROS_DEBUG_STREAM("need " << needed << "more features");
 
@@ -255,7 +255,7 @@ void VIO::replenishFeatures(Frame& f) {
 
 		//image which is used to check if a close feature already exists
 		cv::Mat checkImg = cv::Mat::zeros(img.size(), CV_8U);
-		for (auto& e : tc_ekf.features) {
+		for (auto& e : state_estimator.features) {
 			cv::circle(checkImg, e.getPixel(f), MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
 		}
 
@@ -305,7 +305,7 @@ void VIO::replenishFeatures(Frame& f) {
 		}
 
 		//add the new features to the current state
-		tc_ekf.addNewFeatures(new_features);
+		state_estimator.addNewFeatures(new_features);
 	}
 
 }
@@ -383,17 +383,17 @@ void VIO::publishInsight(Frame& f)
 	cv::cvtColor(f.img, img, CV_GRAY2BGR);
 
 	int i = 0; // track the feature count
-	for(auto& e : tc_ekf.features)
+	for(auto& e : state_estimator.features)
 	{
 		if(!e.flaggedForDeletion())
 		{
 			//ROS_DEBUG_STREAM(e.getPixel(f));
 			cv::drawMarker(img, e.getPixel(f), cv::Scalar(0, 255, 0), cv::MARKER_SQUARE, 22, 1);
 
-			//ROS_DEBUG_STREAM("plotting covariance in pixels: " << this->tc_ekf.getMetric2PixelMap(f.K)*this->tc_ekf.getFeatureHomogenousCovariance(i)*this->tc_ekf.getMetric2PixelMap(f.K).transpose());
-			//Eigen::SparseMatrix<float> J = this->tc_ekf.getMetric2PixelMap(f.K);
+			//ROS_DEBUG_STREAM("plotting covariance in pixels: " << this->state_estimator.getMetric2PixelMap(f.K)*this->state_estimator.getFeatureHomogenousCovariance(i)*this->state_estimator.getMetric2PixelMap(f.K).transpose());
+			//Eigen::SparseMatrix<float> J = this->state_estimator.getMetric2PixelMap(f.K);
 
-			//cv::RotatedRect rr = this->getErrorEllipse(0.99, e.getPixel(f), J*this->tc_ekf.getFeatureHomogenousCovariance(i)*J);
+			//cv::RotatedRect rr = this->getErrorEllipse(0.99, e.getPixel(f), J*this->state_estimator.getFeatureHomogenousCovariance(i)*J);
 			//ROS_DEBUG_STREAM(rr.size);
 			//cv::ellipse(img, rr, cv::Scalar(255, 255, 0), 1);
 		}
@@ -446,29 +446,29 @@ void VIO::publishOdometry(Frame& cf)
 	nav_msgs::Odometry msg;
 	static tf::TransformBroadcaster br;
 
-	tf::Transform currentPose = tf::Transform(tf::Quaternion(this->tc_ekf.base_mu(4), this->tc_ekf.base_mu(5), this->tc_ekf.base_mu(6), this->tc_ekf.base_mu(3)), tf::Vector3(this->tc_ekf.base_mu(0), this->tc_ekf.base_mu(1), this->tc_ekf.base_mu(2)));
+	tf::Transform currentPose = tf::Transform(tf::Quaternion(this->state_estimator.base_mu(4), this->state_estimator.base_mu(5), this->state_estimator.base_mu(6), this->state_estimator.base_mu(3)), tf::Vector3(this->state_estimator.base_mu(0), this->state_estimator.base_mu(1), this->state_estimator.base_mu(2)));
 
 	br.sendTransform(tf::StampedTransform(currentPose, cf.t, WORLD_FRAME, ODOM_FRAME));
 
 
 	msg.child_frame_id = CAMERA_FRAME;
 	msg.header.frame_id = WORLD_FRAME;
-	msg.twist.twist.angular.x = this->tc_ekf.base_mu(10);
-	msg.twist.twist.angular.y = this->tc_ekf.base_mu(11);
-	msg.twist.twist.angular.z = this->tc_ekf.base_mu(12);
+	msg.twist.twist.angular.x = this->state_estimator.base_mu(10);
+	msg.twist.twist.angular.y = this->state_estimator.base_mu(11);
+	msg.twist.twist.angular.z = this->state_estimator.base_mu(12);
 
-	msg.twist.twist.linear.x = this->tc_ekf.base_mu(7);
-	msg.twist.twist.linear.y = this->tc_ekf.base_mu(8);
-	msg.twist.twist.linear.z = this->tc_ekf.base_mu(9);
+	msg.twist.twist.linear.x = this->state_estimator.base_mu(7);
+	msg.twist.twist.linear.y = this->state_estimator.base_mu(8);
+	msg.twist.twist.linear.z = this->state_estimator.base_mu(9);
 
-	msg.pose.pose.orientation.w = this->tc_ekf.base_mu(3);
-	msg.pose.pose.orientation.x = this->tc_ekf.base_mu(4);
-	msg.pose.pose.orientation.y = this->tc_ekf.base_mu(5);
-	msg.pose.pose.orientation.z = this->tc_ekf.base_mu(6);
+	msg.pose.pose.orientation.w = this->state_estimator.base_mu(3);
+	msg.pose.pose.orientation.x = this->state_estimator.base_mu(4);
+	msg.pose.pose.orientation.y = this->state_estimator.base_mu(5);
+	msg.pose.pose.orientation.z = this->state_estimator.base_mu(6);
 
-	msg.pose.pose.position.x = this->tc_ekf.base_mu(0);
-	msg.pose.pose.position.y = this->tc_ekf.base_mu(1);
-	msg.pose.pose.position.z = this->tc_ekf.base_mu(2);
+	msg.pose.pose.position.x = this->state_estimator.base_mu(0);
+	msg.pose.pose.position.y = this->state_estimator.base_mu(1);
+	msg.pose.pose.position.z = this->state_estimator.base_mu(2);
 
 	//TODO add convariance computation
 
@@ -489,7 +489,7 @@ void VIO::publishPoints(Frame& f)
 	msg.header.frame_id = ODOM_FRAME;
 
 
-	for(auto e : tc_ekf.features)
+	for(auto e : state_estimator.features)
 	{
 
 		Eigen::Vector3f p_in_f = e.getMu();

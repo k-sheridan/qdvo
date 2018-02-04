@@ -42,7 +42,7 @@
 #include <Feature.h>
 #include <Frame.h>
 #include <Params.h>
-#include <TightlyCoupledEKF.h>
+#include <StateEstimator.h>
 #include <KLTTracker.h>
 
 #include <Eigen/Eigenvalues>
@@ -57,7 +57,7 @@ public:
 	std::deque<Frame> frame_buffer; // stores all frames and pose estimates at this frames
 
 	struct UpdatedState{
-		TightlyCoupledEKF state;
+		StateEstimator state;
 		sensor_msgs::Imu msg;
 	};
 
@@ -67,7 +67,7 @@ public:
 
 	tf::TransformListener tf_listener;
 
-	TightlyCoupledEKF tc_ekf;
+	StateEstimator state_estimator;
 
 	KLTTracker tracker;
 

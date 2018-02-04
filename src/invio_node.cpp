@@ -9,7 +9,7 @@
 
 #include <ros/ros.h>
 
-#include "../include/invio/VIO.h"
+#include <VIO.h>
 
 int main(int argc, char **argv)
 {

@@ -5,8 +5,8 @@
  *      Author: kevin
  */
 
-#ifndef INVIO_INCLUDE_INVIO_TIGHTLYCOUPLEDEKF_H_
-#define INVIO_INCLUDE_INVIO_TIGHTLYCOUPLEDEKF_H_
+#ifndef INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
+#define INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
 
 // x, y, z, qw, qx, qy, qz, b_dx, b_dy, b_dz, b_wx, b_wy, b_wz, b_ax, b_ay, b_az, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
 #define BASE_STATE_SIZE 22
@@ -22,9 +22,9 @@
 #include <Eigen/SparseCholesky>
 #include <Eigen/Cholesky>
 
-class TightlyCoupledEKF {
+class StateEstimator {
 public:
-	TightlyCoupledEKF();
+	StateEstimator();
 
 	Eigen::Matrix<float, BASE_STATE_SIZE, 1> base_mu; // this is the part of the state which always remains. It contains position, vel, orientation etc.
 
@@ -51,8 +51,6 @@ public:
 
 	Eigen::SparseMatrix<float> numericallyLinearizeProcess(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_mu, std::list<Feature>& features, float dt);
 
-	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix2f> estimated_covariance, std::vector<bool> pass);
-
 	Eigen::SparseMatrix<float> formFeatureMeasurementMap(std::vector<bool> measured);
 
 	Eigen::Matrix2f getFeatureHomogenousCovariance(int index);
@@ -64,9 +62,11 @@ public:
 
 	void fixSigma();
 
+	double getHuberWeight(double chi)
+
 	Eigen::SparseMatrix<float> getMetric2PixelMap(Eigen::Matrix3f& K);
 	Eigen::SparseMatrix<float> getPixel2MetricMap(Eigen::Matrix3f& K);
 
 };
 
-#endif /* INVIO_INCLUDE_INVIO_TIGHTLYCOUPLEDEKF_H_ */
+#endif /* INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_ */

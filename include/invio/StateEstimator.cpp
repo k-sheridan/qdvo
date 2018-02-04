@@ -1,13 +1,13 @@
 /*
- * TightlyCoupledEKF.cpp
+ * StateEstimator.cpp
  *
  *  Created on: Nov 25, 2017
  *      Author: kevin
  */
 
-#include <TightlyCoupledEKF.h>
+#include <StateEstimator.h>
 
-TightlyCoupledEKF::TightlyCoupledEKF() {
+StateEstimator::StateEstimator() {
 
 	this->Sigma.resize(BASE_STATE_SIZE, BASE_STATE_SIZE);
 
@@ -20,7 +20,7 @@ TightlyCoupledEKF::TightlyCoupledEKF() {
 }
 
 
-void TightlyCoupledEKF::initializeBaseState()
+void StateEstimator::initializeBaseState()
 {
 	this->base_mu.setZero();
 	//this->Sigma.block<BASE_STATE_SIZE, BASE_STATE_SIZE>(0, 0).setZero(); //wipe the base state sigmas
@@ -55,7 +55,7 @@ void TightlyCoupledEKF::initializeBaseState()
 
 }
 
-void TightlyCoupledEKF::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features){
+void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features){
 	if(!new_homogenous_features.size()){return;}
 
 	//resize the covariance matrix without changing other values
@@ -93,7 +93,7 @@ void TightlyCoupledEKF::addNewFeatures(std::vector<Eigen::Vector2f> new_homogeno
 	}
 }
 
-void TightlyCoupledEKF::process(float dt){
+void StateEstimator::process(float dt){
 	Eigen::SparseMatrix<float> F = this->numericallyLinearizeProcess(this->base_mu, this->features, dt); // compute the jacobian of the process numerically
 
 	ROS_DEBUG_STREAM("F rows: " << F.rows() << " F nnz: " << F.nonZeros());
@@ -106,21 +106,16 @@ void TightlyCoupledEKF::process(float dt){
 	// process the base mu
 	this->base_mu = this->convolveBaseState(this->base_mu, dt);
 
-	ROS_DEBUG_STREAM("tc_ekf.Sigma (pre process) rows: " << this->Sigma.rows() << " sigma nnz: " << this->Sigma.nonZeros());
 
 	ROS_DEBUG("start process");
 	// update the Sigma
 	this->Sigma = F * this->Sigma * F.transpose();
 	this->Sigma += this->generateProcessNoise(dt);
 
-	//prune the non zeros
-	this->Sigma.prune(SPARSE_THRESH, SPARSE_EPS);
-
-	ROS_DEBUG_STREAM("tc_ekf.Sigma (post process) rows: " << this->Sigma.rows() << " sigma nnz: " << this->Sigma.nonZeros());
 	ROS_DEBUG("finish process");
 }
 
-Eigen::SparseMatrix<float> TightlyCoupledEKF::generateProcessNoise(float dt){
+Eigen::SparseMatrix<float> StateEstimator::generateProcessNoise(float dt){
 	int dim = BASE_STATE_SIZE + this->features.size()*3;
 
 	float low_noise = 0.0001 * dt;
@@ -173,7 +168,7 @@ Eigen::SparseMatrix<float> TightlyCoupledEKF::generateProcessNoise(float dt){
 	return Q;
 }
 
-Eigen::SparseMatrix<float> TightlyCoupledEKF::numericallyLinearizeProcess(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_mu, std::list<Feature>& features, float dt){
+Eigen::SparseMatrix<float> StateEstimator::numericallyLinearizeProcess(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_mu, std::list<Feature>& features, float dt){
 	int dim = BASE_STATE_SIZE + features.size() * 3;
 	Eigen::SparseMatrix<float> F(dim, dim);
 
@@ -325,7 +320,7 @@ Eigen::SparseMatrix<float> TightlyCoupledEKF::numericallyLinearizeProcess(Eigen:
 }
 
 
-Eigen::Matrix<float, BASE_STATE_SIZE, 1> TightlyCoupledEKF::convolveBaseState(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& last, float dt){
+Eigen::Matrix<float, BASE_STATE_SIZE, 1> StateEstimator::convolveBaseState(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& last, float dt){
 	Eigen::Vector3f pos, vel, accel, omega;
 	Eigen::Quaternionf quat;
 
@@ -394,7 +389,7 @@ Eigen::Matrix<float, BASE_STATE_SIZE, 1> TightlyCoupledEKF::convolveBaseState(Ei
 
 }
 
-Eigen::Vector3f TightlyCoupledEKF::convolveFeature(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_state, Eigen::Vector3f& feature_state, float dt)
+Eigen::Vector3f StateEstimator::convolveFeature(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_state, Eigen::Vector3f& feature_state, float dt)
 {
 
 	static float last_omegax = 0;
@@ -458,7 +453,7 @@ Eigen::Vector3f TightlyCoupledEKF::convolveFeature(Eigen::Matrix<float, BASE_STA
 	return feature_pos;
 }
 
-std::vector<Eigen::Vector2f> TightlyCoupledEKF::previousFeaturePositionVector(){
+std::vector<Eigen::Vector2f> StateEstimator::previousFeaturePositionVector(){
 	std::vector<Eigen::Vector2f> output;
 	//output.reserve(this->features.size());
 	for(auto e : this->features){
@@ -471,7 +466,7 @@ std::vector<Eigen::Vector2f> TightlyCoupledEKF::previousFeaturePositionVector(){
 /*
  * expects all measurements and uncertainties in metric coordinates
  */
-void TightlyCoupledEKF::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix2f> estimated_covariance, std::vector<bool> pass)
+void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix2f> estimated_covariance, std::vector<bool> pass)
 {
 	//ROS_DEBUG_STREAM(measured_positions.size() <<" , "<< estimated_covariance.size() <<" , "<< pass.size() <<" , "<< this->features.size());
 	ROS_ASSERT(measured_positions.size() == estimated_covariance.size() && pass.size() == this->features.size() && estimated_covariance.size() == pass.size()); // make sure that there are enough features
@@ -630,7 +625,7 @@ void TightlyCoupledEKF::updateWithFeaturePositions(std::vector<Eigen::Vector2f> 
  * form the mapping between our measurement of feature positions (homogenous) and the state
  * the measured vector is used to tell this function which features were not observed in this measurement
  */
-Eigen::SparseMatrix<float> TightlyCoupledEKF::formFeatureMeasurementMap(std::vector<bool> measured){
+Eigen::SparseMatrix<float> StateEstimator::formFeatureMeasurementMap(std::vector<bool> measured){
 
 	ROS_ASSERT(measured.size() == this->features.size()); // sanity check
 
@@ -659,12 +654,12 @@ Eigen::SparseMatrix<float> TightlyCoupledEKF::formFeatureMeasurementMap(std::vec
 	return H;
 }
 
-Eigen::Matrix2f TightlyCoupledEKF::getFeatureHomogenousCovariance(int index){
+Eigen::Matrix2f StateEstimator::getFeatureHomogenousCovariance(int index){
 	int start = BASE_STATE_SIZE + index * 3;
 	return this->Sigma.block(start, start, 2, 2);
 }
 
-void TightlyCoupledEKF::setFeatureHomogenousCovariance(int index, Eigen::Matrix2f cov)
+void StateEstimator::setFeatureHomogenousCovariance(int index, Eigen::Matrix2f cov)
 {
 	int start = BASE_STATE_SIZE + index * 3;
 	ROS_ERROR("tried to set to sparse matrix");
@@ -674,12 +669,12 @@ void TightlyCoupledEKF::setFeatureHomogenousCovariance(int index, Eigen::Matrix2
 	this->Sigma.coeffRef(start+1, start+1) = cov(1, 1);
 }
 
-float TightlyCoupledEKF::getFeatureDepthVariance(int index){
+float StateEstimator::getFeatureDepthVariance(int index){
 	int start = BASE_STATE_SIZE + index * 3 + 2;
 	return this->Sigma.coeff(start, start);
 }
 
-Eigen::SparseMatrix<float> TightlyCoupledEKF::getMetric2PixelMap(Eigen::Matrix3f& K){
+Eigen::SparseMatrix<float> StateEstimator::getMetric2PixelMap(Eigen::Matrix3f& K){
 	Eigen::SparseMatrix<float> J(2, 2);
 	//J.setIdentity();
 	J.insert(0, 0) = K(0, 0);
@@ -687,7 +682,7 @@ Eigen::SparseMatrix<float> TightlyCoupledEKF::getMetric2PixelMap(Eigen::Matrix3f
 	return J;
 }
 
-Eigen::SparseMatrix<float> TightlyCoupledEKF::getPixel2MetricMap(Eigen::Matrix3f& K){
+Eigen::SparseMatrix<float> StateEstimator::getPixel2MetricMap(Eigen::Matrix3f& K){
 	Eigen::SparseMatrix<float> J(2, 2);
 	//J.setIdentity();
 	J.insert(0, 0) = 1.0f/K(0, 0);
@@ -695,7 +690,7 @@ Eigen::SparseMatrix<float> TightlyCoupledEKF::getPixel2MetricMap(Eigen::Matrix3f
 	return J;
 }
 
-void TightlyCoupledEKF::checkSigma(){
+void StateEstimator::checkSigma(){
 #define SYM_EPS 0.001
 	// first check the diagonal to make sure all members are positive
 	for(int i = 0; i < this->Sigma.rows(); i++){
@@ -712,7 +707,21 @@ void TightlyCoupledEKF::checkSigma(){
 
 }
 
-void TightlyCoupledEKF::fixSigma(){
+void StateEstimator::fixSigma(){
 	//this->Sigma = (this->Sigma + this->Sigma.transpose()) / 2.0;
 }
 
+/*
+ * sqrt(chi2)
+ */
+double StateEstimator::getHuberWeight(double chi)
+{
+	if(chi <= HUBER_WIDTH)
+	{
+		return 1.0;
+	}
+	else
+	{
+		return HUBER_WIDTH / chi;
+	}
+}

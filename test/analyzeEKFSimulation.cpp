@@ -4,8 +4,8 @@
 #include "../include/invio/VIO.h"
 
 cv::RotatedRect getErrorEllipse(double chisquare_val, cv::Point2f mean, Eigen::Matrix2f eig_covmat);
-std::vector<Eigen::Vector2f>  generateFakeMeasurementsAndUpdateEKF(TightlyCoupledEKF& tc_ekf, std::vector<Eigen::Vector3f> point_pos, Eigen::Vector3f pos, Eigen::Quaternionf quat);
-void visualizeEKF(TightlyCoupledEKF tc_ekf, std::vector<Eigen::Vector2f> measurements);
+std::vector<Eigen::Vector2f>  generateFakeMeasurementsAndUpdateEKF(StateEstimator& tc_ekf, std::vector<Eigen::Vector3f> point_pos, Eigen::Vector3f pos, Eigen::Quaternionf quat);
+void visualizeEKF(StateEstimator tc_ekf, std::vector<Eigen::Vector2f> measurements);
 
 void simulateAndVisualizeEKF(int feature_count, float depth_sigma, float depth_mu, Eigen::Vector3f b_vel, Eigen::Vector3f b_accel, Eigen::Vector3f omega, float dt, float tf, bool print){
 	cv::RNG rng(0); // create a rendom number generator with seed zero for repeatability
@@ -28,7 +28,7 @@ void simulateAndVisualizeEKF(int feature_count, float depth_sigma, float depth_m
 		}
 	}
 
-	TightlyCoupledEKF tc_ekf;
+	StateEstimator tc_ekf;
 
 	tc_ekf.addNewFeatures(initial_features);
 	if(print){
@@ -98,7 +98,7 @@ void simulateAndVisualizeEKF(int feature_count, float depth_sigma, float depth_m
 
 }
 
-std::vector<Eigen::Vector2f> generateFakeMeasurementsAndUpdateEKF(TightlyCoupledEKF& tc_ekf, std::vector<Eigen::Vector3f> point_pos, Eigen::Vector3f pos, Eigen::Quaternionf quat){
+std::vector<Eigen::Vector2f> generateFakeMeasurementsAndUpdateEKF(StateEstimator& tc_ekf, std::vector<Eigen::Vector3f> point_pos, Eigen::Vector3f pos, Eigen::Quaternionf quat){
 
 	std::vector<Eigen::Vector2f> feature_pos_vec;
 	std::vector<Eigen::Matrix2f> covs;
@@ -124,7 +124,7 @@ std::vector<Eigen::Vector2f> generateFakeMeasurementsAndUpdateEKF(TightlyCoupled
 	return feature_pos_vec;
 }
 
-void visualizeEKF(TightlyCoupledEKF tc_ekf, std::vector<Eigen::Vector2f> measurements){
+void visualizeEKF(StateEstimator tc_ekf, std::vector<Eigen::Vector2f> measurements){
 	cv::Mat black = cv::Mat(600, 600, CV_8UC3);
 
 	int i = 0;

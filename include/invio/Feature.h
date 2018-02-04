@@ -38,10 +38,10 @@ class Frame; // need to tell the feature that there is something called frame
 class Feature {
 private:
 
-	Eigen::Vector3f mu; // [u, v, d] (u and v are in homogenous coord)
+	Eigen::Vector2f bearing; // [u, v] (u and v are in homogenous coord)
+	float inv_depth;
 
 	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous reference feature position
-	// it is important that this estimate is as close to the actual feature position in the frame as possible. otherwise drift will be significant
 
 	bool delete_flag;
 

@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	// test basic ekf functionality
 
-	TightlyCoupledEKF tc_ekf;
+	StateEstimator tc_ekf;
 
 	std::vector<Eigen::Vector2f> features;
 	features.push_back(Eigen::Vector2f(0.1, 0.1));
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 	ROS_INFO("small stop");
 	ROS_INFO_STREAM("dt: " << (ros::Time::now() - t_start).toSec() * 1000);
 
-	tc_ekf = TightlyCoupledEKF();
+	tc_ekf = StateEstimator();
 
 	for(int i = 0; i < 100; i++){
 		features.push_back(Eigen::Vector2f(0.1, 0.1));
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
 	ROS_INFO("medium stop");
 	ROS_INFO_STREAM("dt: " << (ros::Time::now() - t_start).toSec() * 1000);
 
-	tc_ekf = TightlyCoupledEKF();
+	tc_ekf = StateEstimator();
 
 	for(int i = 0; i < 400; i++){
 		features.push_back(Eigen::Vector2f(0.1, 0.1));
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 	ROS_INFO("large with false stop");
 	ROS_INFO_STREAM("dt: " << (ros::Time::now() - t_start).toSec() * 1000);
 
-	tc_ekf = TightlyCoupledEKF();
+	tc_ekf = StateEstimator();
 
 	for(size_t i = 0; i < measured.size(); i++){
 		measured.at(i) = true;
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 
 	//test process
 
-	tc_ekf = TightlyCoupledEKF();
+	tc_ekf = StateEstimator();
 
 	features.clear();
 	features.push_back(Eigen::Vector2f(0.1, 0.1));
