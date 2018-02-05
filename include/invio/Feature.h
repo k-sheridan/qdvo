@@ -60,7 +60,7 @@ private:
 public:
 
 	Feature();
-	Feature(Eigen::Vector2f homogenous, float depth, Frame f);
+	Feature(Eigen::Vector2f homogenous, float depth, Frame& f);
 	virtual ~Feature();
 
 	Eigen::Vector2f getBearing();
