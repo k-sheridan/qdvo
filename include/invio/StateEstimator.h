@@ -11,7 +11,7 @@
 //State: x, y, z, qw, qx, qy, qz, b_dx, b_dy, b_dz, b_wx, b_wy, b_wz, b_ax, b_ay, b_az, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
 
 #include <Feature.h>
-
+#include <Frame.h>
 #include <Params.h>
 
 #include <Eigen/Core>
@@ -39,7 +39,7 @@ public:
 
 	void initializeBaseState();
 
-	void addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features);
+	void addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features, Frame& f);
 
 	std::vector<Eigen::Vector2f> previousFeaturePositionVector();
 

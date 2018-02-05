@@ -11,7 +11,7 @@ Feature::Feature() {
 
 }
 
-Feature::Feature(Eigen::Vector2f homogenous, float depth){
+Feature::Feature(Eigen::Vector2f homogenous, float depth, Frame& f){
 	this->last_result_from_klt_tracker = homogenous;
 	this->bearing = homogenous;
 	this->depth_inv = 1.0/depth;
@@ -26,7 +26,7 @@ Feature::~Feature() {
 	// TODO Auto-generated destructor stub
 }
 
-Eigen::Vector2f Feature::getNormalizedPixel(){
+Eigen::Vector2f Feature::getBearing(){
 	return this->bearing;
 }
 

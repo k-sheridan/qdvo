@@ -55,7 +55,7 @@ void StateEstimator::initializeBaseState()
 
 }
 
-void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features){
+void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features, Frame& f){
 	if(!new_homogenous_features.size()){return;}
 
 	//resize the covariance matrix without changing other values

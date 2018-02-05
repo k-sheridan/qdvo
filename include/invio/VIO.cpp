@@ -65,6 +65,7 @@ VIO::VIO() {
 	ros::param::param<int>("~max_variance_box_size", MAX_VARIANCE_SIZE, D_MAX_VARIANCE_SIZE);
 	ros::param::param<int>("~max_pyramids", MAX_PYRAMID_LEVEL, D_MAX_PYRAMID_LEVEL);
 	ros::param::param<int>("~klt_window_size", WINDOW_SIZE, D_WINDOW_SIZE);
+	ros::param::param<int>("~depth_solver_patch_size", DEPTH_SOLVER_PATH_SIZE, D_DEPTH_SOLVER_PATH_SIZE);
 
 	image_transport::ImageTransport it(nh);
 	image_transport::CameraSubscriber bottom_cam_sub = it.subscribeCamera(

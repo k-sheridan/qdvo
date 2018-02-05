@@ -28,11 +28,13 @@
 #include <tf/tf.h>
 #include <tf/tfMessage.h>
 
-#include <Frame.h>
-#include <Params.h>
-
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+
+#include <Frame.h>
+#include <Params.h>
+#include <DepthSolver.h>
+
 
 class Frame; // need to tell the feature that there is something called frame
 
@@ -52,26 +54,20 @@ private:
 	//KLT
 	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
 
+	//iterative depth solver to be used before intergration into BA
+	DepthSolver ds;
 
 public:
 
 	Feature();
-	Feature(Eigen::Vector2f homogenous, float depth);
+	Feature(Eigen::Vector2f homogenous, float depth, Frame f);
 	virtual ~Feature();
 
-	Eigen::Vector2f getNormalizedPixel();
+	Eigen::Vector2f getBearing();
 
 	float getDepth();
 
 	cv::Point2f getPixel(const Frame& f);
-
-	static inline Eigen::Vector2f pixel2Metric(const Frame& f, const cv::Point2f px){
-		return Eigen::Vector2f((px.x - f.K(2)) / f.K(0), (px.y - f.K(5)) / f.K(4));
-	}
-
-	static inline cv::Point2f metric2Pixel(const Frame& f, const Eigen::Vector2f pos){
-		return cv::Point2f(pos.x()*f.K(0) + f.K(2), pos.y()*f.K(4) + f.K(5));
-	}
 
 	Eigen::Vector2f getLastResultFromKLTTracker(){
 		return this->last_result_from_klt_tracker;
@@ -105,7 +101,18 @@ public:
 	Eigen::Vector3f& getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(0), this->depth_inv);}
 
 	float& depth_inv_ref(){return this->depth_inv;}
+
+	float& depth_inv_sigma_ref(){return this->depth_inv_sigma;}
 	Eigen::Matrix<float, BASE_STATE_SIZE, 1>& feature_covariance_ref(){return this->feature_covariance;}
+
+
+	static inline Eigen::Vector2f pixel2Metric(const Frame& f, const cv::Point2f px){
+		return Eigen::Vector2f((px.x - f.K(2)) / f.K(0), (px.y - f.K(5)) / f.K(4));
+	}
+
+	static inline cv::Point2f metric2Pixel(const Frame& f, const Eigen::Vector2f pos){
+		return cv::Point2f(pos.x()*f.K(0) + f.K(2), pos.y()*f.K(4) + f.K(5));
+	}
 
 };
 
