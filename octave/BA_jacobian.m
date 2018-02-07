@@ -1,4 +1,8 @@
-syms vx vy vz wx wy wz u_curr rx ry rz
+syms vx vy vz wx wy wz u_curr rx ry rz u_curr v_curr z_inv_curr
+
+rx = u_curr/z_inv_curr
+ry = v_curr/z_inv_curr
+rz = 1.0/z_inv_curr
 
 % the hat of the se3 lie algebra
 A = [0, -wz, wy, vx;
@@ -53,43 +57,50 @@ fprintf('dv/dwz: %s\n', subs(diff(v, wz), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0
 % how does changing the position of the point in the current frame change the
 % u and v
 
-fprintf('\ndu/drz: %s\n', subs(diff(u, rz), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0]))
+fprintf('\ndu/ddepth: %s\n', subs(diff(u, z_inv_curr), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0]))
 
-fprintf('dv/drz: %s\n', subs(diff(v, rz), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0]))
+fprintf('dv/ddepth: %s\n', subs(diff(v, z_inv_curr), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0]))
 
 
-%CLOSED FORM -=-=-=-=-=-=-=-=-= not correct lol
+J = subs(jacobian([u;v], [vx,vy,vz,wx,wy,wz,z_inv_curr]), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0])
 
-% v = [vx;vy;vz]
-% w = [wx;wy;wz]
-%
-% w_hat = [0, -wz, wy;
-%          wz, 0, -wx;
-%         -wy, wx, 0]
-%
-% % closed form solution to the exponential map of w
-% R = eye(3, 3) + (w_hat/norm(w)) * sin(norm(w)) + (w_hat/norm(w))^2 * (1 - cos(norm(w)));
-%
-% % closed form translation part of the exponential map
-% t = ((eye(3, 3) - R) * w_hat * v + w*w'*v) / norm(w);
-%
-% T = [R, t; zeros(1, 3), 1];
-%
-% % test nonzero w
-% subs(T, [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0.00001, 0, 0])
-%
-%
-% %compute jacobian for a small camera movement
-%
-% r = [rx;ry;rz;1] % point position in the current frame (homogenous)
-%
-% r_p = T*r;
-%
-% % project onto image plane
-% u = r_p(1) / r_p(3);
-% v = r_p(2) / r_p(3);
-%
-% %jacobians are atthe unit transform so a numerical limit
-%
-% %du/dvx
-% subs(diff(u, vx), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0.000001, 0, 0])
+
+% test my logic 
+
+z = [0.1; 0.1]
+
+current_z = [0.099; 0.1001; 0.1]
+
+T = eye(4, 4)
+
+%order vx, vy, vz, wx, wy, wz, z^-1
+
+P = [1, 0, 0, 0, 0, 0, 0;
+    0, 1, 0, 0, 0, 0, 0;
+    0, 0, 1, 0, 0, 0, 0;
+    0, 0, 0, 0.0001, 0, 0, 0;
+    0, 0, 0, 0, 0.0001, 0, 0;
+    0, 0, 0, 0, 0, 0.0001, 0;
+    0, 0, 0, 0, 0, 0, 1;]
+
+for it = (1:10)
+
+    H = double(subs(J, [u_curr; v_curr; z_inv_curr], current_z));
+    
+    err = z - current_z(1:2);
+    
+    K = inv(inv(P) + H'*inv(R)*H) * H' * inv(R);
+    
+    delta = K*err
+    
+    dT = se3Exp(delta(1:6));
+    
+    T = dT * T;
+    
+    pos = (1/current_z(3)) * [current_z(1:2); 1];
+   
+    new_pos = inv(T) * [pos;1];
+    
+    current_z = [new_pos(1)/new_pos(3); new_pos(2)/new_pos(3); 1/new_pos(3)];
+    
+end

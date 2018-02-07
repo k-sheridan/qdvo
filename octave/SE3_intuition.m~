@@ -1,0 +1,1 @@
+% check that exp(se(3) + se(3) + se(3)) == exp() 
