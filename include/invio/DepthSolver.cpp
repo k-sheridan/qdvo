@@ -27,6 +27,7 @@ DepthSolver::~DepthSolver() {
 	this->ft = NULL;
 }
 
+/*
 bool DepthSolver::solveAndUpdatePointDepthLinear(Sophus::SE3f current_pose, Eigen::Vector2f current_bearing)
 {
 
@@ -98,4 +99,5 @@ bool DepthSolver::solveAndUpdatePointDepthLinear(Sophus::SE3f current_pose, Eige
 	return true;
 
 }
+*/
 

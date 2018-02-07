@@ -33,7 +33,7 @@ public:
 	DepthSolver(Feature* parent);
 	virtual ~DepthSolver();
 
-	bool solveAndUpdatePointDepthLinear(Sophus::SE3f current_pose, Eigen::Vector2f current_bearing);
+	//bool solveAndUpdatePointDepthLinear(Sophus::SE3f current_pose, Eigen::Vector2f current_bearing);
 
 };
 
