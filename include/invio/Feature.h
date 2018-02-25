@@ -5,8 +5,8 @@
  *      Author: kevin
  */
 
-#ifndef PAUVSI_VIO_INCLUDE_PAUVSI_VIO_FEATURE_H_
-#define PAUVSI_VIO_INCLUDE_PAUVSI_VIO_FEATURE_H_
+#ifndef INVIO_INCLUDE_INVIO_FEATURE_H_
+#define INVIO_INCLUDE_INVIO_FEATURE_H_
 
 #include <ros/ros.h>
 
@@ -33,10 +33,12 @@
 
 #include <Frame.h>
 #include <Params.h>
-#include <DepthSolver.h>
+//#include <DepthSolver.h>
 
 
 class Frame; // need to tell the feature that there is something called frame
+
+class DepthSolver; // depth solver is a class
 
 class Feature {
 private:
@@ -46,8 +48,6 @@ private:
 
 	float depth_inv_sigma; // the variance of this features depth
 
-	Eigen::Matrix<float, BASE_STATE_SIZE, 1> feature_covariance; // the uncertainty correlations with the base state
-
 	bool delete_flag; // should this feature be deleted?
 
 
@@ -55,7 +55,7 @@ private:
 	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
 
 	//iterative depth solver to be used before intergration into BA
-	DepthSolver ds;
+	DepthSolver* ds;
 
 public:
 
@@ -98,12 +98,11 @@ public:
 
 	void setMu(Eigen::Vector3f in){this->bearing(0) = in(0); this->bearing(2) = in(1); this->depth_inv = in(2);}
 
-	Eigen::Vector3f& getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(0), this->depth_inv);}
+	Eigen::Vector3f getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(0), this->depth_inv);}
 
 	float& depth_inv_ref(){return this->depth_inv;}
 
 	float& depth_inv_sigma_ref(){return this->depth_inv_sigma;}
-	Eigen::Matrix<float, BASE_STATE_SIZE, 1>& feature_covariance_ref(){return this->feature_covariance;}
 
 
 	static inline Eigen::Vector2f pixel2Metric(const Frame& f, const cv::Point2f px){

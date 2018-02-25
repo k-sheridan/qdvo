@@ -215,7 +215,7 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	//run the klt tracker
 	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	//this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
 
 }
 
@@ -306,7 +306,7 @@ void VIO::replenishFeatures(Frame& f) {
 		}
 
 		//add the new features to the current state
-		state_estimator.addNewFeatures(new_features);
+		state_estimator.addNewFeatures(new_features, f);
 	}
 
 }

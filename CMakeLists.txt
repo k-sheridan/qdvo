@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_FLAGS "-Wall -Werror -Wextra")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DEIGEN_NO_DEBUG")
 
@@ -66,10 +66,10 @@ add_library(vioFrame include/invio/Frame.cpp)
 target_link_libraries(vioFrame ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature)
 
 add_library(vio_depthSolver include/invio/DepthSolver.cpp)
-target_link_libraries(vio_depthSolver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioPoint vioFrame)
+target_link_libraries(vio_depthSolver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioFrame)
 
 add_library(vio_state_estimator include/invio/StateEstimator.cpp)
-target_link_libraries(vio_state_estimator ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature)
+target_link_libraries(vio_state_estimator ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vio_depthSolver)
 
 add_library(klt_tracker include/invio/KLTTracker.cpp)
 target_link_libraries(klt_tracker ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vio_state_estimator vioParams vioFeature vioFrame)

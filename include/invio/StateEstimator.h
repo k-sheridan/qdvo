@@ -26,35 +26,37 @@
  * it also allows an imu to be fused into the estimates
  */
 
+typedef float ScalarType;
+
 class StateEstimator {
 public:
 	StateEstimator();
 
-	Eigen::Matrix<float, BASE_STATE_SIZE, 1> base_mu; // this is the part of the state which always remains. It contains position, vel, orientation etc.
-	Eigen::Matrix<float, BASE_STATE_SIZE, BASE_STATE_SIZE> base_Sigma; // stores the current uncertainty and correlations for the state
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> mu; // [x y z thetax thetay thetaz dx dy dz wx wy wz ax ay az gx ]
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma; // stores the current uncertainty and correlations for the state
 
-	std::list<Feature> features; // stores the current best guess about the state of the features
+	std::list<Feature> features; // store the features in this frame
 
 	ros::Time t; // store the current time of the state
 
-	void initializeBaseState();
+	void initializeState();
 
 	void addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features, Frame& f);
 
 	std::vector<Eigen::Vector2f> previousFeaturePositionVector();
 
-	void process(float dt);
+	void process(ScalarType dt);
 
-	Eigen::SparseMatrix<float> generateProcessNoise(float dt);
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> generateProcessNoise(ScalarType dt);
 
-	Eigen::Matrix<float, BASE_STATE_SIZE, 1> convolveBaseState(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& last, float dt);
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> convolveState(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& last, ScalarType dt);
 
-	Eigen::Vector3f convolveFeature(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_state, Eigen::Vector3f& feature_state, float dt);
+	Eigen::Vector3f convolveFeature(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& base_state, Eigen::Vector3f& feature_state, ScalarType dt);
 
-	Eigen::SparseMatrix<float> numericallyLinearizeProcess(Eigen::Matrix<float, BASE_STATE_SIZE, 1>& base_mu, std::list<Feature>& features, float dt);
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& base_mu, ScalarType dt);
 
 	Eigen::Matrix2f getFeatureHomogenousCovariance(int index);
-	float getFeatureDepthVariance(int index);
+	ScalarType getFeatureDepthVariance(int index);
 
 	void setFeatureHomogenousCovariance(int index, Eigen::Matrix2f cov);
 
@@ -65,9 +67,28 @@ public:
 	double getHuberWeight(double chi);
 
 
+	Eigen::Matrix<ScalarType, 2, 2> getMetric2PixelMap(Eigen::Matrix3f& K);
+	Eigen::Matrix<ScalarType, 2, 2> getPixel2MetricMap(Eigen::Matrix3f& K);
 
-	Eigen::SparseMatrix<float> getMetric2PixelMap(Eigen::Matrix3f& K);
-	Eigen::SparseMatrix<float> getPixel2MetricMap(Eigen::Matrix3f& K);
+
+
+	Eigen::Vector3d getPosition(){return Eigen::Vector3d(mu(0), mu(1), mu(2));}
+	Eigen::Vector3d getTheta(){return Eigen::Vector3d(mu(3), mu(4), mu(5));}
+	Eigen::Vector3d getVelocity(){return Eigen::Vector3d(mu(6), mu(7), mu(8));}
+	Eigen::Vector3d getOmega(){return Eigen::Vector3d(mu(9), mu(10), mu(11));}
+	Eigen::Vector3d getAcceleration(){return Eigen::Vector3d(mu(12), mu(13), mu(14));}
+	Eigen::Vector3d getPhi(){return Eigen::Vector3d(mu(15), mu(16), mu(17));}
+	Eigen::Vector3d getAccelBiases(){return Eigen::Vector3d(mu(18), mu(19), mu(20));}
+	Eigen::Vector3d getGyroBiases(){return Eigen::Vector3d(mu(21), mu(22), mu(23));}
+
+	void setPosition(Eigen::Vector3d in){mu(0)=in.mu(); mu(1)=in.y(); mu(2)=in.z();}
+	void setTheta(Eigen::Vector3d in){mu(3)=in.mu(); mu(4)=in.y(); mu(5)=in.z();}
+	void setVelocity(Eigen::Vector3d in){mu(6)=in.mu(); mu(7)=in.y(); mu(8)=in.z();}
+	void setOmega(Eigen::Vector3d in){mu(9)=in.mu(); mu(10)=in.y(); mu(11)=in.z();}
+	void setAcceleration(Eigen::Vector3d in){mu(12)=in.mu(); mu(13)=in.y(); mu(14)=in.z();}
+	void setPhi(Eigen::Vector3d in){mu(15)=in.mu(); mu(16)=in.y(); mu(17)=in.z();}
+	void setAccelBiases(Eigen::Vector3d in){mu(18)=in.mu(); mu(19)=in.y(); mu(20)=in.z();}
+	void setGyroBiases(Eigen::Vector3d in){mu(21)=in.mu(); mu(22)=in.y(); mu(23)=in.z();}
 
 };
 

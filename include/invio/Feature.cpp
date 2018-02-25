@@ -5,7 +5,7 @@
  *      Author: kevin
  */
 
-#include "../invio/Feature.h"
+#include "Feature.h"
 
 Feature::Feature() {
 
@@ -18,7 +18,7 @@ Feature::Feature(Eigen::Vector2f homogenous, float depth, Frame& f){
 	this->delete_flag = false;
 
 	// set variance
-	this->feature_covariance.setZero() // no correlations initially
+	//this->feature_covariance.setZero() // no correlations initially
 	this->depth_inv_sigma = DEFAULT_POINT_DEPTH_VARIANCE;
 }
 
