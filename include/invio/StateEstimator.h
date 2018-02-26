@@ -8,7 +8,7 @@
 #ifndef INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
 #define INVIO_INCLUDE_INVIO_STATEESTIMATOR_H_
 
-//State: x, y, z, qw, qx, qy, qz, b_dx, b_dy, b_dz, b_wx, b_wy, b_wz, b_ax, b_ay, b_az, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
+//State: x, y, z, thetax, thetay, thetaz, dx, dy, dz, wx, wy, wz, ax, ay, az, phix, phiy, phiz, baccx, baccy, baccz, bgyrx, bgyry, bgyrz
 
 #include <Feature.h>
 #include <Frame.h>
@@ -55,6 +55,8 @@ public:
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& base_mu, ScalarType dt);
 
+	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass);
+
 	Eigen::Matrix2f getFeatureHomogenousCovariance(int index);
 	ScalarType getFeatureDepthVariance(int index);
 
@@ -81,14 +83,14 @@ public:
 	Eigen::Vector3d getAccelBiases(){return Eigen::Vector3d(mu(18), mu(19), mu(20));}
 	Eigen::Vector3d getGyroBiases(){return Eigen::Vector3d(mu(21), mu(22), mu(23));}
 
-	void setPosition(Eigen::Vector3d in){mu(0)=in.mu(); mu(1)=in.y(); mu(2)=in.z();}
-	void setTheta(Eigen::Vector3d in){mu(3)=in.mu(); mu(4)=in.y(); mu(5)=in.z();}
-	void setVelocity(Eigen::Vector3d in){mu(6)=in.mu(); mu(7)=in.y(); mu(8)=in.z();}
-	void setOmega(Eigen::Vector3d in){mu(9)=in.mu(); mu(10)=in.y(); mu(11)=in.z();}
-	void setAcceleration(Eigen::Vector3d in){mu(12)=in.mu(); mu(13)=in.y(); mu(14)=in.z();}
-	void setPhi(Eigen::Vector3d in){mu(15)=in.mu(); mu(16)=in.y(); mu(17)=in.z();}
-	void setAccelBiases(Eigen::Vector3d in){mu(18)=in.mu(); mu(19)=in.y(); mu(20)=in.z();}
-	void setGyroBiases(Eigen::Vector3d in){mu(21)=in.mu(); mu(22)=in.y(); mu(23)=in.z();}
+	void setPosition(Eigen::Vector3d in){mu(0)=in.x(); mu(1)=in.y(); mu(2)=in.z();}
+	void setTheta(Eigen::Vector3d in){mu(3)=in.x(); mu(4)=in.y(); mu(5)=in.z();}
+	void setVelocity(Eigen::Vector3d in){mu(6)=in.x(); mu(7)=in.y(); mu(8)=in.z();}
+	void setOmega(Eigen::Vector3d in){mu(9)=in.x(); mu(10)=in.y(); mu(11)=in.z();}
+	void setAcceleration(Eigen::Vector3d in){mu(12)=in.x(); mu(13)=in.y(); mu(14)=in.z();}
+	void setPhi(Eigen::Vector3d in){mu(15)=in.x(); mu(16)=in.y(); mu(17)=in.z();}
+	void setAccelBiases(Eigen::Vector3d in){mu(18)=in.x(); mu(19)=in.y(); mu(20)=in.z();}
+	void setGyroBiases(Eigen::Vector3d in){mu(21)=in.x(); mu(22)=in.y(); mu(23)=in.z();}
 
 };
 

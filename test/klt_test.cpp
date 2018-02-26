@@ -28,10 +28,6 @@ int main(int argc, char **argv)
 	cv::imshow("test",img1);
 	cv::waitKey(1000);
 
-	// test the blur functionality
-	KLTTracker::Pyramid pyr = KLTTracker::Pyramid(2, img1);
-
-
 
 
 

@@ -217,6 +217,10 @@ Eigen::Vector3f StateEstimator::convolveFeature(Eigen::Matrix<ScalarType, BASE_S
 	return feature_pos;
 }
 
+void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){
+
+}
+
 std::vector<Eigen::Vector2f> StateEstimator::previousFeaturePositionVector(){
 	std::vector<Eigen::Vector2f> output;
 	//output.reserve(this->features.size());

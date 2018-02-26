@@ -215,7 +215,7 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	//run the klt tracker
 	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	//this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
 
 }
 
@@ -447,33 +447,64 @@ void VIO::publishOdometry(Frame& cf)
 	nav_msgs::Odometry msg;
 	static tf::TransformBroadcaster br;
 
-	tf::Transform currentPose = tf::Transform(tf::Quaternion(this->state_estimator.base_mu(4), this->state_estimator.base_mu(5), this->state_estimator.base_mu(6), this->state_estimator.base_mu(3)), tf::Vector3(this->state_estimator.base_mu(0), this->state_estimator.base_mu(1), this->state_estimator.base_mu(2)));
-
-	br.sendTransform(tf::StampedTransform(currentPose, cf.t, WORLD_FRAME, ODOM_FRAME));
-
 
 	msg.child_frame_id = CAMERA_FRAME;
 	msg.header.frame_id = WORLD_FRAME;
-	msg.twist.twist.angular.x = this->state_estimator.base_mu(10);
-	msg.twist.twist.angular.y = this->state_estimator.base_mu(11);
-	msg.twist.twist.angular.z = this->state_estimator.base_mu(12);
 
-	msg.twist.twist.linear.x = this->state_estimator.base_mu(7);
-	msg.twist.twist.linear.y = this->state_estimator.base_mu(8);
-	msg.twist.twist.linear.z = this->state_estimator.base_mu(9);
+	Eigen::Vector3d temp = this->state_estimator.getOmega();
+	msg.twist.twist.angular.x = temp.x();
+	msg.twist.twist.angular.y = temp.y();
+	msg.twist.twist.angular.z = temp.z();
 
-	msg.pose.pose.orientation.w = this->state_estimator.base_mu(3);
-	msg.pose.pose.orientation.x = this->state_estimator.base_mu(4);
-	msg.pose.pose.orientation.y = this->state_estimator.base_mu(5);
-	msg.pose.pose.orientation.z = this->state_estimator.base_mu(6);
+	// form quaternion from theta
+	Eigen::Vector3d theta = this->state_estimator.getTheta();
+	double theta_norm2 = theta.squaredNorm();
 
-	msg.pose.pose.position.x = this->state_estimator.base_mu(0);
-	msg.pose.pose.position.y = this->state_estimator.base_mu(1);
-	msg.pose.pose.position.z = this->state_estimator.base_mu(2);
+	Eigen::Quaterniond quat;
+
+	if(theta_norm2 < 1e-8){
+		quat.w() = 1 - theta_norm2;
+		quat.x() = theta.x();
+		quat.y() = theta.y();
+		quat.z() = theta.z();
+
+		quat.normalize();
+	}
+	else{
+		double norm = sqrt(theta_norm2);
+		double sin2 = sin(norm/2.0);
+
+		quat.w() = cos(norm/2.0);
+
+		quat.x() = sin2 * theta.x() / norm;
+		quat.y() = sin2 * theta.y() / norm;
+		quat.z() = sin2 * theta.z() / norm;
+	}
+
+	temp = quat.inverse() * this->state_estimator.getVelocity(); // transform the velocity into the body frame
+
+	msg.twist.twist.linear.x = temp.x();
+	msg.twist.twist.linear.y = temp.y();
+	msg.twist.twist.linear.z = temp.z();
+
+	msg.pose.pose.orientation.w = quat.w();
+	msg.pose.pose.orientation.x = quat.x();
+	msg.pose.pose.orientation.y = quat.y();
+	msg.pose.pose.orientation.z = quat.z();
+
+	temp = this->state_estimator.getPosition();
+	msg.pose.pose.position.x = temp.x();
+	msg.pose.pose.position.y = temp.y();
+	msg.pose.pose.position.z = temp.z();
 
 	//TODO add convariance computation
 
 	this->odom_pub.publish(msg); // publish
+
+
+	tf::Transform currentPose = tf::Transform(tf::Quaternion(quat.w(), quat.x(), quat.y(), quat.z()), tf::Vector3(temp.x(), temp.y(), temp.z()));
+
+	br.sendTransform(tf::StampedTransform(currentPose, cf.t, WORLD_FRAME, ODOM_FRAME));
 
 }
 

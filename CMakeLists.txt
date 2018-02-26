@@ -91,3 +91,6 @@ target_link_libraries(invio_klt_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${s
 
 add_executable(invio_analyze_ekf test/analyzeEKFSimulation.cpp)
 target_link_libraries(invio_analyze_ekf ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
+
+add_executable(euroc_dataset_fixer src/euroc_dataset_node.cpp)
+target_link_libraries(euroc_dataset_fixer ${catkin_LIBRARIES})
