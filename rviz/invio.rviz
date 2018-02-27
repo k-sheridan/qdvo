@@ -56,10 +56,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_link:
-          Value: true
-        camera:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
@@ -178,5 +174,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1855
-  X: 65
+  X: 1985
   Y: 24
