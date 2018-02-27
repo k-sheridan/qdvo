@@ -22,7 +22,11 @@ StateEstimator::StateEstimator() {
 
 void StateEstimator::initializeState()
 {
-	this->mu.setZero();
+	this->mu.mean.setZero();
+
+	//set the scale factor to 1
+	this->mu.setLambda(1);
+
 	//this->Sigma.block<BASE_STATE_SIZE, BASE_STATE_SIZE>(0, 0).setZero(); //wipe the base state sigmas
 	this->Sigma.setZero(); // this should sufficiently reserve enough indices
 
@@ -33,8 +37,6 @@ void StateEstimator::initializeState()
 	this->Sigma(4, 4) = 0;
 	this->Sigma(5, 5) = 0;
 	this->Sigma(6, 6) = 0;
-
-	this->mu(3) = 1.0; // no rotation
 
 	this->Sigma(7, 7) = 30;
 	this->Sigma(8, 8) = 30;
@@ -108,25 +110,30 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	Q(3, 3) = pos_noise;
 	Q(4, 4) = pos_noise;
 	Q(5, 5) = pos_noise;
-	Q(6, 6) = pos_noise;
 
+	Q(6, 6) = velocity_noise;
 	Q(7, 7) = velocity_noise;
 	Q(8, 8) = velocity_noise;
-	Q(9, 9) = velocity_noise;
+	Q(9, 9) = omega_noise;
 	Q(10, 10) = omega_noise;
 	Q(11, 11) = omega_noise;
-	Q(12, 12) = omega_noise;
 
+	Q(12, 12) = accel_noise;
 	Q(13, 13) = accel_noise;
 	Q(14, 14) = accel_noise;
-	Q(15, 15) = accel_noise;
 
+	Q(15, 15) = bias_noise;
 	Q(16, 16) = bias_noise;
 	Q(17, 17) = bias_noise;
+
 	Q(18, 18) = bias_noise;
 	Q(19, 19) = bias_noise;
 	Q(20, 20) = bias_noise;
 	Q(21, 21) = bias_noise;
+	Q(22, 22) = bias_noise;
+	Q(23, 23) = bias_noise;
+
+	Q(24, 24) = bias_noise;
 
 	// add feature noises
 	for(int index = BASE_STATE_SIZE; index < dim;){
@@ -141,80 +148,43 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	return Q;
 }
 
-Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& mu, ScalarType dt){
+Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(State& mu, ScalarType dt){
 
 
 }
 
 
 
-Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> StateEstimator::convolveState(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& last, ScalarType dt){
+StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
+	State mu;
 
+	mu.setPosition(last.getPosition() + dt*last.getVelocity() + 0.5*dt*dt*last.getAcceleration());
+
+	mu.setTheta(last.getTheta() + dt*last.getOmega());
+
+	mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
+
+	mu.setOmega(last.getOmega());
+
+	mu.setAcceleration(last.getAcceleration());
+
+	mu.setPhi(last.getPhi());
+
+	mu.setAccelBiases(last.getAccelBiases());
+
+	mu.setGyroBiases(last.getGyroBiases());
+
+	mu.setLambda(last.getLambda());
+
+	return mu;
 }
 
-Eigen::Vector3f StateEstimator::convolveFeature(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1>& base_state, Eigen::Vector3f& feature_state, ScalarType dt)
+Eigen::Vector3f StateEstimator::convolveFeature(State& base_state, Eigen::Vector3f& feature_state, ScalarType dt)
 {
 
-	static ScalarType last_omegax = 0;
-	static ScalarType last_omegay = 0;
-	static ScalarType last_omegaz = 0;
-	static Eigen::Quaternionf dq_inv = Eigen::Quaternionf::Identity();
-
-	Eigen::Vector3f vel, accel;
-
-	//pos = Eigen::Vector3f(base_state(0), base_state(1), base_state(2));
-	vel = Eigen::Vector3f(base_state(7), base_state(8), base_state(9));
-	accel = Eigen::Vector3f(base_state(13), base_state(14), base_state(15));
-
-	//convert feature to position in camera's coordinate frame
-	Eigen::Vector3f feature_pos = feature_state;
-
-	//ROS_DEBUG_STREAM("feature pos to convolve: " << feature_pos);
-
-	feature_pos(0) = feature_pos(0)*feature_pos(2);
-	feature_pos(1) = feature_pos(1)*feature_pos(2);
 
 
-	Eigen::Vector3f translation = dt*vel + 0.5*dt*dt*accel;
-
-	if(last_omegax != base_state(10) || last_omegay != base_state(11) || last_omegaz != base_state(12))
-	{
-		//ROS_DEBUG("omega has changed");
-		Eigen::Vector3f omega = Eigen::Vector3f(base_state(10), base_state(11), base_state(12));
-
-		ScalarType omega_norm = omega.norm();
-
-		if(omega_norm < 1e-10){
-			//small angle approximation
-			dq_inv = Eigen::Quaternionf(1.0, -omega.x()*dt, -omega.y()*dt, -omega.z()*dt);
-			dq_inv.normalize();
-		}
-		else{
-			ScalarType theta = dt*omega_norm;
-			Eigen::Vector3f omega_hat = omega / omega_norm;
-			ScalarType st2 = sin(theta/2);
-
-			dq_inv = Eigen::Quaternionf(cos(theta/2), -omega_hat.x() * st2, -omega_hat.y() * st2, -omega_hat.z() * st2);
-		}
-
-		last_omegax = base_state(10);
-		last_omegay = base_state(11);
-		last_omegaz = base_state(12);
-
-	}
-
-	// this transforms the point into the next camera frame
-	feature_pos = dq_inv*feature_pos;
-	feature_pos.noalias() += -(dq_inv*translation);
-
-	//bring the point back to homogenous coordinates
-	feature_pos(0) /= feature_pos(2);
-	feature_pos(1) /= feature_pos(2);
-
-	//ROS_DEBUG_STREAM("convolved feature: " << feature_pos);
-
-	return feature_pos;
 }
 
 void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){

@@ -247,10 +247,4 @@ extern int DEPTH_SOLVER_PATH_SIZE;
 
 
 
-//static defines
-#define BASE_STATE_SIZE 22
-#define SPARSE_THRESH 1e-8
-#define SPARSE_EPS 1e-5
-
-
 #endif /* PAUVSI_VIO_INCLUDE_PAUVSI_VIO_VIOPARAMS_H_ */

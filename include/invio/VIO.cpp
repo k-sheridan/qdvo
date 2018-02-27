@@ -451,13 +451,13 @@ void VIO::publishOdometry(Frame& cf)
 	msg.child_frame_id = CAMERA_FRAME;
 	msg.header.frame_id = WORLD_FRAME;
 
-	Eigen::Vector3d temp = this->state_estimator.getOmega();
+	Eigen::Vector3d temp = this->state_estimator.mu.getOmega();
 	msg.twist.twist.angular.x = temp.x();
 	msg.twist.twist.angular.y = temp.y();
 	msg.twist.twist.angular.z = temp.z();
 
 	// form quaternion from theta
-	Eigen::Vector3d theta = this->state_estimator.getTheta();
+	Eigen::Vector3d theta = this->state_estimator.mu.getTheta();
 	double theta_norm2 = theta.squaredNorm();
 
 	Eigen::Quaterniond quat;
@@ -481,7 +481,7 @@ void VIO::publishOdometry(Frame& cf)
 		quat.z() = sin2 * theta.z() / norm;
 	}
 
-	temp = quat.inverse() * this->state_estimator.getVelocity(); // transform the velocity into the body frame
+	temp = quat.inverse() * this->state_estimator.mu.getVelocity(); // transform the velocity into the body frame
 
 	msg.twist.twist.linear.x = temp.x();
 	msg.twist.twist.linear.y = temp.y();
@@ -492,7 +492,7 @@ void VIO::publishOdometry(Frame& cf)
 	msg.pose.pose.orientation.y = quat.y();
 	msg.pose.pose.orientation.z = quat.z();
 
-	temp = this->state_estimator.getPosition();
+	temp = this->state_estimator.mu.getPosition();
 	msg.pose.pose.position.x = temp.x();
 	msg.pose.pose.position.y = temp.y();
 	msg.pose.pose.position.z = temp.z();
