@@ -80,7 +80,7 @@ public:
 
 	Eigen::Vector3f convolveFeatures(State& current_state, ScalarType dt);
 
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(State& current_state, ScalarType dt);
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(ScalarType dt);
 
 	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass);
 

@@ -225,6 +225,8 @@ void VIO::removeExcessFrames(std::deque<Frame>& buffer)
 
 void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 
+	ROS_DEBUG("updating state with image");
+
 	//create the containers for the results of the klt tracking
 	std::vector<Eigen::Vector2f> new_positions;
 	std::vector<Eigen::Matrix2f> covariance_estimate;
@@ -233,8 +235,9 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	//run the klt tracker
 	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	//this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
 
+	ROS_DEBUG("updated state with image");
 }
 
 /*

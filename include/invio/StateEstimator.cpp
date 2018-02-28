@@ -70,7 +70,7 @@ void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_
 }
 
 void StateEstimator::process(ScalarType dt){
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(this->mu, dt); // compute the jacobian of the process numerically
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
 
 
 	// process and update the feature vector because it depends on the base mu
@@ -91,7 +91,6 @@ void StateEstimator::process(ScalarType dt){
 }
 
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
-	int dim = BASE_STATE_SIZE + this->features.size()*3;
 
 	ScalarType low_noise = 0.0001 * dt;
 	ScalarType pos_noise = 0.0001 * dt;
@@ -135,20 +134,10 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 
 	Q(24, 24) = bias_noise;
 
-	// add feature noises
-	for(int index = BASE_STATE_SIZE; index < dim;){
-		Q(index, index) = low_noise;
-		index++;
-		Q(index, index) = low_noise;
-		index++;
-		Q(index, index) = low_noise;
-		index++;
-	}
-
 	return Q;
 }
 
-Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(State& mu, ScalarType dt){
+Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(ScalarType dt){
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F;
 	F.setIdentity();
@@ -181,27 +170,27 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::line
 
 StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
-	State mu;
+	State new_mu;
 
-	mu.setPosition(last.getPosition() + dt*last.getVelocity() + 0.5*dt*dt*last.getAcceleration());
+	new_mu.setPosition(last.getPosition() + dt*last.getVelocity() + 0.5*dt*dt*last.getAcceleration());
 
-	mu.setTheta(last.getTheta() + dt*last.getOmega());
+	new_mu.setTheta(last.getTheta() + dt*last.getOmega());
 
-	mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
+	new_mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
 
-	mu.setOmega(last.getOmega());
+	new_mu.setOmega(last.getOmega());
 
-	mu.setAcceleration(last.getAcceleration());
+	new_mu.setAcceleration(last.getAcceleration());
 
-	mu.setPhi(last.getPhi());
+	new_mu.setPhi(last.getPhi());
 
-	mu.setAccelBiases(last.getAccelBiases());
+	new_mu.setAccelBiases(last.getAccelBiases());
 
-	mu.setGyroBiases(last.getGyroBiases());
+	new_mu.setGyroBiases(last.getGyroBiases());
 
-	mu.setLambda(last.getLambda());
+	new_mu.setLambda(last.getLambda());
 
-	return mu;
+	return new_mu;
 }
 
 void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){
