@@ -180,13 +180,6 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	return mu;
 }
 
-Eigen::Vector3f StateEstimator::convolveFeature(State& base_state, Eigen::Vector3f& feature_state, ScalarType dt)
-{
-
-
-
-}
-
 void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){
 
 }

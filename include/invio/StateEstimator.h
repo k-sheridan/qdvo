@@ -78,7 +78,7 @@ public:
 
 	State convolveState(State& last, ScalarType dt);
 
-	Eigen::Vector3f convolveFeature(State& current_state, Eigen::Vector3f& feature_state, ScalarType dt);
+	Eigen::Vector3f convolveFeatures(State& current_state, ScalarType dt);
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(State& current_state, ScalarType dt);
 
