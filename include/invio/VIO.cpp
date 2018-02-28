@@ -55,7 +55,7 @@ VIO::VIO() {
 	ros::param::param<int>("~max_variance_box_size", MAX_VARIANCE_SIZE, D_MAX_VARIANCE_SIZE);
 	ros::param::param<int>("~max_pyramids", MAX_PYRAMID_LEVEL, D_MAX_PYRAMID_LEVEL);
 	ros::param::param<int>("~klt_window_size", WINDOW_SIZE, D_WINDOW_SIZE);
-	ros::param::param<int>("~depth_solver_patch_size", DEPTH_SOLVER_PATH_SIZE, D_DEPTH_SOLVER_PATH_SIZE);
+	ros::param::param<int>("~depth_solver_patch_size", DEPTH_SOLVER_PATCH_SIZE, D_DEPTH_SOLVER_PATCH_SIZE);
 
 	image_transport::ImageTransport it(nh);
 	image_transport::CameraSubscriber bottom_cam_sub = it.subscribeCamera(
@@ -69,14 +69,37 @@ VIO::VIO() {
 	//set up IMU sub
 	if(USE_IMU){
 		this->imu_sub = nh.subscribe(IMU_TOPIC, 1000, &VIO::imu_callback, this);
+
+		// c2imu
+		tf::StampedTransform c2i_st;
+		ROS_INFO_STREAM("WAITING FOR TANSFORM FROM " << CAMERA_FRAME << " TO " << IMU_FRAME);
+		if(this->tf_listener.waitForTransform(CAMERA_FRAME, IMU_FRAME, ros::Time(0), ros::Duration(10))){
+			try {
+				this->tf_listener.lookupTransform(CAMERA_FRAME, IMU_FRAME,
+						ros::Time(0), c2i_st);
+			} catch (tf::TransformException& e) {
+				ROS_WARN_STREAM(e.what());
+			}
+
+			this->c2imu = tf::Transform(c2i_st);
+		}
+		else
+		{
+			ROS_FATAL("COULD NOT GET TRANSFORM");
+			ros::shutdown();
+			return;
+		}
+		ROS_INFO("got transform");
+
 	}
 
 	this->odom_pub = nh.advertise<nav_msgs::Odometry>(ODOM_TOPIC, 1);
 
-	this->points_pub = nh.advertise<sensor_msgs::PointCloud>(POINTS_TOPIC, 1);
+	this->points_pub = nh.advertise<sensor_msgs::PointCloud>(POINTS_PUB_TOPIC, 1);
 
-	//get relevant transforms
 
+
+	//get the b2c transform
 	tf::StampedTransform b2c_st;
 	ROS_INFO_STREAM("WAITING FOR TANSFORM FROM " << BASE_FRAME << " TO " << CAMERA_FRAME);
 	if(this->tf_listener.waitForTransform(BASE_FRAME, CAMERA_FRAME, ros::Time(0), ros::Duration(10))){
@@ -96,7 +119,10 @@ VIO::VIO() {
 		ros::shutdown();
 		return;
 	}
+	ROS_INFO("got transform");
 
+
+	// start the callbacks
 	ros::spin();
 }
 
@@ -142,7 +168,9 @@ void VIO::addFrame(Frame f) {
 		}
 
 		this->replenishFeatures((this->frame_buffer.front()));
-	} else // we have atleast 1 frame in the buffer
+	}
+
+	else // we have atleast 1 frame in the buffer
 	{
 
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
@@ -205,7 +233,7 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	//run the klt tracker
 	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	//this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
 
 }
 
@@ -514,7 +542,7 @@ void VIO::publishPoints(Frame& f)
 	for(auto e : state_estimator.features)
 	{
 
-		Eigen::Vector3f p_in_f = e.getMu();
+		Eigen::Vector3f p_in_f = e.getPoint();
 
 		p_in_f(0) *= p_in_f(2);
 		p_in_f(1) *= p_in_f(2);

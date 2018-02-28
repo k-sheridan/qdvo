@@ -71,7 +71,7 @@ public:
 
 	KLTTracker tracker;
 
-	tf::Transform b2c, c2b, c2imu, c2stereo;
+	tf::Transform b2c, c2b, c2imu;
 
 	ros::Subscriber imu_sub;
 

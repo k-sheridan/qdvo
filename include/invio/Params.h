@@ -102,7 +102,7 @@
 #define D_IMU_TOPIC "imu/measurement"
 #define D_IMU_FRAME "imu"
 
-#define D_DEPTH_SOLVER_PATH_SIZE 9
+#define D_DEPTH_SOLVER_PATCH_SIZE 9
 
 //ROS PARAMS
 extern bool PUBLISH_INSIGHT;
@@ -193,7 +193,7 @@ extern bool USE_IMU;
 extern std::string IMU_TOPIC;
 extern std::string IMU_FRAME;
 
-extern int DEPTH_SOLVER_PATH_SIZE;
+extern int DEPTH_SOLVER_PATCH_SIZE;
 
 //END ROS PARAMS
 

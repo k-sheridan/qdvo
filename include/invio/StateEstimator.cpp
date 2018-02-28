@@ -150,7 +150,31 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(State& mu, ScalarType dt){
 
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F;
+	F.setIdentity();
 
+	//pos by vel
+	F(0, 3) = dt;
+	F(1, 4) = dt;
+	F(2, 5) = dt;
+
+	//pos by accel
+	float half_dt_2 = 0.5*dt*dt;
+	F(0, 9) = half_dt_2;
+	F(1, 10) = half_dt_2;
+	F(2, 11) = half_dt_2;
+
+	//theta by omega
+	F(3, 6) = dt;
+	F(4, 7) = dt;
+	F(5, 8) = dt;
+
+	//vel by accel
+	F(6, 9) = dt;
+	F(7, 10) = dt;
+	F(8, 11) = dt;
+
+	return F;
 }
 
 

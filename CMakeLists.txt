@@ -80,8 +80,6 @@ target_link_libraries(full_vio ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_
 add_executable(invio_node src/invio_node.cpp)
 target_link_libraries(invio_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
 
-add_executable(invio_jacobian_test test/jacobian_test.cpp)
-target_link_libraries(invio_jacobian_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
 
 add_executable(invio_ekf_test test/test_ekf.cpp)
 target_link_libraries(invio_ekf_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
@@ -89,8 +87,6 @@ target_link_libraries(invio_ekf_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${s
 add_executable(invio_klt_test test/klt_test.cpp)
 target_link_libraries(invio_klt_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
 
-add_executable(invio_analyze_ekf test/analyzeEKFSimulation.cpp)
-target_link_libraries(invio_analyze_ekf ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
 
 add_executable(euroc_dataset_fixer src/euroc_dataset_node.cpp)
 target_link_libraries(euroc_dataset_fixer ${catkin_LIBRARIES})

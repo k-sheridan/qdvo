@@ -46,4 +46,5 @@ std::string WORLD_FRAME;
 bool USE_IMU;
 std::string IMU_TOPIC;
 std::string IMU_FRAME;
+int DEPTH_SOLVER_PATCH_SIZE;
 

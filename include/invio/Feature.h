@@ -96,9 +96,11 @@ public:
 		this->depth_inv = inv_depth;
 	}
 
-	void setMu(Eigen::Vector3f in){this->bearing(0) = in(0); this->bearing(2) = in(1); this->depth_inv = in(2);}
+	void setMu(Eigen::Vector3f in){this->bearing(0) = in(0); this->bearing(1) = in(1); this->depth_inv = in(2);}
 
-	Eigen::Vector3f getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(0), this->depth_inv);}
+	Eigen::Vector3f getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(1), this->depth_inv);}
+
+	Eigen::Vector3f getPoint(){return Eigen::Vector3f(this->bearing(0), this->bearing(1), 1.0/this->depth_inv);}
 
 	float& depth_inv_ref(){return this->depth_inv;}
 
