@@ -56,8 +56,11 @@ public:
 
 	std::deque<Frame> frame_buffer; // stores all frames and pose estimates at this frames
 
+	// used to store a state updated between images
 	struct UpdatedState{
-		StateEstimator state;
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> mu;
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma;
+		ros::Time t;
 		sensor_msgs::Imu msg;
 	};
 

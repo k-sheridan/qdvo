@@ -15,6 +15,13 @@
 
 #define SUPER_DEBUG false
 
+//static defines
+#define BASE_STATE_SIZE 25
+
+//types
+typedef float ScalarType;
+
+
 #define D_PUBLISH_INSIGHT true
 #define D_INSIGHT_TOPIC "invio/insight"
 #define D_INSIGHT_CINFO_TOPIC "invio/camera_info"
@@ -101,6 +108,13 @@
 #define D_USE_IMU true
 #define D_IMU_TOPIC "imu/measurement"
 #define D_IMU_FRAME "imu"
+
+//((1/180)*pi)^2
+#define D_GYRO_VARIANCE 0.00030461741
+// 0.5^2
+#define D_ACCEL_VARIANCE 0.25
+
+#define D_USE_CUSTOM_IMU_UNCERTAINTIES false
 
 #define D_DEPTH_SOLVER_PATCH_SIZE 9
 
@@ -192,6 +206,10 @@ extern std::string WORLD_FRAME;
 extern bool USE_IMU;
 extern std::string IMU_TOPIC;
 extern std::string IMU_FRAME;
+
+extern double GYRO_VARIANCE;
+extern double ACCEL_VARIANCE;
+extern bool USE_CUSTOM_IMU_UNCERTAINTIES;
 
 extern int DEPTH_SOLVER_PATCH_SIZE;
 

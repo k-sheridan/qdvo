@@ -92,7 +92,7 @@ void StateEstimator::process(ScalarType dt){
 
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
 
-	ScalarType low_noise = 0.0001 * dt;
+	ScalarType low_noise = 0.00001 * dt;
 	ScalarType pos_noise = 0.0001 * dt;
 	ScalarType velocity_noise = 0.01*dt;
 	ScalarType omega_noise = 5*dt;
@@ -121,9 +121,9 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	Q(13, 13) = accel_noise;
 	Q(14, 14) = accel_noise;
 
-	Q(15, 15) = bias_noise;
-	Q(16, 16) = bias_noise;
-	Q(17, 17) = bias_noise;
+	Q(15, 15) = low_noise;
+	Q(16, 16) = low_noise;
+	Q(17, 17) = low_noise;
 
 	Q(18, 18) = bias_noise;
 	Q(19, 19) = bias_noise;
@@ -132,7 +132,7 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	Q(22, 22) = bias_noise;
 	Q(23, 23) = bias_noise;
 
-	Q(24, 24) = bias_noise;
+	Q(24, 24) = low_noise;
 
 	return Q;
 }
@@ -194,6 +194,25 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 }
 
 void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){
+	
+	int i = 0;
+	for(auto& e : this->features){
+
+	}
+
+}
+
+/*
+ * update the state with an imu measurement
+ */
+void StateEstimator::updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
+
+	//measurement function must use angular velocity, phi, theta, accel.
+
+}
+
+
+void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu){
 
 }
 
@@ -205,27 +224,6 @@ std::vector<Eigen::Vector2f> StateEstimator::previousFeaturePositionVector(){
 	}
 
 	return output;
-}
-
-
-Eigen::Matrix2f StateEstimator::getFeatureHomogenousCovariance(int index){
-	int start = BASE_STATE_SIZE + index * 3;
-	return this->Sigma.block(start, start, 2, 2);
-}
-
-void StateEstimator::setFeatureHomogenousCovariance(int index, Eigen::Matrix2f cov)
-{
-	int start = BASE_STATE_SIZE + index * 3;
-	ROS_ERROR("tried to set to sparse matrix");
-	this->Sigma(start, start) = cov(0, 0);
-	this->Sigma(start+1, start) = cov(1, 0);
-	this->Sigma(start, start+1) = cov(0, 1);
-	this->Sigma(start+1, start+1) = cov(1, 1);
-}
-
-ScalarType StateEstimator::getFeatureDepthVariance(int index){
-	int start = BASE_STATE_SIZE + index * 3 + 2;
-	return this->Sigma(start, start);
 }
 
 Eigen::Matrix<ScalarType, 2, 2> StateEstimator::getMetric2PixelMap(Eigen::Matrix3f& K){

@@ -25,10 +25,7 @@
  * it also allows an imu to be fused into the estimates
  */
 
-//static defines
-#define BASE_STATE_SIZE 25
 
-typedef float ScalarType;
 
 class StateEstimator {
 public:
@@ -84,10 +81,9 @@ public:
 
 	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass);
 
-	Eigen::Matrix2f getFeatureHomogenousCovariance(int index);
-	ScalarType getFeatureDepthVariance(int index);
+	void updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
 
-	void setFeatureHomogenousCovariance(int index, Eigen::Matrix2f cov);
+	void imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu);
 
 	void checkSigma();
 

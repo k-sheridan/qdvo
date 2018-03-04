@@ -51,6 +51,9 @@ VIO::VIO() {
 	ros::param::param<std::string>("~imu_topic", IMU_TOPIC, D_IMU_TOPIC);
 	ros::param::param<std::string>("~imu_frame", IMU_FRAME, D_IMU_FRAME);
 	ros::param::param<bool>("~use_imu", USE_IMU, D_USE_IMU);
+	ros::param::param<bool>("~use_custom_imu_variances", USE_CUSTOM_IMU_UNCERTAINTIES, D_USE_CUSTOM_IMU_UNCERTAINTIES);
+	ros::param::param<double>("~gyro_variance", GYRO_VARIANCE, D_GYRO_VARIANCE);
+	ros::param::param<double>("~accel_variance", ACCEL_VARIANCE, D_ACCEL_VARIANCE);
 	ros::param::param<int>("~min_variance_box_size", MIN_VARIANCE_SIZE, D_MIN_VARIANCE_SIZE);
 	ros::param::param<int>("~max_variance_box_size", MAX_VARIANCE_SIZE, D_MAX_VARIANCE_SIZE);
 	ros::param::param<int>("~max_pyramids", MAX_PYRAMID_LEVEL, D_MAX_PYRAMID_LEVEL);
@@ -129,12 +132,60 @@ VIO::VIO() {
 
 void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 	ROS_DEBUG_STREAM("got imu message: " << msg->header.stamp);
+
+	//update the state with this imu message
+
+	//check that this imu message is not from the past
+	ScalarType dt = (msg->header.stamp - this->state_estimator.t).toSec();
+
+	if(dt >= 0){
+
+		UpdatedState us;
+		us.msg = *msg; // store this message for potential later use
+		us.t = msg->header.stamp;
+
+		// run process if we need to
+		if(dt > 0){
+			this->state_estimator.process(dt); // propagate state into the future
+		}
+
+		//update the state using this measurment
+		Eigen::Matrix<ScalarType, 3, 3> accel_cov, gyro_cov;
+
+		// fill the gyro covariance units: [rad/s]
+		if(msg->angular_velocity_covariance.at(0) <= 0 || msg->angular_velocity_covariance.at(4) <= 0 || msg->angular_velocity_covariance.at(8) <= 0){
+			ROS_WARN_THROTTLE(0.5, "gyro covariance broken using default variances");
+		}
+		else{
+			for(int i = 0; i < 9; i++){
+				gyro_cov(i) = msg->angular_velocity_covariance.at(i);
+			}
+		}
+
+		// fill the accel covariance units: [m/s^2]
+		if(msg->linear_acceleration_covariance.at(0) <= 0 || msg->linear_acceleration_covariance.at(4) <= 0 || msg->linear_acceleration_covariance.at(8) <= 0){
+			ROS_WARN_THROTTLE(0.5, "accel covariance broken using default variances");
+		}
+		else{
+			for(int i = 0; i < 9; i++){
+				accel_cov(i) = msg->linear_acceleration_covariance.at(i);
+			}
+		}
+
+		this->state_estimator.updateWithIMU()
+
+	}
+	else{
+		ROS_WARN("imu message is too old to use... ignoring");
+	}
 }
 
 void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
 		const sensor_msgs::CameraInfoConstPtr& cam) {
 	static int dt_count = 1;
 	static double dt_sum = 0;
+
+	ROS_DEBUG_STREAM("got image: " << img->header.stamp);
 
 	ros::Time start = ros::Time::now();
 
