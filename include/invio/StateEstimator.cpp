@@ -216,6 +216,11 @@ void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::M
 
 }
 
+// simply evaluates the nonlinear measurement function. used for numerical linearization
+void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu){
+
+}
+
 std::vector<Eigen::Vector2f> StateEstimator::previousFeaturePositionVector(){
 	std::vector<Eigen::Vector2f> output;
 	//output.reserve(this->features.size());

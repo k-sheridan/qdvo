@@ -153,26 +153,65 @@ void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 		Eigen::Matrix<ScalarType, 3, 3> accel_cov, gyro_cov;
 
 		// fill the gyro covariance units: [rad/s]
-		if(msg->angular_velocity_covariance.at(0) <= 0 || msg->angular_velocity_covariance.at(4) <= 0 || msg->angular_velocity_covariance.at(8) <= 0){
-			ROS_WARN_THROTTLE(0.5, "gyro covariance broken using default variances");
+		if(USE_CUSTOM_IMU_UNCERTAINTIES){
+			gyro_cov.setZero();
+			gyro_cov(0, 0) = GYRO_VARIANCE;
+			gyro_cov(1, 1) = GYRO_VARIANCE;
+			gyro_cov(2, 2) = GYRO_VARIANCE;
 		}
 		else{
-			for(int i = 0; i < 9; i++){
-				gyro_cov(i) = msg->angular_velocity_covariance.at(i);
+
+			if(msg->angular_velocity_covariance.at(0) <= 0 || msg->angular_velocity_covariance.at(4) <= 0 || msg->angular_velocity_covariance.at(8) <= 0){
+				ROS_ERROR("gyro covariance broken ignoring gyro");
+				gyro_cov.setZero();
+				gyro_cov(0, 0) = 1e10;
+				gyro_cov(1, 1) = 1e10;
+				gyro_cov(2, 2) = 1e10;
+			}
+			else{
+				for(int i = 0; i < 9; i++){
+					gyro_cov(i) = msg->angular_velocity_covariance.at(i);
+				}
 			}
 		}
 
 		// fill the accel covariance units: [m/s^2]
-		if(msg->linear_acceleration_covariance.at(0) <= 0 || msg->linear_acceleration_covariance.at(4) <= 0 || msg->linear_acceleration_covariance.at(8) <= 0){
-			ROS_WARN_THROTTLE(0.5, "accel covariance broken using default variances");
+		if(USE_CUSTOM_IMU_UNCERTAINTIES){
+			accel_cov.setZero();
+			accel_cov(0, 0) = ACCEL_VARIANCE;
+			accel_cov(1, 1) = ACCEL_VARIANCE;
+			accel_cov(2, 2) = ACCEL_VARIANCE;
 		}
 		else{
-			for(int i = 0; i < 9; i++){
-				accel_cov(i) = msg->linear_acceleration_covariance.at(i);
+			if(msg->linear_acceleration_covariance.at(0) <= 0 || msg->linear_acceleration_covariance.at(4) <= 0 || msg->linear_acceleration_covariance.at(8) <= 0){
+				ROS_ERROR("gyro covariance broken ignoring accelerometer");
+				accel_cov.setZero();
+				accel_cov(0, 0) = 1e10;
+				accel_cov(1, 1) = 1e10;
+				accel_cov(2, 2) = 1e10;
+			}
+			else{
+				for(int i = 0; i < 9; i++){
+					accel_cov(i) = msg->linear_acceleration_covariance.at(i);
+				}
 			}
 		}
 
-		this->state_estimator.updateWithIMU()
+		Eigen::Matrix<ScalarType, 3, 1> acc, gyr;
+
+		acc << msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z;
+		gyr << msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z;
+
+		this->state_estimator.updateWithIMU(acc, gyr, accel_cov, gyro_cov, c2imu);
+
+		// add the updated state to the buffer
+		us.Sigma = this->state_estimator.Sigma;
+		us.mu = this->state_estimator.mu.mean;
+
+		// push it
+		this->imu_update_buffer.push_back(us);
+
+		ROS_DEBUG("updated state with imu measurement");
 
 	}
 	else{

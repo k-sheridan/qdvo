@@ -46,5 +46,8 @@ std::string WORLD_FRAME;
 bool USE_IMU;
 std::string IMU_TOPIC;
 std::string IMU_FRAME;
+double GYRO_VARIANCE;
+double ACCEL_VARIANCE;
+bool USE_CUSTOM_IMU_UNCERTAINTIES;
 int DEPTH_SOLVER_PATCH_SIZE;
 
