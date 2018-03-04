@@ -64,10 +64,14 @@ fprintf('dv/ddepth: %s\n', subs(diff(v, z_inv_curr), [vx,vy,vz,wx,wy,wz], [0, 0,
 
 J = subs(jacobian([u;v], [vx,vy,vz,wx,wy,wz,z_inv_curr]), [vx,vy,vz,wx,wy,wz], [0, 0, 0, 0, 0, 0])
 
+latex(J)
 
 % test my logic 
 
 z = [0.1; 0.1]
+
+R = [0.00001, 0;
+    0, 0.00001]
 
 current_z = [0.099; 0.1001; 0.1]
 
@@ -83,9 +87,11 @@ P = [1, 0, 0, 0, 0, 0, 0;
     0, 0, 0, 0, 0, 0.0001, 0;
     0, 0, 0, 0, 0, 0, 1;]
 
-for it = (1:10)
+last_norm = z - current_z(1:2);
 
-    H = double(subs(J, [u_curr; v_curr; z_inv_curr], current_z));
+for it = (1:100)
+
+    H = double(subs(J, [u_curr; v_curr; z_inv_curr], current_z))
     
     err = z - current_z(1:2);
     
@@ -103,4 +109,13 @@ for it = (1:10)
     
     current_z = [new_pos(1)/new_pos(3); new_pos(2)/new_pos(3); 1/new_pos(3)];
     
+    P = inv(inv(P) + H'*inv(R)*H)
+    
+    if (last_norm < norm(z - current_z(1:2)))
+        sprintf('error increased at it %d', it)
+        break;
+    end
+    last_norm = norm(z - current_z(1:2))
 end
+
+T
