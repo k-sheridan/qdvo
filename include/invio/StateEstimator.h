@@ -20,40 +20,52 @@
 #include <Eigen/SparseCholesky>
 #include <Eigen/Cholesky>
 
+#include <sophus/se3.hpp>
+#include <sophus/common.hpp>
+#include <sophus/types.hpp>
+
 /*
  * this class provides a hybrid method of bundle adjustment and an ekf to estimate the state of the camera
  * it also allows an imu to be fused into the estimates
  */
 
-
+#define POSX_INDEX 0
+#define QUATW_INDEX 0
+#define VELX_INDEX 0
+#define OMEGAX_INDEX 0
+#define ACCELX_INDEX 0
+#define PHIX_INDEX 0
+#define ACCELBIASX_INDEX 0
+#define GYROBIASX_INDEX 0
+#define LAMBDA_INDEX 0
 
 class StateEstimator {
 public:
 	StateEstimator();
 
 	struct State{
-		//State: x, y, z, thetax, thetay, thetaz, dx, dy, dz, wx, wy, wz, ax, ay, az, phix, phiy, phiz, baccx, baccy, baccz, bgyrx, bgyry, bgyrz, lambda
+		//State: x, y, z, qw, qx, qy, qz, dx, dy, dz, wx, wy, wz, ax, ay, az, phix, phiy, phiz, baccx, baccy, baccz, bgyrx, bgyry, bgyrz, lambda
 		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> mean;
 
-		Eigen::Vector3d getPosition(){return Eigen::Vector3d(mean(0), mean(1), mean(2));}
-		Eigen::Vector3d getTheta(){return Eigen::Vector3d(mean(3), mean(4), mean(5));}
-		Eigen::Vector3d getVelocity(){return Eigen::Vector3d(mean(6), mean(7), mean(8));}
-		Eigen::Vector3d getOmega(){return Eigen::Vector3d(mean(9), mean(10), mean(11));}
-		Eigen::Vector3d getAcceleration(){return Eigen::Vector3d(mean(12), mean(13), mean(14));}
-		Eigen::Vector3d getPhi(){return Eigen::Vector3d(mean(15), mean(16), mean(17));}
-		Eigen::Vector3d getAccelBiases(){return Eigen::Vector3d(mean(18), mean(19), mean(20));}
-		Eigen::Vector3d getGyroBiases(){return Eigen::Vector3d(mean(21), mean(22), mean(23));}
-		double getLambda(){return mean(24);}
+		Eigen::Vector3d getPosition(){return Eigen::Vector3d(mean(POSX_INDEX), mean(POSX_INDEX+1), mean(POSX_INDEX+2));}
+		Eigen::Quaterniond getQuat(){return Eigen::Quaterniond(mean(QUATW_INDEX), mean(QUATW_INDEX+1), mean(QUATW_INDEX+2), mean(QUATW_INDEX+3));}
+		Eigen::Vector3d getVelocity(){return Eigen::Vector3d(mean(VELX_INDEX), mean(VELX_INDEX+1), mean(VELX_INDEX+2));}
+		Eigen::Vector3d getOmega(){return Eigen::Vector3d(mean(OMEGAX_INDEX), mean(OMEGAX_INDEX+1), mean(OMEGAX_INDEX+2));}
+		Eigen::Vector3d getAcceleration(){return Eigen::Vector3d(mean(ACCELX_INDEX), mean(ACCELX_INDEX+1), mean(ACCELX_INDEX+2));}
+		Eigen::Vector3d getPhi(){return Eigen::Vector3d(mean(PHIX_INDEX), mean(PHIX_INDEX+1), mean(PHIX_INDEX+2));}
+		Eigen::Vector3d getAccelBiases(){return Eigen::Vector3d(mean(ACCELBIASX_INDEX), mean(ACCELBIASX_INDEX+1), mean(ACCELBIASX_INDEX+2));}
+		Eigen::Vector3d getGyroBiases(){return Eigen::Vector3d(mean(GYROBIASX_INDEX), mean(GYROBIASX_INDEX+1), mean(GYROBIASX_INDEX+2));}
+		double getLambda(){return mean(LAMBDA_INDEX);}
 
-		void setPosition(Eigen::Vector3d in){mean(0)=in.x(); mean(1)=in.y(); mean(2)=in.z();}
-		void setTheta(Eigen::Vector3d in){mean(3)=in.x(); mean(4)=in.y(); mean(5)=in.z();}
-		void setVelocity(Eigen::Vector3d in){mean(6)=in.x(); mean(7)=in.y(); mean(8)=in.z();}
-		void setOmega(Eigen::Vector3d in){mean(9)=in.x(); mean(10)=in.y(); mean(11)=in.z();}
-		void setAcceleration(Eigen::Vector3d in){mean(12)=in.x(); mean(13)=in.y(); mean(14)=in.z();}
-		void setPhi(Eigen::Vector3d in){mean(15)=in.x(); mean(16)=in.y(); mean(17)=in.z();}
-		void setAccelBiases(Eigen::Vector3d in){mean(18)=in.x(); mean(19)=in.y(); mean(20)=in.z();}
-		void setGyroBiases(Eigen::Vector3d in){mean(21)=in.x(); mean(22)=in.y(); mean(23)=in.z();}
-		void setLambda(double in){mean(24) = in;}
+		void setPosition(Eigen::Vector3d in){const int i = POSX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setQuat(Eigen::Quaterniond in){const int i = QUATW_INDEX; mean(i)=in.w(); mean(i+1)=in.x(); mean(i+2)=in.y(); mean(i+3)=in.z();}
+		void setVelocity(Eigen::Vector3d in){const int i = VELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setOmega(Eigen::Vector3d in){const int i = OMEGAX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setAcceleration(Eigen::Vector3d in){const int i = ACCELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setPhi(Eigen::Vector3d in){const int i = PHIX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setAccelBiases(Eigen::Vector3d in){const int i = ACCELBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setGyroBiases(Eigen::Vector3d in){const int i = GYROBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setLambda(double in){mean(LAMBDA_INDEX) = in;}
 
 	} mu;
 
@@ -79,16 +91,20 @@ public:
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(ScalarType dt);
 
-	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass);
+	void updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass, ros::Time t);
 
 	void updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
 
 	void imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu);
 	void imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu);
 
-	void checkSigma();
+	Eigen::Matrix<ScalarType, 6, 7> linearizeExponentialMap(Sophus::SE3<ScalarType> pose, float delta);
+	Eigen::Matrix<ScalarType, 7, 6> linearizeLogarithmMap(Eigen::Matrix<ScalarType, 6, 1> tangent, float delta);
 
+	void checkSigma();
 	void fixSigma();
+
+	void deleteFeature(std::list<Feature>::iterator it);
 
 	double getHuberWeight(double chi);
 

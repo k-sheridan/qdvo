@@ -146,6 +146,7 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::line
 	F(0, 3) = dt;
 	F(1, 4) = dt;
 	F(2, 5) = dt;
+	ROS_ASSERT(false);
 
 	//pos by accel
 	float half_dt_2 = 0.5*dt*dt;
@@ -174,7 +175,8 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
 	new_mu.setPosition(last.getPosition() + dt*last.getVelocity() + 0.5*dt*dt*last.getAcceleration());
 
-	new_mu.setTheta(last.getTheta() + dt*last.getOmega());
+	// rotate the quat
+	ROS_ASSERT(false);
 
 	new_mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
 
@@ -193,12 +195,26 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	return new_mu;
 }
 
-void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass){
+void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass, ros::Time t){
 	
 	int i = 0;
-	for(auto& e : this->features){
+	for(std::list<Feature>::iterator it = this->features.begin(); it != this->features.end(); it++){
 
+		if(pass.at(i)){
+
+		}
+		else{
+			this->deleteFeature(it);
+			it++; // increment because we just deleted this feature
+		}
+
+		i++; //increment
 	}
+
+	ROS_ASSERT(i == measured_positions.size()-1); // ensure that we went through each element
+
+
+	//find the most recent IMU updated state to start from
 
 }
 
@@ -266,6 +282,10 @@ void StateEstimator::checkSigma(){
 
 void StateEstimator::fixSigma(){
 	//this->Sigma = (this->Sigma + this->Sigma.transpose()) / 2.0;
+}
+
+void StateEstimator::deleteFeature(std::list<Feature>::iterator it){
+	this->features.erase(it);
 }
 
 /*

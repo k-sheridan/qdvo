@@ -48,8 +48,6 @@ private:
 
 	float depth_inv_sigma; // the variance of this features depth
 
-	bool delete_flag; // should this feature be deleted?
-
 
 	//KLT
 	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
@@ -79,9 +77,6 @@ public:
 	void setLastResultFromKLTTracker(Eigen::Vector2f in){
 		this->last_result_from_klt_tracker = in;
 	}
-
-	bool flaggedForDeletion(){return this->delete_flag;}
-	void setDeleteFlag(bool in){this->delete_flag = in;}
 
 	void setBearing(Eigen::Vector2f in){
 		this->bearing(0) = in(0);

@@ -325,7 +325,7 @@ void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 	//run the klt tracker
 	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
 
-	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass);
+	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass, cf.t);
 
 	ROS_DEBUG("updated state with image");
 }
@@ -497,18 +497,17 @@ void VIO::publishInsight(Frame& f)
 	int i = 0; // track the feature count
 	for(auto& e : state_estimator.features)
 	{
-		if(!e.flaggedForDeletion())
-		{
-			//ROS_DEBUG_STREAM(e.getPixel(f));
-			cv::drawMarker(img, e.getPixel(f), cv::Scalar(0, 255, 0), cv::MARKER_SQUARE, 22, 1);
 
-			//ROS_DEBUG_STREAM("plotting covariance in pixels: " << this->state_estimator.getMetric2PixelMap(f.K)*this->state_estimator.getFeatureHomogenousCovariance(i)*this->state_estimator.getMetric2PixelMap(f.K).transpose());
-			//Eigen::SparseMatrix<float> J = this->state_estimator.getMetric2PixelMap(f.K);
+		//ROS_DEBUG_STREAM(e.getPixel(f));
+		cv::drawMarker(img, e.getPixel(f), cv::Scalar(0, 255, 0), cv::MARKER_SQUARE, 22, 1);
 
-			//cv::RotatedRect rr = this->getErrorEllipse(0.99, e.getPixel(f), J*this->state_estimator.getFeatureHomogenousCovariance(i)*J);
-			//ROS_DEBUG_STREAM(rr.size);
-			//cv::ellipse(img, rr, cv::Scalar(255, 255, 0), 1);
-		}
+		//ROS_DEBUG_STREAM("plotting covariance in pixels: " << this->state_estimator.getMetric2PixelMap(f.K)*this->state_estimator.getFeatureHomogenousCovariance(i)*this->state_estimator.getMetric2PixelMap(f.K).transpose());
+		//Eigen::SparseMatrix<float> J = this->state_estimator.getMetric2PixelMap(f.K);
+
+		//cv::RotatedRect rr = this->getErrorEllipse(0.99, e.getPixel(f), J*this->state_estimator.getFeatureHomogenousCovariance(i)*J);
+		//ROS_DEBUG_STREAM(rr.size);
+		//cv::ellipse(img, rr, cv::Scalar(255, 255, 0), 1);
+
 		// next feature
 		i++;
 	}
@@ -567,30 +566,7 @@ void VIO::publishOdometry(Frame& cf)
 	msg.twist.twist.angular.y = temp.y();
 	msg.twist.twist.angular.z = temp.z();
 
-	// form quaternion from theta
-	Eigen::Vector3d theta = this->state_estimator.mu.getTheta();
-	double theta_norm2 = theta.squaredNorm();
-
-	Eigen::Quaterniond quat;
-
-	if(theta_norm2 < 1e-8){
-		quat.w() = 1 - theta_norm2;
-		quat.x() = theta.x();
-		quat.y() = theta.y();
-		quat.z() = theta.z();
-
-		quat.normalize();
-	}
-	else{
-		double norm = sqrt(theta_norm2);
-		double sin2 = sin(norm/2.0);
-
-		quat.w() = cos(norm/2.0);
-
-		quat.x() = sin2 * theta.x() / norm;
-		quat.y() = sin2 * theta.y() / norm;
-		quat.z() = sin2 * theta.z() / norm;
-	}
+	Eigen::Quaterniond quat = this->state_estimator.mu.getQuat();
 
 	temp = quat.inverse() * this->state_estimator.mu.getVelocity(); // transform the velocity into the body frame
 

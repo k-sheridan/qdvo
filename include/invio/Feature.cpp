@@ -15,7 +15,6 @@ Feature::Feature(Eigen::Vector2f homogenous, float depth, Frame& f){
 	this->last_result_from_klt_tracker = homogenous;
 	this->bearing = homogenous;
 	this->depth_inv = 1.0/depth;
-	this->delete_flag = false;
 
 	// set variance
 	//this->feature_covariance.setZero() // no correlations initially
