@@ -1,7 +1,7 @@
 function [new_vector] = rodriguesSmall(angle, vector)
 %rotate a vector by an angle axis
 
-theta = norm(angle)
+theta = norm(angle);
 
 R = [cos(theta), -angle(3), angle(2);
     angle(3), cos(theta), -angle(1);

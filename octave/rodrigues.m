@@ -3,9 +3,14 @@ function [new_vector] = rodrigues(angle, vector)
 
 theta = norm(angle);
 
-k = angle/theta;
+if(theta < 1e-8)
+    new_vector = rodriguesSmall(angle, vector);
+else
 
-new_vector = vector*cos(theta) + cross(k, vector)*sin(theta) + k*dot(k, vector)*(1-cos(theta))
+    k = angle/theta;
+
+    new_vector = vector*cos(theta) + cross(k, vector)*sin(theta) + k*dot(k, vector)*(1-cos(theta));
+end
 
 end
 

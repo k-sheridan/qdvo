@@ -5,8 +5,8 @@ w = se3(4:6);
 v = se3(1:3);
 
 
-if(se3 == zeros(6, 1))
-    T = eye(4, 4);
+if(norm(w) < 1e-7)
+    T = eye(4, 4) + se3Hat(se3);
 else
     w_hat = so3Hat(w);
     
