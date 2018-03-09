@@ -1,4 +1,4 @@
-function h = plot_gaussian_ellipsoid(C, m, sdwidth, npts, axh)
+function h = drawGaussianEllipsoid2D(C, m, sdwidth, npts, axh)
 % PLOT_GAUSSIAN_ELLIPSOIDS plots 2-d and 3-d Gaussian distributions
 %
 % H = PLOT_GAUSSIAN_ELLIPSOIDS(M, C) plots the distribution specified by 
@@ -57,9 +57,9 @@ function h = plot_gaussian_ellipsoid(C, m, sdwidth, npts, axh)
 %    - NARGOUT==0 check added.
 %    - Help added on NPTS for ellipsoids
 
-axis([-8 8 0 8 0 1])
+axis([-5 5 -5 5 0 1])
  view(0,90)
-  pbaspect([2 1 1])
+  %pbaspect([2 1 1])
 
 if ~exist('sdwidth', 'var'), sdwidth = 1; end
 if ~exist('npts', 'var'), npts = []; end

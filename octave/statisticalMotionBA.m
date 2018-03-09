@@ -1,4 +1,4 @@
-syms qw qx qy qz vx vy vz wx wy wz u v zinv
+syms qw qx qy qz vx vy vz wx wy wz rx ry rz u v zinv
 
 assume([wx, wy, wz, vx, vy, vz], 'real')
 
@@ -11,9 +11,9 @@ B = 0.5*[0 wz -wy wx;
 jacobian(B*[qx;qy;qz;qw], [wx;wy;wz])
 
 
-rx = u/zinv;
-ry = v/zinv;
-rz = 1.0/zinv;
+%rx = u/zinv;
+%ry = v/zinv;
+%rz = 1.0/zinv;
 
 %compute jacobian for a small camera movement
 
