@@ -81,7 +81,9 @@ void StateEstimator::process(ScalarType dt){
 	this->mu.true_pose = this->mu.true_pose * twist;
 
 	//compute the inverse adjoint map
-	Eigen::Matrix<ScalarType, 6, 6> A = twist.inverse().Adj();
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
+	A.setIdentity();
+	A.block(0, 0, 6, 6) = twist.inverse().Adj();
 
 	// update the Sigma
 	this->Sigma = F * this->Sigma * F.transpose(); // transform the uncertainty into the future in the last pose's tangent space
@@ -152,10 +154,9 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::line
 	F(POSX_INDEX, VELX_INDEX) = dt;
 	F(POSX_INDEX+1, VELX_INDEX+1) = dt;
 	F(POSX_INDEX+2, VELX_INDEX+2) = dt;
-	ROS_ASSERT(false);
 
 	//pos by accel
-	float half_dt_2 = 0.5*dt*dt;
+	ScalarType half_dt_2 = 0.5*dt*dt;
 	F(POSX_INDEX, ACCELX_INDEX) = half_dt_2;
 	F(POSX_INDEX+1, ACCELX_INDEX+1) = half_dt_2;
 	F(POSX_INDEX+2, ACCELX_INDEX+2) = half_dt_2;
@@ -190,14 +191,6 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
 	new_mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
 
-	F(POSX_INDEX, ACCELX_INDEX) = half_dt_2;
-	F(POSX_INDEX+1, ACCELX_INDEX+1) = half_dt_2;
-	F(POSX_INDEX+2, ACCELX_INDEX+2) = half_dt_2;
-
-	//theta by omega
-	F(THETAX_INDEX, OMEGAX_INDEX) = dt;
-	F(THETAX_INDEX+1, OMEGAX_INDEX+1) = dt;
-	F(THETAX_INDEX+2, OMEGAX_INDEX+2) = dt;
 	new_mu.setOmega(last.getOmega());
 
 	new_mu.setAcceleration(last.getAcceleration());
@@ -213,25 +206,19 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	return new_mu;
 }
 
-void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass, ros::Time t){
+void StateEstimator::updateWithTrackedFeatures(std::vector<FeatureMeasurement> measurements, Frame& lf, Frame& cf){
 	
-	// delete all features that didnt pass through the klt
-	int i = 0;
-	for(std::list<Feature>::iterator it = this->features.begin(); it != this->features.end(); it++){
-		if(pass.at(i)){
+	// invert the covariance matrix to be used during update
+	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
 
-		}
-		else{
-			this->deleteFeature(it);
-			it++; // increment because we just deleted this feature
-		}
-		i++; //increment
+	Sophus::Matrix6d A; //LHS
+	Sophus::Vector6d b; //RHS
+
+	// perform iterative pose update
+	for(int i = 0; i < MOBA_MAX_ITERATIONS; i++){
+
 	}
-
-	ROS_ASSERT(i == measured_positions.size()-1); // ensure that we went through each element
-
-
-
 
 }
 

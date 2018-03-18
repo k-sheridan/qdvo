@@ -8,23 +8,12 @@
 #include <DepthSolver.h>
 
 DepthSolver::DepthSolver() {
-	this->ft = NULL;
 	this->solved = false;
 }
 
-DepthSolver::DepthSolver(Feature* parent){
-	this->ft = parent;
-	ROS_ASSERT(parent != NULL);
-
-	this->solved = false;
-
-	this->last_depth_inv = this->ft->depth_inv_ref();
-	this->first_bearing = this->ft->getBearing();
-
-}
 
 DepthSolver::~DepthSolver() {
-	this->ft = NULL;
+
 }
 
 /*

@@ -19,6 +19,8 @@
 
 #include <Eigen/Core>
 
+#include <sophus/se3.hpp>
+
 #include <Params.h>
 #include <ros/ros.h>
 
@@ -33,6 +35,8 @@ public:
 
 	cv::Mat img;
 	ros::Time t;
+
+	Sophus::SE3<ScalarType> pose; // the best pose estimate of this frame
 
 	Frame();
 	Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector<double> d , ros::Time _t);

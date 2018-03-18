@@ -304,30 +304,9 @@ void VIO::addFrame(Frame f) {
 	this->removeExcessFrames(this->frame_buffer);
 }
 
-void VIO::removeExcessFrames(std::deque<Frame>& buffer)
-{
-	// remove the last element if the buffer is larger than the desired size
-	if(buffer.size() > (size_t)FRAME_BUFFER_SIZE)
-	{
-		buffer.pop_back();
-	}
-}
-
 void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 
-	ROS_DEBUG("updating state with image");
 
-	//create the containers for the results of the klt tracking
-	std::vector<Eigen::Vector2f> new_positions;
-	std::vector<Eigen::Matrix2f> covariance_estimate;
-	std::vector<bool> pass;
-
-	//run the klt tracker
-	this->tracker.findNewFeaturePositions(lf, cf, this->state_estimator.previousFeaturePositionVector(), this->state_estimator.features, new_positions, covariance_estimate, pass);
-
-	this->state_estimator.updateWithFeaturePositions(new_positions, covariance_estimate, pass, cf.t);
-
-	ROS_DEBUG("updated state with image");
 }
 
 /*
@@ -420,6 +399,15 @@ void VIO::replenishFeatures(Frame& f) {
 		state_estimator.addNewFeatures(new_features, f);
 	}
 
+}
+
+void VIO::removeExcessFrames(std::deque<Frame>& buffer)
+{
+	// remove the last element if the buffer is larger than the desired size
+	if(buffer.size() > (size_t)FRAME_BUFFER_SIZE)
+	{
+		buffer.pop_back();
+	}
 }
 
 /*

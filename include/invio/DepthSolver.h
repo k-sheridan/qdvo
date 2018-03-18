@@ -21,16 +21,15 @@ class DepthSolver {
 public:
 
 	// the state of the feature at the last observation
-	Sophus::SE3f first_observation_pose_inv;
-	Eigen::Vector2f first_bearing;
-	float last_depth_inv;
+	Sophus::SE3<ScalarType> first_observation_pose_inv;
+	Eigen::Matrix<ScalarType, 2, 1> first_bearing;
+	ScalarType last_depth_inv;
+
+	cv::Mat reference_patch; // a template of the feature
 
 	bool solved; // is the inverse depth accurate enough for integration into BA
 
-	Feature* ft; // a pointer to the feature corresponding to this solver
-
 	DepthSolver();
-	DepthSolver(Feature* parent);
 	virtual ~DepthSolver();
 
 	//bool solveAndUpdatePointDepthLinear(Sophus::SE3f current_pose, Eigen::Vector2f current_bearing);

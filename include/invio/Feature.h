@@ -33,27 +33,22 @@
 
 #include <Frame.h>
 #include <Params.h>
-//#include <DepthSolver.h>
+
+#include <sophus/se3.hpp>
 
 
 class Frame; // need to tell the feature that there is something called frame
-
-class DepthSolver; // depth solver is a class
 
 class Feature {
 private:
 
 	Eigen::Vector2f bearing; // [u, v] (u and v are in homogenous coord)
 	float depth_inv; // [I use an inverse depth paramaterization]
-
 	float depth_inv_sigma; // the variance of this features depth
 
 
 	//KLT
 	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
-
-	//iterative depth solver to be used before intergration into BA
-	DepthSolver* ds;
 
 public:
 
