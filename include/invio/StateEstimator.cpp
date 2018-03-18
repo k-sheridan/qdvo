@@ -72,22 +72,25 @@ void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_
 void StateEstimator::process(ScalarType dt){
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
 
-
-	// process and update the feature vector because it depends on the base mu
-	/*for(auto& e : this->features){
-		e.setMu(this->convolveFeature(this->mu, e.getMu(), dt));
-	}*/
-
 	// process the base mu
 	this->mu = this->convolveState(this->mu, dt);
 
+	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
 
-	ROS_DEBUG("start process");
+	// apply twist to the true pose
+	this->mu.true_pose = this->mu.true_pose * twist;
+
+	//compute the inverse adjoint map
+	Eigen::Matrix<ScalarType, 6, 6> A = twist.inverse().Adj();
+
 	// update the Sigma
-	this->Sigma = F * this->Sigma * F.transpose();
-	this->Sigma += this->generateProcessNoise(dt);
+	this->Sigma = F * this->Sigma * F.transpose(); // transform the uncertainty into the future in the last pose's tangent space
+	this->Sigma += this->generateProcessNoise(dt); // add process noise
+	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
 
-	ROS_DEBUG("finish process");
+	// zero the tangent space again
+	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
+	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
 }
 
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
@@ -137,49 +140,64 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	return Q;
 }
 
+/*
+ * only applies to the process around the tangent space
+ */
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::linearizeProcess(ScalarType dt){
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F;
 	F.setIdentity();
 
 	//pos by vel
-	F(0, 3) = dt;
-	F(1, 4) = dt;
-	F(2, 5) = dt;
+	F(POSX_INDEX, VELX_INDEX) = dt;
+	F(POSX_INDEX+1, VELX_INDEX+1) = dt;
+	F(POSX_INDEX+2, VELX_INDEX+2) = dt;
 	ROS_ASSERT(false);
 
 	//pos by accel
 	float half_dt_2 = 0.5*dt*dt;
-	F(0, 9) = half_dt_2;
-	F(1, 10) = half_dt_2;
-	F(2, 11) = half_dt_2;
+	F(POSX_INDEX, ACCELX_INDEX) = half_dt_2;
+	F(POSX_INDEX+1, ACCELX_INDEX+1) = half_dt_2;
+	F(POSX_INDEX+2, ACCELX_INDEX+2) = half_dt_2;
 
 	//theta by omega
-	F(3, 6) = dt;
-	F(4, 7) = dt;
-	F(5, 8) = dt;
+	F(THETAX_INDEX, OMEGAX_INDEX) = dt;
+	F(THETAX_INDEX+1, OMEGAX_INDEX+1) = dt;
+	F(THETAX_INDEX+2, OMEGAX_INDEX+2) = dt;
 
 	//vel by accel
-	F(6, 9) = dt;
-	F(7, 10) = dt;
-	F(8, 11) = dt;
+	F(VELX_INDEX, ACCELX_INDEX) = dt;
+	F(VELX_INDEX+1, ACCELX_INDEX+1) = dt;
+	F(VELX_INDEX+2, ACCELX_INDEX+2) = dt;
 
 	return F;
 }
 
 
-
+/*
+ * the state is assumed to represent the tangent space around the current pose
+ * This simplifies the process significantly
+ */
 StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
 	State new_mu;
 
-	new_mu.setPosition(last.getPosition() + dt*last.getVelocity() + 0.5*dt*dt*last.getAcceleration());
+	// the position is represented by a twist
+	new_mu.setLinearTwist(dt*last.getVelocity() + dt*dt*0.5*last.getAcceleration());
+	new_mu.setAngularTwist(dt*last.getOmega());
 
-	// rotate the quat
-	ROS_ASSERT(false);
+	// higher derivatives
 
 	new_mu.setVelocity(last.getVelocity() + dt*last.getAcceleration());
 
+	F(POSX_INDEX, ACCELX_INDEX) = half_dt_2;
+	F(POSX_INDEX+1, ACCELX_INDEX+1) = half_dt_2;
+	F(POSX_INDEX+2, ACCELX_INDEX+2) = half_dt_2;
+
+	//theta by omega
+	F(THETAX_INDEX, OMEGAX_INDEX) = dt;
+	F(THETAX_INDEX+1, OMEGAX_INDEX+1) = dt;
+	F(THETAX_INDEX+2, OMEGAX_INDEX+2) = dt;
 	new_mu.setOmega(last.getOmega());
 
 	new_mu.setAcceleration(last.getAcceleration());
@@ -197,9 +215,9 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
 void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> measured_positions, std::vector<Eigen::Matrix<ScalarType, 2, 2> > estimated_covariance, std::vector<bool> pass, ros::Time t){
 	
+	// delete all features that didnt pass through the klt
 	int i = 0;
 	for(std::list<Feature>::iterator it = this->features.begin(); it != this->features.end(); it++){
-
 		if(pass.at(i)){
 
 		}
@@ -207,14 +225,13 @@ void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> mea
 			this->deleteFeature(it);
 			it++; // increment because we just deleted this feature
 		}
-
 		i++; //increment
 	}
 
 	ROS_ASSERT(i == measured_positions.size()-1); // ensure that we went through each element
 
 
-	//find the most recent IMU updated state to start from
+
 
 }
 
@@ -224,6 +241,8 @@ void StateEstimator::updateWithFeaturePositions(std::vector<Eigen::Vector2f> mea
 void StateEstimator::updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
 
 	//measurement function must use angular velocity, phi, theta, accel.
+
+	//find the most recent IMU updated state to start from
 
 }
 

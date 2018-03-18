@@ -561,12 +561,12 @@ void VIO::publishOdometry(Frame& cf)
 	msg.child_frame_id = CAMERA_FRAME;
 	msg.header.frame_id = WORLD_FRAME;
 
-	Eigen::Vector3d temp = this->state_estimator.mu.getOmega();
+	Eigen::Vector3f temp = this->state_estimator.mu.getOmega();
 	msg.twist.twist.angular.x = temp.x();
 	msg.twist.twist.angular.y = temp.y();
 	msg.twist.twist.angular.z = temp.z();
 
-	Eigen::Quaterniond quat = this->state_estimator.mu.getQuat();
+	Eigen::Quaternionf quat = this->state_estimator.mu.true_pose.unit_quaternion();
 
 	temp = quat.inverse() * this->state_estimator.mu.getVelocity(); // transform the velocity into the body frame
 
@@ -579,7 +579,7 @@ void VIO::publishOdometry(Frame& cf)
 	msg.pose.pose.orientation.y = quat.y();
 	msg.pose.pose.orientation.z = quat.z();
 
-	temp = this->state_estimator.mu.getPosition();
+	temp = this->state_estimator.mu.true_pose.translation();
 	msg.pose.pose.position.x = temp.x();
 	msg.pose.pose.position.y = temp.y();
 	msg.pose.pose.position.z = temp.z();
