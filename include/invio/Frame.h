@@ -24,6 +24,8 @@
 #include <Params.h>
 #include <ros/ros.h>
 
+#include <Feature.h>
+
 class Frame {
 
 public:
@@ -38,10 +40,14 @@ public:
 
 	Sophus::SE3<ScalarType> pose; // the best pose estimate of this frame
 
+	std::vector<Feature> features;
+
 	Frame();
 	Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector<double> d , ros::Time _t);
 
 	bool isPixelInBox(cv::Point2f px);
+
+	void addFeatures(std::vector<cv::Point2f> new_features);
 
 };
 

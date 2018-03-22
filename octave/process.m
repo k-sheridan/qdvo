@@ -30,6 +30,7 @@ function [state, Sigma, pose_transform] = process(state, Sigma, pose_transform, 
     Q = processNoise(dt);
     
     Sigma = A * (J*Sigma*J' + Q) * A';
+    %Sigma = (J*Sigma*J' + Q);
     
     new_state(1:6, 1) = zeros(6, 1); % zero the tangent vector again
     state = new_state;
@@ -41,11 +42,8 @@ function [x] = convolveState(x0, dt)
     
     w = x0(10:12, 1)*dt;
     
-    T = [so3Exp(w), dr;
-        zeros(1, 3), 1];
-    
     %compute the new tangent from the rotation and translation
-    x(1:6, 1) = se3Log(se3Exp(x0(1:6, 1)) * T);
+    x(1:6, 1) = se3Log(se3Exp(x0(1:6, 1)) * se3Exp([dr;w]));
     
     %R = so3Exp(x0(10:12, 1)*dt);
     

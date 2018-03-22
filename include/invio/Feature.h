@@ -31,7 +31,6 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
-#include <Frame.h>
 #include <Params.h>
 
 #include <sophus/se3.hpp>
@@ -41,68 +40,31 @@ class Frame; // need to tell the feature that there is something called frame
 
 class Feature {
 private:
+  // the pose that the feature position is represented in
+	sophus::SE3<ScalarType> observation_pose;
+	// mean [u, v, z_inv]
+	Eigen::Matrix<ScalarType, 3, 1> mu;
+	// covariance of the position estimate
+	Eigen::Matrix<ScalarType, 3, 3> Sigma;
 
-	Eigen::Vector2f bearing; // [u, v] (u and v are in homogenous coord)
-	float depth_inv; // [I use an inverse depth paramaterization]
-	float depth_inv_sigma; // the variance of this features depth
-
-
-	//KLT
-	Eigen::Vector2f last_result_from_klt_tracker; // used to store the previous feature position in the last frame as local reference for how it looks
+	cv::Point2f px; // the pixel position of this feature
+	Eigen::Matrix<ScalarType, 2, 2> R; // pixel position measurement uncertainty (used to "inform" update about edgy features)
 
 public:
 
 	Feature();
-	Feature(Eigen::Vector2f homogenous, float depth, Frame& f);
+	Feature(cv::Point2f pt, float depth, float depth_variance, Eigen::Matrix<ScalarType, 3, 3> K);
 	virtual ~Feature();
 
-	Eigen::Vector2f getBearing();
 
-	float getDepth();
 
-	cv::Point2f getPixel(const Frame& f);
 
-	Eigen::Vector2f getLastResultFromKLTTracker(){
-		return this->last_result_from_klt_tracker;
+	static inline Eigen::Vector2f pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
+		return Eigen::Vector2f((px.x - K(2)) / K(0), (px.y - K(5)) / K(4));
 	}
 
-	/*
-	 * this should be given in meters
-	 */
-	void setLastResultFromKLTTracker(Eigen::Vector2f in){
-		this->last_result_from_klt_tracker = in;
-	}
-
-	void setBearing(Eigen::Vector2f in){
-		this->bearing(0) = in(0);
-		this->bearing(1) = in(1);
-	}
-
-	void setDepth(float depth){
-		this->depth_inv = 1.0/depth;
-	}
-
-	void setDepthInv(float inv_depth){
-		this->depth_inv = inv_depth;
-	}
-
-	void setMu(Eigen::Vector3f in){this->bearing(0) = in(0); this->bearing(1) = in(1); this->depth_inv = in(2);}
-
-	Eigen::Vector3f getMu(){return Eigen::Vector3f(this->bearing(0), this->bearing(1), this->depth_inv);}
-
-	Eigen::Vector3f getPoint(){return Eigen::Vector3f(this->bearing(0), this->bearing(1), 1.0/this->depth_inv);}
-
-	float& depth_inv_ref(){return this->depth_inv;}
-
-	float& depth_inv_sigma_ref(){return this->depth_inv_sigma;}
-
-
-	static inline Eigen::Vector2f pixel2Metric(const Frame& f, const cv::Point2f px){
-		return Eigen::Vector2f((px.x - f.K(2)) / f.K(0), (px.y - f.K(5)) / f.K(4));
-	}
-
-	static inline cv::Point2f metric2Pixel(const Frame& f, const Eigen::Vector2f pos){
-		return cv::Point2f(pos.x()*f.K(0) + f.K(2), pos.y()*f.K(4) + f.K(5));
+	static inline cv::Point2f metric2Pixel(Eigen::Matrix<ScalarType, 3, 3> K const Eigen::Vector2f pos){
+		return cv::Point2f(pos.x()*K(0) + K(2), pos.y()*K(4) + K(5));
 	}
 
 };

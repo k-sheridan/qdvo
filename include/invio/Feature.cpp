@@ -11,28 +11,28 @@ Feature::Feature() {
 
 }
 
-Feature::Feature(Eigen::Vector2f homogenous, float depth, Frame& f){
-	this->last_result_from_klt_tracker = homogenous;
-	this->bearing = homogenous;
-	this->depth_inv = 1.0/depth;
+Feature::Feature(cv::Point2f pt, float depth, float depth_variance, Eigen::Matrix<ScalarType, 3, 3> K){
+	this->px = pt;
+	Eigen::Matrix<ScalarType, 2, 1> bearing = Feature::pixel2Metric(K, pt);
 
-	// set variance
-	//this->feature_covariance.setZero() // no correlations initially
-	this->depth_inv_sigma = DEFAULT_POINT_DEPTH_VARIANCE;
+	//make sure that the pixel is in the frame
+	ROS_ASSERT(f.isPixelInBox(pt));
+
+	ROS_ASSERT(depth > 0);
+
+	//set the feature position
+	this->mu(0) = bearing(0);
+	this->mu(1) = bearing(1);
+	this->mu(2) = 1/depth;
+
+	ROS_ASSERT(depth_variance >= 0);
+	//set the uncertainty of the feature position
+	this->Sigma << DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0, 0,
+								0, DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0,
+								0, 0, depth_variance
+
 }
 
 Feature::~Feature() {
 	// TODO Auto-generated destructor stub
-}
-
-Eigen::Vector2f Feature::getBearing(){
-	return this->bearing;
-}
-
-float Feature::getDepth(){
-	return 1.0/this->depth_inv;
-}
-
-cv::Point2f Feature::getPixel(const Frame& f){
-	return cv::Point2f(f.K(0)*this->bearing(0) + f.K(2), f.K(4)*this->bearing(1) + f.K(5));
 }

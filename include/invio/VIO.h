@@ -66,7 +66,7 @@ public:
 
 	std::deque<UpdatedState> imu_update_buffer; // store states updated with IMU readings to reduce latency
 
-	//std::deque<sensor_msgs::Imu> imu_buffer; // store imu messages 
+	//std::deque<sensor_msgs::Imu> imu_buffer; // store imu messages
 
 	tf::TransformListener tf_listener;
 

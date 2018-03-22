@@ -245,6 +245,8 @@ void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
 
 void VIO::addFrame(Frame f) {
 
+	//TODO revert the state to the most recent IMU message
+
 	if (this->frame_buffer.size() == 0) // if this is the first frame that we are receiving
 	{
 		ROS_DEBUG("adding the first frame");
@@ -271,6 +273,9 @@ void VIO::addFrame(Frame f) {
 		ROS_ASSERT(dt >= 0);
 		this->state_estimator.process(dt);
 		this->state_estimator.t = f.t;
+
+		//update the frame's position estimate with the predicted
+		this->frame_buffer.front().pose = this->state_estimator.mu.true_pose;
 
 		if(this->state_estimator.features.size()) // run update if we have enough features
 		{
@@ -306,6 +311,12 @@ void VIO::addFrame(Frame f) {
 
 void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
 
+	//TODO track old features
+
+	//TODO run iterative update
+
+	// note the frame's position must be current with the new state estimate for depth update
+	//TODO run feature depth/position update
 
 }
 
@@ -322,17 +333,17 @@ void VIO::replenishFeatures(Frame& f) {
 		img = f.img;
 	}
 
-	ROS_DEBUG_STREAM("current 2d feature count: " << state_estimator.features.size());
+	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size());
 
-	if (state_estimator.features.size() < (size_t)NUM_FEATURES) {
+	if (f.features.size() < (size_t)NUM_FEATURES) {
 
-		std::vector<Eigen::Vector2f> new_features;
+		std::vector<cv::Point2f> new_features;
 
 		std::vector<cv::KeyPoint> fast_kp;
 
 		cv::FAST(img, fast_kp, FAST_THRESHOLD, true);
 
-		int needed = NUM_FEATURES - state_estimator.features.size();
+		int needed = NUM_FEATURES - f.features.size();
 
 		ROS_DEBUG_STREAM("need " << needed << "more features");
 
@@ -346,7 +357,7 @@ void VIO::replenishFeatures(Frame& f) {
 
 		//image which is used to check if a close feature already exists
 		cv::Mat checkImg = cv::Mat::zeros(img.size(), CV_8U);
-		for (auto& e : state_estimator.features) {
+		for (auto& e : f.features) {
 			cv::circle(checkImg, e.getPixel(f), MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
 		}
 
@@ -390,13 +401,13 @@ void VIO::replenishFeatures(Frame& f) {
 
 			//ROS_DEBUG_STREAM("adding feature " << fast_kp.at(i).pt);
 
-
-			new_features.push_back(Feature::pixel2Metric(f, fast_kp.at(i).pt));
+			// this is a new feature
+			new_features.push_back(fast_kp.at(i).pt);
 
 		}
 
 		//add the new features to the current state
-		state_estimator.addNewFeatures(new_features, f);
+		f.addNewFeatures(new_features, f);
 	}
 
 }
@@ -483,7 +494,7 @@ void VIO::publishInsight(Frame& f)
 	cv::cvtColor(f.img, img, CV_GRAY2BGR);
 
 	int i = 0; // track the feature count
-	for(auto& e : state_estimator.features)
+	for(auto& e : f.features)
 	{
 
 		//ROS_DEBUG_STREAM(e.getPixel(f));
@@ -596,7 +607,7 @@ void VIO::publishPoints(Frame& f)
 	msg.header.frame_id = ODOM_FRAME;
 
 
-	for(auto e : state_estimator.features)
+	for(auto e : f.features)
 	{
 
 		Eigen::Vector3f p_in_f = e.getPoint();
@@ -621,6 +632,3 @@ void VIO::publishPoints(Frame& f)
 	this->points_pub.publish(msg);
 
 }
-
-
-

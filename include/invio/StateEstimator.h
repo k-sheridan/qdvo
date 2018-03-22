@@ -77,29 +77,9 @@ public:
 	} mu;
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma; // stores the current uncertainty and correlations for the state
-
-	struct FeatureMeasurement{
-		Eigen::Matrix<ScalarType, 2, 1> z;
-		Eigen::Matrix<ScalarType, 2, 2> R;
-
-		std::list<Feature>::iterator feature_reference; // iterators are never invalidated
-	};
-
-	struct FeatureCandidate{
-		Feature f;
-		DepthSolver ds; // used to solve for the depth of the feature
-	};
-
-	std::list<Feature> features; // store the features used in motion estimation
-	std::list<FeatureCandidate> candidates; // each feature is stored here until it is ready for use in motion estimation
-
 	ros::Time t; // store the current time of the state
 
 	void initializeState();
-
-	void addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features, Frame& f);
-
-	std::vector<Eigen::Vector2f> previousFeaturePositionVector();
 
 	void process(ScalarType dt);
 
@@ -111,7 +91,7 @@ public:
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(ScalarType dt);
 
-	void updateWithTrackedFeatures(std::vector<FeatureMeasurement> measurements, Frame& lf, Frame& cf);
+	void updateWithTrackedFeatures(Frame& cf);
 
 	void updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
 
@@ -147,8 +127,6 @@ public:
 
 	void checkSigma();
 	void fixSigma();
-
-	void deleteFeature(std::list<Feature>::iterator it);
 
 	double getHuberWeight(double chi);
 

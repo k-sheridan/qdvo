@@ -40,6 +40,12 @@ Frame::Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector
 
 }
 
+/*
+* add new features with a guessed depth to the feature vector with high depth uncertainty
+*/
+void Frame::addFeatures(std::vector<cv::Point2f> new_features){
+
+}
 
 bool Frame::isPixelInBox(cv::Point2f px)
 {

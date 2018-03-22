@@ -57,18 +57,6 @@ void StateEstimator::initializeState()
 
 }
 
-void StateEstimator::addNewFeatures(std::vector<Eigen::Vector2f> new_homogenous_features, Frame& f){
-	if(!new_homogenous_features.size()){return;}
-
-	//TODO compute the average depth in the scene
-	ScalarType average_scene_depth = DEFAULT_POINT_DEPTH;
-
-	// add all new features to the state
-	for(auto e : new_homogenous_features){
-		this->features.push_back(Feature(e, average_scene_depth, f)); // add a point with an estimated depth
-	}
-}
-
 void StateEstimator::process(ScalarType dt){
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
 
@@ -206,8 +194,8 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	return new_mu;
 }
 
-void StateEstimator::updateWithTrackedFeatures(std::vector<FeatureMeasurement> measurements, Frame& lf, Frame& cf){
-	
+void StateEstimator::updateWithTrackedFeatures(Frame& cf){
+
 	// invert the covariance matrix to be used during update
 	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
@@ -241,16 +229,6 @@ void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::M
 // simply evaluates the nonlinear measurement function. used for numerical linearization
 void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu){
 
-}
-
-std::vector<Eigen::Vector2f> StateEstimator::previousFeaturePositionVector(){
-	std::vector<Eigen::Vector2f> output;
-	//output.reserve(this->features.size());
-	for(auto e : this->features){
-		output.push_back(e.getLastResultFromKLTTracker());
-	}
-
-	return output;
 }
 
 Eigen::Matrix<ScalarType, 2, 2> StateEstimator::getMetric2PixelMap(Eigen::Matrix3f& K){
@@ -288,10 +266,6 @@ void StateEstimator::checkSigma(){
 
 void StateEstimator::fixSigma(){
 	//this->Sigma = (this->Sigma + this->Sigma.transpose()) / 2.0;
-}
-
-void StateEstimator::deleteFeature(std::list<Feature>::iterator it){
-	this->features.erase(it);
 }
 
 /*
