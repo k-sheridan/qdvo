@@ -57,16 +57,20 @@ public:
 	std::deque<Frame> frame_buffer; // stores all frames and pose estimates at this frames
 
 	// used to store a state updated between images
-	struct UpdatedState{
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> mu;
+	struct IMUUpdate{
+		// mu and Sigma may or may not be up to date
+		StateEstimator::State mu;
 		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma;
 		ros::Time t;
 		sensor_msgs::Imu msg;
+		bool applied;
+
+		IMUUpdate(){
+			applied = false;
+		}
 	};
 
-	std::deque<UpdatedState> imu_update_buffer; // store states updated with IMU readings to reduce latency
-
-	//std::deque<sensor_msgs::Imu> imu_buffer; // store imu messages
+	std::deque<IMUUpdate> imu_update_buffer; // store states updated with IMU readings to reduce latency
 
 	tf::TransformListener tf_listener;
 
@@ -84,15 +88,23 @@ public:
 
 	void imu_callback(const sensor_msgs::ImuConstPtr& msg);
 
+	void fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType, 3, 1>& acc, Eigen::Matrix<ScalarType, 3, 1>& gyr, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>&  gyro_cov);
+
+	void applyAllNewIMUMeasurements();
+
+	void applyIMUUpdate(IMUUpdate& measurement);
+
 	void camera_callback(const sensor_msgs::ImageConstPtr& img, const sensor_msgs::CameraInfoConstPtr& cam);
 
 	void addFrame(Frame f);
+
+	void revertStateBackToClosestIMUUpdate(ros::Time t);
 
 	void removeExcessFrames(std::deque<Frame>& buffer);
 
 	void replenishFeatures(Frame& f);
 
-	void updateStateWithNewImage(Frame& lf, Frame& cf);
+	void applyImageUpdate(Frame& lf, Frame& cf);
 
 	void publishInsight(Frame& f);
 

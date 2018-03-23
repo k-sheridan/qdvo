@@ -129,120 +129,6 @@ VIO::VIO() {
 	ros::spin();
 }
 
-
-void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
-	ROS_DEBUG_STREAM("got imu message: " << msg->header.stamp);
-
-	//update the state with this imu message
-
-	//check that this imu message is not from the past
-	ScalarType dt = (msg->header.stamp - this->state_estimator.t).toSec();
-
-	if(dt >= 0){
-
-		UpdatedState us;
-		us.msg = *msg; // store this message for potential later use
-		us.t = msg->header.stamp;
-
-		// run process if we need to
-		if(dt > 0){
-			this->state_estimator.process(dt); // propagate state into the future
-		}
-
-		//update the state using this measurment
-		Eigen::Matrix<ScalarType, 3, 3> accel_cov, gyro_cov;
-
-		// fill the gyro covariance units: [rad/s]
-		if(USE_CUSTOM_IMU_UNCERTAINTIES){
-			gyro_cov.setZero();
-			gyro_cov(0, 0) = GYRO_VARIANCE;
-			gyro_cov(1, 1) = GYRO_VARIANCE;
-			gyro_cov(2, 2) = GYRO_VARIANCE;
-		}
-		else{
-
-			if(msg->angular_velocity_covariance.at(0) <= 0 || msg->angular_velocity_covariance.at(4) <= 0 || msg->angular_velocity_covariance.at(8) <= 0){
-				ROS_ERROR("gyro covariance broken ignoring gyro");
-				gyro_cov.setZero();
-				gyro_cov(0, 0) = 1e10;
-				gyro_cov(1, 1) = 1e10;
-				gyro_cov(2, 2) = 1e10;
-			}
-			else{
-				for(int i = 0; i < 9; i++){
-					gyro_cov(i) = msg->angular_velocity_covariance.at(i);
-				}
-			}
-		}
-
-		// fill the accel covariance units: [m/s^2]
-		if(USE_CUSTOM_IMU_UNCERTAINTIES){
-			accel_cov.setZero();
-			accel_cov(0, 0) = ACCEL_VARIANCE;
-			accel_cov(1, 1) = ACCEL_VARIANCE;
-			accel_cov(2, 2) = ACCEL_VARIANCE;
-		}
-		else{
-			if(msg->linear_acceleration_covariance.at(0) <= 0 || msg->linear_acceleration_covariance.at(4) <= 0 || msg->linear_acceleration_covariance.at(8) <= 0){
-				ROS_ERROR("gyro covariance broken ignoring accelerometer");
-				accel_cov.setZero();
-				accel_cov(0, 0) = 1e10;
-				accel_cov(1, 1) = 1e10;
-				accel_cov(2, 2) = 1e10;
-			}
-			else{
-				for(int i = 0; i < 9; i++){
-					accel_cov(i) = msg->linear_acceleration_covariance.at(i);
-				}
-			}
-		}
-
-		Eigen::Matrix<ScalarType, 3, 1> acc, gyr;
-
-		acc << msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z;
-		gyr << msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z;
-
-		this->state_estimator.updateWithIMU(acc, gyr, accel_cov, gyro_cov, c2imu);
-
-		// add the updated state to the buffer
-		us.Sigma = this->state_estimator.Sigma;
-		us.mu = this->state_estimator.mu.mean;
-
-		// push it
-		this->imu_update_buffer.push_back(us);
-
-		ROS_DEBUG("updated state with imu measurement");
-
-	}
-	else{
-		ROS_WARN("imu message is too old to use... ignoring");
-	}
-}
-
-void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
-		const sensor_msgs::CameraInfoConstPtr& cam) {
-	static int dt_count = 1;
-	static double dt_sum = 0;
-
-	ROS_DEBUG_STREAM("got image: " << img->header.stamp);
-
-	ros::Time start = ros::Time::now();
-
-	cv::Mat temp = cv_bridge::toCvShare(img, img->encoding)->image.clone();
-
-	Frame f = Frame(INVERSE_IMAGE_SCALE, temp.clone(), cam->K, cam->D, img->header.stamp);
-
-	ROS_DEBUG_STREAM("start");
-
-	this->addFrame(f);
-
-	double current_dt = (ros::Time::now() - start).toSec() * 1000.0;
-	dt_sum += current_dt;
-
-	ROS_INFO_STREAM("average dt: " << dt_sum/dt_count << " this dt: " << current_dt);
-	dt_count++;
-}
-
 void VIO::addFrame(Frame f) {
 
 	//TODO revert the state to the most recent IMU message
@@ -280,7 +166,9 @@ void VIO::addFrame(Frame f) {
 		if(this->state_estimator.features.size()) // run update if we have enough features
 		{
 			// attempt to flow features into the next frame if there are features
-			this->updateStateWithNewImage(this->frame_buffer.at(1), this->frame_buffer.front());
+			// then perform iterative pose update
+			// then apply depth update
+			this->applyImageUpdate(this->frame_buffer.at(1), this->frame_buffer.front());
 		}
 
 		this->replenishFeatures((this->frame_buffer.front())); // try to get more features if needed
@@ -309,106 +197,39 @@ void VIO::addFrame(Frame f) {
 	this->removeExcessFrames(this->frame_buffer);
 }
 
-void VIO::updateStateWithNewImage(Frame& lf, Frame& cf){
-
-	//TODO track old features
-
-	//TODO run iterative update
-
-	// note the frame's position must be current with the new state estimate for depth update
-	//TODO run feature depth/position update
-
-}
-
 /*
- * get more features after updating the pose
- */
-void VIO::replenishFeatures(Frame& f) {
-
-	//add more features if needed
-	cv::Mat img;
-	if (FAST_BLUR_SIGMA != 0.0) {
-		cv::GaussianBlur(f.img, img, cv::Size(5, 5), FAST_BLUR_SIGMA);
-	} else {
-		img = f.img;
+* finds the closest state behind this time, set it to the current state estimate, delete old the older messages
+* , and flag all of the following messages to not applied
+*/
+void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
+	// if there were no imu messages
+	if(!this->imu_update_buffer.size()){
+		return;
 	}
 
-	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size());
+	//apply all un applied imu messages
+	this->applyAllNewIMUMeasurements();
 
-	if (f.features.size() < (size_t)NUM_FEATURES) {
+	std::deque<IMUUpdate>::iterator chosen_state = this->imu_update_buffer.back(); // by default the chose state
 
-		std::vector<cv::Point2f> new_features;
+	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+		if((t_next - *it.t).toSec() < 0){
+			ROS_ASSERT(it != this->imu_update_buffer.begin()); // this can't be the first updated state in the buffer
+			ROS_ASSERT();
 
-		std::vector<cv::KeyPoint> fast_kp;
-
-		cv::FAST(img, fast_kp, FAST_THRESHOLD, true);
-
-		int needed = NUM_FEATURES - f.features.size();
-
-		ROS_DEBUG_STREAM("need " << needed << "more features");
-
-		/*cv::flann::Index tree;
-
-		 if (this->state.features.size() > 0) {
-		 std::vector<cv::Point2f> prev = this->state.getPixels2fInOrder();
-		 tree = cv::flann::Index(cv::Mat(prev).reshape(1),
-		 cv::flann::KDTreeIndexParams());
-		 }*/
-
-		//image which is used to check if a close feature already exists
-		cv::Mat checkImg = cv::Mat::zeros(img.size(), CV_8U);
-		for (auto& e : f.features) {
-			cv::circle(checkImg, e.getPixel(f), MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
+			// the last iterator is the chosen state
+			chosen_state = it;
 		}
-
-		for (int i = 0; i < needed && (size_t)i < fast_kp.size(); i++) {
-			/*if (this->state.features.size() > 0) {
-			 //make sure that this corner is not too close to any old corners
-			 std::vector<float> query;
-			 query.push_back(fast_kp.at(i).pt.x);
-			 query.push_back(fast_kp.at(i).pt.y);
-
-			 std::vector<int> indexes;
-			 std::vector<float> dists;
-
-			 tree.knnSearch(query, indexes, dists, 1);
-
-			 if (dists.front() < MIN_NEW_FEATURE_DIST) // if this featrue is too close to a already tracked feature skip it
-			 {
-			 continue;
-			 }
-			 }*/
-
-			//check if there is already a close feature
-			if (checkImg.at<unsigned char>(fast_kp.at(i).pt)) {
-				//ROS_DEBUG("feature too close to previous feature, not adding");
-				needed++; // we need one more now
-				continue;
-			}
-
-
-			// remove features at too high of a radius
-			if(!f.isPixelInBox(fast_kp.at(i).pt))
-			{
-				ROS_DEBUG("feature is out of keep box");
-				needed++; // we need one more now
-				continue;
-			}
-
-			// add this new ft to the check img
-			cv::circle(checkImg, fast_kp.at(i).pt, MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
-
-
-			//ROS_DEBUG_STREAM("adding feature " << fast_kp.at(i).pt);
-
-			// this is a new feature
-			new_features.push_back(fast_kp.at(i).pt);
-
-		}
-
-		//add the new features to the current state
-		f.addNewFeatures(new_features, f);
 	}
+
+	// set the new state estimate
+	this->state_estimator.mu = *chosen_state.mu;
+	this->state_estimator.t = *chosen_state.t;
+	this->state_estimator.Sigma = *chosen_state.Sigma;
+
+	//TODO remove old messages
+
+	//TODO set all next messages as applied
 
 }
 

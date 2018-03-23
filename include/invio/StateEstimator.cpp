@@ -213,7 +213,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 /*
  * update the state with an imu measurement
  */
-void StateEstimator::updateWithIMU(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
+void StateEstimator::imuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
 
 	//measurement function must use angular velocity, phi, theta, accel.
 
