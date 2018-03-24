@@ -40,7 +40,7 @@ public:
 
 	Sophus::SE3<ScalarType> pose; // the best pose estimate of this frame
 
-	std::vector<Feature> features;
+	std::list<Feature> features;
 
 	Frame();
 	Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector<double> d , ros::Time _t);

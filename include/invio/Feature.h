@@ -39,9 +39,9 @@
 class Frame; // need to tell the feature that there is something called frame
 
 class Feature {
-private:
-  // the pose that the feature position is represented in
-	sophus::SE3<ScalarType> observation_pose;
+public:
+	// the pose that the feature position is represented in
+	Sophus::SE3<ScalarType> observation_pose;
 	// mean [u, v, z_inv]
 	Eigen::Matrix<ScalarType, 3, 1> mu;
 	// covariance of the position estimate
@@ -50,21 +50,38 @@ private:
 	cv::Point2f px; // the pixel position of this feature
 	Eigen::Matrix<ScalarType, 2, 2> R; // pixel position measurement uncertainty (used to "inform" update about edgy features)
 
-public:
+
 
 	Feature();
 	Feature(cv::Point2f pt, float depth, float depth_variance, Eigen::Matrix<ScalarType, 3, 3> K);
 	virtual ~Feature();
 
 
+	Eigen::Matrix<ScalarType, 3, 1> projectFeature(Sophus::SE3<ScalarType> into_frame);
 
 
 	static inline Eigen::Vector2f pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		return Eigen::Vector2f((px.x - K(2)) / K(0), (px.y - K(5)) / K(4));
 	}
 
-	static inline cv::Point2f metric2Pixel(Eigen::Matrix<ScalarType, 3, 3> K const Eigen::Vector2f pos){
+	static inline cv::Point2f metric2Pixel(Eigen::Matrix<ScalarType, 3, 3> K, Eigen::Vector2f pos){
 		return cv::Point2f(pos.x()*K(0) + K(2), pos.y()*K(4) + K(5));
+	}
+
+	/*
+	 * convert [u,v,zinv] <--> [x,y,z]
+	 */
+	static inline Eigen::Matrix<ScalarType, 3, 1> bearingAndZinv2Point(Eigen::Matrix<ScalarType, 3, 1> mu){
+		mu(2) = 1.0/mu(2);
+		mu(0) = mu(2)*mu(0);
+		mu(1) = mu(2)*mu(1);
+		return mu;
+	}
+	/*
+	 * from
+	 */
+	static inline Eigen::Matrix<ScalarType, 3, 1> point2bearingAndzinv(Eigen::Matrix<ScalarType, 3, 1> point){
+		return Feature::bearingAndZinv2Point(point); // this function works both ways
 	}
 
 };

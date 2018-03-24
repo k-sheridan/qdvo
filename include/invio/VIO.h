@@ -88,7 +88,7 @@ public:
 
 	void imu_callback(const sensor_msgs::ImuConstPtr& msg);
 
-	void fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType, 3, 1>& acc, Eigen::Matrix<ScalarType, 3, 1>& gyr, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>&  gyro_cov);
+	void fixImuMessage(sensor_msgs::Imu& msg, Eigen::Matrix<ScalarType, 3, 1>& acc, Eigen::Matrix<ScalarType, 3, 1>& gyr, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>&  gyro_cov);
 
 	void applyAllNewIMUMeasurements();
 

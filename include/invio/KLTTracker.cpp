@@ -25,37 +25,38 @@ KLTTracker::~KLTTracker()
  * the initial version of this code is not vectorized by me and ideally gets auto-vectorized by the compiler
  *
  * all inputs and outputs are in homogenous metric coordinates
+ *
+ * NOTE:
+ * for best results the cf should contain the maximum likelihood predicted pose
  */
-void KLTTracker::findNewFeaturePositions(const Frame& lf, const Frame& cf, const std::vector<Eigen::Vector2f>& previous_feature_positions,
-		const std::list<Feature>& estimated_new_feature_positions, std::vector<Eigen::Vector2f>& measured_positions,
-		std::vector<Eigen::Matrix2f>& estimated_uncertainty, std::vector<bool>& passed)
+void KLTTracker::findNewFeaturePositions(const Frame& lf, Frame& cf)
 {
 	// for now I use the opencv built in klt tracker with custom uncertainty estimation
-	this->findNewFeaturePositionsOpenCV(lf, cf, previous_feature_positions, estimated_new_feature_positions, measured_positions, estimated_uncertainty, passed);
+	this->findNewFeaturePositionsOpenCV(lf, cf);
 }
 
 /*
  * uses the built in opencv klt tracker and estimates the uncertainty of the results
  */
-void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, const Frame& cf, const std::vector<Eigen::Vector2f>& previous_feature_positions,
-		const std::list<Feature>& estimated_new_feature_positions, std::vector<Eigen::Vector2f>& measured_positions,
-		std::vector<Eigen::Matrix2f>& estimated_uncertainty, std::vector<bool>& passed)
+void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 {
 
 	std::vector<cv::Point2f> prev_fts, new_fts;
 	std::vector<uchar> status; // status vector for each point
 	cv::Mat error; // error vector for each point
 
+	ROS_ASSERT(cf.features.size() == lf.features.size());
 
-	ROS_DEBUG_STREAM(previous_feature_positions.size() << " , " << estimated_new_feature_positions.size());
-	ROS_ASSERT(previous_feature_positions.size() == estimated_new_feature_positions.size());
 	//load the vectors
-	for(auto e : previous_feature_positions){
-		prev_fts.push_back(Feature::metric2Pixel(lf, e));
+	for(auto e : lf.features){
+		prev_fts.push_back(e.px);
 
 	}
-	for(auto e : estimated_new_feature_positions){
-		new_fts.push_back(e.getPixel(cf));
+	for(auto e : cf.features){
+		// essentially this projects the feature into this frame's predicted pose
+		cv::Point2f px_prediction = Feature::metric2Pixel(cf.K, Feature::point2bearingAndzinv(e.projectFeature(cf.pose)).block<2, 1>(0, 0));
+
+		new_fts.push_back(px_prediction);
 	}
 
 	cv::calcOpticalFlowPyrLK(lf.img, cf.img, prev_fts, new_fts,
@@ -63,35 +64,21 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, const Frame& cf,
 			cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
 					30, 0.01), cv::OPTFLOW_USE_INITIAL_FLOW, KLT_MIN_EIGEN);
 
-	//estimate the covariance of each measurement
-	//transform and write the results
-	passed.resize(new_fts.size());
-	estimated_uncertainty.resize(new_fts.size());
-	measured_positions.resize(new_fts.size());
 
-	for(size_t i = 0; i < new_fts.size(); i++){
-		if(status.at(i) == 1 && !(new_fts[i].x < KILL_PAD || new_fts[i].y < KILL_PAD || cf.img.cols - new_fts[i].x < KILL_PAD || cf.img.rows - new_fts[i].y < KILL_PAD)){
-			passed[i] = (true);
-			estimated_uncertainty[i] = (this->estimateUncertainty(cf, new_fts.at(i)));
-
-			// convert the uncertainty measurement to metric
-			float scale = pow(1.0/cf.K(0, 0), 2);
-			estimated_uncertainty[i](0, 0) *= scale;
-			estimated_uncertainty[i](0, 1) *= scale;
-			scale = pow(1.0/cf.K(1, 1), 2);
-			estimated_uncertainty[i](1, 1) *= scale;
-			estimated_uncertainty[i](1, 0) *= scale;
-
-			measured_positions[i] = Feature::pixel2Metric(cf, new_fts.at(i));
+	// set the pixel position measurement
+	int i = 0;
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end(); it++){
+		// check if the feature was flowed properly
+		if(status.at(i)){
+			it->px = new_fts.at(i);
 		}
 		else
 		{
-			passed[i] = (false);
-			estimated_uncertainty[i] = (Eigen::Matrix2f::Zero());
+			// delete this feature because it has not been successfully flowed
+			cf.features.erase(it);
+			it++;
 		}
 	}
-
-
 }
 
 /*

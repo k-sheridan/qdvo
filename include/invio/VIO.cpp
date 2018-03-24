@@ -163,12 +163,15 @@ void VIO::addFrame(Frame f) {
 		//update the frame's position estimate with the predicted
 		this->frame_buffer.front().pose = this->state_estimator.mu.true_pose;
 
-		if(this->state_estimator.features.size()) // run update if we have enough features
+		if(this->frame_buffer.front().features.size() > MINIMUM_TRACKABLE_FEATURES) // run update if we have enough features
 		{
 			// attempt to flow features into the next frame if there are features
 			// then perform iterative pose update
 			// then apply depth update
 			this->applyImageUpdate(this->frame_buffer.at(1), this->frame_buffer.front());
+		}
+		else{
+			ROS_WARN("not enough features to estimate motion visually");
 		}
 
 		this->replenishFeatures((this->frame_buffer.front())); // try to get more features if needed
@@ -210,12 +213,11 @@ void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
 	//apply all un applied imu messages
 	this->applyAllNewIMUMeasurements();
 
-	std::deque<IMUUpdate>::iterator chosen_state = this->imu_update_buffer.back(); // by default the chose state
+	std::deque<IMUUpdate>::iterator chosen_state = this->imu_update_buffer.end()-1; // by default the chose state
 
 	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
-		if((t_next - *it.t).toSec() < 0){
+		if((t_next - it->t).toSec() < 0){
 			ROS_ASSERT(it != this->imu_update_buffer.begin()); // this can't be the first updated state in the buffer
-			ROS_ASSERT();
 
 			// the last iterator is the chosen state
 			chosen_state = it;
@@ -223,13 +225,17 @@ void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
 	}
 
 	// set the new state estimate
-	this->state_estimator.mu = *chosen_state.mu;
-	this->state_estimator.t = *chosen_state.t;
-	this->state_estimator.Sigma = *chosen_state.Sigma;
+	this->state_estimator.mu = chosen_state->mu;
+	this->state_estimator.t = chosen_state->t;
+	this->state_estimator.Sigma = chosen_state->Sigma;
 
-	//TODO remove old messages
+	//erase old imu_messages
+	this->imu_update_buffer.erase(this->imu_update_buffer.begin(), chosen_state);
 
-	//TODO set all next messages as applied
+	//set all next messages as applied
+	for(auto& e : this->imu_update_buffer){
+		e.applied = false;
+	}
 
 }
 
@@ -319,7 +325,7 @@ void VIO::publishInsight(Frame& f)
 	{
 
 		//ROS_DEBUG_STREAM(e.getPixel(f));
-		cv::drawMarker(img, e.getPixel(f), cv::Scalar(0, 255, 0), cv::MARKER_SQUARE, 22, 1);
+		cv::drawMarker(img, e.px, cv::Scalar(0, 255, 0), cv::MARKER_SQUARE, 22, 1);
 
 		//ROS_DEBUG_STREAM("plotting covariance in pixels: " << this->state_estimator.getMetric2PixelMap(f.K)*this->state_estimator.getFeatureHomogenousCovariance(i)*this->state_estimator.getMetric2PixelMap(f.K).transpose());
 		//Eigen::SparseMatrix<float> J = this->state_estimator.getMetric2PixelMap(f.K);
@@ -431,7 +437,7 @@ void VIO::publishPoints(Frame& f)
 	for(auto e : f.features)
 	{
 
-		Eigen::Vector3f p_in_f = e.getPoint();
+		Eigen::Vector3f p_in_f = Feature::bearingAndZinv2Point(e.mu);
 
 		p_in_f(0) *= p_in_f(2);
 		p_in_f(1) *= p_in_f(2);
@@ -442,7 +448,7 @@ void VIO::publishPoints(Frame& f)
 		pt.y = p_in_f.y();
 		pt.z = p_in_f.z();
 
-		ch.values.push_back(f.img.at<uchar>(e.getPixel(f)));
+		ch.values.push_back(f.img.at<uchar>(e.px));
 
 		msg.points.push_back(pt);
 

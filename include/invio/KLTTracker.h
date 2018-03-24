@@ -85,13 +85,9 @@ public:
 	KLTTracker();
 	virtual ~KLTTracker();
 
-	void findNewFeaturePositions(const Frame& lf, const Frame& cf, const std::vector<Eigen::Vector2f>& previous_feature_positions,
-			const std::list<Feature>& estimated_new_feature_positions, std::vector<Eigen::Vector2f>& measured_positions,
-			std::vector<Eigen::Matrix2f>& estimated_uncertainty, std::vector<bool>& passed);
+	void findNewFeaturePositions(const Frame& lf, Frame& cf);
 
-	void findNewFeaturePositionsOpenCV(const Frame& lf, const Frame& cf, const std::vector<Eigen::Vector2f>& previous_feature_positions,
-				const std::list<Feature>& estimated_new_feature_positions, std::vector<Eigen::Vector2f>& measured_positions,
-				std::vector<Eigen::Matrix2f>& estimated_uncertainty, std::vector<bool>& passed);
+	void findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf);
 
 	Eigen::Matrix2f estimateUncertainty(const Frame& cf, cv::Point2f mu);
 

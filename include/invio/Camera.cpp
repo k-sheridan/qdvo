@@ -76,7 +76,7 @@ void VIO::replenishFeatures(Frame& f) {
 		//image which is used to check if a close feature already exists
 		cv::Mat checkImg = cv::Mat::zeros(img.size(), CV_8U);
 		for (auto& e : f.features) {
-			cv::circle(checkImg, e.getPixel(f), MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
+			cv::circle(checkImg, e.px, MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
 		}
 
 		for (int i = 0; i < needed && (size_t)i < fast_kp.size(); i++) {
@@ -122,7 +122,7 @@ void VIO::replenishFeatures(Frame& f) {
 		}
 
 		//add the new features to the current state
-		f.addNewFeatures(new_features, f);
+		f.addFeatures(new_features);
 	}
 
 }

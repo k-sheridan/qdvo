@@ -4,9 +4,9 @@
 void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 	ROS_DEBUG_STREAM("got imu message: " << msg->header.stamp);
 
-	if(msg->t >= this->state_estimator.t){
+	if(msg->header.stamp >= this->state_estimator.t){
 
-		UpdatedState us;
+		IMUUpdate us;
 		us.msg = *msg; // store this message for potential later use
 		us.t = msg->header.stamp;
 
@@ -45,7 +45,7 @@ void VIO::applyAllNewIMUMeasurements(){
 void VIO::applyIMUUpdate(IMUUpdate& measurement){
   //update the state with this imu message
 	//check that this imu message is not from the past
-	ScalarType dt = (msg->header.stamp - this->state_estimator.t).toSec();
+	ScalarType dt = (measurement.msg.header.stamp - this->state_estimator.t).toSec();
   ROS_ASSERT(dt >= 0); // ensure that we don't update wiht an old measurement
 
   // run process if we need to
@@ -57,14 +57,14 @@ void VIO::applyIMUUpdate(IMUUpdate& measurement){
   Eigen::Matrix<ScalarType, 3, 3> accel_cov, gyro_cov;
   Eigen::Matrix<ScalarType, 3, 1> acc, gyr;
 
-  this->fixImuMessage(measurment.msg, acc, gyr, accel_cov, gyro_cov);
+  this->fixImuMessage(measurement.msg, acc, gyr, accel_cov, gyro_cov);
 
   this->state_estimator.imuUpdate(acc, gyr, accel_cov, gyro_cov, c2imu);
 
   //set the state and sigma for this update
-  measurment.Sigma = this->state_estimator.Sigma;
-  measurment.mu = this->state_estimator.mu;
-  measurment.applied = true;
+  measurement.Sigma = this->state_estimator.Sigma;
+  measurement.mu = this->state_estimator.mu;
+  measurement.applied = true;
 
   ROS_DEBUG("updated state with imu measurement");
 }
@@ -72,7 +72,7 @@ void VIO::applyIMUUpdate(IMUUpdate& measurement){
 /*
 * checks and corrects an IMU message and outputs the corrected evaluates
 */
-void VIO::fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType, 3, 1>& acc,
+void VIO::fixImuMessage(sensor_msgs::Imu& msg, Eigen::Matrix<ScalarType, 3, 1>& acc,
   Eigen::Matrix<ScalarType, 3, 1>& gyr, Eigen::Matrix<ScalarType, 3, 3>& accel_cov,
   Eigen::Matrix<ScalarType, 3, 3>&  gyro_cov){
     // fill the gyro covariance units: [rad/s]
@@ -84,7 +84,7 @@ void VIO::fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType,
 		}
 		else{
 
-			if(msg->angular_velocity_covariance.at(0) <= 0 || msg->angular_velocity_covariance.at(4) <= 0 || msg->angular_velocity_covariance.at(8) <= 0){
+			if(msg.angular_velocity_covariance.at(0) <= 0 || msg.angular_velocity_covariance.at(4) <= 0 || msg.angular_velocity_covariance.at(8) <= 0){
 				ROS_ERROR("gyro covariance broken ignoring gyro");
 				gyro_cov.setZero();
 				gyro_cov(0, 0) = 1e10;
@@ -93,7 +93,7 @@ void VIO::fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType,
 			}
 			else{
 				for(int i = 0; i < 9; i++){
-					gyro_cov(i) = msg->angular_velocity_covariance.at(i);
+					gyro_cov(i) = msg.angular_velocity_covariance.at(i);
 				}
 			}
 		}
@@ -106,7 +106,7 @@ void VIO::fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType,
 			accel_cov(2, 2) = ACCEL_VARIANCE;
 		}
 		else{
-			if(msg->linear_acceleration_covariance.at(0) <= 0 || msg->linear_acceleration_covariance.at(4) <= 0 || msg->linear_acceleration_covariance.at(8) <= 0){
+			if(msg.linear_acceleration_covariance.at(0) <= 0 || msg.linear_acceleration_covariance.at(4) <= 0 || msg.linear_acceleration_covariance.at(8) <= 0){
 				ROS_ERROR("gyro covariance broken ignoring accelerometer");
 				accel_cov.setZero();
 				accel_cov(0, 0) = 1e10;
@@ -115,11 +115,11 @@ void VIO::fixImuMessage(sensor_msgs::ImuConstPtr& msg, Eigen::Matrix<ScalarType,
 			}
 			else{
 				for(int i = 0; i < 9; i++){
-					accel_cov(i) = msg->linear_acceleration_covariance.at(i);
+					accel_cov(i) = msg.linear_acceleration_covariance.at(i);
 				}
 			}
 		}
 
-		acc << msg->linear_acceleration.x, msg->linear_acceleration.y, msg->linear_acceleration.z;
-		gyr << msg->angular_velocity.x, msg->angular_velocity.y, msg->angular_velocity.z;
+		acc << msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z;
+		gyr << msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z;
   }
