@@ -17,6 +17,8 @@
 
 //static defines
 #define BASE_STATE_SIZE 25
+#define VIO_PI 3.14159265359
+#define VIO_G 9.80665
 
 //types
 typedef float ScalarType;

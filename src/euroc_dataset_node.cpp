@@ -11,18 +11,60 @@
 
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
+#include <geometry_msgs/TransformStamped.h>
 
 #include <tf/transform_broadcaster.h>
 
+
+#define PI 3.1415
 
 ros::Publisher* cam0infopub;
 ros::Publisher* cam1infopub;
 ros::Subscriber* cam0sub;
 ros::Subscriber* cam1sub;
+ros::Subscriber* gtSub;
 
 tf::TransformBroadcaster* tfbr;
 
 tf::StampedTransform imu2cam0, imu2cam1;
+
+void gtCallback(const geometry_msgs::TransformStampedConstPtr& msg){
+
+	imu2cam1.stamp_ = msg->header.stamp;
+	tfbr->sendTransform(imu2cam1);
+
+	imu2cam0.stamp_ = msg->header.stamp;
+	tfbr->sendTransform(imu2cam0);
+
+	tf::StampedTransform base2vicon, world2vicon, base2imu;
+
+	base2vicon.child_frame_id_ = "base_link";
+	base2vicon.frame_id_ = "vicon";
+	base2vicon.setRotation(tf::Quaternion(0, 0, 0, 1));
+	base2vicon.setOrigin(tf::Vector3(0, 0, 0.1));
+	base2vicon.stamp_ = msg->header.stamp;
+
+	tfbr->sendTransform(base2vicon);
+
+	base2imu.child_frame_id_ = "imu4";
+	base2imu.frame_id_ = "base_link";
+	tf::Quaternion quat = tf::Quaternion(PI/2, 0, PI);
+	base2imu.setRotation(quat);
+	base2imu.setOrigin(tf::Vector3(0.1, 0, 0));
+	base2imu.stamp_ = msg->header.stamp;
+
+	tfbr->sendTransform(base2imu);
+
+	world2vicon.child_frame_id_ = "vicon";
+	world2vicon.frame_id_ = "world";
+
+	world2vicon.stamp_ = msg->header.stamp;
+
+	world2vicon.setRotation(tf::Quaternion(msg->transform.rotation.x, msg->transform.rotation.y, msg->transform.rotation.z, msg->transform.rotation.w));
+	world2vicon.setOrigin(tf::Vector3(msg->transform.translation.x, msg->transform.translation.y, msg->transform.translation.z));
+
+	tfbr->sendTransform(world2vicon);
+}
 
 void cam0callback(const sensor_msgs::ImageConstPtr& img){
 	ROS_INFO_STREAM(img->header.frame_id);
@@ -118,6 +160,7 @@ int main(int argc, char **argv)
 	R = tf::Matrix3x3(0.0125552670891, -0.999755099723, 0.0182237714554, 0.999598781151, 0.0130119051815, 0.0251588363115, -0.0253898008918, 0.0179005838253, 0.999517347078);
 	t = tf::Vector3(-0.0198435579556, 0.0453689425024, 0.00786212447038);
 
+
 	imu2cam1.setOrigin(t);
 	imu2cam1.setBasis(R);
 
@@ -125,25 +168,15 @@ int main(int argc, char **argv)
 	//subs and pubs
 	cam0sub = new ros::Subscriber(nh.subscribe("cam0/image_raw", 2, cam0callback));
 	cam1sub = new ros::Subscriber(nh.subscribe("cam1/image_raw", 2, cam1callback));
+	gtSub = new ros::Subscriber(nh.subscribe("vicon/firefly_sbx/firefly_sbx", 2, gtCallback));
 
 	cam0infopub = new ros::Publisher(nh.advertise<sensor_msgs::CameraInfo>("cam0/camera_info", 2));
 	cam1infopub = new ros::Publisher(nh.advertise<sensor_msgs::CameraInfo>("cam1/camera_info", 2));
 
 	tfbr = new tf::TransformBroadcaster();
 
-	ros::Rate loop_rate(100);
-	while(ros::ok()){
-		imu2cam1.stamp_ = ros::Time::now();
-		tfbr->sendTransform(imu2cam1);
-
-		imu2cam0.stamp_ = ros::Time::now();
-		tfbr->sendTransform(imu2cam0);
-
-		loop_rate.sleep();
-		ros::spinOnce();
-	}
+	ros::spin();
 
 
 	return 0;
 }
-

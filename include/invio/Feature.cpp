@@ -8,10 +8,10 @@
 #include "Feature.h"
 
 Feature::Feature() {
-
 }
 
 Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K){
+
 	this->px = pt;
 	Eigen::Matrix<ScalarType, 2, 1> bearing = Feature::pixel2Metric(K, pt);
 
@@ -27,6 +27,8 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 	this->Sigma << DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0, 0,
 								0, DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0,
 								0, 0, depth_variance;
+
+	ROS_DEBUG_STREAM("feature mu initially: " << this->mu.transpose());
 
 }
 

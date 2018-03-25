@@ -30,30 +30,49 @@ void StateEstimator::initializeState()
 	//this->Sigma.block<BASE_STATE_SIZE, BASE_STATE_SIZE>(0, 0).setZero(); //wipe the base state sigmas
 	this->Sigma.setZero(); // this should sufficiently reserve enough indices
 
-	this->Sigma(0, 0) = 0;
-	this->Sigma(1, 1) = 0;
-	this->Sigma(2, 2) = 0;
-	this->Sigma(3, 3) = 0;
-	this->Sigma(4, 4) = 0;
-	this->Sigma(5, 5) = 0;
-	this->Sigma(6, 6) = 0;
+	//derivative variances
+#define ZEROTH_VAR 0
+#define FIRST_VAR 3*3
+#define SECOND_VAR 3*3
 
-	this->Sigma(7, 7) = 30;
-	this->Sigma(8, 8) = 30;
-	this->Sigma(9, 9) = 30;
-	this->Sigma(10, 10) = 30;
-	this->Sigma(11, 11) = 30;
-	this->Sigma(12, 12) = 30;
-	this->Sigma(13, 13) = 30;
-	this->Sigma(14, 14) = 30;
-	this->Sigma(15, 15) = 30;
+#define PHI_VAR VIO_PI*VIO_PI
+#define BIAS_VAR 1.5*1.5
+#define LAMBDA_VAR 2*2
 
-	this->Sigma(16, 16) = 0.5; // somewhat certain about the biases
-	this->Sigma(17, 17) = 0.5;
-	this->Sigma(18, 18) = 0.5;
-	this->Sigma(19, 19) = 0.5;
-	this->Sigma(20, 20) = 0.5;
-	this->Sigma(21, 21) = 0.5;
+	this->Sigma(POSX_INDEX, POSX_INDEX) = ZEROTH_VAR;
+	this->Sigma(POSX_INDEX+1, POSX_INDEX+1) = ZEROTH_VAR;
+	this->Sigma(POSX_INDEX+2, POSX_INDEX+2) = ZEROTH_VAR;
+
+	this->Sigma(THETAX_INDEX, THETAX_INDEX) = ZEROTH_VAR;
+	this->Sigma(THETAX_INDEX+1, THETAX_INDEX+1) = ZEROTH_VAR;
+	this->Sigma(THETAX_INDEX+2, THETAX_INDEX+2) = ZEROTH_VAR;
+
+	this->Sigma(VELX_INDEX, VELX_INDEX) = FIRST_VAR;
+	this->Sigma(VELX_INDEX+1, VELX_INDEX+1) = FIRST_VAR;
+	this->Sigma(VELX_INDEX+2, VELX_INDEX+2) = FIRST_VAR;
+
+	this->Sigma(OMEGAX_INDEX, OMEGAX_INDEX) = FIRST_VAR;
+	this->Sigma(OMEGAX_INDEX+1, OMEGAX_INDEX+1) = FIRST_VAR;
+	this->Sigma(OMEGAX_INDEX+2, OMEGAX_INDEX+2) = FIRST_VAR;
+
+	this->Sigma(ACCELX_INDEX, ACCELX_INDEX) = SECOND_VAR;
+	this->Sigma(ACCELX_INDEX+1, ACCELX_INDEX+1) = SECOND_VAR;
+	this->Sigma(ACCELX_INDEX+2, ACCELX_INDEX+2) = SECOND_VAR;
+
+	this->Sigma(PHIX_INDEX, PHIX_INDEX) = PHI_VAR;
+	this->Sigma(PHIX_INDEX+1, PHIX_INDEX+1) = PHI_VAR;
+	this->Sigma(PHIX_INDEX+2, PHIX_INDEX+2) = PHI_VAR;
+
+	this->Sigma(ACCELBIASX_INDEX, ACCELBIASX_INDEX) = BIAS_VAR;
+	this->Sigma(ACCELBIASX_INDEX+1, ACCELBIASX_INDEX+1) = BIAS_VAR;
+	this->Sigma(ACCELBIASX_INDEX+2, ACCELBIASX_INDEX+2) = BIAS_VAR;
+
+	this->Sigma(GYROBIASX_INDEX, GYROBIASX_INDEX) = BIAS_VAR;
+	this->Sigma(GYROBIASX_INDEX+1, GYROBIASX_INDEX+1) = BIAS_VAR;
+	this->Sigma(GYROBIASX_INDEX+2, GYROBIASX_INDEX+2) = BIAS_VAR;
+
+	this->Sigma(LAMBDA_INDEX, LAMBDA_INDEX) = LAMBDA_VAR;
+
 
 }
 
@@ -81,6 +100,11 @@ void StateEstimator::process(ScalarType dt){
 	// zero the tangent space again
 	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
 	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
+
+	// increment the time
+	this->t += ros::Duration(dt);
+
+	ROS_DEBUG_STREAM("ran processwith dt: " << dt << " t: " << this->t);
 }
 
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){

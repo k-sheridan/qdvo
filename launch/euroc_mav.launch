@@ -6,11 +6,9 @@
     
     <node name="dataset_fixer" pkg="invio" type="euroc_dataset_fixer"/>
     
-    <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0.05 0 0 0 base_link imu4 20" />
-    
     <node name="image_proc" pkg="image_proc" type="image_proc" ns="cam0"/>
     
-    <!--<node pkg="rviz" type="rviz" name="invio_rviz" args="-d $(find invio)/rviz/invio.rviz"/>-->
+    <node pkg="rviz" type="rviz" name="invio_rviz" args="-d $(find invio)/rviz/invio.rviz"/>
 
 	<node pkg="image_view" type="image_view" name="image_view" args="image:=/invio/insight"/>
 

@@ -124,6 +124,32 @@ VIO::VIO() {
 	}
 	ROS_INFO("got transform");
 
+	/*
+	 * this section allows the visual odometry algorithm to initialize with external information
+	 * in this case the world to camera transform
+	 */
+
+	tf::StampedTransform w2c_st;
+	ROS_INFO_STREAM("WAITING FOR TANSFORM FROM " << WORLD_FRAME << " TO " << CAMERA_FRAME);
+	if(this->tf_listener.waitForTransform(WORLD_FRAME, CAMERA_FRAME, ros::Time(0), ros::Duration(10))){
+		try {
+			this->tf_listener.lookupTransform(WORLD_FRAME, CAMERA_FRAME,
+					ros::Time(0), w2c_st);
+		} catch (tf::TransformException& e) {
+			ROS_WARN_STREAM(e.what());
+		}
+	}
+	else
+	{
+		ROS_FATAL("COULD NOT GET TRANSFORM - USING IDENTITY TRANSFORM");
+		w2c_st.setOrigin(tf::Vector3(0,0,0));
+		w2c_st.setRotation(tf::Quaternion(0,0,0,1));
+		return;
+	}
+	ROS_INFO("got transform");
+
+	//set the state estimate to the default camera position
+	this->state_estimator.mu.true_pose = Sophus::SE3<ScalarType>(Eigen::Quaternion<ScalarType>(w2c_st.getRotation().w(), w2c_st.getRotation().x(), w2c_st.getRotation().y(), w2c_st.getRotation().z()), Eigen::Matrix<ScalarType, 3, 1>(w2c_st.getOrigin().x(), w2c_st.getOrigin().y(), w2c_st.getOrigin().z()));
 
 	// start the callbacks
 	ros::spin();
@@ -209,44 +235,6 @@ void VIO::addFrame(Frame f) {
 	this->removeExcessFrames(this->frame_buffer);
 }
 
-/*
-* finds the closest state behind this time, set it to the current state estimate, delete old the older messages
-* , and flag all of the following messages to not applied
-*/
-void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
-	// if there were no imu messages
-	if(!this->imu_update_buffer.size()){
-		return;
-	}
-
-	//apply all un applied imu messages
-	this->applyAllNewIMUMeasurements();
-
-	std::deque<IMUUpdate>::iterator chosen_state = this->imu_update_buffer.end()-1; // by default the chose state
-
-	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
-		if((t_next - it->t).toSec() < 0){
-			ROS_ASSERT(it != this->imu_update_buffer.begin()); // this can't be the first updated state in the buffer
-
-			// the last iterator is the chosen state
-			chosen_state = it-1;
-		}
-	}
-
-	// set the new state estimate
-	this->state_estimator.mu = chosen_state->mu;
-	this->state_estimator.t = chosen_state->t;
-	this->state_estimator.Sigma = chosen_state->Sigma;
-
-	//erase old imu_messages
-	this->imu_update_buffer.erase(this->imu_update_buffer.begin(), chosen_state);
-
-	//set all next messages as applied
-	for(auto& e : this->imu_update_buffer){
-		e.applied = false;
-	}
-
-}
 
 void VIO::removeExcessFrames(std::deque<Frame>& buffer)
 {
@@ -420,6 +408,15 @@ void VIO::publishOdometry(Frame& cf)
 	msg.pose.pose.position.z = temp.z();
 
 	//TODO add convariance computation
+	boost::array<double, 36> arr;
+	Eigen::Matrix<double, 6, 6> casted = this->state_estimator.Sigma.block<6, 6>(0, 0).cast<double>();
+	Eigen::Map<Eigen::Matrix<double, 6, 6>>( arr.data(), casted.rows(), casted.cols() ) =   casted;
+	msg.pose.covariance = arr;
+
+	boost::array<double, 36> arr2;
+	Eigen::Matrix<double, 6, 6> casted2 = this->state_estimator.Sigma.block<6, 6>(6, 6).cast<double>();
+	Eigen::Map<Eigen::Matrix<double, 6, 6>>( arr2.data(), casted2.rows(), casted2.cols() ) =   casted2;
+	msg.twist.covariance = arr2;
 
 	this->odom_pub.publish(msg); // publish
 
@@ -446,10 +443,9 @@ void VIO::publishPoints(Frame& f)
 	for(auto e : f.features)
 	{
 
-		Eigen::Vector3f p_in_f = Feature::bearingAndZinv2Point(e.mu);
+		ROS_DEBUG_STREAM("feature mu at point pub: " << e.mu.transpose());
 
-		p_in_f(0) *= p_in_f(2);
-		p_in_f(1) *= p_in_f(2);
+		Eigen::Vector3f p_in_f = Feature::bearingAndZinv2Point(e.mu);
 
 		geometry_msgs::Point32 pt;
 

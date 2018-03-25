@@ -62,7 +62,7 @@ public:
 
 	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		Eigen::Matrix<ScalarType, 2, 1> temp;
-		temp << ((px.x - K(2)) / K(0), (px.y - K(5)) / K(4));
+		temp << (px.x - K(2)) / K(0), (px.y - K(5)) / K(4);
 		return temp;
 	}
 

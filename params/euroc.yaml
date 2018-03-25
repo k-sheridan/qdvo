@@ -10,9 +10,9 @@ imu_topic: imu0
 imu_frame: imu4
 
 #-=-=-=-=-=-
-min_new_feature_dist: 25
+min_new_feature_dist: 40
 num_features: 200
-fast_threshold: 45
+fast_threshold: 60
 
 default_point_depth: 0.5
 default_point_depth_variance: 400

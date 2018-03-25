@@ -44,6 +44,8 @@ public:
 	StateEstimator();
 
 	struct State{
+		//note: lambda is the scale that the body frame acceleration undergoes to model the accelerometer measurement
+
 		//State: 6d twist, bdx, bdy, bdz, bwx, bwy, bwz, bax, bay, baz, phix, phiy, phiz, baccx, baccy, baccz, bgyrx, bgyry, bgyrz, lambda
 		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> mean;
 
@@ -51,27 +53,27 @@ public:
 
 		// this is the tangent space pose which coincides with the Sigma
 		// this is regularly transformed into the tangent space of the current pose
-		Eigen::Vector3f getLinearTwist(){return Eigen::Vector3f(mean(POSX_INDEX), mean(POSX_INDEX+1), mean(POSX_INDEX+2));}
-		Eigen::Vector3f getAngularTwist(){return Eigen::Vector3f(mean(THETAX_INDEX), mean(THETAX_INDEX+1), mean(THETAX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getLinearTwist(){return Eigen::Matrix<ScalarType, 3, 1>(mean(POSX_INDEX), mean(POSX_INDEX+1), mean(POSX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getAngularTwist(){return Eigen::Matrix<ScalarType, 3, 1>(mean(THETAX_INDEX), mean(THETAX_INDEX+1), mean(THETAX_INDEX+2));}
 
 		Sophus::SE3<ScalarType>::Tangent getTwist(){Eigen::Matrix<ScalarType, 6, 1> temp; temp << getLinearTwist(), getAngularTwist(); return temp;}
 
-		Eigen::Vector3f getVelocity(){return Eigen::Vector3f(mean(VELX_INDEX), mean(VELX_INDEX+1), mean(VELX_INDEX+2));}
-		Eigen::Vector3f getOmega(){return Eigen::Vector3f(mean(OMEGAX_INDEX), mean(OMEGAX_INDEX+1), mean(OMEGAX_INDEX+2));}
-		Eigen::Vector3f getAcceleration(){return Eigen::Vector3f(mean(ACCELX_INDEX), mean(ACCELX_INDEX+1), mean(ACCELX_INDEX+2));}
-		Eigen::Vector3f getPhi(){return Eigen::Vector3f(mean(PHIX_INDEX), mean(PHIX_INDEX+1), mean(PHIX_INDEX+2));}
-		Eigen::Vector3f getAccelBiases(){return Eigen::Vector3f(mean(ACCELBIASX_INDEX), mean(ACCELBIASX_INDEX+1), mean(ACCELBIASX_INDEX+2));}
-		Eigen::Vector3f getGyroBiases(){return Eigen::Vector3f(mean(GYROBIASX_INDEX), mean(GYROBIASX_INDEX+1), mean(GYROBIASX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getVelocity(){return Eigen::Matrix<ScalarType, 3, 1>(mean(VELX_INDEX), mean(VELX_INDEX+1), mean(VELX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getOmega(){return Eigen::Matrix<ScalarType, 3, 1>(mean(OMEGAX_INDEX), mean(OMEGAX_INDEX+1), mean(OMEGAX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getAcceleration(){return Eigen::Matrix<ScalarType, 3, 1>(mean(ACCELX_INDEX), mean(ACCELX_INDEX+1), mean(ACCELX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getPhi(){return Eigen::Matrix<ScalarType, 3, 1>(mean(PHIX_INDEX), mean(PHIX_INDEX+1), mean(PHIX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getAccelBiases(){return Eigen::Matrix<ScalarType, 3, 1>(mean(ACCELBIASX_INDEX), mean(ACCELBIASX_INDEX+1), mean(ACCELBIASX_INDEX+2));}
+		Eigen::Matrix<ScalarType, 3, 1> getGyroBiases(){return Eigen::Matrix<ScalarType, 3, 1>(mean(GYROBIASX_INDEX), mean(GYROBIASX_INDEX+1), mean(GYROBIASX_INDEX+2));}
 		double getLambda(){return mean(LAMBDA_INDEX);}
 
-		void setLinearTwist(Eigen::Vector3f in){const int i = POSX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setAngularTwist(Eigen::Vector3f in){const int i = THETAX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setVelocity(Eigen::Vector3f in){const int i = VELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setOmega(Eigen::Vector3f in){const int i = OMEGAX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setAcceleration(Eigen::Vector3f in){const int i = ACCELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setPhi(Eigen::Vector3f in){const int i = PHIX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setAccelBiases(Eigen::Vector3f in){const int i = ACCELBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
-		void setGyroBiases(Eigen::Vector3f in){const int i = GYROBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setLinearTwist(Eigen::Matrix<ScalarType, 3, 1> in){const int i = POSX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setAngularTwist(Eigen::Matrix<ScalarType, 3, 1> in){const int i = THETAX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setVelocity(Eigen::Matrix<ScalarType, 3, 1> in){const int i = VELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setOmega(Eigen::Matrix<ScalarType, 3, 1> in){const int i = OMEGAX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setAcceleration(Eigen::Matrix<ScalarType, 3, 1> in){const int i = ACCELX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setPhi(Eigen::Matrix<ScalarType, 3, 1> in){const int i = PHIX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setAccelBiases(Eigen::Matrix<ScalarType, 3, 1> in){const int i = ACCELBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
+		void setGyroBiases(Eigen::Matrix<ScalarType, 3, 1> in){const int i = GYROBIASX_INDEX; mean(i)=in.x(); mean(i+1)=in.y(); mean(i+2)=in.z();}
 		void setLambda(double in){mean(LAMBDA_INDEX) = in;}
 
 	} mu;
@@ -87,7 +89,7 @@ public:
 
 	State convolveState(State& last, ScalarType dt);
 
-	Eigen::Vector3f convolveFeatures(State& current_state, ScalarType dt);
+	Eigen::Matrix<ScalarType, 3, 1> convolveFeatures(State& current_state, ScalarType dt);
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(ScalarType dt);
 
