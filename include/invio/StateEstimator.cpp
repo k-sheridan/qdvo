@@ -239,19 +239,43 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
  */
 void StateEstimator::imuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
 
-	//measurement function must use angular velocity, phi, theta, accel.
-
-	//find the most recent IMU updated state to start from
+	//measurement function must use angular velocity, phi, theta, accel, lambda, biases. in total: 19 dof!!!
 
 }
 
 
-void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu){
+void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu){
 
 }
 
 // simply evaluates the nonlinear measurement function. used for numerical linearization
-void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, tf::Transform& c2imu){
+// order of z: [accel, gyro]
+// this is a very nonlinear and complex measurement function
+// it may need even more. It may need to estimate the imu_2_cam rotation
+void StateEstimator::imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu){
+
+	z_est.block<3, 1>(0, 0).noalias() = mu.getOmega().cross(mu.getOmega().cross(r_cam_2_imu)); // centripetal acceleration in cam frame
+	z_est.block<3, 1>(0, 0) = R_imu_2_cam * z_est.block<3, 1>(0, 0); // centripetal acceleration rotated into imu
+
+	Eigen::Matrix<ScalarType, 3, 1> temp;
+
+	temp << 0, 0, VIO_G;
+
+	temp = Sophus::SO3<ScalarType>::exp(mu.getPhi())*temp; // rotate the gravity vector into the camera frame
+
+	temp.noalias() += mu.getLambda() * mu.getAcceleration(); // add on the body frame acceleration scaled
+
+	temp = R_imu_2_cam * temp; // rotate this new acceleration vector into the imu frame
+
+	z_est.block<3, 1>(0, 0).noalias() += temp; // add on the accel
+
+	z_est.block<3, 1>(0, 0).noalias() += mu.getAccelBiases(); // tack on the biases
+
+	// finally compute the angular velocity
+
+	z_est.block<3, 1>(3, 0).noalias() = R_imu_2_cam * mu.getOmega();
+
+	z_est.block<3, 1>(3, 0).noalias() += mu.getGyroBiases(); // tack on the biases
 
 }
 
