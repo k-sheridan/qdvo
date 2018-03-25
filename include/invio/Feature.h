@@ -53,19 +53,21 @@ public:
 
 
 	Feature();
-	Feature(cv::Point2f pt, float depth, float depth_variance, Eigen::Matrix<ScalarType, 3, 3> K);
+	Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K);
 	virtual ~Feature();
 
 
 	Eigen::Matrix<ScalarType, 3, 1> projectFeature(Sophus::SE3<ScalarType> into_frame);
 
 
-	static inline Eigen::Vector2f pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
-		return Eigen::Vector2f((px.x - K(2)) / K(0), (px.y - K(5)) / K(4));
+	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
+		Eigen::Matrix<ScalarType, 2, 1> temp;
+		temp << ((px.x - K(2)) / K(0), (px.y - K(5)) / K(4));
+		return temp;
 	}
 
-	static inline cv::Point2f metric2Pixel(Eigen::Matrix<ScalarType, 3, 3> K, Eigen::Vector2f pos){
-		return cv::Point2f(pos.x()*K(0) + K(2), pos.y()*K(4) + K(5));
+	static inline cv::Point2f metric2Pixel(Eigen::Matrix<ScalarType, 3, 3> K, Eigen::Matrix<ScalarType, 2, 1> bearing){
+		return cv::Point2f(bearing.x()*K(0) + K(2), bearing.y()*K(4) + K(5));
 	}
 
 	/*

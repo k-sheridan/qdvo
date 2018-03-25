@@ -62,11 +62,11 @@ target_link_libraries(vioParams ${catkin_LIBRARIES})
 add_library(vioFeature include/invio/Feature.cpp)
 target_link_libraries(vioFeature ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams)
 
-add_library(vioFrame include/invio/Frame.cpp)
-target_link_libraries(vioFrame ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature)
-
 add_library(vio_depthSolver include/invio/DepthSolver.cpp)
-target_link_libraries(vio_depthSolver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioFrame)
+target_link_libraries(vio_depthSolver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature)
+
+add_library(vioFrame include/invio/Frame.cpp)
+target_link_libraries(vioFrame ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vio_depthSolver)
 
 add_library(vio_state_estimator include/invio/StateEstimator.cpp)
 target_link_libraries(vio_state_estimator ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vio_depthSolver)

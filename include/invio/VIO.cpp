@@ -150,11 +150,20 @@ void VIO::addFrame(Frame f) {
 
 	else // we have atleast 1 frame in the buffer
 	{
+		// copy over the features, candidates and pose from the last frame
+		f.candidates = this->frame_buffer.front().candidates;
+		f.features = this->frame_buffer.front().features;
+		f.pose = this->frame_buffer.front().pose;
 
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
 
+		//revert the state estimate back if necessary due to more recent IMU measurement updates
+		this->revertStateBackToClosestIMUUpdate(f.t);
+
 		//set the predicted pose of the current frame
 		float dt = (f.t - this->state_estimator.t).toSec();
+
+		ROS_DEBUG_STREAM("processing with dt: " << dt);
 
 		ROS_ASSERT(dt >= 0);
 		this->state_estimator.process(dt);
@@ -220,7 +229,7 @@ void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
 			ROS_ASSERT(it != this->imu_update_buffer.begin()); // this can't be the first updated state in the buffer
 
 			// the last iterator is the chosen state
-			chosen_state = it;
+			chosen_state = it-1;
 		}
 	}
 

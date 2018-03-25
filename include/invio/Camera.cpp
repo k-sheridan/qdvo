@@ -29,6 +29,7 @@ void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
 void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 
 	//TODO track old features
+	tracker.findNewFeaturePositions(lf, cf);
 
 	//TODO run iterative update
 
@@ -51,9 +52,9 @@ void VIO::replenishFeatures(Frame& f) {
 		img = f.img;
 	}
 
-	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size());
+	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size() + f.candidates.size());
 
-	if (f.features.size() < (size_t)NUM_FEATURES) {
+	if (f.features.size() + f.candidates.size() < (size_t)NUM_FEATURES) {
 
 		std::vector<cv::Point2f> new_features;
 
@@ -123,6 +124,11 @@ void VIO::replenishFeatures(Frame& f) {
 
 		//add the new features to the current state
 		f.addFeatures(new_features);
+
+		ROS_WARN("bug right here in camera.cpp");
+		f.convertCandidatesToFeatures();
+
+
 	}
 
 }

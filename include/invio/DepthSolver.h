@@ -14,18 +14,10 @@
 
 
 #include <Params.h>
-#include <Frame.h>
 #include <Feature.h>
 
 class DepthSolver {
 public:
-
-	// the state of the feature at the last observation
-	Sophus::SE3<ScalarType> first_observation_pose_inv;
-	Eigen::Matrix<ScalarType, 2, 1> first_bearing;
-	ScalarType last_depth_inv;
-
-	cv::Mat reference_patch; // a template of the feature
 
 	bool solved; // is the inverse depth accurate enough for integration into BA
 

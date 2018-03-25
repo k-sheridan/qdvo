@@ -10,6 +10,8 @@
     
     <node name="image_proc" pkg="image_proc" type="image_proc" ns="cam0"/>
     
-    <node pkg="rviz" type="rviz" name="invio_rviz" args="-d $(find invio)/rviz/invio.rviz"/>
+    <!--<node pkg="rviz" type="rviz" name="invio_rviz" args="-d $(find invio)/rviz/invio.rviz"/>-->
+
+	<node pkg="image_view" type="image_view" name="image_view" args="image:=/invio/insight"/>
 
 </launch>

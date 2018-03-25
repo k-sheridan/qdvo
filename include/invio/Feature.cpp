@@ -11,7 +11,7 @@ Feature::Feature() {
 
 }
 
-Feature::Feature(cv::Point2f pt, float depth, float depth_variance, Eigen::Matrix<ScalarType, 3, 3> K){
+Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K){
 	this->px = pt;
 	Eigen::Matrix<ScalarType, 2, 1> bearing = Feature::pixel2Metric(K, pt);
 

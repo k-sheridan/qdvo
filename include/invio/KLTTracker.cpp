@@ -41,11 +41,13 @@ void KLTTracker::findNewFeaturePositions(const Frame& lf, Frame& cf)
 void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 {
 
+	ROS_ASSERT(cf.features.size() == lf.features.size());
+
+	if(!lf.features.size()){return;}
+
 	std::vector<cv::Point2f> prev_fts, new_fts;
 	std::vector<uchar> status; // status vector for each point
 	cv::Mat error; // error vector for each point
-
-	ROS_ASSERT(cf.features.size() == lf.features.size());
 
 	//load the vectors
 	for(auto e : lf.features){
@@ -62,12 +64,19 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 	cv::calcOpticalFlowPyrLK(lf.img, cf.img, prev_fts, new_fts,
 			status, error, cv::Size(WINDOW_SIZE, WINDOW_SIZE), MAX_PYRAMID_LEVEL,
 			cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
-					30, 0.01), cv::OPTFLOW_USE_INITIAL_FLOW, KLT_MIN_EIGEN);
+					30, 0.01), 0, KLT_MIN_EIGEN);
 
+/*	cv::calcOpticalFlowPyrLK(lf.img, cf.img, prev_fts, new_fts,
+				status, error, cv::Size(WINDOW_SIZE, WINDOW_SIZE), MAX_PYRAMID_LEVEL,
+				cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
+						30, 0.01), cv::OPTFLOW_USE_INITIAL_FLOW, KLT_MIN_EIGEN);*/
+
+
+	int lost_features = 0;
 
 	// set the pixel position measurement
 	int i = 0;
-	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end(); it++){
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end() && i < status.size(); it++){
 		// check if the feature was flowed properly
 		if(status.at(i)){
 			it->px = new_fts.at(i);
@@ -75,10 +84,13 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 		else
 		{
 			// delete this feature because it has not been successfully flowed
-			cf.features.erase(it);
-			it++;
+			it = cf.features.erase(it);
+			lost_features++;
 		}
+		i++;
 	}
+
+	ROS_DEBUG_STREAM("lost " << lost_features << " features during klt");
 }
 
 /*
