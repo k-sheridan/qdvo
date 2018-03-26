@@ -68,7 +68,7 @@ target_link_libraries(vio_depthSolver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${
 add_library(vioFrame include/invio/Frame.cpp)
 target_link_libraries(vioFrame ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vio_depthSolver)
 
-add_library(vio_state_estimator include/invio/StateEstimator.cpp)
+add_library(vio_state_estimator include/invio/StateEstimator.cpp include/invio/InertialUpdate.cpp)
 target_link_libraries(vio_state_estimator ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vio_depthSolver)
 
 add_library(klt_tracker include/invio/KLTTracker.cpp)

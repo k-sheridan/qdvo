@@ -26,6 +26,7 @@ void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 	// apply any unused imu messages
 	this->applyAllNewIMUMeasurements();
 
+	this->publishOdometry();
 }
 
 /*

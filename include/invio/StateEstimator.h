@@ -39,6 +39,8 @@
 #define GYROBIASX_INDEX 21
 #define LAMBDA_INDEX 24
 
+#define DELTA (ScalarType)1e-3
+
 class StateEstimator {
 public:
 	StateEstimator();
@@ -95,12 +97,29 @@ public:
 
 	void updateWithTrackedFeatures(Frame& cf);
 
-	void imuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
+
+	// gyro update functions
+	Eigen::Matrix<ScalarType, 3, BASE_STATE_SIZE> gyroMeasurementMap(Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
+
+	Eigen::Matrix<ScalarType, 3, 1> gyroMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
+
+	void gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
+
+
+	// full imu update
+	void fullImuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu);
 
 	void imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, BASE_STATE_SIZE>& H, Eigen::Matrix<ScalarType, 6, 1>& z_est, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu);
-	void imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 6, 1>& z_est, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu);
+
+	Eigen::Matrix<ScalarType, 6, 1> imuMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu, Eigen::Matrix<ScalarType, 3, 1> G_transformed);
+
+	Eigen::Matrix<ScalarType, 3, 1> accelMeasurementFromState(StateEstimator::State& mu, Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu, Eigen::Matrix<ScalarType, 3, 1> gravity);
+
+	Eigen::Matrix<ScalarType, 3, 1> numDiffAccel(StateEstimator::State& mean, int index,  Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam, Eigen::Matrix<ScalarType, 3, 1> r_cam_2_imu, Eigen::Matrix<ScalarType, 3, 1> G_transformed);
+	Eigen::Matrix<ScalarType, 3, 1> numDiffGyro(StateEstimator::State& mean, int index,  Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
 
 	/*
+	Eigen::Matrix<ScalarType, 6, 1> StateEstimator::numDiffAccel(StateEstimator::State& mean, int index,  Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
 	 * jacobian which takes a small twist and gives a pixel position change
 	 */
 	inline static void jacobian_xyz2uv(

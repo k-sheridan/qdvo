@@ -183,7 +183,11 @@ void VIO::addFrame(Frame f) {
 
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
 
-		//revert the state estimate back if necessary due to more recent IMU measurement updates
+		//TEMP
+		this->applyAllNewIMUMeasurements();
+		this->imu_update_buffer.clear();
+
+		/*//revert the state estimate back if necessary due to more recent IMU measurement updates
 		this->revertStateBackToClosestIMUUpdate(f.t);
 
 		//set the predicted pose of the current frame
@@ -195,7 +199,7 @@ void VIO::addFrame(Frame f) {
 		this->state_estimator.process(dt);
 		this->state_estimator.t = f.t;
 
-		//update the frame's position estimate with the predicted
+*/		//update the frame's position estimate with the predicted
 		this->frame_buffer.front().pose = this->state_estimator.mu.true_pose;
 
 		if(this->frame_buffer.front().features.size() > MINIMUM_TRACKABLE_FEATURES) // run update if we have enough features
@@ -224,7 +228,7 @@ void VIO::addFrame(Frame f) {
 	}
 
 	// publish odometry
-	this->publishOdometry(this->frame_buffer.front());
+	this->publishOdometry();
 
 	//publish the mature 3d points
 	this->publishPoints(this->frame_buffer.front());
@@ -375,7 +379,7 @@ void VIO::publishInsight(Frame& f)
 	ROS_DEBUG("end publish");
 }
 
-void VIO::publishOdometry(Frame& cf)
+void VIO::publishOdometry()
 {
 	nav_msgs::Odometry msg;
 	static tf::TransformBroadcaster br;
@@ -423,7 +427,7 @@ void VIO::publishOdometry(Frame& cf)
 
 	tf::Transform currentPose = tf::Transform(tf::Quaternion(quat.w(), quat.x(), quat.y(), quat.z()), tf::Vector3(temp.x(), temp.y(), temp.z()));
 
-	br.sendTransform(tf::StampedTransform(currentPose, cf.t, WORLD_FRAME, ODOM_FRAME));
+	br.sendTransform(tf::StampedTransform(currentPose, this->state_estimator.t, WORLD_FRAME, ODOM_FRAME));
 
 }
 

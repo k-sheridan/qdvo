@@ -5,7 +5,7 @@ camera_topic: cam0/image_rect
 use_imu: true
 use_custom_imu_variances: true
 gyro_variance: 0.00030461741
-accel_variance: 0.25
+accel_variance: 1
 imu_topic: imu0
 imu_frame: imu4
 

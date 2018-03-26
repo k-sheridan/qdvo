@@ -110,7 +110,7 @@ public:
 
 	void publishPoints(Frame& f);
 
-	void publishOdometry(Frame& cf);
+	void publishOdometry();
 
 	cv::RotatedRect getErrorEllipse(double chisquare_val, cv::Point2f mean, Eigen::Matrix2f covmat);
 };

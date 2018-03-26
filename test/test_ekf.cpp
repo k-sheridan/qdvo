@@ -10,6 +10,7 @@
 
 #include "Params.h"
 #include "../include/invio/VIO.h"
+#include <StateEstimator.h>
 
 
 int main(int argc, char **argv)
@@ -37,9 +38,29 @@ int main(int argc, char **argv)
 	ROS_ASSERT(A == (B.block<2, 2>(0, 0)));
 	ROS_INFO_STREAM("A: \n" << A << "\n vs B: \n" << B);
 
-	// test basic ekf functionality
-
+	// test imu measurement function
+	StateEstimator se;
 	
+	StateEstimator::State mu;
+	mu.mean.setZero();
+	mu.setLambda(1);
+	mu.setOmega(Eigen::Matrix<ScalarType, 3, 1>(1, 2, 3));
+
+	Eigen::Matrix<float, 3, 3> R;
+	R.setIdentity();
+
+	Eigen::Matrix<float, 3, 1> r;
+	r << 0.1, 0, 0;
+
+	Eigen::Matrix<float, 6, BASE_STATE_SIZE> H;
+	Eigen::Matrix<float, 6, 1> z;
+
+	se.imuMeasurementFromState(mu, H, z, R, r);
+
+	ROS_INFO_STREAM("z: " << z.transpose());
+	ROS_INFO_STREAM("H: " << H.transpose());
+
+
 	return 0;
 }
 
