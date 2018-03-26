@@ -7,15 +7,72 @@
 
 #include <StateEstimator.h>
 
-void StateEstimator::gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gryo, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
+void StateEstimator::gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gyro, Eigen::Matrix<ScalarType, 3, 3>& gyro_cov, tf::Transform& c2imu){
+	tf::Quaternion q = c2imu.getRotation().inverse();
+	Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam = Eigen::Quaternion<ScalarType>(q.w(), q.x(), q.y(), q.z()).matrix();
 
+	// perform EKF update
+	Eigen::Matrix<ScalarType, 3, 1> z_est;
+	Eigen::Matrix<ScalarType, 3, BASE_STATE_SIZE> H = this->gyroMeasurementMap(R_imu_2_cam);
+
+	z_est = this->gyroMeasurementFromState(this->mu, R_imu_2_cam);
+
+	Eigen::Matrix<ScalarType, 3, 1> residual = gyro;
+	residual.noalias() -= z_est;
+
+	Eigen::Matrix<ScalarType, 3, 3> S = H*this->Sigma*H.transpose();
+	S.noalias() += gyro_cov;
+
+	Eigen::Matrix<ScalarType, 3, 3> S_inv = S.ldlt().solve(Eigen::Matrix<ScalarType, 3, 3>::Identity());
+
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 3> K = this->Sigma * H.transpose() * S_inv; // kalman gain
+
+	this->mu.mean += K * residual; // update the estimate
+
+	ROS_DEBUG_STREAM("residual: "<< residual.transpose());
+	ROS_DEBUG_STREAM("Kt: " << K);
+
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> i_kh;
+	i_kh.setIdentity();
+	i_kh.noalias() -= (K * H);
+
+	// update the uncertainty
+	this->Sigma = i_kh * this->Sigma * i_kh.transpose();
+	this->Sigma.noalias() += K * gyro_cov * K.transpose();
+
+	// project uncertainty back into the tangent space
+
+	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
+
+	// apply twist to the true pose
+	this->mu.true_pose = this->mu.true_pose * twist;
+
+	//compute the inverse adjoint map
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
+	A.setIdentity();
+	A.block(0, 0, 6, 6) = twist.inverse().Adj();
+
+	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
+
+	// zero the tangent space again
+	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
+	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
 }
 
 /*
  * linear mapping from state to gyroscope measurement
  */
 Eigen::Matrix<ScalarType, 3, BASE_STATE_SIZE> StateEstimator::gyroMeasurementMap(Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam){
+	// no correlations
+	Eigen::Matrix<ScalarType, 3, BASE_STATE_SIZE> H;
+	H.setZero();
 
+	// simply a rotation with the accel relation being more complex
+	H.block<3, 3>(0, OMEGAX_INDEX) = R_imu_2_cam;
+
+	H.block<3, 3>(0, GYROBIASX_INDEX).setIdentity();
+
+	return H;
 }
 
 /*

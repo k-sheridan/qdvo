@@ -15,6 +15,7 @@ void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 
 		us.msg = *msg; // store this message for potential later use
 		us.t = msg->header.stamp;
+		us.applied = false;
 
 		this->imu_update_buffer.push_back(us); // add the latest measurement
 
@@ -23,27 +24,19 @@ void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 		ROS_WARN("imu message is too old to use... ignoring");
 	}
 
-	// apply any unused imu messages
-	this->applyAllNewIMUMeasurements();
 
-	this->publishOdometry();
-}
-
-/*
- * ensures that all measurements have been applied at this point
- */
-void VIO::applyAllNewIMUMeasurements(){
-	// update state with all "new" measurements
-	for(auto& e : this->imu_update_buffer){
-		if(!e.applied){ // if this message was not applied
-			if(e.t >= this->state_estimator.t){ // is this message measurement
-				this->applyIMUUpdate(e);
+	//TODO apply imu messages
+	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+		if(!it->applied){
+			if((it->t - this->state_estimator.t).toSec() >= 0){
+				this->applyIMUUpdate(*it);
 			}
 			else{
-				ROS_WARN("imu message is too old to be applied, and was not already applied");
+				ROS_WARN_STREAM("imu measurement not applied and too old");
 			}
 		}
 	}
+
 }
 
 /*
@@ -66,11 +59,12 @@ void VIO::applyIMUUpdate(IMUUpdate& measurement){
 
 	this->fixImuMessage(measurement.msg, acc, gyr, accel_cov, gyro_cov);
 
-	this->state_estimator.imuUpdate(acc, gyr, accel_cov, gyro_cov, c2imu);
+	this->state_estimator.gyroUpdate(gyr, gyro_cov, c2imu);
 
 	//set the state and sigma for this update
 	measurement.Sigma = this->state_estimator.Sigma;
 	measurement.mu = this->state_estimator.mu;
+	measurement.t = measurement.msg.header.stamp;
 	measurement.applied = true;
 
 	ROS_DEBUG("updated state with imu measurement");
@@ -129,46 +123,4 @@ void VIO::fixImuMessage(sensor_msgs::Imu& msg, Eigen::Matrix<ScalarType, 3, 1>& 
 
 	acc << msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z;
 	gyr << msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z;
-}
-
-/*
-* finds the closest state behind this time, set it to the current state estimate, delete old the older messages
-* , and flag all of the following messages to not applied
-*/
-void VIO::revertStateBackToClosestIMUUpdate(ros::Time t_next){
-	// if there were no imu messages
-	if(!this->imu_update_buffer.size()){
-		return;
-	}
-
-	//apply all un applied imu messages
-	this->applyAllNewIMUMeasurements();
-
-	std::deque<IMUUpdate>::iterator chosen_state = this->imu_update_buffer.end()-1; // by default the chose state
-
-	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
-		if((t_next - it->t).toSec() < 0){
-			ROS_ASSERT(it != this->imu_update_buffer.begin()); // this can't be the first updated state in the buffer
-
-			// the last iterator is the chosen state
-			chosen_state = it-1;
-			break;
-		}
-	}
-
-	ROS_DEBUG_STREAM("reverting to state with time: " << chosen_state->t);
-
-	// set the new state estimate
-	this->state_estimator.mu = chosen_state->mu;
-	this->state_estimator.t = chosen_state->t;
-	this->state_estimator.Sigma = chosen_state->Sigma;
-
-	//erase old imu_messages
-	this->imu_update_buffer.erase(this->imu_update_buffer.begin(), chosen_state);
-
-	//set all next messages as applied
-	for(auto& e : this->imu_update_buffer){
-		e.applied = false;
-	}
-
 }

@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
 	ros::param::param<double>("~default_point_depth", DEFAULT_POINT_DEPTH, D_DEFAULT_POINT_DEPTH);
 	ros::param::param<double>("~default_point_depth_variance", DEFAULT_POINT_DEPTH_VARIANCE, D_DEFAULT_POINT_DEPTH_VARIANCE);
-		ros::param::param<double>("~default_point_homogenous_variance", DEFAULT_POINT_HOMOGENOUS_VARIANCE, D_DEFAULT_POINT_HOMOGENOUS_VARIANCE);
+	ros::param::param<double>("~default_point_homogenous_variance", DEFAULT_POINT_HOMOGENOUS_VARIANCE, D_DEFAULT_POINT_HOMOGENOUS_VARIANCE);
 	//parseROSParams();
 
 	Eigen::MatrixXf A;
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
 	// test imu measurement function
 	StateEstimator se;
-	
+
 	StateEstimator::State mu;
 	mu.mean.setZero();
 	mu.setLambda(1);
@@ -59,6 +59,19 @@ int main(int argc, char **argv)
 
 	ROS_INFO_STREAM("z: " << z.transpose());
 	ROS_INFO_STREAM("H: " << H.transpose());
+
+
+
+	// test process
+	se.mu.setOmega(Eigen::Matrix<ScalarType, 3, 1>(0, 0, VIO_PI));
+
+	se.process(0.1);
+
+	ROS_INFO_STREAM("quat: " << se.mu.true_pose.unit_quaternion().w() << ", " << se.mu.true_pose.unit_quaternion().x() << ", " << se.mu.true_pose.unit_quaternion().y() << ", " << se.mu.true_pose.unit_quaternion().z());
+
+	se.process(0.1);
+
+	ROS_INFO_STREAM("quat: " << se.mu.true_pose.unit_quaternion().w() << ", " << se.mu.true_pose.unit_quaternion().x() << ", " << se.mu.true_pose.unit_quaternion().y() << ", " << se.mu.true_pose.unit_quaternion().z());
 
 
 	return 0;

@@ -183,13 +183,6 @@ void VIO::addFrame(Frame f) {
 
 		this->frame_buffer.push_front(f); // add the frame to the front of the buffer
 
-		//TEMP
-		this->applyAllNewIMUMeasurements();
-		this->imu_update_buffer.clear();
-
-		/*//revert the state estimate back if necessary due to more recent IMU measurement updates
-		this->revertStateBackToClosestIMUUpdate(f.t);
-
 		//set the predicted pose of the current frame
 		float dt = (f.t - this->state_estimator.t).toSec();
 
@@ -199,7 +192,7 @@ void VIO::addFrame(Frame f) {
 		this->state_estimator.process(dt);
 		this->state_estimator.t = f.t;
 
-*/		//update the frame's position estimate with the predicted
+		//update the frame's position estimate with the predicted
 		this->frame_buffer.front().pose = this->state_estimator.mu.true_pose;
 
 		if(this->frame_buffer.front().features.size() > MINIMUM_TRACKABLE_FEATURES) // run update if we have enough features
@@ -395,7 +388,7 @@ void VIO::publishOdometry()
 
 	Eigen::Quaternionf quat = this->state_estimator.mu.true_pose.unit_quaternion();
 
-	temp = quat.inverse() * this->state_estimator.mu.getVelocity(); // transform the velocity into the body frame
+	temp = this->state_estimator.mu.getVelocity(); // transform the velocity into the body frame
 
 	msg.twist.twist.linear.x = temp.x();
 	msg.twist.twist.linear.y = temp.y();
@@ -425,7 +418,7 @@ void VIO::publishOdometry()
 	this->odom_pub.publish(msg); // publish
 
 
-	tf::Transform currentPose = tf::Transform(tf::Quaternion(quat.w(), quat.x(), quat.y(), quat.z()), tf::Vector3(temp.x(), temp.y(), temp.z()));
+	tf::Transform currentPose = tf::Transform(tf::Quaternion(quat.x(), quat.y(), quat.z(), quat.w()), tf::Vector3(temp.x(), temp.y(), temp.z()));
 
 	br.sendTransform(tf::StampedTransform(currentPose, this->state_estimator.t, WORLD_FRAME, ODOM_FRAME));
 

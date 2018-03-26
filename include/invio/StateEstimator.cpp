@@ -27,6 +27,9 @@ void StateEstimator::initializeState()
 	//set the scale factor to 1
 	this->mu.setLambda(1);
 
+	//this->mu.setOmega(Eigen::Matrix<ScalarType, 3, 1>(0, 0, VIO_PI));
+	//this->mu.setVelocity(Eigen::Matrix<ScalarType, 3, 1>(1, 0, 0));
+
 	//this->Sigma.block<BASE_STATE_SIZE, BASE_STATE_SIZE>(0, 0).setZero(); //wipe the base state sigmas
 	this->Sigma.setZero(); // this should sufficiently reserve enough indices
 
@@ -82,6 +85,8 @@ void StateEstimator::process(ScalarType dt){
 
 	// process the base mu
 	this->mu = this->convolveState(this->mu, dt);
+
+	ROS_DEBUG_STREAM("twist: " << this->mu.getTwist());
 
 	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
 
@@ -194,7 +199,7 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::line
  */
 StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
-	State new_mu;
+	State new_mu = last;
 
 	// the position is represented by a twist
 	new_mu.setLinearTwist(dt*last.getVelocity() + dt*dt*0.5*last.getAcceleration());
