@@ -46,7 +46,15 @@ Frame::Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector
 void Frame::addFeatures(std::vector<cv::Point2f> new_features){
 	for(auto e : new_features){
 		Candidate c;
-		c.f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K);
+
+		cv::Rect2f roi;
+		roi.height = WINDOW_SIZE;
+		roi.width = WINDOW_SIZE;
+		roi.x = e.x - (WINDOW_SIZE/2.0);
+		roi.y = e.y - (WINDOW_SIZE/2.0);
+		cv::Mat patch = cv::Mat(this->img, roi);
+
+		c.f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K, this->pose, patch);
 		this->candidates.push_back(c);
 	}
 }

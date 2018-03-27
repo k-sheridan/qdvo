@@ -80,14 +80,10 @@ void StateEstimator::initializeState()
 
 }
 
-void StateEstimator::process(ScalarType dt){
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
-
-	// process the base mu
-	this->mu = this->convolveState(this->mu, dt);
-
-	ROS_DEBUG_STREAM("twist: " << this->mu.getTwist());
-
+/*
+ * transform the tangent space representation of the pose into the tangent space around the current pose estimate
+ */
+void StateEstimator::transformToTangentSpace(){
 	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
 
 	// apply twist to the true pose
@@ -98,14 +94,27 @@ void StateEstimator::process(ScalarType dt){
 	A.setIdentity();
 	A.block(0, 0, 6, 6) = twist.inverse().Adj();
 
-	// update the Sigma
-	this->Sigma = F * this->Sigma * F.transpose(); // transform the uncertainty into the future in the last pose's tangent space
-	this->Sigma += this->generateProcessNoise(dt); // add process noise
 	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
 
 	// zero the tangent space again
 	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
 	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
+}
+
+void StateEstimator::process(ScalarType dt){
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
+
+	// process the base mu
+	this->mu = this->convolveState(this->mu, dt);
+
+	ROS_DEBUG_STREAM("twist: " << this->mu.getTwist());
+
+	// update the Sigma
+	this->Sigma = F * this->Sigma * F.transpose(); // transform the uncertainty into the future in the last pose's tangent space
+	this->Sigma += this->generateProcessNoise(dt); // add process noise
+
+	// transform the tangent space again
+	this->transformToTangentSpace();
 
 	// increment the time
 	this->t += ros::Duration(dt);
@@ -232,6 +241,8 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 	Sophus::Matrix6d A; //LHS
 	Sophus::Vector6d b; //RHS
+
+	ScalarType chi2_last, chi2_curr; // store the current error and last error to determine whether to stop the optimization
 
 	// perform iterative pose update
 	for(int i = 0; i < MOBA_MAX_ITERATIONS; i++){

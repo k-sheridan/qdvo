@@ -85,6 +85,8 @@ public:
 
 	void initializeState();
 
+	void transformToTangentSpace();
+
 	void process(ScalarType dt);
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> generateProcessNoise(ScalarType dt);

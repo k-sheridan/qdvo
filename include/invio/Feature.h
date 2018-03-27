@@ -39,6 +39,8 @@
 class Frame; // need to tell the feature that there is something called frame
 
 class Feature {
+private:
+	std::deque<cv::Mat> patches; // this is the feature template over time [old -> new]
 public:
 	// the pose that the feature position is represented in
 	Sophus::SE3<ScalarType> observation_pose;
@@ -53,12 +55,13 @@ public:
 
 
 	Feature();
-	Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K);
+	Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K, Sophus::SE3<ScalarType> observation_pose, cv::Mat patch);
 	virtual ~Feature();
 
 
 	Eigen::Matrix<ScalarType, 3, 1> projectFeature(Sophus::SE3<ScalarType> into_frame);
 
+	void addPatch(cv::Mat patch);
 
 	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		Eigen::Matrix<ScalarType, 2, 1> temp;

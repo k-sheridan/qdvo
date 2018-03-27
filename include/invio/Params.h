@@ -91,6 +91,8 @@ typedef float ScalarType;
 #define D_MAX_PYRAMID_LEVEL 3
 #define D_WINDOW_SIZE 21
 
+#define D_REFERENCE_PATCH_DEPTH 20
+
 //END VISUAL ODOM
 
 #define D_MAX_VARIANCE_SIZE 40
@@ -117,8 +119,6 @@ typedef float ScalarType;
 #define D_ACCEL_VARIANCE 0.25
 
 #define D_USE_CUSTOM_IMU_UNCERTAINTIES false
-
-#define D_DEPTH_SOLVER_PATCH_SIZE 9
 
 //ROS PARAMS
 extern bool PUBLISH_INSIGHT;
@@ -191,6 +191,8 @@ extern double MIN_POINT_Z;
 extern int WINDOW_SIZE;
 extern int MAX_PYRAMID_LEVEL;
 
+extern int REFERENCE_PATCH_DEPTH;
+
 //END VISUAL ODOM
 
 extern std::string ODOM_TOPIC;
@@ -212,8 +214,6 @@ extern std::string IMU_FRAME;
 extern double GYRO_VARIANCE;
 extern double ACCEL_VARIANCE;
 extern bool USE_CUSTOM_IMU_UNCERTAINTIES;
-
-extern int DEPTH_SOLVER_PATCH_SIZE;
 
 //END ROS PARAMS
 

@@ -10,7 +10,7 @@
 Feature::Feature() {
 }
 
-Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K){
+Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K, Sophus::SE3<ScalarType> observation_pose, cv::Mat patch){
 
 	this->px = pt;
 	Eigen::Matrix<ScalarType, 2, 1> bearing = Feature::pixel2Metric(K, pt);
@@ -28,7 +28,9 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 								0, DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0,
 								0, 0, depth_variance;
 
-	ROS_DEBUG_STREAM("feature mu initially: " << this->mu.transpose());
+	//ROS_DEBUG_STREAM("feature mu initially: " << this->mu.transpose());
+	this->observation_pose = observation_pose;
+	this->patches.push_back(patch);
 
 }
 
@@ -47,4 +49,15 @@ Eigen::Matrix<ScalarType, 3, 1> Feature::projectFeature(Sophus::SE3<ScalarType> 
 	Eigen::Matrix<ScalarType, 3, 1> new_point = p2o * point;
 
 	return new_point;
+}
+
+/*
+ * add patch, delete old patch
+ */
+void Feature::addPatch(cv::Mat patch){
+	this->patches.push_back(patch);
+
+	while(this->patches.size() > REFERENCE_PATCH_DEPTH){
+		this->patches.pop_front();
+	}
 }

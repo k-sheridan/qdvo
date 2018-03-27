@@ -41,22 +41,8 @@ void StateEstimator::gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gyro, Eigen::Mat
 	this->Sigma.noalias() += K * gyro_cov * K.transpose();
 
 	// project uncertainty back into the tangent space
+	this->transformToTangentSpace();
 
-	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
-
-	// apply twist to the true pose
-	this->mu.true_pose = this->mu.true_pose * twist;
-
-	//compute the inverse adjoint map
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
-	A.setIdentity();
-	A.block(0, 0, 6, 6) = twist.inverse().Adj();
-
-	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
-
-	// zero the tangent space again
-	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
-	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
 }
 
 /*
@@ -128,22 +114,7 @@ void StateEstimator::fullImuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen:
 	this->Sigma.noalias() += K * R * K.transpose();
 
 	// project uncertainty back into the tangent space
-
-	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
-
-	// apply twist to the true pose
-	this->mu.true_pose = this->mu.true_pose * twist;
-
-	//compute the inverse adjoint map
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
-	A.setIdentity();
-	A.block(0, 0, 6, 6) = twist.inverse().Adj();
-
-	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
-
-	// zero the tangent space again
-	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
-	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
+	this->transformToTangentSpace();
 
 	ROS_DEBUG_STREAM("performed imu update");
 }

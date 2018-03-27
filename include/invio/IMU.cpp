@@ -145,19 +145,26 @@ void VIO::findClosestIMUUpdate(ros::Time t){
 		}
 	}
 
-	if((this->imu_update_buffer.front().t - t).toSec() < 0){return;} // we are already at the best point
+	if((t - this->imu_update_buffer.front().t).toSec() < 0){
+		this->state_estimator.mu = this->imu_update_buffer.front().mu;
+		this->state_estimator.t = this->imu_update_buffer.front().t;
+		this->state_estimator.Sigma = this->imu_update_buffer.front().Sigma;
+	}
+	else
+	{
 
-	for(std::list<IMUUpdate>::iterator it = ++this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
-		if((it->t - t).toSec() < 0){
-			this->state_estimator.mu = this->imu_update_buffer.front().mu;
-			this->state_estimator.t = this->imu_update_buffer.front().t;
-			this->state_estimator.Sigma = this->imu_update_buffer.front().Sigma;
+		for(std::list<IMUUpdate>::iterator it = ++this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+			if((t - it->t).toSec() < 0){
+				this->state_estimator.mu = this->imu_update_buffer.front().mu;
+				this->state_estimator.t = this->imu_update_buffer.front().t;
+				this->state_estimator.Sigma = this->imu_update_buffer.front().Sigma;
 
 
-			break; // this is the best choice
-		}
-		else{
-			this->imu_update_buffer.pop_front();
+				break; // this is the best choice
+			}
+			else{
+				this->imu_update_buffer.pop_front();
+			}
 		}
 	}
 

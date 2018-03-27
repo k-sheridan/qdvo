@@ -10,7 +10,7 @@ imu_topic: imu0
 imu_frame: imu4
 
 #-=-=-=-=-=-
-min_new_feature_dist: 40
+min_new_feature_dist: 20
 num_features: 200
 fast_threshold: 60
 
