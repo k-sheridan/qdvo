@@ -25,8 +25,8 @@ void VIO::imu_callback(const sensor_msgs::ImuConstPtr& msg){
 	}
 
 
-	//TODO apply imu messages
-	for(std::deque<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+	//apply imu messages
+	for(std::list<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
 		if(!it->applied){
 			if((it->t - this->state_estimator.t).toSec() >= 0){
 				this->applyIMUUpdate(*it);
@@ -124,3 +124,51 @@ void VIO::fixImuMessage(sensor_msgs::Imu& msg, Eigen::Matrix<ScalarType, 3, 1>& 
 	acc << msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z;
 	gyr << msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z;
 }
+
+/*
+ * finds the closest imu update and sets the state to that
+ * finally it sets all future IMU updates to no applied
+ */
+void VIO::findClosestIMUUpdate(ros::Time t){
+	if(!USE_IMU || this->imu_update_buffer.size() == 0){return;} // we are already at the best point
+
+	//apply all updates first
+	//apply imu messages
+	for(std::list<IMUUpdate>::iterator it = this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+		if(!it->applied){
+			if((it->t - this->state_estimator.t).toSec() >= 0){
+				this->applyIMUUpdate(*it);
+			}
+			else{
+				ROS_WARN_STREAM("imu measurement not applied and too old");
+			}
+		}
+	}
+
+	if((this->imu_update_buffer.front().t - t).toSec() < 0){return;} // we are already at the best point
+
+	for(std::list<IMUUpdate>::iterator it = ++this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+		if((it->t - t).toSec() < 0){
+			this->state_estimator.mu = this->imu_update_buffer.front().mu;
+			this->state_estimator.t = this->imu_update_buffer.front().t;
+			this->state_estimator.Sigma = this->imu_update_buffer.front().Sigma;
+
+
+			break; // this is the best choice
+		}
+		else{
+			this->imu_update_buffer.pop_front();
+		}
+	}
+
+	/*//erase all up to the chosen state
+	while(this->imu_update_buffer.size() != 0 && this->imu_update_buffer.front().t != this->state_estimator.t){
+		this->imu_update_buffer.pop_front();
+	}*/
+
+	//set all future IMU messages to not applied
+	for(std::list<IMUUpdate>::iterator it = ++this->imu_update_buffer.begin(); it != this->imu_update_buffer.end(); it++){
+		it->applied = false;
+	}
+}
+

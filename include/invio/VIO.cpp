@@ -157,7 +157,8 @@ VIO::VIO() {
 
 void VIO::addFrame(Frame f) {
 
-	//TODO revert the state to the most recent IMU message
+	//find closest imu update
+	this->findClosestIMUUpdate(f.t);
 
 	if (this->frame_buffer.size() == 0) // if this is the first frame that we are receiving
 	{

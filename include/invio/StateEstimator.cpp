@@ -28,7 +28,7 @@ void StateEstimator::initializeState()
 	this->mu.setLambda(1);
 
 	//this->mu.setOmega(Eigen::Matrix<ScalarType, 3, 1>(0, 0, VIO_PI));
-	//this->mu.setVelocity(Eigen::Matrix<ScalarType, 3, 1>(1, 0, 0));
+	this->mu.setGyroBiases(Eigen::Matrix<ScalarType, 3, 1>(0, 0.02, 0.07));
 
 	//this->Sigma.block<BASE_STATE_SIZE, BASE_STATE_SIZE>(0, 0).setZero(); //wipe the base state sigmas
 	this->Sigma.setZero(); // this should sufficiently reserve enough indices
@@ -39,7 +39,7 @@ void StateEstimator::initializeState()
 #define SECOND_VAR 3*3
 
 #define PHI_VAR VIO_PI*VIO_PI
-#define BIAS_VAR 1*1
+#define BIAS_VAR 0.1*0.1
 #define GYRO_BIAS_VAR 0.1*0.1
 #define LAMBDA_VAR 2*2
 
@@ -118,9 +118,9 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	ScalarType low_noise = 0.00001 * dt;
 	ScalarType pos_noise = 0.0001 * dt;
 	ScalarType velocity_noise = 0.01*dt;
-	ScalarType omega_noise = 1*dt;
-	ScalarType accel_noise = 1*dt;
-	ScalarType bias_noise = 0.001*dt;
+	ScalarType omega_noise = 5*dt;
+	ScalarType accel_noise = 5*dt;
+	ScalarType bias_noise = 0.0001*dt;
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Q;
 	Q.setZero();

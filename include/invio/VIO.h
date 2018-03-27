@@ -70,7 +70,7 @@ public:
 		}
 	};
 
-	std::deque<IMUUpdate> imu_update_buffer; // store states updated with IMU readings to reduce latency
+	std::list<IMUUpdate> imu_update_buffer; // store states updated with IMU readings to reduce latency
 
 	tf::TransformListener tf_listener;
 
@@ -88,6 +88,8 @@ public:
 
 	void imu_callback(const sensor_msgs::ImuConstPtr& msg);
 
+	void findClosestIMUUpdate(ros::Time t);
+
 	void fixImuMessage(sensor_msgs::Imu& msg, Eigen::Matrix<ScalarType, 3, 1>& acc, Eigen::Matrix<ScalarType, 3, 1>& gyr, Eigen::Matrix<ScalarType, 3, 3>& accel_cov, Eigen::Matrix<ScalarType, 3, 3>&  gyro_cov);
 
 	void applyAllNewIMUMeasurements();
@@ -97,8 +99,6 @@ public:
 	void camera_callback(const sensor_msgs::ImageConstPtr& img, const sensor_msgs::CameraInfoConstPtr& cam);
 
 	void addFrame(Frame f);
-
-	void revertStateBackToClosestIMUUpdate(ros::Time t);
 
 	void removeExcessFrames(std::deque<Frame>& buffer);
 
