@@ -124,9 +124,7 @@ public:
 	Eigen::Matrix<ScalarType, 6, 1> StateEstimator::numDiffAccel(StateEstimator::State& mean, int index,  Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
 	 * jacobian which takes a small twist and gives a pixel position change
 	 */
-	inline static void jacobian_xyz2uv(
-			const Eigen::Vector3d& xyz_in_f,
-			Eigen::Matrix<double,2,6>& J)
+	inline static void jacobian_xyz2uv(const Eigen::Matrix<ScalarType, 3, 1>& xyz_in_f, Eigen::Matrix<ScalarType, 2, 6>& J)
 	{
 		const double x = xyz_in_f[0];
 		const double y = xyz_in_f[1];

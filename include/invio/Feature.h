@@ -50,7 +50,8 @@ public:
 	Eigen::Matrix<ScalarType, 3, 3> Sigma;
 
 	cv::Point2f px; // the pixel position of this feature
-	Eigen::Matrix<ScalarType, 2, 2> R; // pixel position measurement uncertainty (used to "inform" update about edgy features)
+
+	Eigen::Matrix<ScalarType, 2, 2> R_inv; // METERS!!! pixel position measurement uncertainty (used to "inform" update about edgy features)
 
 
 
@@ -89,6 +90,28 @@ public:
 	 */
 	static inline Eigen::Matrix<ScalarType, 3, 1> point2bearingAndzinv(Eigen::Matrix<ScalarType, 3, 1> point){
 		return Feature::bearingAndZinv2Point(point); // this function works both ways
+	}
+
+	/*
+	 * transforms the feature position and uncertainty into the world frame
+	 */
+	void transformToWorldFrame(){
+		Eigen::Matrix<ScalarType, 3, 3> R = this->observation_pose.rotationMatrix();
+		Eigen::Matrix<ScalarType, 3, 1> t = this->observation_pose.translation();
+
+		this->mu = R * this->mu + t;
+		this->Sigma = R * this->Sigma * R.transpose();
+	}
+
+	/*
+	 * transforms the feature position and uncertainty from the world frame to the observation frame
+	 */
+	void transformFromWorldFrame(){
+		Eigen::Matrix<ScalarType, 3, 3> R = this->observation_pose.rotationMatrix();
+		Eigen::Matrix<ScalarType, 3, 1> t = this->observation_pose.translation();
+
+		this->mu = R.transpose() * this->mu - R.transpose() * t;
+		this->Sigma = R.transpose() * this->Sigma * R;
 	}
 
 };

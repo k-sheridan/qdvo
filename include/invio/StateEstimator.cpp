@@ -239,14 +239,59 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
 
-	Sophus::Matrix6d A; //LHS
-	Sophus::Vector6d b; //RHS
+	//transform all features into the world frame
+	for(auto& e : cf.features){
+		e.transformToWorldFrame();
+	}
 
-	ScalarType chi2_last, chi2_curr; // store the current error and last error to determine whether to stop the optimization
+	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
+	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
+
+	ScalarType chi2_sum_last, chi2_sum_curr; // store the current error and last error to determine whether to stop the optimization
+
 
 	// perform iterative pose update
-	for(int i = 0; i < MOBA_MAX_ITERATIONS; i++){
+	for(size_t i = 0; i < (size_t)MOBA_MAX_ITERATIONS; i++){
+		b.setZero();
+		A.setZero();
 
+		chi2_sum_last = chi2_sum_curr;
+		chi2_sum_curr = 0;
+
+		Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse();
+
+		for(auto& e : cf.features){
+			Eigen::Matrix<ScalarType, 2, 6> H;
+			Eigen::Matrix<ScalarType, 3, 1> xyz_f(pose_inv * e.mu); // the point in the current estimated frame's pose
+			StateEstimator::jacobian_xyz2uv(xyz_f, H); // compute the linear map for a small twist to a bearing
+
+			Eigen::Matrix<ScalarType, 2, 1> residual = Feature::pixel2Metric(cf.K, e.px) - Feature::point2bearingAndzinv(xyz_f).block<2, 1>(0, 0);
+
+			ScalarType chi2 = residual.squaredNorm();
+			chi2_sum_curr += chi2;
+
+			// compute this edges weight
+			ScalarType weight = 1.0;
+
+			A.noalias() += H.transpose() * e.R_inv * H;
+			b.noalias() += H.transpose() * e.R_inv * residual;
+		}
+
+		//TODO solve the system
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A_full = Sigma_inv;
+		A_full.block<6, 6>(0, 0) += A;
+
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> b_full;
+		b_full.setZero();
+		b_full.block<6, 1>(0, 0) = b;
+
+	}
+
+
+
+	//transform all features into their observation frame
+	for(auto& e : cf.features){
+		e.transformFromWorldFrame();
 	}
 
 }

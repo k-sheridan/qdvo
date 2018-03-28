@@ -80,6 +80,7 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 		// check if the feature was flowed properly
 		if(status.at(i)){
 			it->px = new_fts.at(i);
+			it->R_inv = this->estimateUncertainty(cf, it->px).inverse();
 			it++;
 		}
 		else
