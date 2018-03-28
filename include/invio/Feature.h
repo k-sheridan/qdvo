@@ -44,7 +44,7 @@ private:
 public:
 	// the pose that the feature position is represented in
 	Sophus::SE3<ScalarType> observation_pose;
-	// mean [u, v, z_inv]
+	// mean [x, y, z]
 	Eigen::Matrix<ScalarType, 3, 1> mu;
 	// covariance of the position estimate
 	Eigen::Matrix<ScalarType, 3, 3> Sigma;
@@ -62,6 +62,8 @@ public:
 	Eigen::Matrix<ScalarType, 3, 1> projectFeature(Sophus::SE3<ScalarType> into_frame);
 
 	void addPatch(cv::Mat patch);
+
+	ScalarType occlusionSSD(cv::Mat test_patch);
 
 	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		Eigen::Matrix<ScalarType, 2, 1> temp;

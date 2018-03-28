@@ -443,7 +443,7 @@ void VIO::publishPoints(Frame& f)
 
 		//ROS_DEBUG_STREAM("feature mu at point pub: " << e.mu.transpose());
 
-		Eigen::Vector3f p_in_f = Feature::bearingAndZinv2Point(e.mu);
+		Eigen::Vector3f p_in_f = (e.projectFeature(f.pose));
 
 		geometry_msgs::Point32 pt;
 

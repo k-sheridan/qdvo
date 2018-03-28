@@ -76,7 +76,7 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 
 	// set the pixel position measurement
 	int i = 0;
-	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end() && i < status.size();){
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end() && i < status.size();i++){
 		// check if the feature was flowed properly
 		if(status.at(i)){
 			it->px = new_fts.at(i);
@@ -89,7 +89,6 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 			//it->to_be_deleted = true;
 			lost_features++;
 		}
-		i++;
 	}
 
 	ROS_DEBUG_STREAM("lost " << lost_features << " features during klt");
