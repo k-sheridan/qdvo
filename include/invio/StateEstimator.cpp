@@ -97,8 +97,8 @@ void StateEstimator::transformToTangentSpace(){
 	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
 
 	// zero the tangent space again
-	this->mu.setLinearTwist(Eigen::Vector3f(0,0,0));
-	this->mu.setAngularTwist(Eigen::Vector3f(0,0,0));
+	this->mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
+	this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
 }
 
 void StateEstimator::process(ScalarType dt){
@@ -277,14 +277,54 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 			b.noalias() += H.transpose() * e.R_inv * residual;
 		}
 
-		//TODO solve the system
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A_full = Sigma_inv;
-		A_full.block<6, 6>(0, 0) += A;
 
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> b_full;
-		b_full.setZero();
-		b_full.block<6, 1>(0, 0) = b;
+		// check if the error has increased
+		if(i != 0){
+			if(chi2_sum_curr > chi2_sum_last){
+				ROS_DEBUG_STREAM("ERROR INCREASED at iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
+				ROS_DEBUG_STREAM("BREAKING");
+				break;
+			}
+			else{
+				ROS_DEBUG_STREAM("SUCCESSFUL iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
+			}
+		}
 
+		//solve the system
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> LHS = Sigma_inv;
+		LHS.block<6, 6>(0, 0) += A;
+
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> RHS;
+		RHS.setZero();
+		RHS.block<6, 1>(0, 0) = b;
+
+		// compute the dx
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> dx = LHS.ldlt().solve(RHS);
+
+		// apply the dx onto the mean
+		this->mu.mean.noalias() += dx;
+		Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
+
+		this->mu.true_pose = this->mu.true_pose * twist; // apply the small twist to the pose
+
+		// zero the tangent space again
+		this->mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
+		this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
+
+		//transform state into new tangent space
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
+		A.setIdentity();
+		A.block<6, 6>(0, 0) = twist.Adj(); // typically it is the inverse transform
+
+		// P' = Ainv * P * AinvT => P'inv = AinvTinv * Pinv * Ainvinv = AT * Pinv * A
+		// P'^{-1} = (Jt)^{-1} * P^{-1} * (J)^{-1}
+
+		Sigma_inv = A.transpose() * Sigma_inv * A; // transform the uncertainty into the new optimized tangent space
+
+
+
+
+		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
 	}
 
 
