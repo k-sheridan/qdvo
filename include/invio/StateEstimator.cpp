@@ -244,7 +244,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		e.transformToWorldFrame();
 	}
 
-	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
+	Eigen::Matrix<ScalarType, 6, 6> A, last_A; //LHS
 	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
 
 	ScalarType chi2_sum_last, chi2_sum_curr; // store the current error and last error to determine whether to stop the optimization
@@ -312,22 +312,39 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
 
 		//transform state into new tangent space
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
-		A.setIdentity();
-		A.block<6, 6>(0, 0) = twist.Adj(); // typically it is the inverse transform
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Adj;
+		Adj.setIdentity();
+		Adj.block<6, 6>(0, 0) = twist.Adj(); // typically it is the inverse transform
 
 		// P' = Ainv * P * AinvT => P'inv = AinvTinv * Pinv * Ainvinv = AT * Pinv * A
 		// P'^{-1} = (Jt)^{-1} * P^{-1} * (J)^{-1}
 
-		Sigma_inv = A.transpose() * Sigma_inv * A; // transform the uncertainty into the new optimized tangent space
+		Sigma_inv = Adj.transpose() * Sigma_inv * Adj; // transform the uncertainty into the new optimized tangent space
 
-
-
+		last_A = A; // save the previous A (information) mat
 
 		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
 	}
 
+	// apply modified josephs uncertainty update
 
+	Eigen::Matrix<ScalarType, 25, 25> A_full;
+	A_full.setZero();
+	A.block<6, 6>(0, 0) = last_A;
+
+	Eigen::Matrix<ScalarType, 25, 25> T = Sigma_inv + A_full;
+	//T = T.ldlt().solve(Eigen::Matrix<ScalarType, 25, 25>::Identity()); // invert
+	T = T.inverse(); // invert
+
+	Eigen::Matrix<ScalarType, 25, 25> I_KH = (Eigen::Matrix<ScalarType, 25, 25>::Identity() - T*A_full);
+
+	//invert sigma back
+	//this->Sigma = Sigma_inv.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
+	this->Sigma = Sigma_inv.inverse();
+
+	//propagate uncertainty
+	this->Sigma = I_KH * this->Sigma * I_KH.transpose();
+	this->Sigma.noalias() += T*A_full*T.transpose();
 
 	//transform all features into their observation frame
 	for(auto& e : cf.features){
