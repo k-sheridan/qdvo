@@ -28,10 +28,11 @@ void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
 
 void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 
-	//TODO track old features
+	// track old features
 	tracker.findNewFeaturePositions(lf, cf);
 
-	//TODO run iterative update
+	// run iterative update
+	this->state_estimator.updateWithTrackedFeatures(cf);
 
 	// note the frame's position must be current with the new state estimate for depth update
 	//TODO run feature depth/position update

@@ -244,7 +244,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		e.transformToWorldFrame();
 	}
 
-	Eigen::Matrix<ScalarType, 6, 6> A, last_A; //LHS
+	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
 	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
 
 	ScalarType chi2_sum_last, chi2_sum_curr; // store the current error and last error to determine whether to stop the optimization
@@ -321,7 +321,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 		Sigma_inv = Adj.transpose() * Sigma_inv * Adj; // transform the uncertainty into the new optimized tangent space
 
-		last_A = A; // save the previous A (information) mat
+		//last_A = A; // save the previous A (information) mat
 
 		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
 	}
@@ -330,13 +330,23 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 	Eigen::Matrix<ScalarType, 25, 25> A_full;
 	A_full.setZero();
-	A.block<6, 6>(0, 0) = last_A;
+	A_full.block<6, 6>(0, 0) = A;
 
 	Eigen::Matrix<ScalarType, 25, 25> T = Sigma_inv + A_full;
 	//T = T.ldlt().solve(Eigen::Matrix<ScalarType, 25, 25>::Identity()); // invert
 	T = T.inverse(); // invert
 
 	Eigen::Matrix<ScalarType, 25, 25> I_KH = (Eigen::Matrix<ScalarType, 25, 25>::Identity() - T*A_full);
+
+
+
+	ROS_DEBUG_STREAM("A_full: " << A_full);
+
+	ROS_DEBUG_STREAM("sigma inv: " << Sigma_inv);
+
+	ROS_DEBUG_STREAM("I_KH: " << I_KH);
+
+	ROS_DEBUG_STREAM("KRKt: " << T*A_full*T.transpose());
 
 	//invert sigma back
 	//this->Sigma = Sigma_inv.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());

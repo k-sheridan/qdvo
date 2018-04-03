@@ -14,7 +14,7 @@ min_new_feature_dist: 20
 num_features: 200
 fast_threshold: 60
 
-default_point_depth: 0.5
+default_point_depth: 1
 default_point_depth_variance: 400
 
 # this is the norm not squared norm
