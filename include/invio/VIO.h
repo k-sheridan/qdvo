@@ -37,6 +37,8 @@
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/Imu.h>
 
+#include <sensor_msgs/PointCloud2.h>
+
 #include <sophus/se3.hpp>
 
 #include <Feature.h>
@@ -72,6 +74,8 @@ public:
 
 	std::list<IMUUpdate> imu_update_buffer; // store states updated with IMU readings to reduce latency
 
+	std::list<sensor_msgs::PointCloud2> point_cloud_buffer; // stores point cloud messages to be linked with an image
+
 	tf::TransformListener tf_listener;
 
 	StateEstimator state_estimator;
@@ -97,6 +101,8 @@ public:
 	void applyIMUUpdate(IMUUpdate& measurement);
 
 	void camera_callback(const sensor_msgs::ImageConstPtr& img, const sensor_msgs::CameraInfoConstPtr& cam);
+
+	void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg);
 
 	void addFrame(Frame f);
 

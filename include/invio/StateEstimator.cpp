@@ -361,6 +361,9 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		e.transformFromWorldFrame();
 	}
 
+	//set the frame's pose
+	cf.pose =
+
 }
 
 

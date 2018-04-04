@@ -25,6 +25,11 @@ void VIO::camera_callback(const sensor_msgs::ImageConstPtr& img,
 }
 
 
+void VIO::pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg){
+
+}
+
+
 
 void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 
