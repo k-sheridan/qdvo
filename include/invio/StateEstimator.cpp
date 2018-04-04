@@ -126,7 +126,7 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 
 	ScalarType low_noise = 0.00001 * dt;
 	ScalarType pos_noise = 0.0001 * dt;
-	ScalarType velocity_noise = 0.01*dt;
+	ScalarType velocity_noise = 0.001*dt;
 	ScalarType omega_noise = 5*dt;
 	ScalarType accel_noise = 5*dt;
 	ScalarType bias_noise = 0.0001*dt;
@@ -324,6 +324,12 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		//last_A = A; // save the previous A (information) mat
 
 		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
+
+		if(dx.block<6, 1>(0, 0).norm() <= EPS_MOBA){
+			ROS_DEBUG_STREAM("EPSILON REACHED... STOPPING");
+			break;
+		}
+
 	}
 
 	// apply modified josephs uncertainty update

@@ -52,6 +52,10 @@ VIO::VIO() {
 	ros::param::param<std::string>("~imu_frame", IMU_FRAME, D_IMU_FRAME);
 	ros::param::param<bool>("~use_imu", USE_IMU, D_USE_IMU);
 	ros::param::param<bool>("~use_custom_imu_variances", USE_CUSTOM_IMU_UNCERTAINTIES, D_USE_CUSTOM_IMU_UNCERTAINTIES);
+
+	ros::param::param<bool>("~use_stereo_point_cloud", USE_STEREO_POINT_CLOUD, D_USE_STEREO_POINT_CLOUD);
+	ros::param::param<std::string>("~stereo_point_cloud_topic", STEREO_POINT_CLOUD_TOPIC, D_STEREO_POINT_CLOUD_TOPIC);
+
 	ros::param::param<double>("~gyro_variance", GYRO_VARIANCE, D_GYRO_VARIANCE);
 	ros::param::param<double>("~accel_variance", ACCEL_VARIANCE, D_ACCEL_VARIANCE);
 	ros::param::param<int>("~min_variance_box_size", MIN_VARIANCE_SIZE, D_MIN_VARIANCE_SIZE);
@@ -95,6 +99,12 @@ VIO::VIO() {
 		ROS_INFO("got transform");
 
 	}
+
+	// set up the stereo subs
+	if(USE_STEREO_POINT_CLOUD){
+		this->stereo_point_cloud_sub = nh.subscribe(STEREO_POINT_CLOUD_TOPIC, 2, &VIO::pointCloudCallback, this);
+	}
+
 
 	this->odom_pub = nh.advertise<nav_msgs::Odometry>(ODOM_TOPIC, 1);
 

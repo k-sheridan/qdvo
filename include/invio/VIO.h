@@ -84,7 +84,7 @@ public:
 
 	tf::Transform b2c, c2b, c2imu;
 
-	ros::Subscriber imu_sub;
+	ros::Subscriber imu_sub, stereo_point_cloud_sub;
 
 	ros::Publisher insight_pub, insight_cinfo_pub, odom_pub, points_pub;
 
@@ -103,6 +103,8 @@ public:
 	void camera_callback(const sensor_msgs::ImageConstPtr& img, const sensor_msgs::CameraInfoConstPtr& cam);
 
 	void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg);
+
+	void updateDepthsUsingPointCloud();
 
 	void addFrame(Frame f);
 

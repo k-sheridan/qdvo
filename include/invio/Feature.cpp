@@ -65,5 +65,20 @@ void Feature::addPatch(cv::Mat patch){
 }
 
 ScalarType occlusionSSD(cv::Mat test_patch){
+	ROS_ASSERT(test_patch.rows == this->patches.front().rows && test_patch.cols == this->patches.front().cols);
 
+	ROS_ASSERT(test_patch.rows != 0 && test_patch.cols != 0);
+
+	ScalarType SSD = 0;
+
+	//TODO add weights
+
+	for(int i = 0; i < test_patch.rows; i++){
+		for(int j = 0; j < test_patch.cols; j++){
+			ScalarType error = test_patch[i+j] - this->patches.front()[i+j];
+			SSD += error*error;
+		}
+	}
+
+	return SSD/(ScalarType)(test_patch.rows*test_patch.cols);
 }
