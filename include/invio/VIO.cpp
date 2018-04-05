@@ -63,6 +63,7 @@ VIO::VIO() {
 	ros::param::param<int>("~max_pyramids", MAX_PYRAMID_LEVEL, D_MAX_PYRAMID_LEVEL);
 	ros::param::param<int>("~klt_window_size", WINDOW_SIZE, D_WINDOW_SIZE);
 	ros::param::param<int>("~reference_patch_depth", REFERENCE_PATCH_DEPTH, D_REFERENCE_PATCH_DEPTH);
+	ros::param::param<int>("~occulsion_threshold", OCCULSION_THRESHOLD, D_OCCULSION_THRESHOLD);
 
 	image_transport::ImageTransport it(nh);
 	image_transport::CameraSubscriber bottom_cam_sub = it.subscribeCamera(

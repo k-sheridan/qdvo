@@ -79,8 +79,14 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end() && i < status.size();i++){
 		// check if the feature was flowed properly
 		if(status.at(i)){
+			//TODO check for occlusion and add the patch
+			cv::Mat patch = Feature::extractPatch(new_fts.at(i), cf.img);
+
+			
+
 			it->px = new_fts.at(i);
 			it->R_inv = this->estimateUncertainty(cf, it->px).inverse();
+
 			it++;
 		}
 		else

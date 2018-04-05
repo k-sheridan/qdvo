@@ -66,6 +66,17 @@ public:
 
 	ScalarType occlusionSSD(cv::Mat test_patch);
 
+	/*
+	* extracts the feature patch from the image around the feature position
+	*/
+	static inline cv::Mat VIO::extractPatch(cv::Point2f px, cv::Mat img){
+		cv::Rect roi;
+		roi.x = px.x - (WINDOW_SIZE/2.0);
+		roi.y = px.y - (WINDOW_SIZE/2.0);
+		return patch = cv::Mat(img, roi);
+	}
+
+	
 	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		Eigen::Matrix<ScalarType, 2, 1> temp;
 		temp << (px.x - K(2)) / K(0), (px.y - K(5)) / K(4);
