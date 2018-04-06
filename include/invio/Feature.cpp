@@ -75,7 +75,7 @@ ScalarType occlusionSSD(cv::Mat test_patch){
 
 	for(int i = 0; i < test_patch.rows; i++){
 		for(int j = 0; j < test_patch.cols; j++){
-			ScalarType error = test_patch[i+j] - this->patches.front()[i+j];
+			ScalarType error = test_patch.at<uchar>(i, j) - this->patches.front().at<uchar>(i, j);
 			SSD += error*error;
 		}
 	}
