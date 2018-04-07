@@ -64,7 +64,7 @@ void Feature::addPatch(cv::Mat patch){
 	}
 }
 
-ScalarType occlusionSSD(cv::Mat test_patch){
+ScalarType Feature::occlusionSSD(cv::Mat test_patch){
 	ROS_ASSERT(test_patch.rows == this->patches.front().rows && test_patch.cols == this->patches.front().cols);
 
 	ROS_ASSERT(test_patch.rows != 0 && test_patch.cols != 0);

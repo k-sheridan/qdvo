@@ -92,7 +92,7 @@ typedef float ScalarType;
 #define D_WINDOW_SIZE 21
 
 #define D_REFERENCE_PATCH_DEPTH 20
-#define D_OCCULSION_THRESHOLD 15
+#define D_OCCLUSION_THRESHOLD 15.0
 
 //END VISUAL ODOM
 
@@ -196,7 +196,7 @@ extern int WINDOW_SIZE;
 extern int MAX_PYRAMID_LEVEL;
 
 extern int REFERENCE_PATCH_DEPTH;
-extern double OCCULSION_THRESHOLD;
+extern double OCCLUSION_THRESHOLD;
 
 //END VISUAL ODOM
 

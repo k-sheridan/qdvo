@@ -30,6 +30,8 @@ void VIO::updateDepthsUsingPointCloud(){
   // check if the next point cloud is from the same time as the current frame
   if(std::fabs((this->point_cloud_buffer.front().header.stamp - this->frame_buffer.front().t).toSec()) < STAMP_EPS){
     //TODO update the depths of features and candidates using the point cloud
+	ROS_DEBUG("point cloud associated with frame");
+
 
     //remove this point cloud after use
     this->point_cloud_buffer.pop_front();

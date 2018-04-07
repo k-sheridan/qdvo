@@ -66,7 +66,7 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 			cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
 					30, 0.01), 0, KLT_MIN_EIGEN);
 
-/*	cv::calcOpticalFlowPyrLK(lf.img, cf.img, prev_fts, new_fts,
+	/*	cv::calcOpticalFlowPyrLK(lf.img, cf.img, prev_fts, new_fts,
 				status, error, cv::Size(WINDOW_SIZE, WINDOW_SIZE), MAX_PYRAMID_LEVEL,
 				cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
 						30, 0.01), cv::OPTFLOW_USE_INITIAL_FLOW, KLT_MIN_EIGEN);*/
@@ -80,12 +80,25 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 		// check if the feature was flowed properly
 		if(status.at(i)){
 			//TODO check for occlusion and add the patch
-			cv::Mat patch = Feature::extractPatch(new_fts.at(i), cf.img);
+			//cv::Mat patch = Feature::extractPatch(new_fts.at(i), cf.img);
 
-			
+			/*ScalarType occ_err = it->occlusionSSD(patch);
+
+			if(occ_err > OCCLUSION_THRESHOLD){
+				// delete this feature because it has been occluded
+				it = cf.features.erase(it);
+				//it->to_be_deleted = true;
+				lost_features++;
+
+				ROS_DEBUG_STREAM("lost feature due to occulsion with: " << occ_err);
+
+				continue; // next iteration
+			}*/
 
 			it->px = new_fts.at(i);
 			it->R_inv = this->estimateUncertainty(cf, it->px).inverse();
+
+			//it->addPatch(patch); // if everything has passed add this patch
 
 			it++;
 		}

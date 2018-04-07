@@ -368,7 +368,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 	}
 
 	//set the frame's pose
-	cf.pose =
+	cf.pose = this->mu.true_pose;
 
 }
 
