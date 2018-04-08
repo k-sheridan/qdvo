@@ -114,8 +114,8 @@ typedef float ScalarType;
 #define D_IMU_TOPIC "imu/measurement"
 #define D_IMU_FRAME "imu"
 
-#define D_USE_STEREO_POINT_CLOUD false
-#define D_STEREO_POINT_CLOUD_TOPIC "/camera/points2"
+#define D_USE_EXTERNAL_DISPARITY false
+#define D_EXTERNAL_DISPARITY_TOPIC "/disparity"
 
 //((1/180)*pi)^2
 #define D_GYRO_VARIANCE 0.00030461741
@@ -216,8 +216,8 @@ extern bool USE_IMU;
 extern std::string IMU_TOPIC;
 extern std::string IMU_FRAME;
 
-extern bool USE_STEREO_POINT_CLOUD;
-extern std::string STEREO_POINT_CLOUD_TOPIC;
+extern bool USE_EXTERNAL_DISPARITY;
+extern std::string EXTERNAL_DISPARITY_TOPIC;
 
 extern double GYRO_VARIANCE;
 extern double ACCEL_VARIANCE;

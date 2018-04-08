@@ -86,7 +86,7 @@ public:
 
 	tf::Transform b2c, c2b, c2imu;
 
-	ros::Subscriber imu_sub, stereo_point_cloud_sub;
+	ros::Subscriber imu_sub, disparity_sub;
 
 	ros::Publisher insight_pub, insight_cinfo_pub, odom_pub, points_pub;
 
