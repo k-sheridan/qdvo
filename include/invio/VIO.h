@@ -49,6 +49,8 @@
 
 #include <Eigen/Eigenvalues>
 
+#include <stereo_msgs/DisparityImage.h>
+
 class VIO {
 public:
 
@@ -74,7 +76,7 @@ public:
 
 	std::list<IMUUpdate> imu_update_buffer; // store states updated with IMU readings to reduce latency
 
-	std::list<sensor_msgs::PointCloud2> point_cloud_buffer; // stores point cloud messages to be linked with an image
+	std::list<stereo_msgs::DisparityImage> disparity_buffer; // stores disparity messages to be linked with an image. this is only used when the disparity map is computed externally from INVIO
 
 	tf::TransformListener tf_listener;
 
@@ -102,9 +104,11 @@ public:
 
 	void camera_callback(const sensor_msgs::ImageConstPtr& img, const sensor_msgs::CameraInfoConstPtr& cam);
 
-	void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg);
+	void disparityCallback(const stereo_msgs::DisparityImageConstPtr& msg);
 
-	void updateDepthsUsingPointCloud();
+	void updateDepthsUsingDisparity();
+
+	void applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame);
 
 	void addFrame(Frame f);
 

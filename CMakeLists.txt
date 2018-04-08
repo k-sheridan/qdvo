@@ -26,6 +26,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   tf
+  stereo_msgs
 )
 
 find_package(OpenCV REQUIRED)
@@ -44,6 +45,7 @@ include_directories(
 	${Eigen_INCLUDE_DIRS}
 	${sophus_INCLUDE_DIRS}
 )
+
 
 catkin_package(
    INCLUDE_DIRS include
@@ -74,7 +76,7 @@ target_link_libraries(vio_state_estimator ${catkin_LIBRARIES} ${OpenCV_LIBRARIES
 add_library(klt_tracker include/invio/KLTTracker.cpp)
 target_link_libraries(klt_tracker ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vio_state_estimator vioParams vioFeature vioFrame)
 
-add_library(full_vio include/invio/VIO.h include/invio/VIO.cpp include/invio/Camera.cpp include/invio/IMU.cpp include/invio/PointCloud.cpp)
+add_library(full_vio include/invio/VIO.h include/invio/VIO.cpp include/invio/Camera.cpp include/invio/IMU.cpp include/invio/Disparity.cpp)
 target_link_libraries(full_vio ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioFrame vio_state_estimator klt_tracker vio_depthSolver)
 
 add_executable(invio_node src/invio_node.cpp)
