@@ -47,11 +47,25 @@ void VIO::updateDepthsUsingDisparity(){
 /*
  * uses a point cloud to update the depths of features and candidates
  */
-void VIO::applyDisparityUpdate(stereo_msgs::DisparityImage& pc, Frame& frame){
+void VIO::applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame){
 	//TODO implement kalman update
 	//TODO update candidate features too
 
-	for(auto& e : frame.features){
+	ROS_ASSERT(d.image.width == frame.img.cols && d.image.height == frame.img.rows);
 
+	const cv::Mat_<float> dmat(d.image.height, d.image.width,
+	                             (float*)&d.image.data[0], d.image.step);
+
+	for(auto& e : frame.features){
+		//Z = fT/d where d is disparity
+
+		float disp = dmat.at<float>((e.px));
+
+		if(disp > d.min_disparity && disp < d.max_disparity){
+			ROS_DEBUG_STREAM("updating with depth: " << d.f * d.T / disp);
+		}
+		else{
+			ROS_DEBUG_STREAM("invalid disparity");
+		}
 	}
 }
