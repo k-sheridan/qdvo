@@ -346,13 +346,13 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 
 
-	ROS_DEBUG_STREAM("A_full: " << A_full);
+	//ROS_DEBUG_STREAM("A_full: " << A_full);
 
-	ROS_DEBUG_STREAM("sigma inv: " << Sigma_inv);
+	//ROS_DEBUG_STREAM("sigma inv: " << Sigma_inv);
 
-	ROS_DEBUG_STREAM("I_KH: " << I_KH);
+	//ROS_DEBUG_STREAM("I_KH: " << I_KH);
 
-	ROS_DEBUG_STREAM("KRKt: " << T*A_full*T.transpose());
+	//ROS_DEBUG_STREAM("KRKt: " << T*A_full*T.transpose());
 
 	//invert sigma back
 	//this->Sigma = Sigma_inv.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());

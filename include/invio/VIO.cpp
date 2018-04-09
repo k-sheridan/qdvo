@@ -184,6 +184,8 @@ void VIO::addFrame(Frame f) {
 		}
 
 		this->replenishFeatures((this->frame_buffer.front()));
+
+		this->frame_buffer.front().convertCandidatesToFeatures();
 	}
 
 	else // we have atleast 1 frame in the buffer

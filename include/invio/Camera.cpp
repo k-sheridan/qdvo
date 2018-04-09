@@ -126,8 +126,9 @@ void VIO::replenishFeatures(Frame& f) {
 		//add the new features to the current state
 		f.addFeatures(new_features);
 
-		ROS_WARN("bug right here in camera.cpp");
-		f.convertCandidatesToFeatures();
+		//ROS_WARN("bug right here in camera.cpp");
+		//f.convertCandidatesToFeatures();
+
 
 
 	}

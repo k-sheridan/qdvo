@@ -62,7 +62,22 @@ void VIO::applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame){
 		float disp = dmat.at<float>((e.px));
 
 		if(disp > d.min_disparity && disp < d.max_disparity){
-			ROS_DEBUG_STREAM("updating with depth: " << d.f * d.T / disp);
+
+			ScalarType z = (ScalarType)(d.f * d.T / disp);
+
+			ROS_DEBUG_STREAM("updating with depth: " << z);
+
+			//set the feature pos with a new world coordinate
+			Eigen::Matrix<ScalarType, 3, 1> point;
+			point << z*e.pixel2Metric(frame.K, e.px), z;
+
+			point = frame.pose * point;
+
+			e.mu = point;
+
+			e.transformFromWorldFrame();
+
+
 		}
 		else{
 			ROS_DEBUG_STREAM("invalid disparity");
