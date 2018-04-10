@@ -106,7 +106,7 @@ public:
 
 	void disparityCallback(const stereo_msgs::DisparityImageConstPtr& msg);
 
-	void updateDepthsUsingDisparity();
+	void linkFrameAndReplenishFeaturesWithDisparityBuffer();
 
 	void applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame);
 
@@ -115,6 +115,10 @@ public:
 	void removeExcessFrames(std::deque<Frame>& buffer);
 
 	void replenishFeatures(Frame& f);
+
+	void replenishFeatures(Frame& f, stereo_msgs::DisparityImage& d);
+
+	std::vector<cv::Point2f> extractNewFeatures(Frame& f);
 
 	void applyImageUpdate(Frame& lf, Frame& cf);
 

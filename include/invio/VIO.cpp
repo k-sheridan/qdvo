@@ -182,10 +182,6 @@ void VIO::addFrame(Frame f) {
 		if(this->state_estimator.t == ros::Time(0)){
 			this->state_estimator.t = f.t;
 		}
-
-		this->replenishFeatures((this->frame_buffer.front()));
-
-		this->frame_buffer.front().convertCandidatesToFeatures();
 	}
 
 	else // we have atleast 1 frame in the buffer
@@ -220,7 +216,18 @@ void VIO::addFrame(Frame f) {
 			ROS_WARN("not enough features to estimate motion visually");
 		}
 
-		this->replenishFeatures((this->frame_buffer.front())); // try to get more features if needed
+	}
+
+	if(!USE_EXTERNAL_DISPARITY){
+		this->replenishFeatures((this->frame_buffer.front()));
+
+		if(this->frame_buffer.size() == 1){
+			// initially integrate all
+			this->frame_buffer.front().convertCandidatesToFeatures();
+		}
+	}
+	else{
+		this->linkFrameAndReplenishFeaturesWithDisparityBuffer();
 	}
 
 
@@ -240,7 +247,6 @@ void VIO::addFrame(Frame f) {
 	//publish the mature 3d points
 	this->publishPoints(this->frame_buffer.front());
 
-	ROS_ERROR_COND(this->tracking_lost, "lost tracking!");
 
 	//finally remove excess frames from the buffer
 	this->removeExcessFrames(this->frame_buffer);

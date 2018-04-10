@@ -30,7 +30,7 @@ void StateEstimator::gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gyro, Eigen::Mat
 	this->mu.mean += K * residual; // update the estimate
 
 	ROS_DEBUG_STREAM("residual: "<< residual.transpose());
-	ROS_DEBUG_STREAM("Kt: " << K);
+	//ROS_DEBUG_STREAM("Kt: " << K);
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> i_kh;
 	i_kh.setIdentity();

@@ -7,13 +7,14 @@ void VIO::disparityCallback(const stereo_msgs::DisparityImageConstPtr& msg){
 
   ROS_INFO_STREAM("POINT CLOUD: got pc at: " << msg->header.stamp);
 
-  this->updateDepthsUsingDisparity();
+  this->linkFrameAndReplenishFeaturesWithDisparityBuffer();
 }
 
 /*
+ * finds a corresponding depth map and links it.
 * Updates the depths of candidates if applicable and cleans up the the point cloud buffer
 */
-void VIO::updateDepthsUsingDisparity(){
+void VIO::linkFrameAndReplenishFeaturesWithDisparityBuffer(){
   if(this->disparity_buffer.empty() || this->frame_buffer.empty()){
     ROS_DEBUG_STREAM("no frames and/or point clouds to be used for depth update");
     return;
@@ -37,7 +38,8 @@ void VIO::updateDepthsUsingDisparity(){
   if(std::fabs((this->disparity_buffer.front().header.stamp - this->frame_buffer.front().t).toSec()) < STAMP_EPS){
     //update the depths of features and candidates using the point cloud
 	ROS_DEBUG("point cloud associated with frame");
-	this->applyDisparityUpdate(this->disparity_buffer.front(), this->frame_buffer.front());
+
+	this->replenishFeatures(this->frame_buffer.front(), this->disparity_buffer.front());
 
     //remove this point cloud after use
     this->disparity_buffer.pop_front();
@@ -45,42 +47,34 @@ void VIO::updateDepthsUsingDisparity(){
 }
 
 /*
- * uses a point cloud to update the depths of features and candidates
+ * extracts new features and initializes their depth with a disparity image
  */
-void VIO::applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame){
-	//TODO implement kalman update
-	//TODO update candidate features too
-
+void VIO::replenishFeatures(Frame& frame, stereo_msgs::DisparityImage& d){
 	ROS_ASSERT(d.image.width == frame.img.cols && d.image.height == frame.img.rows);
 
-	const cv::Mat_<float> dmat(d.image.height, d.image.width,
-	                             (float*)&d.image.data[0], d.image.step);
-
-	for(auto& e : frame.features){
-		//Z = fT/d where d is disparity
-
-		float disp = dmat.at<float>((e.px));
-
-		if(disp > d.min_disparity && disp < d.max_disparity){
-
-			ScalarType z = (ScalarType)(d.f * d.T / disp);
-
-			ROS_DEBUG_STREAM("updating with depth: " << z);
-
-			//set the feature pos with a new world coordinate
-			Eigen::Matrix<ScalarType, 3, 1> point;
-			point << z*e.pixel2Metric(frame.K, e.px), z;
-
-			point = frame.pose * point;
-
-			e.mu = point;
-
-			e.transformFromWorldFrame();
+		//get potential new features
+		std::vector<cv::Point2f> new_feature_positions = this->extractNewFeatures(frame);
 
 
+		const cv::Mat_<float> dmat(d.image.height, d.image.width,
+		                             (float*)&d.image.data[0], d.image.step);
+
+
+		for(auto& e : new_feature_positions){
+			//Z = fT/d where d is disparity
+
+			float disp = dmat.at<float>((e));
+
+			if(disp > d.min_disparity && disp < d.max_disparity){
+
+				ScalarType z = (ScalarType)(d.f * d.T / disp);
+
+				ROS_DEBUG_STREAM("initializing feature with depth: " << z);
+
+
+			}
+			else{
+				ROS_DEBUG_STREAM("invalid disparity");
+			}
 		}
-		else{
-			ROS_DEBUG_STREAM("invalid disparity");
-		}
-	}
 }

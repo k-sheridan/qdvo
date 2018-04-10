@@ -55,6 +55,8 @@ void Frame::addFeatures(std::vector<cv::Point2f> new_features){
 }
 
 void Frame::convertCandidatesToFeatures(){
+	ROS_INFO("converting all candidates to features.");
+
 	for(auto e : this->candidates){
 		this->features.push_back(e.f);
 	}

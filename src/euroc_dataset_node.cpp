@@ -26,31 +26,35 @@ ros::Subscriber* gtSub;
 
 tf::TransformBroadcaster* tfbr;
 
-tf::StampedTransform imu2cam0, imu2cam1;
+tf::StampedTransform base2cam0, base2cam1;
+tf::StampedTransform vicon2base, world2vicon, base2imu;
 
 void gtCallback(const geometry_msgs::TransformStampedConstPtr& msg){
 
-	imu2cam1.stamp_ = msg->header.stamp;
-	tfbr->sendTransform(imu2cam1);
+	base2cam1.stamp_ = msg->header.stamp;
+	tfbr->sendTransform(base2cam1);
 
-	imu2cam0.stamp_ = msg->header.stamp;
-	tfbr->sendTransform(imu2cam0);
+	base2cam0.stamp_ = msg->header.stamp;
+	tfbr->sendTransform(base2cam0);
 
-	tf::StampedTransform base2vicon, world2vicon, base2imu;
+	vicon2base.child_frame_id_ = "base_link";
+	vicon2base.frame_id_ = "vicon";
 
-	base2vicon.child_frame_id_ = "base_link";
-	base2vicon.frame_id_ = "vicon";
-	base2vicon.setRotation(tf::Quaternion(0, 0, 0, 1));
-	base2vicon.setOrigin(tf::Vector3(0, 0, 0.1));
-	base2vicon.stamp_ = msg->header.stamp;
+	tf::Matrix3x3 R = {0.33638, -0.01749,  0.94156, -0.02078, -0.99972, -0.01114, 0.94150, -0.01582, -0.33665};
+	tf::Vector3 t = tf::Vector3(0.06901, -0.02781, -0.12395);
+	vicon2base.setBasis(R);
+	vicon2base.setOrigin(t);
 
-	tfbr->sendTransform(base2vicon);
+	vicon2base.stamp_ = msg->header.stamp;
+
+	tfbr->sendTransform(vicon2base);
 
 	base2imu.child_frame_id_ = "imu4";
 	base2imu.frame_id_ = "base_link";
-	tf::Quaternion quat = tf::Quaternion(PI/2, 0, PI);
-	base2imu.setRotation(quat);
-	base2imu.setOrigin(tf::Vector3(0.1, 0, 0));
+
+	base2imu.setRotation(tf::Quaternion(0, 0, 0, 1));
+	base2imu.setOrigin(tf::Vector3(0, 0, 0));
+
 	base2imu.stamp_ = msg->header.stamp;
 
 	tfbr->sendTransform(base2imu);
@@ -143,26 +147,26 @@ int main(int argc, char **argv)
 
 
 	//cam0
-	imu2cam0.child_frame_id_ = "cam0";
-	imu2cam0.frame_id_ = "imu4";
+    base2cam0.child_frame_id_ = "cam0";
+	base2cam0.frame_id_ = "base_link";
 
 	R = tf::Matrix3x3(0.0148655429818, -0.999880929698, 0.00414029679422, 0.999557249008, 0.0149672133247, 0.025715529948, -0.0257744366974, 0.00375618835797, 0.999660727178);
 	t = tf::Vector3(-0.0216401454975, -0.064676986768, 0.00981073058949);
 
-	imu2cam0.setOrigin(t);
-	imu2cam0.setBasis(R);
+	base2cam0.setOrigin(t);
+	base2cam0.setBasis(R);
 
 
 	//cam1
-	imu2cam1.child_frame_id_ = "cam1";
-	imu2cam1.frame_id_ = "imu4";
+	base2cam1.child_frame_id_ = "cam1";
+	base2cam1.frame_id_ = "base_link";
 
 	R = tf::Matrix3x3(0.0125552670891, -0.999755099723, 0.0182237714554, 0.999598781151, 0.0130119051815, 0.0251588363115, -0.0253898008918, 0.0179005838253, 0.999517347078);
 	t = tf::Vector3(-0.0198435579556, 0.0453689425024, 0.00786212447038);
 
 
-	imu2cam1.setOrigin(t);
-	imu2cam1.setBasis(R);
+	base2cam1.setOrigin(t);
+	base2cam1.setBasis(R);
 
 
 	//subs and pubs

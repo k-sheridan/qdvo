@@ -125,8 +125,9 @@ void StateEstimator::process(ScalarType dt){
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
 
 	ScalarType low_noise = 0.00001 * dt;
-	ScalarType pos_noise = 0.0001 * dt;
-	ScalarType velocity_noise = 0.001*dt;
+	ScalarType pos_noise = 0.5 * dt;
+	ScalarType angle_noise = 0.01 * dt;
+	ScalarType velocity_noise = 1*dt;
 	ScalarType omega_noise = 5*dt;
 	ScalarType accel_noise = 5*dt;
 	ScalarType bias_noise = 0.0001*dt;
@@ -138,9 +139,9 @@ Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::gene
 	Q(0, 0) = pos_noise;
 	Q(1, 1) = pos_noise;
 	Q(2, 2) = pos_noise;
-	Q(3, 3) = pos_noise;
-	Q(4, 4) = pos_noise;
-	Q(5, 5) = pos_noise;
+	Q(3, 3) = angle_noise;
+	Q(4, 4) = angle_noise;
+	Q(5, 5) = angle_noise;
 
 	Q(6, 6) = velocity_noise;
 	Q(7, 7) = velocity_noise;
@@ -211,6 +212,9 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	State new_mu = last;
 
 	// the position is represented by a twist
+	ROS_ASSERT(last.getAngularTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
+	ROS_ASSERT(last.getLinearTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
+
 	new_mu.setLinearTwist(dt*last.getVelocity() + dt*dt*0.5*last.getAcceleration());
 	new_mu.setAngularTwist(dt*last.getOmega());
 
@@ -233,142 +237,12 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	return new_mu;
 }
 
+/*
+ * uses tracked features and their position estimates to update the pose iteratively
+ */
 void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
-	// invert the covariance matrix to be used during update
-	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
 
-	//transform all features into the world frame
-	for(auto& e : cf.features){
-		e.transformToWorldFrame();
-	}
-
-	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
-	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
-
-	ScalarType chi2_sum_last, chi2_sum_curr; // store the current error and last error to determine whether to stop the optimization
-
-
-	// perform iterative pose update
-	for(size_t i = 0; i < (size_t)MOBA_MAX_ITERATIONS; i++){
-		b.setZero();
-		A.setZero();
-
-		chi2_sum_last = chi2_sum_curr;
-		chi2_sum_curr = 0;
-
-		Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse();
-
-		for(auto& e : cf.features){
-			Eigen::Matrix<ScalarType, 2, 6> H;
-			Eigen::Matrix<ScalarType, 3, 1> xyz_f(pose_inv * e.mu); // the point in the current estimated frame's pose
-			StateEstimator::jacobian_xyz2uv(xyz_f, H); // compute the linear map for a small twist to a bearing
-
-			Eigen::Matrix<ScalarType, 2, 1> residual = Feature::pixel2Metric(cf.K, e.px) - Feature::point2bearingAndzinv(xyz_f).block<2, 1>(0, 0);
-
-			ScalarType chi2 = residual.squaredNorm();
-			chi2_sum_curr += chi2;
-
-			// compute this edges weight
-			ScalarType weight = 1.0;
-
-			A.noalias() += H.transpose() * e.R_inv * H;
-			b.noalias() += H.transpose() * e.R_inv * residual;
-		}
-
-
-		// check if the error has increased
-		if(i != 0){
-			if(chi2_sum_curr > chi2_sum_last){
-				ROS_DEBUG_STREAM("ERROR INCREASED at iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
-				ROS_DEBUG_STREAM("BREAKING");
-				break;
-			}
-			else{
-				ROS_DEBUG_STREAM("SUCCESSFUL iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
-			}
-		}
-
-		//solve the system
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> LHS = Sigma_inv;
-		LHS.block<6, 6>(0, 0) += A;
-
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> RHS;
-		RHS.setZero();
-		RHS.block<6, 1>(0, 0) = b;
-
-		// compute the dx
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> dx = LHS.ldlt().solve(RHS);
-
-		// apply the dx onto the mean
-		this->mu.mean.noalias() += dx;
-		Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
-
-		this->mu.true_pose = this->mu.true_pose * twist; // apply the small twist to the pose
-
-		// zero the tangent space again
-		this->mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-		this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-
-		//transform state into new tangent space
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Adj;
-		Adj.setIdentity();
-		Adj.block<6, 6>(0, 0) = twist.Adj(); // typically it is the inverse transform
-
-		// P' = Ainv * P * AinvT => P'inv = AinvTinv * Pinv * Ainvinv = AT * Pinv * A
-		// P'^{-1} = (Jt)^{-1} * P^{-1} * (J)^{-1}
-
-		Sigma_inv = Adj.transpose() * Sigma_inv * Adj; // transform the uncertainty into the new optimized tangent space
-
-		//last_A = A; // save the previous A (information) mat
-
-		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
-
-		if(dx.block<6, 1>(0, 0).norm() <= EPS_MOBA){
-			ROS_DEBUG_STREAM("EPSILON REACHED... STOPPING");
-			break;
-		}
-
-	}
-
-	// apply modified josephs uncertainty update
-
-	Eigen::Matrix<ScalarType, 25, 25> A_full;
-	A_full.setZero();
-	A_full.block<6, 6>(0, 0) = A;
-
-	Eigen::Matrix<ScalarType, 25, 25> T = Sigma_inv + A_full;
-	//T = T.ldlt().solve(Eigen::Matrix<ScalarType, 25, 25>::Identity()); // invert
-	T = T.inverse(); // invert
-
-	Eigen::Matrix<ScalarType, 25, 25> I_KH = (Eigen::Matrix<ScalarType, 25, 25>::Identity() - T*A_full);
-
-
-
-	//ROS_DEBUG_STREAM("A_full: " << A_full);
-
-	//ROS_DEBUG_STREAM("sigma inv: " << Sigma_inv);
-
-	//ROS_DEBUG_STREAM("I_KH: " << I_KH);
-
-	//ROS_DEBUG_STREAM("KRKt: " << T*A_full*T.transpose());
-
-	//invert sigma back
-	//this->Sigma = Sigma_inv.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
-	this->Sigma = Sigma_inv.inverse();
-
-	//propagate uncertainty
-	this->Sigma = I_KH * this->Sigma * I_KH.transpose();
-	this->Sigma.noalias() += T*A_full*T.transpose();
-
-	//transform all features into their observation frame
-	for(auto& e : cf.features){
-		e.transformFromWorldFrame();
-	}
-
-	//set the frame's pose
-	cf.pose = this->mu.true_pose;
 
 }
 

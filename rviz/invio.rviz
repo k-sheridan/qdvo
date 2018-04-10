@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud
+    SyncSource: Image
 Visualization Manager:
   Class: ""
   Displays:
@@ -69,7 +69,7 @@ Visualization Manager:
           Value: true
       Marker Scale: 1
       Name: TF
-      Show Arrows: true
+      Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
@@ -100,9 +100,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 2.34865808
+      Max Intensity: -999999
       Min Color: 0; 0; 0
-      Min Intensity: 0.999552846
+      Min Intensity: 999999
       Name: PointCloud
       Position Transformer: XYZ
       Queue Size: 10
@@ -152,25 +152,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 5.0330081
+      Distance: 3.04441953
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.978365362
-        Y: -0.578276813
-        Z: -0.0880916715
+        X: 1.21788859
+        Y: -0.480342567
+        Z: -0.829441905
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.379797578
+      Pitch: 0.564797401
       Target Frame: invio_odom
       Value: Orbit (rviz)
-      Yaw: 2.30046511
+      Yaw: 2.78546476
     Saved: ~
 Window Geometry:
   Displays:
