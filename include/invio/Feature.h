@@ -42,16 +42,19 @@ class Feature {
 private:
 	std::deque<cv::Mat> patches; // this is the feature template over time [old -> new]
 public:
-	// the pose that the feature position is represented in
+	// the pose and bearing that the feature was initially observed in
 	Sophus::SE3<ScalarType> observation_pose;
+	Eigen::Matrix<ScalarType, 2, 1> observation_bearing;
+
+	// The feature position is represented in world coordinates
 	// mean [x, y, z]
 	Eigen::Matrix<ScalarType, 3, 1> mu;
 	// covariance of the position estimate
 	Eigen::Matrix<ScalarType, 3, 3> Sigma;
 
-	cv::Point2f px; // the pixel position of this feature
+	cv::Point2f px; // the current pixel position of this feature
 
-	Eigen::Matrix<ScalarType, 2, 2> R_inv; // METERS!!! pixel position measurement uncertainty (used to "inform" update about edgy features)
+	Eigen::Matrix<ScalarType, 2, 2> R_inv; // METERS! pixel position measurement uncertainty (used to "inform" update about edgy features)
 
 
 
@@ -78,7 +81,7 @@ public:
 		return cv::Mat(img, roi);
 	}
 
-	
+
 	static inline Eigen::Matrix<ScalarType, 2, 1> pixel2Metric(Eigen::Matrix<ScalarType, 3, 3> K, const cv::Point2f px){
 		Eigen::Matrix<ScalarType, 2, 1> temp;
 		temp << (px.x - K(2)) / K(0), (px.y - K(5)) / K(4);

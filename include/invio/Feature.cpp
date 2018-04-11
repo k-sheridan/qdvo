@@ -23,7 +23,8 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 	this->mu(2) = depth;
 
 	ROS_ASSERT(depth_variance >= 0);
-	//set the uncertainty of the feature position
+	//set the uncertainty of the feature position in homogenous coordinates
+	//TODO transform this to world coordinates
 	this->Sigma << DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0, 0,
 								0, DEFAULT_POINT_HOMOGENOUS_VARIANCE, 0,
 								0, 0, depth_variance;
