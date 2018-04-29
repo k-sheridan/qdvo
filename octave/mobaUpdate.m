@@ -40,7 +40,8 @@ for it = (1:ITERATION)
         break;
     end
     
-    dx = (P * A) \ (P * b);
+    dx = (inv(P) + A) \ (b);
+    %dx = A\b;
     
     new_camera_transform = new_camera_transform * se3Exp(dx);
     

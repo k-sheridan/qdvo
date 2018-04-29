@@ -27,11 +27,11 @@ sin_angle = 0;
 angle_wiggle_amp = 0;
 translation_wiggle_amp = 0;
 
-camera_twist = [0;0;0;0;0;0];
+camera_twist = [0.5;0;0;0;0;0];
 camera_pose = se3Exp([0;0;0;0;0;0]);
 
 estimated_camera_pose = se3Exp([0;0;0;0;0;0]);
-tangent_space_uncertainty = diag([1;1;1;1;1;1]);
+tangent_space_uncertainty = diag([10;10;10;0.0001;0.0001;0.0001]);
 
 % simulate and draw
 for t = (0:dt:2)
@@ -46,6 +46,8 @@ for t = (0:dt:2)
     
     
     %RUN OPTIMIZER
+    estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
+    
     [estimated_camera_pose] = mobaUpdate(estimated_camera_pose, tangent_space_uncertainty, estimated_points, features);
    
     %PLOT
