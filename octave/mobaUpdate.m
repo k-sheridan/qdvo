@@ -9,6 +9,8 @@ ITERATION = 10;
 new_camera_transform = prior_camera_transform;
 
 
+P = prior_tangent_space_uncertainty;
+
 for it = (1:ITERATION)
     
     A = zeros(6, 6);
@@ -31,14 +33,14 @@ for it = (1:ITERATION)
         
     end
     
-    chi = chi / length(points(1, :))
+    chi = chi / length(points(1, :));
     
     if (chi > last_chi)
         disp('Breaking because chi increased')
         break;
     end
     
-    dx = A\b;
+    dx = (P * A) \ (P * b);
     
     new_camera_transform = new_camera_transform * se3Exp(dx);
     

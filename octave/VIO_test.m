@@ -1,23 +1,37 @@
 rng(1);
 
-% generate points
+% generate true points
 points = [];
-x_scale = 2;
-y_scale = 2;
-z_scale = 5;
+x_scale = 1;
+y_scale = 1;
+z_scale = 1;
 for col = (1:1:50)
     points = [points, [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1]];
 end
 
+depth_noise = 0.5;
+
+estimated_points = [];
+for p = points
+    homo = [p(1)/p(3); p(2)/p(3); p(3)];
+    new_z = p(3) + randn*depth_noise;
+    
+    estimated_points = [estimated_points, [homo(1)*new_z; homo(2)*new_z; new_z]];
+end
+
 dt = 0.1;
 
-sensor_noise = 0.0;
+sensor_noise = 0.001;
 
-camera_twist = [0;0.1;-0.5;0;pi/16;0];
+sin_angle = 0;
+angle_wiggle_amp = 0;
+translation_wiggle_amp = 0;
+
+camera_twist = [0;0;0;0;0;0];
 camera_pose = se3Exp([0;0;0;0;0;0]);
 
 estimated_camera_pose = se3Exp([0;0;0;0;0;0]);
-tangent_space_uncertainty = diag([1, 1, 1, 1, 1, 1]);
+tangent_space_uncertainty = diag([1;1;1;1;1;1]);
 
 % simulate and draw
 for t = (0:dt:2)
@@ -32,12 +46,13 @@ for t = (0:dt:2)
     
     
     %RUN OPTIMIZER
-    [estimated_camera_pose] = mobaUpdate(estimated_camera_pose, tangent_space_uncertainty, points, features);
+    [estimated_camera_pose] = mobaUpdate(estimated_camera_pose, tangent_space_uncertainty, estimated_points, features);
    
     %PLOT
     clf;
     hold on;
     daspect([1,1,1])
+    view(90, -25);
     
     plotCamera('Orientation', camera_pose(1:3, 1:3)', 'Location', camera_pose(1:3, 4), 'Size', 0.1);
     
@@ -45,11 +60,18 @@ for t = (0:dt:2)
     
     %transform 
     transformed_features = camera_pose*[features; ones(1, length(features(1, :)))];
-    plot3(transformed_features(1, :), transformed_features(2, :), transformed_features(3, :), 'o');
+    plot3(transformed_features(1, :), transformed_features(2, :), transformed_features(3, :), 'bo');
     
-    plot3(points(1, :), points(2, :), points(3, :), 'o');
+    plot3(points(1, :), points(2, :), points(3, :), 'ro');
+    
+    plot3(estimated_points(1, :), estimated_points(2, :), estimated_points(3, :), 'go')
     drawnow;
     
-    % move camera
-    camera_pose = camera_pose * se3Exp(dt*camera_twist);
+    %MOVE CAMERA
+    %generate "wiggle"
+    wiggle = [translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle)];
+    sin_angle = sin_angle + dt;
+    
+    
+    camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle))
 end
