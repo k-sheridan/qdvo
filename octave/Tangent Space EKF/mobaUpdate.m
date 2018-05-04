@@ -28,8 +28,10 @@ for it = (1:ITERATION)
         
         chi = chi + norm(e);
         
-        A = A + H'*H;
-        b = b + H'*e;
+        huber = huberLossFn(norm(e));
+        
+        A = A + H'*H*huber;
+        b = b + H'*e*huber;
         
     end
     

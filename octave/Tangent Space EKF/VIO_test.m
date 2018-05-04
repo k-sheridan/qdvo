@@ -5,11 +5,11 @@ points = [];
 x_scale = 1;
 y_scale = 1;
 z_scale = 1;
-for col = (1:1:20)
+for col = (1:1:50)
     points = [points, [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1]];
 end
 
-depth_noise = 0.01;
+depth_noise = 0.5;
 
 estimated_points = [];
 for p = points
@@ -76,5 +76,5 @@ for t = (0:dt:30)
     
     
     camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle))
-    estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle))
+    estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle)); % apply odometry
 end
