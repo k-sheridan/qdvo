@@ -5,11 +5,11 @@ points = [];
 x_scale = 1;
 y_scale = 1;
 z_scale = 1;
-for col = (1:1:50)
+for col = (1:1:20)
     points = [points, [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1]];
 end
 
-depth_noise = 0.5;
+depth_noise = 0.01;
 
 estimated_points = [];
 for p = points
@@ -19,7 +19,7 @@ for p = points
     estimated_points = [estimated_points, [homo(1)*new_z; homo(2)*new_z; new_z]];
 end
 
-dt = 0.1;
+dt = 0.05;
 
 sensor_noise = 0.001;
 
@@ -27,14 +27,14 @@ sin_angle = 0;
 angle_wiggle_amp = 0;
 translation_wiggle_amp = 0;
 
-camera_twist = [0.5;0;0;0;0;0];
+camera_twist = [0.5;0;0;0;-pi/10;0];
 camera_pose = se3Exp([0;0;0;0;0;0]);
 
 estimated_camera_pose = se3Exp([0;0;0;0;0;0]);
 tangent_space_uncertainty = diag([10;10;10;0.0001;0.0001;0.0001]);
 
 % simulate and draw
-for t = (0:dt:2)
+for t = (0:dt:30)
     
     %GENERATE FAKE FEATURES
     features = [];
@@ -46,7 +46,7 @@ for t = (0:dt:2)
     
     
     %RUN OPTIMIZER
-    estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
+    %estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
     
     [estimated_camera_pose] = mobaUpdate(estimated_camera_pose, tangent_space_uncertainty, estimated_points, features);
    
@@ -54,7 +54,7 @@ for t = (0:dt:2)
     clf;
     hold on;
     daspect([1,1,1])
-    view(90, -25);
+    view(70, -10);
     
     plotCamera('Orientation', camera_pose(1:3, 1:3)', 'Location', camera_pose(1:3, 4), 'Size', 0.1);
     
@@ -76,4 +76,5 @@ for t = (0:dt:2)
     
     
     camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle))
+    estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle))
 end
