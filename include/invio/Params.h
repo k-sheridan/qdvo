@@ -41,7 +41,7 @@ typedef float ScalarType;
 // the minimum feature eigen val where it is determined as lost
 #define D_KLT_MIN_EIGEN 1e-4
 
-#define D_HUBER_WIDTH 1e-5
+#define D_HUBER_WIDTH 1e-6
 
 // the minimum pixel distance a feature must have between a previous feature
 #define D_MIN_NEW_FEATURE_DIST 30
