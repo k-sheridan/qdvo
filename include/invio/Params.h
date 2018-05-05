@@ -225,7 +225,7 @@ extern bool USE_CUSTOM_IMU_UNCERTAINTIES;
 
 //END ROS PARAMS
 
-
+extern void parseROSParams();
 
 
 #endif /* PAUVSI_VIO_INCLUDE_PAUVSI_VIO_VIOPARAMS_H_ */

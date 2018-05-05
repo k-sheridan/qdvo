@@ -34,6 +34,9 @@ void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 	// run iterative update
 	this->state_estimator.updateWithTrackedFeatures(cf);
 
+	//set the frame's pose
+	cf.pose = this->state_estimator.mu.true_pose;
+
 	// note the frame's position must be current with the new state estimate for depth update
 	//TODO run feature depth/position update
 
@@ -46,9 +49,9 @@ void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 void VIO::replenishFeatures(Frame& f) {
 
 	//add more features if needed
-	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size() + f.candidates.size());
+	ROS_DEBUG_STREAM("current 2d feature count: " << f.features.size());
 
-	if (f.features.size() + f.candidates.size() < (size_t)NUM_FEATURES) {
+	if (f.features.size() < (size_t)NUM_FEATURES) {
 		//add the new features to the current state
 		f.addFeatures(this->extractNewFeatures(f));
 	}

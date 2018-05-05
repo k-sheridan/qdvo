@@ -7,14 +7,14 @@ void VIO::disparityCallback(const stereo_msgs::DisparityImageConstPtr& msg){
 
   ROS_INFO_STREAM("POINT CLOUD: got pc at: " << msg->header.stamp);
 
-  this->linkFrameAndReplenishFeaturesWithDisparityBuffer();
+  this->linkFrameAndReplenishFeaturesWithDisparityBuffer(this->frame_buffer.front());
 }
 
 /*
  * finds a corresponding depth map and links it.
 * Updates the depths of candidates if applicable and cleans up the the point cloud buffer
 */
-void VIO::linkFrameAndReplenishFeaturesWithDisparityBuffer(){
+void VIO::linkFrameAndReplenishFeaturesWithDisparityBuffer(Frame& f){
   if(this->disparity_buffer.empty() || this->frame_buffer.empty()){
     ROS_DEBUG_STREAM("no frames and/or point clouds to be used for depth update");
     return;
@@ -39,7 +39,7 @@ void VIO::linkFrameAndReplenishFeaturesWithDisparityBuffer(){
     //update the depths of features and candidates using the point cloud
 	ROS_DEBUG("point cloud associated with frame");
 
-	this->replenishFeatures(this->frame_buffer.front(), this->disparity_buffer.front());
+	this->replenishFeatures(f, this->disparity_buffer.front());
 
     //remove this point cloud after use
     this->disparity_buffer.pop_front();
@@ -82,6 +82,10 @@ void VIO::replenishFeatures(Frame& frame, stereo_msgs::DisparityImage& d){
 
 
 				Feature f = Feature(e, z, std_dev*std_dev, frame.K, frame.pose);
+
+				frame.addFeature(f);
+
+				needed--; // we need one less feature
 
 			}
 			else{

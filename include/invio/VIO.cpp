@@ -139,8 +139,7 @@ void VIO::addFrame(Frame f) {
 
 	else // we have atleast 1 frame in the buffer
 	{
-		// copy over the features, candidates and pose from the last frame
-		f.candidates = this->frame_buffer.front().candidates;
+		// copy over the features and pose from the last frame
 		f.features = this->frame_buffer.front().features;
 		f.pose = this->frame_buffer.front().pose;
 
@@ -173,14 +172,9 @@ void VIO::addFrame(Frame f) {
 
 	if(!USE_EXTERNAL_DISPARITY){
 		this->replenishFeatures((this->frame_buffer.front()));
-
-		if(this->frame_buffer.size() == 1){
-			// initially integrate all
-			this->frame_buffer.front().convertCandidatesToFeatures();
-		}
 	}
 	else{
-		this->linkFrameAndReplenishFeaturesWithDisparityBuffer();
+		this->linkFrameAndReplenishFeaturesWithDisparityBuffer(this->frame_buffer.front());
 	}
 
 
@@ -415,7 +409,8 @@ void VIO::publishPoints(Frame& f)
 
 		//ROS_DEBUG_STREAM("feature mu at point pub: " << e.mu.transpose());
 
-		Eigen::Vector3f p_in_f = (e.projectFeature(f.pose));
+		//Eigen::Vector3f p_in_f = (e.projectFeature(f.pose));
+		Eigen::Vector3f p_in_f = (e.projectFeature(this->state_estimator.mu.true_pose));
 
 		geometry_msgs::Point32 pt;
 

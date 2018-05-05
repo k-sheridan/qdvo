@@ -61,11 +61,6 @@ add_library(vioParams include/invio/Params.cpp)
 set_target_properties(vioParams PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(vioParams ${catkin_LIBRARIES})
 
-add_library(vioParseParams include/invio/ParseParams.cpp)
-set_target_properties(vioParseParams PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(vioParseParams ${catkin_LIBRARIES} vioParams)
-
-
 add_library(vioFeature include/invio/Feature.cpp)
 target_link_libraries(vioFeature ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} vioParams)
 
@@ -82,14 +77,14 @@ add_library(klt_tracker include/invio/KLTTracker.cpp)
 target_link_libraries(klt_tracker ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vio_state_estimator vioParams vioFeature vioFrame)
 
 add_library(full_vio include/invio/VIO.h include/invio/VIO.cpp include/invio/Camera.cpp include/invio/IMU.cpp include/invio/Disparity.cpp)
-target_link_libraries(full_vio ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioFrame vio_state_estimator klt_tracker vio_depthSolver vioParseParams)
+target_link_libraries(full_vio ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature vioFrame vio_state_estimator klt_tracker vio_depthSolver )
 
 add_executable(invio_node src/invio_node.cpp)
 target_link_libraries(invio_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} full_vio)
 
 
 add_executable(euroc_dataset_fixer src/euroc_dataset_node.cpp)
-target_link_libraries(euroc_dataset_fixer ${catkin_LIBRARIES} vioParseParams vioFeature)
+target_link_libraries(euroc_dataset_fixer ${catkin_LIBRARIES}  vioFeature)
 
 
 
@@ -97,5 +92,5 @@ target_link_libraries(euroc_dataset_fixer ${catkin_LIBRARIES} vioParseParams vio
 enable_testing()
 
 add_executable(invio_general_test test/test_general.cpp)
-target_link_libraries(invio_general_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioParseParams vioFeature  gtest)
+target_link_libraries(invio_general_test ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${sophus_LIBRARIES} vioParams vioFeature  gtest)
 

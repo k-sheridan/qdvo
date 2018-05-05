@@ -41,13 +41,6 @@ public:
 
 	Sophus::SE3<ScalarType> pose; // the best pose estimate of this frame
 
-	struct Candidate{
-		DepthSolver ds;
-		Feature f;
-	};
-
-	std::list<Candidate> candidates; // stores features which are not mature enough to be intergrated into motion estimation
-
 	std::list<Feature> features;
 
 	Frame();
@@ -56,8 +49,7 @@ public:
 	bool isPixelInBox(cv::Point2f px);
 
 	void addFeatures(std::vector<cv::Point2f> new_features);
-
-	void convertCandidatesToFeatures();
+	void addFeature(Feature f){this->features.push_back(f);}
 
 };
 

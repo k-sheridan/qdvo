@@ -273,10 +273,10 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 			chi2_sum_curr += chi2;
 
 			// compute this edges weight
-			ScalarType weight = 1.0;
+			ScalarType huber = this->getHuberWeight(sqrt(chi2));
 
-			A.noalias() += H.transpose() * H;
-			b.noalias() += H.transpose() * residual;
+			A.noalias() += H.transpose() * H * huber;
+			b.noalias() += H.transpose() * residual * huber;
 		}
 
 
@@ -364,10 +364,6 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 	this->Sigma = I_KH * this->Sigma * I_KH.transpose();
 	this->Sigma.noalias() += T*A_full*T.transpose();
 
-
-	//set the frame's pose
-	cf.pose = this->mu.true_pose;
-
 }
 
 
@@ -411,14 +407,14 @@ void StateEstimator::fixSigma(){
 /*
  * sqrt(chi2)
  */
-double StateEstimator::getHuberWeight(double chi)
+ScalarType StateEstimator::getHuberWeight(ScalarType chi_abs)
 {
-	if(chi <= HUBER_WIDTH)
+	if(chi_abs <= HUBER_WIDTH)
 	{
 		return 1.0;
 	}
 	else
 	{
-		return HUBER_WIDTH / chi;
+		return HUBER_WIDTH / chi_abs;
 	}
 }

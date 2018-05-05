@@ -45,23 +45,11 @@ Frame::Frame(int inv_scale, cv::Mat _img, boost::array<double, 9> k, std::vector
 */
 void Frame::addFeatures(std::vector<cv::Point2f> new_features){
 	for(auto e : new_features){
-		Candidate c;
+		Feature f;
 
-		cv::Mat patch = Feature::extractPatch(e, this->img); // get a feature patch from the current image
-
-		c.f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K, this->pose);
-		this->candidates.push_back(c);
+		f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K, this->pose);
+		this->features.push_back(f);
 	}
-}
-
-void Frame::convertCandidatesToFeatures(){
-	ROS_INFO("converting all candidates to features.");
-
-	for(auto e : this->candidates){
-		this->features.push_back(e.f);
-	}
-
-	this->candidates.clear();
 }
 
 bool Frame::isPixelInBox(cv::Point2f px)

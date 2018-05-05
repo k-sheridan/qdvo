@@ -44,7 +44,7 @@
 #include <Feature.h>
 #include <Frame.h>
 #include <Params.h>
-#include <ParseParams.h>
+
 #include <StateEstimator.h>
 #include <KLTTracker.h>
 
@@ -107,7 +107,7 @@ public:
 
 	void disparityCallback(const stereo_msgs::DisparityImageConstPtr& msg);
 
-	void linkFrameAndReplenishFeaturesWithDisparityBuffer();
+	void linkFrameAndReplenishFeaturesWithDisparityBuffer(Frame& f);
 
 	void applyDisparityUpdate(stereo_msgs::DisparityImage& d, Frame& frame);
 

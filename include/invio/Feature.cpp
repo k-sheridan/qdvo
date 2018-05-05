@@ -35,6 +35,11 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 
 	this->Sigma = J*this->Sigma*J.transpose();
 
+	//transform the uncertainty to world coordinates
+	Eigen::Matrix<ScalarType, 3, 3> R = observation_pose.rotationMatrix();
+	this->Sigma = R*this->Sigma*R.transpose();
+
+	ROS_DEBUG_STREAM("feature pos cov: " << this->Sigma);
 
 	//transform this feature position to world coordinates
 	this->mu = observation_pose * this->mu;

@@ -10,9 +10,9 @@ imu_topic: imu0
 imu_frame: imu4
 
 #-=-=-=-=-=-
-min_new_feature_dist: 20
+min_new_feature_dist: 10
 num_features: 200
-fast_threshold: 60
+fast_threshold: 40
 
 default_point_depth: 1
 default_point_depth_variance: 400
@@ -27,7 +27,7 @@ maximum_candidate_reprojection_error: 0.00005
 moba_candidate_variance: 10
 
 # maximum iterations during motion update
-moba_max_iterations: 25
+moba_max_iterations: 10
 eps_moba: 0.00000001
 
 # this will scale an image (scale_factor = 1/#)

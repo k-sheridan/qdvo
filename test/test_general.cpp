@@ -10,7 +10,6 @@
 
 #include "Params.h"
 #include <Feature.h>
-#include <ParseParams.h>
 
 // Bring in gtest
 #include <gtest/gtest.h>

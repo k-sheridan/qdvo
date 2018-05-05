@@ -151,18 +151,7 @@ public:
 	void checkSigma();
 	void fixSigma();
 
-	double StateEstimator::getHuberWeight(double chi_abs)
-	{
-		ROS_ASSERT(chi_abs >= 0);
-		if(chi_abs <= HUBER_WIDTH)
-		{
-			return 1.0;
-		}
-		else
-		{
-			return HUBER_WIDTH / chi_abs;
-		}
-	}
+	ScalarType getHuberWeight(ScalarType chi_abs);
 
 
 	Eigen::Matrix<ScalarType, 2, 2> getMetric2PixelMap(Eigen::Matrix3f& K);
