@@ -49,7 +49,7 @@ void Frame::addFeatures(std::vector<cv::Point2f> new_features){
 
 		cv::Mat patch = Feature::extractPatch(e, this->img); // get a feature patch from the current image
 
-		c.f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K, this->pose, patch);
+		c.f = Feature(e, DEFAULT_POINT_DEPTH, DEFAULT_POINT_DEPTH_VARIANCE, this->K, this->pose);
 		this->candidates.push_back(c);
 	}
 }

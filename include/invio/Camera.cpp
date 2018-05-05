@@ -85,7 +85,7 @@ std::vector<cv::Point2f> VIO::extractNewFeatures(Frame& f){
 	//image which is used to check if a close feature already exists
 	cv::Mat checkImg = cv::Mat::zeros(img.size(), CV_8U);
 	for (auto& e : f.features) {
-		cv::circle(checkImg, e.px, MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
+		cv::circle(checkImg, e.getPx(), MIN_NEW_FEATURE_DIST, cv::Scalar(255), -1);
 	}
 
 	for (int i = 0; i < needed && (size_t)i < fast_kp.size(); i++) {

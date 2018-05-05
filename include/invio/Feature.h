@@ -39,13 +39,8 @@
 class Frame; // need to tell the feature that there is something called frame
 
 class Feature {
-private:
-	std::deque<cv::Mat> patches; // this is the feature template over time [old -> new]
-public:
-	// the pose and bearing that the feature was initially observed in
-	Sophus::SE3<ScalarType> observation_pose;
-	Eigen::Matrix<ScalarType, 2, 1> observation_bearing;
 
+private:
 	// The feature position is represented in world coordinates
 	// mean [x, y, z]
 	Eigen::Matrix<ScalarType, 3, 1> mu;
@@ -56,11 +51,21 @@ public:
 
 	Eigen::Matrix<ScalarType, 2, 2> R_inv; // METERS! pixel position measurement uncertainty (used to "inform" update about edgy features)
 
+public:
 
 
 	Feature();
-	Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K, Sophus::SE3<ScalarType> observation_pose, cv::Mat patch);
+	Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Eigen::Matrix<ScalarType, 3, 3> K, Sophus::SE3<ScalarType> observation_pose);
 	virtual ~Feature();
+
+	Eigen::Matrix<ScalarType, 3, 1> getWorldCoordinate(){return this->mu;}
+	void setWorldCoordinate(Eigen::Matrix<ScalarType, 3, 1> point){this->mu = point;}
+
+	Eigen::Matrix<ScalarType, 3, 3> getWorldUncertainty(){return this->Sigma;}
+	void setWorldUncertainty(Eigen::Matrix<ScalarType, 3, 3> cov){this->Sigma = cov;}
+
+	cv::Point2f getPx(){return this->px;}
+	void setPx(cv::Point2f p){this->px = p;}
 
 
 	Eigen::Matrix<ScalarType, 3, 1> projectFeature(Sophus::SE3<ScalarType> into_frame);
@@ -106,28 +111,6 @@ public:
 	 */
 	static inline Eigen::Matrix<ScalarType, 3, 1> point2bearingAndzinv(Eigen::Matrix<ScalarType, 3, 1> point){
 		return Feature::bearingAndZinv2Point(point); // this function works both ways
-	}
-
-	/*
-	 * transforms the feature position and uncertainty into the world frame
-	 */
-	void transformToWorldFrame(){
-		Eigen::Matrix<ScalarType, 3, 3> R = this->observation_pose.rotationMatrix();
-		Eigen::Matrix<ScalarType, 3, 1> t = this->observation_pose.translation();
-
-		this->mu = R * this->mu + t;
-		this->Sigma = R * this->Sigma * R.transpose();
-	}
-
-	/*
-	 * transforms the feature position and uncertainty from the world frame to the observation frame
-	 */
-	void transformFromWorldFrame(){
-		Eigen::Matrix<ScalarType, 3, 3> R = this->observation_pose.rotationMatrix();
-		Eigen::Matrix<ScalarType, 3, 1> t = this->observation_pose.translation();
-
-		this->mu = R.transpose() * this->mu - R.transpose() * t;
-		this->Sigma = R.transpose() * this->Sigma * R;
 	}
 
 };

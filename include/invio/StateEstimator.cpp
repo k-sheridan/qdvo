@@ -246,11 +246,6 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
 
-	//transform all features into the world frame
-	for(auto& e : cf.features){
-		e.transformToWorldFrame();
-	}
-
 	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
 	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
 
@@ -269,10 +264,10 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 		for(auto& e : cf.features){
 			Eigen::Matrix<ScalarType, 2, 6> H;
-			Eigen::Matrix<ScalarType, 3, 1> xyz_f(pose_inv * e.mu); // the point in the current estimated frame's pose
+			Eigen::Matrix<ScalarType, 3, 1> xyz_f(pose_inv * e.getWorldCoordinate()); // the point in the current estimated frame's pose
 			StateEstimator::jacobian_xyz2uv(xyz_f, H); // compute the linear map for a small twist to a bearing
 
-			Eigen::Matrix<ScalarType, 2, 1> residual = Feature::pixel2Metric(cf.K, e.px) - Feature::point2bearingAndzinv(xyz_f).block<2, 1>(0, 0);
+			Eigen::Matrix<ScalarType, 2, 1> residual = Feature::pixel2Metric(cf.K, e.getPx()) - Eigen::Matrix<ScalarType, 2, 1>(xyz_f(0)/xyz_f(2), xyz_f(1)/xyz_f(2));
 
 			ScalarType chi2 = residual.squaredNorm();
 			chi2_sum_curr += chi2;
@@ -280,8 +275,8 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 			// compute this edges weight
 			ScalarType weight = 1.0;
 
-			A.noalias() += H.transpose() * e.R_inv * H;
-			b.noalias() += H.transpose() * e.R_inv * residual;
+			A.noalias() += H.transpose() * H;
+			b.noalias() += H.transpose() * residual;
 		}
 
 
@@ -369,10 +364,6 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 	this->Sigma = I_KH * this->Sigma * I_KH.transpose();
 	this->Sigma.noalias() += T*A_full*T.transpose();
 
-	//transform all features into their observation frame
-	for(auto& e : cf.features){
-		e.transformFromWorldFrame();
-	}
 
 	//set the frame's pose
 	cf.pose = this->mu.true_pose;

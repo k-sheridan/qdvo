@@ -44,6 +44,7 @@
 #include <Feature.h>
 #include <Frame.h>
 #include <Params.h>
+#include <ParseParams.h>
 #include <StateEstimator.h>
 #include <KLTTracker.h>
 
@@ -129,6 +130,10 @@ public:
 	void publishOdometry();
 
 	cv::RotatedRect getErrorEllipse(double chisquare_val, cv::Point2f mean, Eigen::Matrix2f covmat);
+
+
+
+
 };
 
 #endif /* PAUVSI_VIO_INCLUDE_PAUVSI_VIO_VIO_H_ */

@@ -51,7 +51,7 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 
 	//load the vectors
 	for(auto e : lf.features){
-		prev_fts.push_back(e.px);
+		prev_fts.push_back(e.getPx());
 
 	}
 	for(auto e : cf.features){
@@ -95,8 +95,10 @@ void KLTTracker::findNewFeaturePositionsOpenCV(const Frame& lf, Frame& cf)
 				continue; // next iteration
 			}*/
 
-			it->px = new_fts.at(i);
-			it->R_inv = this->estimateUncertainty(cf, it->px).inverse();
+			it->setPx(new_fts.at(i));
+
+			//TODO estimate the uncertainty
+			//it->R_inv = this->estimateUncertainty(cf, it->getPx()).inverse();
 
 			//it->addPatch(patch); // if everything has passed add this patch
 

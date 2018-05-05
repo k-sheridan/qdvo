@@ -55,13 +55,20 @@ void VIO::replenishFeatures(Frame& frame, stereo_msgs::DisparityImage& d){
 		//get potential new features
 		std::vector<cv::Point2f> new_feature_positions = this->extractNewFeatures(frame);
 
+		ROS_DEBUG_STREAM("extracted " << new_feature_positions.size() << " potential new features.");
 
 		const cv::Mat_<float> dmat(d.image.height, d.image.width,
 		                             (float*)&d.image.data[0], d.image.step);
 
+		int needed = NUM_FEATURES - frame.features.size();
 
 		for(auto& e : new_feature_positions){
 			//Z = fT/d where d is disparity
+
+			if(needed <= 0){
+				ROS_DEBUG_STREAM("have enough features.");
+				break;
+			}
 
 			float disp = dmat.at<float>((e));
 
@@ -71,6 +78,10 @@ void VIO::replenishFeatures(Frame& frame, stereo_msgs::DisparityImage& d){
 
 				ROS_DEBUG_STREAM("initializing feature with depth: " << z);
 
+				ScalarType std_dev = z*z/(d.f*d.T) * d.delta_d; // from disparity image documentation
+
+
+				Feature f = Feature(e, z, std_dev*std_dev, frame.K, frame.pose);
 
 			}
 			else{

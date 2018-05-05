@@ -14,6 +14,8 @@
 #include <KLTTracker.h>
 
 
+//NOTE: currently not used
+
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "klt_test"); // initializes ros
