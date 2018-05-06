@@ -125,8 +125,8 @@ void StateEstimator::process(ScalarType dt){
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
 
 	ScalarType low_noise = 0.00001 * dt;
-	ScalarType pos_noise = 0.5 * dt;
-	ScalarType angle_noise = 0.01 * dt;
+	ScalarType pos_noise = 0.001 * dt;
+	ScalarType angle_noise = 0.001 * dt;
 	ScalarType velocity_noise = 1*dt;
 	ScalarType omega_noise = 5*dt;
 	ScalarType accel_noise = 5*dt;
@@ -260,6 +260,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 		chi2_sum_last = chi2_sum_curr;
 		chi2_sum_curr = 0;
 
+
 		Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse();
 
 		for(auto& e : cf.features){
@@ -274,10 +275,9 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 			// compute this edges weight
 			ScalarType huber = this->getHuberWeight(sqrt(chi2));
-			huber = 1;
 
-			A.noalias() += H.transpose() * H * huber;
-			b.noalias() += H.transpose() * residual * huber;
+			A.noalias() += H.transpose() *100000* H * huber;
+			b.noalias() += H.transpose() *100000* residual * huber;
 		}
 
 
@@ -292,6 +292,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 				ROS_DEBUG_STREAM("SUCCESSFUL iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
 			}
 		}
+
 
 		//solve the system
 		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> LHS = Sigma_inv;

@@ -27,7 +27,7 @@ maximum_candidate_reprojection_error: 0.00005
 moba_candidate_variance: 10
 
 # maximum iterations during motion update
-moba_max_iterations: 25
+moba_max_iterations: 10
 eps_moba: 0.00000001
 
 # this will scale an image (scale_factor = 1/#)
