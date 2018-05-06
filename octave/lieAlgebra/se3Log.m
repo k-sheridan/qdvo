@@ -3,7 +3,7 @@ function [tangent] = se3Log(T)
 
 hat = zeros(4);
 
-for n = (1:100)
+for n = (1:1000)
     hat = hat + (-1)^(n+1) * (T - eye(4))^n/n;
 end
 

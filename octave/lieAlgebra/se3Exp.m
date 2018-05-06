@@ -9,7 +9,7 @@ T = eye(4);
 
 hat = se3Hat(se3);
 
-for n = (1:100)
+for n = (1:1000)
     T = T + 1/factorial(n) * hat^n;
 end
 
