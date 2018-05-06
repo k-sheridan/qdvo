@@ -1,8 +1,12 @@
-function [result] = bakercampbellhausdorffSe3(a,b)
+function [result] = bakercampbellhausdorffSe3(x,y)
 %BAKERCAMPBELLHAUSDORFF approximately ln(e^(a)*e^(b))
 
-lbab = lieBracketSe3(a, b);
+lbx = lieBracketMatrixSe3(x);
+lby = lieBracketMatrixSe3(y);
 
-result = a + b + 1/2 * lbab + 1/12 * lieBracketSe3(a, lbab) - 1/12 * lieBracketSe3(b, lbab);
+result = x + y + 1/2 * (lbx * y) + 1/12 * ((lbx * lbx * y) + (lby * lby * x));
+
+%higher order
+result = result - 1/24 * (lby * lbx * lbx * y);
 end
 

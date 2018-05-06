@@ -56,8 +56,9 @@ end
 
 
 function [Q] = processNoise(dt)
-    Q = eye(15)* dt*0.001;
-    Q(7:9, 7:9) = eye(3)*dt*0.1;
-    Q(10:15, 10:15) = eye(6)*dt;
+    Q = eye(15)* dt*0.01;
+    Q(1:3, 1:3) = eye(3)*50*dt;
+    Q(7:9, 7:9) = eye(3)*dt*2;
+    Q(10:15, 10:15) = eye(6)*dt*5;
 end
 

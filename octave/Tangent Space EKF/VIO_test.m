@@ -9,7 +9,7 @@ for col = (1:1:50)
     points = [points, [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1]];
 end
 
-depth_noise = 0.5;
+depth_noise = 0.01;
 
 estimated_points = [];
 for p = points
@@ -21,7 +21,7 @@ end
 
 dt = 0.05;
 
-sensor_noise = 0.001;
+sensor_noise = 0.01;
 
 sin_angle = 0;
 angle_wiggle_amp = 0;
@@ -30,8 +30,10 @@ translation_wiggle_amp = 0;
 camera_twist = [0.5;0;0;0;-pi/10;0];
 camera_pose = se3Exp([0;0;0;0;0;0]);
 
+% state estimate
 estimated_camera_pose = se3Exp([0;0;0;0;0;0]);
-tangent_space_uncertainty = diag([10;10;10;0.0001;0.0001;0.0001]);
+cov = diag([1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 30, 30, 30, 30, 30, 30, 100, 100, 100]);
+state = zeros(15, 1);
 
 % simulate and draw
 for t = (0:dt:30)
@@ -48,7 +50,7 @@ for t = (0:dt:30)
     %RUN OPTIMIZER
     %estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
     
-    [estimated_camera_pose] = mobaUpdate(estimated_camera_pose, tangent_space_uncertainty, estimated_points, features);
+    [estimated_camera_pose, cov, state] = motion_structure_update(estimated_camera_pose, cov, state, estimated_points, features);
    
     %PLOT
     clf;
@@ -76,5 +78,12 @@ for t = (0:dt:30)
     
     
     camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle))
-    estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle)); % apply odometry
+    %estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle)); % apply odometry
+    
+    % apply odometry
+    [cov, state, estimated_camera_pose] = gyro_update(cov, state, estimated_camera_pose, (camera_twist(4:6) + wiggle(4:6)));
+    
+    
+    %PROCESS STATE ESTIMATE
+    [state, cov, estimated_camera_pose] = process(state, cov, estimated_camera_pose, dt);
 end
