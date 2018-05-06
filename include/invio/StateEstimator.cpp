@@ -274,6 +274,7 @@ void StateEstimator::updateWithTrackedFeatures(Frame& cf){
 
 			// compute this edges weight
 			ScalarType huber = this->getHuberWeight(sqrt(chi2));
+			huber = 1;
 
 			A.noalias() += H.transpose() * H * huber;
 			b.noalias() += H.transpose() * residual * huber;

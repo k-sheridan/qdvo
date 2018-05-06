@@ -78,8 +78,11 @@ void VIO::replenishFeatures(Frame& frame, stereo_msgs::DisparityImage& d){
 
 				ROS_DEBUG_STREAM("initializing feature with depth: " << z);
 
-				ScalarType std_dev = z*z/(d.f*d.T) * d.delta_d; // from disparity image documentation
+#define STEREO_DEPTH_STD_DEV_SCALE 1000
 
+				ScalarType std_dev = STEREO_DEPTH_STD_DEV_SCALE * z*z/(d.f*d.T) * d.delta_d; // from disparity image documentation
+
+				ROS_DEBUG_STREAM("feature z std_dev: " << std_dev);
 
 				Feature f = Feature(e, z, std_dev*std_dev, frame.K, frame.pose);
 

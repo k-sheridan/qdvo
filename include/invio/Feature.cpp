@@ -31,7 +31,9 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 
 	//transform uncertainty to euclidean coordinates
 	Eigen::Matrix<ScalarType, 3, 3> J;
-	J << depth, 0, bearing(0), 0, depth, bearing(1), 0, 0, 1; // linearized map from homo+z to euclidean coord
+	J << depth, 0, bearing(0),
+			0, depth, bearing(1),
+			0, 0, 1; // linearized map from homo+z to euclidean coord
 
 	this->Sigma = J*this->Sigma*J.transpose();
 
