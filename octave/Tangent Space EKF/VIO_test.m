@@ -15,7 +15,7 @@ for col = (1:1:50)
     points = [points, r];
 end
 
-depth_noise = 0.01;
+depth_noise = 0.1;
 
 estimated_points = [];
 estimated_points_covs = [];
@@ -68,7 +68,7 @@ for t = (0:dt:30)
     %RUN OPTIMIZER
     %estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
     
-    [estimated_camera_pose, cov, state] = motion_structure_update(estimated_camera_pose, cov, state, estimated_points, estimated_points_covs, features);
+    [estimated_camera_pose, cov, state, estimated_points, estimated_points_covs] = motion_structure_update(estimated_camera_pose, cov, state, estimated_points, estimated_points_covs, features);
     
     %PLOT
     plotScene;

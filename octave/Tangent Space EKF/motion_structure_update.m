@@ -1,8 +1,12 @@
-function [new_camera_transform, posterior_cov, posterior_state] = motion_structure_update(prior_camera_transform, prior_tangent_space_uncertainty, prior_state, points, points_covs, features)
+function [new_camera_transform, posterior_cov, posterior_state, points_out, points_covs_out] = motion_structure_update(prior_camera_transform, prior_tangent_space_uncertainty, prior_state, points, points_covs, features)
 % run a weighted least squares update to estimate camera motion
 
 % points: [x1, x2; y1, y2; z1, z2] etc
 % features: [u1, u2; v1, v2; 1, 1] etc
+
+points_out = points;
+points_covs_out = points_covs;
+
 
 ITERATION = 10;
 
@@ -22,8 +26,10 @@ for it = (1:ITERATION)
     chi = 0;
     last_chi = 1e12;
     
+    inv_pose = inv((new_camera_transform));
+    
     for index = 1:1:length(points(1, :))
-        proj = (new_camera_transform) \ [points(1:3, index);1];
+        proj =  inv_pose * [points(1:3, index);1];
         
         H = twist2PixelDelta(proj(1:3, 1));
         
@@ -63,15 +69,33 @@ for it = (1:ITERATION)
     % transform to the tangent space
     %[posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
     
+    inv_pose = inv(new_camera_transform);
     
     %STRUCTURE ITERATION
+    structure_bearing_variance = 1^2;
+    R = diag([structure_bearing_variance, structure_bearing_variance]);
+    
     for index = 1:(length(points(1, :)))
         r = points(1:3, index);
         rcov = points_covs(1:3, (3*index - 2):(3*index));
         
-        %proj_r = 
+        bearing = features(1:2, index);
         
-        %H = dr2PixelDelta()
+        proj_r = inv_pose(1:3, 1:4) * [r;1];
+        Rt = inv_pose(1:3, 1:3);
+        
+        H = dr2PixelDelta(proj_r) * Rt;
+        % H * dr = du
+        K = rcov*H' / (R + H*rcov*H');
+        
+        points_out(1:3, index) = r + K * (bearing - [proj_r(1)/proj_r(3); proj_r(2)/proj_r(3)]);
+        
+        % update uncertainty on last iteration
+        if(it == ITERATION)
+            points_covs_out(1:3, (3*index - 2):(3*index)) = (eye(3) - K*H)*rcov*(eye(3) - K*H)' + K*R*K';
+        end
+        
+        
     end
     
 end
