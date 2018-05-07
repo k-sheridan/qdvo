@@ -1,22 +1,40 @@
+
 rng(1);
 
 % generate true points
 points = [];
+
+bearing_variance = 0.001^2;
+estimated_depth_variance = 5^2;
+
 x_scale = 1;
 y_scale = 1;
 z_scale = 1;
 for col = (1:1:50)
-    points = [points, [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1]];
+    r = [(rand-0.5)*x_scale; (rand-0.5)*y_scale; (rand)*z_scale + 1];
+    points = [points, r];
 end
 
-depth_noise = 0.01;
+depth_noise = 0.3;
 
 estimated_points = [];
+estimated_points_covs = [];
 for p = points
     homo = [p(1)/p(3); p(2)/p(3); p(3)];
     new_z = p(3) + randn*depth_noise;
     
     estimated_points = [estimated_points, [homo(1)*new_z; homo(2)*new_z; new_z]];
+    
+    J = [p(3), 0, homo(1);
+        0, p(3), homo(2);
+        0, 0, 1];
+    
+    cov = diag([bearing_variance, bearing_variance, estimated_depth_variance]);
+    
+    % no rotation initially
+    cov = J*cov*J';
+    estimated_points_covs = [estimated_points_covs, cov];
+    
 end
 
 dt = 0.05;
@@ -50,26 +68,10 @@ for t = (0:dt:30)
     %RUN OPTIMIZER
     %estimated_camera_pose(1:3, 1:3) = camera_pose(1:3, 1:3);
     
-    [estimated_camera_pose, cov, state] = motion_structure_update(estimated_camera_pose, cov, state, estimated_points, features);
-   
+    [estimated_camera_pose, cov, state] = motion_structure_update(estimated_camera_pose, cov, state, estimated_points, estimated_points_covs, features);
+    
     %PLOT
-    clf;
-    hold on;
-    daspect([1,1,1])
-    view(70, -10);
-    
-    plotCamera('Orientation', camera_pose(1:3, 1:3)', 'Location', camera_pose(1:3, 4), 'Size', 0.1);
-    
-    plotCamera('Orientation', estimated_camera_pose(1:3, 1:3)', 'Location', estimated_camera_pose(1:3, 4), 'Size', 0.1, 'Color', [0,1,1])
-    
-    %transform 
-    transformed_features = camera_pose*[features; ones(1, length(features(1, :)))];
-    plot3(transformed_features(1, :), transformed_features(2, :), transformed_features(3, :), 'bo');
-    
-    plot3(points(1, :), points(2, :), points(3, :), 'ro');
-    
-    plot3(estimated_points(1, :), estimated_points(2, :), estimated_points(3, :), 'go')
-    drawnow;
+    plotScene;
     
     %MOVE CAMERA
     %generate "wiggle"

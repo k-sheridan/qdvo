@@ -1,4 +1,4 @@
-function [new_camera_transform, posterior_cov, posterior_state] = motion_structure_update(prior_camera_transform, prior_tangent_space_uncertainty, prior_state, points, features)
+function [new_camera_transform, posterior_cov, posterior_state] = motion_structure_update(prior_camera_transform, prior_tangent_space_uncertainty, prior_state, points, points_covs, features)
 % run a weighted least squares update to estimate camera motion
 
 % points: [x1, x2; y1, y2; z1, z2] etc
@@ -62,6 +62,10 @@ for it = (1:ITERATION)
     
     % transform to the tangent space
     %[posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
+    
+    
+    %STRUCTURE ITERATION
+    
     
 end
 
