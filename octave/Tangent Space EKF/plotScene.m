@@ -55,3 +55,5 @@ title('Monocular Visual Inertial Odometry')
 
 drawnow;
 
+frame = getframe(gcf);
+writeVideo(v, frame);

@@ -1,4 +1,5 @@
-
+v = VideoWriter('test.mp4', 'MPEG-4');
+open(v);
 rng(1);
 
 % generate true points
@@ -54,7 +55,7 @@ cov = diag([1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 1e-12, 30, 30, 30, 30, 30, 30, 10
 state = zeros(15, 1);
 
 % simulate and draw
-for t = (0:dt:30)
+for t = (0:dt:20)
     
     %GENERATE FAKE FEATURES
     features = [];
@@ -89,3 +90,5 @@ for t = (0:dt:30)
     %PROCESS STATE ESTIMATE
     [state, cov, estimated_camera_pose] = process(state, cov, estimated_camera_pose, dt);
 end
+
+close(v);
