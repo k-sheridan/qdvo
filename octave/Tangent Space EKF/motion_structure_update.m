@@ -38,7 +38,7 @@ for it = (1:ITERATION)
         
     end
     
-    chi = chi / length(points(1, :))
+    chi = chi / length(points(1, :));
     
     if (chi > last_chi)
         disp('Breaking because chi increased')
@@ -61,7 +61,7 @@ for it = (1:ITERATION)
     posterior_state = posterior_state + dx;
     
     % transform to the tangent space
-    [posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
+    %[posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
     
 end
 
@@ -71,7 +71,9 @@ end
 posterior_cov = (eye(15) - T*A_full) * posterior_cov * (eye(15) - T*A_full)' + T*A_full*T';
 
 % transform to the tangent space
-[posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
+%[posterior_cov, posterior_state] = transform_to_tangent_space(posterior_cov, posterior_state);
+posterior_state
+posterior_state(1:6, 1) = zeros(6, 1);
 
 end
 

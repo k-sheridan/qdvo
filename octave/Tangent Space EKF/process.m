@@ -27,7 +27,10 @@ function [state, Sigma, pose_transform] = process(state, Sigma, pose_transform, 
     Q = processNoise(dt);
     
     state = new_state;
-    [Sigma, state] = transform_to_tangent_space((J*Sigma*J' + Q), new_state)
+    %[Sigma, state] = transform_to_tangent_space((J*Sigma*J' + Q), new_state)
+    Sigma = (J*Sigma*J' + Q);
+    state(1:6, 1) = zeros(6, 1);
+    Sigma(1:6, 1:6)
 end
 
 function [x] = convolveState(x0, dt)
@@ -50,9 +53,10 @@ end
 
 
 function [Q] = processNoise(dt)
-    Q = eye(15)* dt*0.01;
-    Q(1:3, 1:3) = eye(3)*50*dt;
-    Q(7:9, 7:9) = eye(3)*dt*2;
-    Q(10:15, 10:15) = eye(6)*dt*5;
+    Q = eye(15)* dt*0.0001;
+    Q(1:3, 1:3) = eye(3)*0.05^2*dt;
+    Q(4:6, 4:6) = eye(3)*(2*pi/180)^2*dt;
+    Q(7:9, 7:9) = eye(3)*dt*2^2;
+    Q(10:15, 10:15) = eye(6)*dt*4^2;
 end
 

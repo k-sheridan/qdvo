@@ -21,7 +21,7 @@ end
 
 dt = 0.05;
 
-sensor_noise = 0.01;
+sensor_noise = (0.001)^2;
 
 sin_angle = 0;
 angle_wiggle_amp = 0;
@@ -77,7 +77,7 @@ for t = (0:dt:30)
     sin_angle = sin_angle + dt;
     
     
-    camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle))
+    camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle));
     %estimated_camera_pose = estimated_camera_pose * se3Exp(dt*(camera_twist + wiggle)); % apply odometry
     
     % apply odometry
