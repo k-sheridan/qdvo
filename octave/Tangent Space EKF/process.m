@@ -24,16 +24,10 @@ function [state, Sigma, pose_transform] = process(state, Sigma, pose_transform, 
     
     % propagate the uncertainty, then transform the the tangent space of
     % the new pose
-    A = eye(15);
-    A(1:6, 1:6) = se3Adjoint(inv(T));
-    
     Q = processNoise(dt);
     
-    Sigma = A * (J*Sigma*J' + Q) * A';
-    %Sigma = (J*Sigma*J' + Q);
-    
-    new_state(1:6, 1) = zeros(6, 1); % zero the tangent vector again
     state = new_state;
+    [Sigma, state] = transform_to_tangent_space((J*Sigma*J' + Q), new_state)
 end
 
 function [x] = convolveState(x0, dt)

@@ -8,6 +8,6 @@ result = x + y + 1/2 * (lbx * y);
 
 %higher order
 result = result + 1/12 * ((lbx * lbx * y) + (lby * lby * x));
-%result = result - 1/24 * (lby * lbx * lbx * y);
+result = result - 1/24 * (lby * lbx * lbx * y);
 end
 
