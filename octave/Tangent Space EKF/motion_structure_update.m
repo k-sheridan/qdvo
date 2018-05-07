@@ -23,9 +23,9 @@ for it = (1:ITERATION)
     last_chi = 1e12;
     
     for index = 1:1:length(points(1, :))
-        H = twist2PixelDelta(points(1:3, index));
-        
         proj = (new_camera_transform) \ [points(1:3, index);1];
+        
+        H = twist2PixelDelta(proj(1:3, 1));
         
         e = features(1:2, index) - [proj(1)/proj(3); proj(2)/proj(3)];
         
@@ -65,7 +65,14 @@ for it = (1:ITERATION)
     
     
     %STRUCTURE ITERATION
-    
+    for index = 1:(length(points(1, :)))
+        r = points(1:3, index);
+        rcov = points_covs(1:3, (3*index - 2):(3*index));
+        
+        %proj_r = 
+        
+        %H = dr2PixelDelta()
+    end
     
 end
 

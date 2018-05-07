@@ -1,7 +1,7 @@
-function [outputArg1,outputArg2] = dr2PixelDelta(inputArg1,inputArg2)
-%DR2PIXELDELTA Summary of this function goes here
-%   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function [H] = dr2PixelDelta(xyz_f)
+
+H = [1/xyz_f(3), 0, -(1/xyz_f(3))^2 * xyz_f(1);
+    0, 1/xyz_f(3), -(1/xyz_f(3))^2 * xyz_f(2)];
+
 end
 
