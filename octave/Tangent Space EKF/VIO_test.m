@@ -16,7 +16,7 @@ for col = (1:1:50)
     points = [points, r];
 end
 
-depth_noise = 0.1;
+depth_noise = 0.5;
 
 estimated_points = [];
 estimated_points_covs = [];
