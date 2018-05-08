@@ -40,9 +40,6 @@ void StateEstimator::gyroUpdate(Eigen::Matrix<ScalarType, 3, 1> gyro, Eigen::Mat
 	this->Sigma = i_kh * this->Sigma * i_kh.transpose();
 	this->Sigma.noalias() += K * gyro_cov * K.transpose();
 
-	// project uncertainty back into the tangent space
-	this->transformToTangentSpace();
-
 }
 
 /*
@@ -113,8 +110,6 @@ void StateEstimator::fullImuUpdate(Eigen::Matrix<ScalarType, 3, 1> accel, Eigen:
 	this->Sigma = i_kh * this->Sigma * i_kh.transpose();
 	this->Sigma.noalias() += K * R * K.transpose();
 
-	// project uncertainty back into the tangent space
-	this->transformToTangentSpace();
 
 	ROS_DEBUG_STREAM("performed imu update");
 }

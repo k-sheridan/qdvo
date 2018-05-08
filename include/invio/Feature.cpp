@@ -46,9 +46,6 @@ Feature::Feature(cv::Point2f pt, ScalarType depth, ScalarType depth_variance, Ei
 	//transform this feature position to world coordinates
 	this->mu = observation_pose * this->mu;
 
-
-	R_inv << 1, 0, 0, 1; // just in case
-
 }
 
 Feature::~Feature() {

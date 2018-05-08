@@ -80,26 +80,6 @@ void StateEstimator::initializeState()
 
 }
 
-/*
- * transform the tangent space representation of the pose into the tangent space around the current pose estimate
- */
-void StateEstimator::transformToTangentSpace(){
-	Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
-
-	// apply twist to the true pose
-	this->mu.true_pose = this->mu.true_pose * twist;
-
-	//compute the inverse adjoint map
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A;
-	A.setIdentity();
-	A.block(0, 0, 6, 6) = twist.inverse().Adj();
-
-	this->Sigma = A * this->Sigma * A.transpose(); // transform uncertainty into the tangent space around the current pose estimate
-
-	// zero the tangent space again
-	this->mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-	this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-}
 
 void StateEstimator::process(ScalarType dt){
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> F = this->linearizeProcess(dt); // compute the jacobian of the process numerically
@@ -107,14 +87,9 @@ void StateEstimator::process(ScalarType dt){
 	// process the base mu
 	this->mu = this->convolveState(this->mu, dt);
 
-	ROS_DEBUG_STREAM("twist: " << this->mu.getTwist());
-
 	// update the Sigma
 	this->Sigma = F * this->Sigma * F.transpose(); // transform the uncertainty into the future in the last pose's tangent space
 	this->Sigma += this->generateProcessNoise(dt); // add process noise
-
-	// transform the tangent space again
-	this->transformToTangentSpace();
 
 	// increment the time
 	this->t += ros::Duration(dt);
@@ -125,11 +100,11 @@ void StateEstimator::process(ScalarType dt){
 Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> StateEstimator::generateProcessNoise(ScalarType dt){
 
 	ScalarType low_noise = 0.00001 * dt;
-	ScalarType pos_noise = 0.001 * dt;
+	ScalarType pos_noise = 0.0025 * dt;
 	ScalarType angle_noise = 0.001 * dt;
-	ScalarType velocity_noise = 1*dt;
-	ScalarType omega_noise = 5*dt;
-	ScalarType accel_noise = 5*dt;
+	ScalarType velocity_noise = 4*dt;
+	ScalarType omega_noise = 16*dt;
+	ScalarType accel_noise = 16*dt;
 	ScalarType bias_noise = 0.0001*dt;
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Q;
@@ -212,11 +187,13 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 	State new_mu = last;
 
 	// the position is represented by a twist
-	ROS_ASSERT(last.getAngularTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
-	ROS_ASSERT(last.getLinearTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
+	//ROS_ASSERT(last.getAngularTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
+	//ROS_ASSERT(last.getLinearTwist() == (Eigen::Matrix<ScalarType, 3, 1>(0,0,0)));
 
 	new_mu.setLinearTwist(dt*last.getVelocity() + dt*dt*0.5*last.getAcceleration());
 	new_mu.setAngularTwist(dt*last.getOmega());
+
+	ROS_DEBUG_STREAM("twist: " << new_mu.getTwist());
 
 	// higher derivatives
 
@@ -234,177 +211,184 @@ StateEstimator::State StateEstimator::convolveState(State& last, ScalarType dt){
 
 	new_mu.setLambda(last.getLambda());
 
+	//apply odometry on the pose and zero the tangent space
+	new_mu.true_pose = new_mu.true_pose * Sophus::SE3<ScalarType>::exp(new_mu.getTwist());
+
+	new_mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
+	new_mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
+
+
 	return new_mu;
 }
 
 /*
  * uses tracked features and their position estimates to update the pose iteratively
  */
-void StateEstimator::updateWithTrackedFeatures(Frame& cf){
+void StateEstimator::motionOptimization(Frame& cf){
+	ROS_DEBUG_STREAM("update with : " << cf.features.size(););
 
-	// invert the covariance matrix to be used during update
-	//Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
-	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Sigma_inv = Sigma.inverse();
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> P_inv = this->Sigma.inverse();
 
-	Eigen::Matrix<ScalarType, 6, 6> A; //LHS
-	Eigen::Matrix<ScalarType, 6, 1> b; //RHS
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> last_full_A, last_T_inv;
 
-	ScalarType chi2_sum_last, chi2_sum_curr; // store the current error and last error to determine whether to stop the optimization
+	bool final_iteration = false;
 
+	Eigen::Matrix<ScalarType, 6, 6> A;
+	Eigen::Matrix<ScalarType, 6, 1> b;
+	ScalarType chi2_last = 0;
 
-	// perform iterative pose update
-	for(size_t i = 0; i < (size_t)MOBA_MAX_ITERATIONS; i++){
-		b.setZero();
+	// these two defines allow us to either dampen or strengthen the effect this update has on both motion and structure
+#define INV_BEARING_VARIANCE_FOR_MOBA 100000
+
+	/*
+	 * iteratatively update the motion of the camera and the structure of the scene
+	 */
+	for (int i = 0; i < MOBA_MAX_ITERATIONS; i++){
+
+		//MOTION ONLY BUNDLE ADJUSTMENT ITERATION
 		A.setZero();
+		b.setZero();
 
-		chi2_sum_last = chi2_sum_curr;
-		chi2_sum_curr = 0;
-
+		ScalarType chi2_curr = 0;
+		int num_feature = 0;
 
 		Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse();
+		Eigen::Matrix<ScalarType, 3, 3> Rt = pose_inv.rotationMatrix();
 
-		for(auto& e : cf.features){
+		//compute the A and b matrices.
+		for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end(); it++){
+			//project the feature into the current pose estimate
+			Eigen::Matrix<ScalarType, 3, 1> xyz_proj = pose_inv * it->getWorldCoordinate();
+
+			// make sure that this feature is ahead of us.
+			if(xyz_proj.z() <= 0){
+				ROS_WARN("feature behind camera!");
+				continue;
+			}
+
+			// compute the linearized relationship between a small twist and a small metric pixel movement
 			Eigen::Matrix<ScalarType, 2, 6> H;
-			Eigen::Matrix<ScalarType, 3, 1> xyz_f(pose_inv * e.getWorldCoordinate()); // the point in the current estimated frame's pose
-			StateEstimator::jacobian_xyz2uv(xyz_f, H); // compute the linear map for a small twist to a bearing
+			this->twist2uv(xyz_proj, H);
 
-			Eigen::Matrix<ScalarType, 2, 1> residual = Feature::pixel2Metric(cf.K, e.getPx()) - Eigen::Matrix<ScalarType, 2, 1>(xyz_f(0)/xyz_f(2), xyz_f(1)/xyz_f(2));
+			// compute the error we are trying to minimize
+			Eigen::Matrix<ScalarType, 2, 1> e = Feature::pixel2Metric(cf.K, it->getPx()) - Eigen::Matrix<ScalarType, 2, 1>(xyz_proj(0)/xyz_proj(2), xyz_proj(1)/xyz_proj(2));
 
-			ScalarType chi2 = residual.squaredNorm();
-			chi2_sum_curr += chi2;
+			ScalarType chi2 = e.squaredNorm();
 
-			// compute this edges weight
+			chi2_curr += chi2;
+
+			// compute the huber weight for this feature
 			ScalarType huber = this->getHuberWeight(sqrt(chi2));
 
-			A.noalias() += H.transpose() *100000* H * huber;
-			b.noalias() += H.transpose() *100000* residual * huber;
+			//ScalarType inv_z_cov2 = 1 / (Rt * it->getWorldUncertainty() * Rt.transpose())(2, 2);
+
+			ScalarType weight = huber * INV_BEARING_VARIANCE_FOR_MOBA;
+
+			// set up system
+			A.noalias() += H.transpose() * H * weight;
+			b.noalias() += H.transpose() * e * weight;
+
+			num_feature++;
+
 		}
 
+		ROS_INFO_STREAM("avg error: " << chi2_curr/num_feature);
+		//TODO check for stopping condition
 
-		// check if the error has increased
-		if(i != 0){
-			if(chi2_sum_curr > chi2_sum_last){
-				ROS_DEBUG_STREAM("ERROR INCREASED at iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
-				ROS_DEBUG_STREAM("BREAKING");
-				break;
-			}
-			else{
-				ROS_DEBUG_STREAM("SUCCESSFUL iteration: " << i+1 << " with chi2_avg: " << chi2_sum_curr/cf.features.size());
-			}
-		}
+		// perform modified iterative Kalman update on the state using A and b
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> A_full;
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> b_full;
 
+		A_full.setZero();
+		b_full.setZero();
 
-		//solve the system
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> LHS = Sigma_inv;
-		LHS.block<6, 6>(0, 0) += A;
+		A_full.block<6, 6>(0,0) = A;
+		b_full.block<6, 1>(0,0) = b;
 
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> RHS;
-		RHS.setZero();
-		RHS.block<6, 1>(0, 0) = b;
+		last_full_A = A_full; // set this for later use
 
-		// compute the dx
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> dx = LHS.ldlt().solve(RHS);
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> T_inv = (P_inv + A_full);
 
-		// apply the dx onto the mean
+		last_T_inv = T_inv;
+
+		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, 1> dx = T_inv.ldlt().solve(b_full);
+
 		this->mu.mean.noalias() += dx;
-		Sophus::SE3<ScalarType> twist = Sophus::SE3<ScalarType>::exp(this->mu.getTwist());
 
-		this->mu.true_pose = this->mu.true_pose * twist; // apply the small twist to the pose
+		this->mu.true_pose = this->mu.true_pose * Sophus::SE3<ScalarType>::exp(dx.block<6, 1>(0,0));
 
-		// zero the tangent space again
-		this->mu.setLinearTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-		this->mu.setAngularTwist(Eigen::Matrix<ScalarType, 3, 1>(0,0,0));
-
-		//transform state into new tangent space
-		Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> Adj;
-		Adj.setIdentity();
-		Adj.block<6, 6>(0, 0) = twist.Adj(); // typically it is the inverse transform
-
-		// P' = Ainv * P * AinvT => P'inv = AinvTinv * Pinv * Ainvinv = AT * Pinv * A
-		// P'^{-1} = (Jt)^{-1} * P^{-1} * (J)^{-1}
-
-		Sigma_inv = Adj.transpose() * Sigma_inv * Adj; // transform the uncertainty into the new optimized tangent space
-
-		//last_A = A; // save the previous A (information) mat
-
-		ROS_DEBUG_STREAM("iteration " << i+1 << ", dx= " << dx.transpose());
-
-		if(dx.block<6, 1>(0, 0).norm() <= EPS_MOBA){
-			ROS_DEBUG_STREAM("EPSILON REACHED... STOPPING");
-			break;
-		}
 
 	}
 
-	// apply modified josephs uncertainty update
 
-	Eigen::Matrix<ScalarType, 25, 25> A_full;
-	A_full.setZero();
-	A_full.block<6, 6>(0, 0) = A;
+	//apply modified uncertainty update to the state uncertainty
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> T = last_T_inv.inverse();
 
-	Eigen::Matrix<ScalarType, 25, 25> T = Sigma_inv + A_full;
-	//T = T.ldlt().solve(Eigen::Matrix<ScalarType, 25, 25>::Identity()); // invert
-	T = T.inverse(); // invert
+	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> i_kh;
+	i_kh.setIdentity();
+	i_kh.noalias() -= T * last_full_A;
 
-	Eigen::Matrix<ScalarType, 25, 25> I_KH = (Eigen::Matrix<ScalarType, 25, 25>::Identity() - T*A_full);
-
-
-
-	//ROS_DEBUG_STREAM("A_full: " << A_full);
-
-	//ROS_DEBUG_STREAM("sigma inv: " << Sigma_inv);
-
-	//ROS_DEBUG_STREAM("I_KH: " << I_KH);
-
-	//ROS_DEBUG_STREAM("KRKt: " << T*A_full*T.transpose());
-
-	//invert sigma back
-	//this->Sigma = Sigma_inv.llt().solve(Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE>::Identity());
-	this->Sigma = Sigma_inv.inverse();
-
-	//propagate uncertainty
-	this->Sigma = I_KH * this->Sigma * I_KH.transpose();
-	this->Sigma.noalias() += T*A_full*T.transpose();
+	this->Sigma = i_kh * this->Sigma * i_kh.transpose();
+	this->Sigma.noalias() += T*last_full_A*T.transpose();
 
 }
 
 
-Eigen::Matrix<ScalarType, 2, 2> StateEstimator::getMetric2PixelMap(Eigen::Matrix3f& K){
-	Eigen::Matrix<ScalarType, 2, 2> J;
-	J.setIdentity();
-	J(0, 0) = K(0, 0);
-	J(1, 1) = K(1, 1);
-	return J;
-}
 
-Eigen::Matrix<ScalarType, 2, 2> StateEstimator::getPixel2MetricMap(Eigen::Matrix3f& K){
-	Eigen::Matrix<ScalarType, 2, 2> J;
-	J.setIdentity();
-	J(0, 0) = 1.0f/K(0, 0);
-	J(1, 1) = 1.0f/K(1, 1);
-	return J;
-}
+void StateEstimator::structureOptimization(Frame& cf){
+	//SPARSE STRUCTURE OPTIMIZATION
 
-void StateEstimator::checkSigma(){
-#define SYM_EPS 0.001
-	// first check the diagonal to make sure all members are positive
-	for(int i = 0; i < this->Sigma.rows(); i++){
-		ROS_FATAL_STREAM_COND(this->Sigma(i, i) < 0, "variance is negative for index: " << i);
+	Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse(); // precomputed for efficiency
+	Eigen::Matrix<ScalarType, 3, 3> Rt = pose_inv.rotationMatrix();
 
-		//ROS_ASSERT(this->Sigma(i, i) >= 0);
+#define BEARING_VARIANCE_FOR_STRUCTURE 1
 
-		// check for symmetry
-		for(int j = i+1; j < this->Sigma.rows(); j++){
-			ROS_FATAL_STREAM_COND(fabs(this->Sigma(i, j) - this->Sigma(j, i)) > SYM_EPS, "correlation is not symmetric: " << fabs(this->Sigma(i, j) - this->Sigma(j, i)) << " - " <<i<<", "<<j);
-			//ROS_ASSERT(fabs(this->Sigma(i, j) - this->Sigma(j, i)) <= SYM_EPS);
+	// perform one iteration
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end(); it++){
+		//project the feature into the current pose estimate
+		Eigen::Matrix<ScalarType, 3, 1> xyz_proj = pose_inv * it->getWorldCoordinate();
+
+		// make sure that this feature is ahead of us.
+		if(xyz_proj.z() <= 0){
+			ROS_WARN("feature behind camera!");
+			continue;
 		}
+
+		// compute the linearized map between pixel error and change in feature position
+		Eigen::Matrix<ScalarType, 2, 3> H;
+		this->featurePosition2uv(xyz_proj, H);
+
+		H = H*Rt; // this is a map from world coordinate position change to bearing error
+
+		// compute the bearing error
+		Eigen::Matrix<ScalarType, 2, 1> e = Feature::pixel2Metric(cf.K, it->getPx()) - Eigen::Matrix<ScalarType, 2, 1>(xyz_proj(0)/xyz_proj(2), xyz_proj(1)/xyz_proj(2));
+
+		//ROS_DEBUG_STREAM("prefit: " e.norm();)
+
+		// apply a standard kalman update
+
+		Eigen::Matrix<ScalarType, 3, 2> K = it->getWorldUncertainty() * H.transpose();
+
+		Eigen::Matrix<ScalarType, 2, 2> S = H*it->getWorldUncertainty()*H.transpose();
+		S(0,0) += BEARING_VARIANCE_FOR_STRUCTURE;
+		S(1, 1) += BEARING_VARIANCE_FOR_STRUCTURE;
+
+		K = K * S.inverse();
+
+		// if this is not the last iteration just update the mean other wise just update the covariance
+
+		Eigen::Matrix<ScalarType, 3, 3> i_kh;
+		i_kh.setIdentity();
+		i_kh.noalias() -= K*H;
+		it->setWorldUncertainty(i_kh * it->getWorldUncertainty() * i_kh.transpose() + K*K.transpose() * BEARING_VARIANCE_FOR_STRUCTURE);
+
+		it->setWorldCoordinate(it->getWorldCoordinate() + K*e);
+
+
+
 	}
-
 }
 
-void StateEstimator::fixSigma(){
-	//this->Sigma = (this->Sigma + this->Sigma.transpose()) / 2.0;
-}
 
 /*
  * sqrt(chi2)
@@ -418,5 +402,58 @@ ScalarType StateEstimator::getHuberWeight(ScalarType chi_abs)
 	else
 	{
 		return HUBER_WIDTH / chi_abs;
+	}
+}
+
+/*
+ * removes any potential outliers from the state
+ */
+void StateEstimator::removeOutliers(Frame& cf, ScalarType threshold){
+
+
+	std::vector<ScalarType> chi_vec;
+	chi_vec.resize(cf.features.size(), -1);
+
+	std::vector<bool> remove;
+	remove.resize(cf.features.size(), false);
+
+	int i = 0;
+
+	Sophus::SE3<ScalarType> pose_inv = this->mu.true_pose.inverse();
+
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end(); it++){
+		//project the feature into the current pose estimate
+		Eigen::Matrix<ScalarType, 3, 1> xyz_proj = pose_inv * it->getWorldCoordinate();
+
+		// make sure that this feature is ahead of us.
+		if(xyz_proj.z() <= 0){
+			ROS_WARN("feature behind camera!");
+			remove[i] = true;
+			i++;
+			continue;
+		}
+
+		// compute the bearing error
+		Eigen::Matrix<ScalarType, 2, 1> e = Feature::pixel2Metric(cf.K, it->getPx()) - Eigen::Matrix<ScalarType, 2, 1>(xyz_proj(0)/xyz_proj(2), xyz_proj(1)/xyz_proj(2));
+
+		chi_vec[i] = e.norm();
+		i++;
+	}
+
+
+	// REMOVE features with too high of an error
+	i = 0;
+
+	for(std::list<Feature>::iterator it = cf.features.begin(); it != cf.features.end();){
+
+		if(remove[i] || chi_vec[i] > threshold){
+			it = cf.features.erase(it);
+		}
+		else{
+			it++;
+		}
+
+		i++;
+
 	}
 }

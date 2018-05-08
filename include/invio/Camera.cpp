@@ -32,13 +32,15 @@ void VIO::applyImageUpdate(Frame& lf, Frame& cf){
 	tracker.findNewFeaturePositions(lf, cf);
 
 	// run iterative update
-	this->state_estimator.updateWithTrackedFeatures(cf);
+	this->state_estimator.motionOptimization(cf);
+
+	//remove outliers
+	this->state_estimator.removeOutliers(cf, MAXIMUM_REPROJECTION_ERROR);
 
 	//set the frame's pose
 	cf.pose = this->state_estimator.mu.true_pose;
 
-	// note the frame's position must be current with the new state estimate for depth update
-	//TODO run feature depth/position update
+	this->state_estimator.structureOptimization(cf);
 
 }
 

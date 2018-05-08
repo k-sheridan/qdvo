@@ -85,8 +85,6 @@ public:
 
 	void initializeState();
 
-	void transformToTangentSpace();
-
 	void process(ScalarType dt);
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> generateProcessNoise(ScalarType dt);
@@ -97,8 +95,11 @@ public:
 
 	Eigen::Matrix<ScalarType, BASE_STATE_SIZE, BASE_STATE_SIZE> linearizeProcess(ScalarType dt);
 
-	void updateWithTrackedFeatures(Frame& cf);
+	void motionOptimization(Frame& cf);
 
+	void structureOptimization(Frame& cf);
+
+	void removeOutliers(Frame& cf, ScalarType threshold);
 
 	// gyro update functions
 	Eigen::Matrix<ScalarType, 3, BASE_STATE_SIZE> gyroMeasurementMap(Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
@@ -124,7 +125,7 @@ public:
 	Eigen::Matrix<ScalarType, 6, 1> StateEstimator::numDiffAccel(StateEstimator::State& mean, int index,  Eigen::Matrix<ScalarType, 3, 3> R_imu_2_cam);
 	 * jacobian which takes a small twist and gives a pixel position change
 	 */
-	inline static void jacobian_xyz2uv(const Eigen::Matrix<ScalarType, 3, 1>& xyz_in_f, Eigen::Matrix<ScalarType, 2, 6>& J)
+	inline static void twist2uv(const Eigen::Matrix<ScalarType, 3, 1>& xyz_in_f, Eigen::Matrix<ScalarType, 2, 6>& J)
 	{
 		const double x = xyz_in_f[0];
 		const double y = xyz_in_f[1];
@@ -146,16 +147,26 @@ public:
 		J(1,5) = -x*z_inv;            // x/z
 	}
 
+	/*
+	 * relates a small change in feature position to a small change in bearing
+	 */
+	inline static void featurePosition2uv(const Eigen::Matrix<ScalarType, 3, 1>& xyz_in_f, Eigen::Matrix<ScalarType, 2, 3>& H){
+		const double x = xyz_in_f[0];
+		const double y = xyz_in_f[1];
+		const double z_inv = 1./xyz_in_f[2];
+		const double z_inv_2 = z_inv*z_inv;
 
+		H(0, 0) = z_inv;
+		H(0, 1) = 0;
+		H(0, 2) = -z_inv_2 * x;
+		H(1, 0) = 0;
+		H(1, 1) = z_inv;
+		H(1, 2) = -z_inv_2 * y;
+	}
 
-	void checkSigma();
-	void fixSigma();
 
 	ScalarType getHuberWeight(ScalarType chi_abs);
 
-
-	Eigen::Matrix<ScalarType, 2, 2> getMetric2PixelMap(Eigen::Matrix3f& K);
-	Eigen::Matrix<ScalarType, 2, 2> getPixel2MetricMap(Eigen::Matrix3f& K);
 
 };
 

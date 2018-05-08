@@ -49,8 +49,6 @@ private:
 
 	cv::Point2f px; // the current pixel position of this feature
 
-	Eigen::Matrix<ScalarType, 2, 2> R_inv; // METERS! pixel position measurement uncertainty (used to "inform" update about edgy features)
-
 public:
 
 
