@@ -1,4 +1,4 @@
-v = VideoWriter('test.mp4', 'MPEG-4');
+v = VideoWriter('high_depth_uncertainty.mp4', 'MPEG-4');
 open(v);
 rng(1);
 
@@ -89,6 +89,8 @@ for t = (0:dt:20)
     
     %PROCESS STATE ESTIMATE
     [state, cov, estimated_camera_pose] = process(state, cov, estimated_camera_pose, dt);
+    
+    [estimated_points_covs] = processStructure(estimated_points_covs);
 end
 
 close(v);
