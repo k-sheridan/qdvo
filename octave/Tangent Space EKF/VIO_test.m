@@ -1,4 +1,4 @@
-v = VideoWriter('high_depth_uncertainty.mp4', 'MPEG-4');
+v = VideoWriter('only_translation.mp4', 'MPEG-4');
 open(v);
 rng(1);
 
@@ -44,9 +44,9 @@ sensor_noise = (0.001)^2;
 
 sin_angle = 0;
 angle_wiggle_amp = 0;
-translation_wiggle_amp = 0;
+translation_wiggle_amp = 1;
 
-camera_twist = [0.5;0;0;0;-pi/10;0];
+camera_twist = [0;0;0.1;0;0;0];
 camera_pose = se3Exp([0;0;0;0;0;0]);
 
 % state estimate
@@ -76,8 +76,9 @@ for t = (0:dt:20)
     
     %MOVE CAMERA
     %generate "wiggle"
-    wiggle = [translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle)];
-    sin_angle = sin_angle + dt;
+    %wiggle = [translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle); angle_wiggle_amp*sin(sin_angle)];
+    wiggle = [translation_wiggle_amp*sin(sin_angle); translation_wiggle_amp*sin(sin_angle);0;0;0;0];
+    sin_angle = sin_angle + pi*dt;
     
     
     camera_pose = camera_pose * se3Exp(dt*(camera_twist + wiggle));
