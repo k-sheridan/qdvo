@@ -4,6 +4,10 @@ classdef Graph
     
     properties
         keyframeContainer % Array of KeyFrames. 
+        observationContainer % Array of landmark bearing measurements
+        
+        %TODO add interkeyframe integrated imu motion constraints. keep all
+        %raw measurements
     end
     
     methods

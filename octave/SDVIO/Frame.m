@@ -3,6 +3,7 @@ classdef Frame
     
     properties
         raw_image % Raw pixel data (mono8).
+        time % Capture time in seconds
         focalLength % [fx, fy]
         principalPoint % [cx, cy]
         distortionCoefficients % [k1,....,kn] radial distortion coefficients of the eqidistant camera model used in kalibr.
