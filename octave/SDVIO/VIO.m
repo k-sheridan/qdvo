@@ -1,5 +1,8 @@
 classdef VIO
     %VIO The main VIO implementation.
+    % This is not designed to run fast. It is designed to be easily
+    % modified, and test new marginalization, feature tracking, feature
+    % selection methods, etc.
     
     properties
         graph % pose graph / map
