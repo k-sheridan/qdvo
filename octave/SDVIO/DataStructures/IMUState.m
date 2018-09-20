@@ -4,7 +4,7 @@ classdef IMUState
     
     properties
         r % position in world.
-        q % attitude in world.
+        q % attitude in world. (Quaternion: [qx, qy, qz, qw])
         v % velocity in world.
         
         biases % IMU biases [acc, gyro]
@@ -13,7 +13,15 @@ classdef IMUState
     end
     
     methods
-        
+        function obj = IMUState()
+            % default constructor.
+            r = zeros(3, 1);
+            q = [0;0;0;1];
+            v = zeros(3, 1);
+            biases = zeros(6, 1);
+            
+            Sigma = zeros(15);
+        end
     end
 end
 

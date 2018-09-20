@@ -6,7 +6,9 @@ classdef VIO
     
     properties
         graph % pose graph / map
-        
+       
+        frameBuffer % stores last N frames
+        imuBuffer % stores last N imu measurements
     end
     
     methods
@@ -18,11 +20,17 @@ classdef VIO
         function obj = addFrame(image, t, focal, principal, distortion, vignette)
             % Add an image to the VIO pipeline. distortion params are from
             % equidistant distortion model.
+            
+            % Create a frame object using last frame and buffered IMU
+            % readings.
+            
+            % Track Landmarks from the last N keyframes in the graph
         end
         
-        function obj = addIMUSample(accel, gyro, t)
+        function obj = addIMUSample(imuMeasurement)
             % Add an imu sample to the VIO pipeline.
         end
+        
     end
 end
 
