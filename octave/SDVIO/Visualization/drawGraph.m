@@ -1,7 +1,4 @@
-function [outputArg1,outputArg2] = drawGraph(inputArg1,inputArg2)
-%DRAWGRAPH Summary of this function goes here
-%   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+function [] = drawGraph(graph, currentFrame)
+% Draw the graph in 3D.
 end
 
