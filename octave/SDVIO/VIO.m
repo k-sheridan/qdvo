@@ -17,7 +17,7 @@ classdef VIO
             obj.graph = Graph();
         end
         
-        function obj = addFrame(image, t, focal, principal, distortion, vignette)
+        function obj = addFrame(frame, vignette)
             % Add an image to the VIO pipeline. distortion params are from
             % equidistant distortion model.
             
@@ -25,6 +25,11 @@ classdef VIO
             % readings.
             
             % Track Landmarks from the last N keyframes in the graph
+            
+            % Run frontend visual inertial pose optimization
+            
+            % Check if current frame is a keyframe.
+            
         end
         
         function obj = addIMUSample(imuMeasurement)
