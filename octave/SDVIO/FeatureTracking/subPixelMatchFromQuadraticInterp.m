@@ -23,7 +23,6 @@ if isempty(P)
     for pt = testPoints
         P = [P; double(subs(row, [x;y], pt))];
     end
-    P
     pseudoP = inv(P'*P)*P';
 end
 
@@ -39,7 +38,7 @@ if (norm(coeff(1)) < 1e-8); delta(1) = 0; cov_inv(1, 1) = 1e-8; warning('extreme
 if (norm(coeff(2)) < 1e-8); delta(2) = 0; cov_inv(2, 2) = 1e-8; warning('extremely high y uncertainty'); end
 
 cov = inv(cov_inv);
-pixel = centerPixel + delta;
+pixel = centerPixel - delta;
 
 % Check the covariance matrix
 assert(min(eig(cov)) >= 0);
