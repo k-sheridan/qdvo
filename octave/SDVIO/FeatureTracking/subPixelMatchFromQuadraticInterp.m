@@ -44,18 +44,18 @@ pixel = centerPixel - delta;
 assert(min(eig(cov)) >= 0);
 
 % Optional drawing.
-%hold on
-%image(-radius, -radius, neighborhood', 'CDataMapping','scaled');
-%colormap gray
-%colorbar
-%caxis([-1, 1])
-%syms x y
-%fn = coeff' * [(x)^2;(y)^2;(x)*(y);(x);(y);1];
-%fcontour(fn, [-radius-1, radius+1], 'LineColor', [0,1,0])
-%hold on
-%plot3(delta(1), delta(2), 0, '+')
-%xlabel('x')
-%ylabel('y')
+hold on
+image(-radius, -radius, neighborhood', 'CDataMapping','scaled');
+colormap gray
+colorbar
+caxis([-1, 1])
+syms x y
+fn = coeff' * [(x)^2;(y)^2;(x)*(y);(x);(y);1];
+fcontour(fn, [-radius-1, radius+1], 'LineColor', [0,1,0])
+hold on
+plot3(delta(1), delta(2), 0, '+')
+xlabel('x')
+ylabel('y')
 
 end
 
