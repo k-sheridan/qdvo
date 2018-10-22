@@ -70,7 +70,7 @@ classdef EquidistantCameraModel
             % step 1 normalize the pixel to distorted homogenous
             % coordinates.
             
-            uvd = [(pixel(1) - obj.c(1)) / obj.f(1); (pixel(2) - obj.c(2)) / obj.f(2)]
+            uvd = [(pixel(1) - obj.c(1)) / obj.f(1); (pixel(2) - obj.c(2)) / obj.f(2)];
             
             psi = atan2(uvd(2), uvd(1)); % used to reproduce the unit vector robustly
             
@@ -85,7 +85,7 @@ classdef EquidistantCameraModel
             
             while (1)
                 
-                eval = obj.radiusLookupTable(mid, 2)
+                eval = obj.radiusLookupTable(mid, 2);
            
                 if (high - 1 <= low)
                     break;
@@ -93,11 +93,9 @@ classdef EquidistantCameraModel
                 
                 
                 if (radiusDesired > eval)
-                    disp('raise low')
                     low = mid;
                     mid = floor(low + (high - low) / 2);
                 elseif (radiusDesired < eval)
-                    disp('lower high')
                     high = mid;
                     mid = floor(low + (high - low) / 2);
                 else
@@ -108,9 +106,42 @@ classdef EquidistantCameraModel
             
             theta0 = obj.radiusLookupTable(mid, 2);
             
-            % final step minimize the squared radius error
+            % FINAL STEP minimize the squared radius error
+            % r(theta0 + dtheta) ~= r0 + dr_dth(r0)*dtheta
+            % rd - r0 - dr_dth(r0)*dtheta = 0
+            % => dtheta = (rd - r0) / dr_dth(r0)
+            % iterate until convergence
             
-            bearing = [tan(theta0) * [cos(psi); sin(psi)]; 1]
+            theta = theta0;
+            for iter = (1:20) % should converge way before 20 iters depending on table resolution
+                der = obj.distortionDerivativeFn(theta);
+                
+                if (norm(der) <= 1e-8)
+                    break;
+                end
+                
+                theta = theta + (radiusDesired - obj.distortionFn(theta)) / der;
+            end
+            
+            bearing = [tan(theta) * [cos(psi); sin(psi)]; 1];
+        end
+        
+        function [radius] = distortionFn(obj, theta)
+            % evaluates the equidistant distortion function for this model
+            
+            radius = 0;
+            for coeffIndex = (1:length(obj.coeffs))
+                 radius = radius + obj.coeffs(coeffIndex) * theta^obj.order(coeffIndex);
+            end
+        end
+        
+        function [dradius_dtheta] = distortionDerivativeFn(obj, theta)
+            % evaluates the derivative of the equidistant distortion function for this model
+            
+            dradius_dtheta = 0;
+            for coeffIndex = (1:length(obj.coeffs))
+                 dradius_dtheta = dradius_dtheta + obj.order(coeffIndex) * obj.coeffs(coeffIndex) * theta^(obj.order(coeffIndex) - 1);
+            end
         end
     end
 end
