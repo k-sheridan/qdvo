@@ -8,6 +8,7 @@ classdef EquidistantCameraModel
         coeffs;
         f;
         c;
+        fov;
     end
     
     methods
@@ -23,6 +24,7 @@ classdef EquidistantCameraModel
             
             obj.f = focal;
             obj.c = principal;
+            obj.fov = fov;
             
             thetaMax = fov/2; % the maximum theta value in the lookup table
             obj.radiusLookupTable = zeros(n, 2);
@@ -66,6 +68,8 @@ classdef EquidistantCameraModel
         function [bearing] = unproject(obj, pixel)
             % undistorts the pixel onto the image plane in normalized
             % (metric) coordinates.
+            % the only way to break this is by asking for a out of bounds
+            % pixel like [1e10; 0]
             
             % step 1 normalize the pixel to distorted homogenous
             % coordinates.
