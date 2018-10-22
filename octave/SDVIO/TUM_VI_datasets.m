@@ -36,6 +36,10 @@ T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
     0, 0, 0, 1];
 
 
+% Create a camera model instance globally
+global cameraModel;
+cameraModel = EquidistantCameraModel(distortionCoefficients, pi, focalLength, principalPoint);
+
 % Create an instance of a VIO
 vio = VIO(T_camera0FromImu, accelBias, gyroBias, accelScale, gyroScale)
 
@@ -45,7 +49,7 @@ for messageNumber = (1 : bag.NumMessages)
         % Add image to slam pipeline
         mat = msg{1}.readImage;
         
-        vio.addFrame(mat, msg{1}.Header.Stamp.seconds, focalLength, principalPoint, vignette);
+        vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds));
         
         imshow(mat)
     elseif (strcmp(char(msgList{messageNumber, 2}), '/imu0'))

@@ -17,7 +17,7 @@ classdef VIO
             obj.graph = Graph();
         end
         
-        function obj = addFrame(frame, vignette)
+        function [] = addFrame(obj, frame)
             % Add an image to the VIO pipeline. distortion params are from
             % equidistant distortion model.
             
@@ -32,7 +32,7 @@ classdef VIO
             
         end
         
-        function obj = addIMUSample(imuMeasurement)
+        function [] = addIMUSample(obj, imuMeasurement)
             % Add an imu sample to the VIO pipeline.
         end
         
