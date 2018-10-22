@@ -9,18 +9,25 @@ classdef EquidistantCameraModel
         f;
         c;
         fov;
+        attenuation; % an array the size of the image which describes the lense attenuation. (default is ones)
+        size;
     end
     
     methods
-        function obj = EquidistantCameraModel(distortionCoeffs, fov, focal, principal, n)
+        function obj = EquidistantCameraModel(distortionCoeffs, fov, focal, principal, size, n, attenuation)
             %EQUIDISTANTCAMERAMODEL Creates an instance of the camera
             %model. n is optional and determines the resolution of the
             %lookup table.
             % This adds a 1 to the front of the distortion coeff vec.
-            
-            if (nargin <= 4)
-                n = 10000;
+            if (nargin <= 6)
+                attenuation = ones(size);
+                if (nargin <= 5)
+                    n = 10000;
+                end
             end
+            
+            obj.attenuation = attenuation;
+            obj.size = size;
             
             obj.f = focal;
             obj.c = principal;

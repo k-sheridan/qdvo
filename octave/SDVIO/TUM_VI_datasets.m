@@ -38,7 +38,7 @@ T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
 
 % Create a camera model instance globally
 global cameraModel;
-cameraModel = EquidistantCameraModel(distortionCoefficients, pi, focalLength, principalPoint);
+cameraModel = EquidistantCameraModel(distortionCoefficients, pi, focalLength, principalPoint, [1024;1024], 10000, vignette);
 
 % Create an instance of a VIO
 vio = VIO(T_camera0FromImu, accelBias, gyroBias, accelScale, gyroScale)
