@@ -1,6 +1,7 @@
 classdef EquidistantCameraModel
-    %EQUIDISTANTCAMERAMODEL Summary of this class goes here
-    %   Detailed explanation goes here
+    %EQUIDISTANTCAMERAMODEL implementation of the equidistant camera model
+    %used by Kalibr. Both the projection and unprojection jacobians are
+    %computed numerically with a first order finite difference.
     
     properties
         radiusLookupTable; % nx2 array of [theta, radius], lookup is O(log(n)) with binary search
@@ -51,9 +52,11 @@ classdef EquidistantCameraModel
             end
         end
         
-        function [pixel] = project(obj, pointInCameraFrame)
+        function [pixel, projectJacobian] = project(obj, pointInCameraFrame)
             %Project a point in the camera frame into level 0 distorted pixel
             %coordinates. done in the same fashion as kalibr.
+            % The projection jacobian maps UNIT PLANE bearing error to
+            % pixel error.
             
             if (pointInCameraFrame(3) <= 1e-8)
                 warning('point is behind camera')
@@ -70,13 +73,28 @@ classdef EquidistantCameraModel
             bearingDistorted = [radius * cos(psi); radius * sin(psi); 1];
             
             pixel = [bearingDistorted(1) * obj.f(1) + obj.c(1); bearingDistorted(2) * obj.f(2) + obj.c(2)];
+            
+            % if the projection jacobian is desired compute it.
+            if (nargout == 2)
+                % [dx; dy] = J * [du; dv] <= (unit plane)
+                delta = 1e-3;
+                bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1]
+                
+                u2 = obj.project(bearing + [delta;0;0])
+                u1 = obj.project(bearing + [-delta;0;0])
+                
+                v2 = obj.project(bearing + [0;delta;0])
+                v1 = obj.project(bearing + [0;-delta;0])
+                
+                projectJacobian = [1/(2*delta)*(u2-u1), 1/(2*delta)*(v2-v1)];
+            end
         end
         
-        function [bearing] = unproject(obj, pixel)
+        function [bearing, unprojectJacobian] = unproject(obj, pixel)
             % undistorts the pixel onto the image plane in normalized
             % (metric) coordinates.
             % the only way to break this is by asking for a out of bounds
-            % pixel like [1e10; 0]
+            % pixel like [x > 1024; 0]
             
             % step 1 normalize the pixel to distorted homogenous
             % coordinates.
@@ -135,6 +153,15 @@ classdef EquidistantCameraModel
             end
             
             bearing = [tan(theta) * [cos(psi); sin(psi)]; 1];
+            
+            % if the unproject jacobian is desired use the new bearing to
+            % compute the projection jacobian and invert it.
+            if (nargout == 2)
+                [px, pJ] = obj.project(bearing);
+                
+                unprojectJacobian = inv(pJ);
+            end
+            
         end
         
         function [radius] = distortionFn(obj, theta)
