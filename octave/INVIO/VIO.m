@@ -7,19 +7,26 @@ classdef VIO
     properties
         graph % pose graph / map
        
-        frameBuffer % stores last N frames
-        imuBuffer % stores last N imu measurements
+        frameBuffer = {} % stores last N frames
+        imuBuffer = {} % stores last N imu measurements
+        
+        settings; % settings for the whole vio impl
     end
     
     methods
-        function obj = VIO(T_camFromImu, accelBias, gyroBias, accelScale, gyroScale)
+        function obj = VIO(settings)
             %VIO Construct a VIO instance. scales are 3x3 matrices
             obj.graph = Graph();
+            obj.settings = settings;
         end
         
-        function [] = addFrame(obj, frame)
+        function [obj] = addFrame(obj, frame)
             % Add an image to the VIO pipeline. distortion params are from
             % equidistant distortion model.
+            obj.frameBuffer{end+1} = frame;
+            if (length(obj.frameBuffer) > obj.settings.maxBufferedFrames)
+                obj.frameBuffer = obj.frameBuffer(2:end);
+            end
             
             % Create a frame object using last frame and buffered IMU
             % readings.
@@ -32,7 +39,7 @@ classdef VIO
             
         end
         
-        function [] = addIMUSample(obj, imuMeasurement)
+        function [obj] = addIMUSample(obj, imuMeasurement)
             % Add an imu sample to the VIO pipeline.
         end
         

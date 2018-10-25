@@ -36,12 +36,19 @@ T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
     0, 0, 0, 1];
 
 
-% Create a camera model instance globally
-global cameraModel;
+% Create a camera model instance 
 cameraModel = EquidistantCameraModel(distortionCoefficients, pi, focalLength, principalPoint, [1024;1024], 10000, vignette);
 
+% Create a settings struct
+settings = Settings(); % a default settings file for the VIO impl to use
+settings.initial_T_camFromImu = T_camera0FromImu;
+settings.initial_accelBias = accelBias;
+settings.initial_gyroBias = gyroBias;
+settings.initial_accelScale = accelScale;
+settings.initial_gyroScale = gyroScale;
+
 % Create an instance of a VIO
-vio = VIO(T_camera0FromImu, accelBias, gyroBias, accelScale, gyroScale)
+vio = VIO(settings);
 
 for messageNumber = (1 : bag.NumMessages)
     msg = bag.readMessages(messageNumber);
@@ -49,7 +56,7 @@ for messageNumber = (1 : bag.NumMessages)
         % Add image to slam pipeline
         mat = msg{1}.readImage;
         
-        vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds));
+        vio = vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds))
         
         imshow(mat)
     elseif (strcmp(char(msgList{messageNumber, 2}), '/imu0'))

@@ -14,20 +14,12 @@ classdef Patch
             obj.image = patchImageData;
             
             % compute the mean
-            sum = 0;
-            for intensity = obj.image(:)'
-                sum = sum + intensity
-            end
+            total = sum(sum(obj.image));
             
-            obj.meanIntensity = sum / numel(obj.image);
+            obj.meanIntensity = total / numel(obj.image);
             
             % compute the (kind of) variance of the patch
-            obj.sumZeroMeanSquared = 0;
-            
-            for intensity = obj.image(:)'
-                obj.sumZeroMeanSquared = obj.sumZeroMeanSquared + (intensity - obj.meanIntensity)^2;
-            end
-            
+            obj.sumZeroMeanSquared = sum(sum((obj.image - obj.meanIntensity).^2));
         end
         
     end
