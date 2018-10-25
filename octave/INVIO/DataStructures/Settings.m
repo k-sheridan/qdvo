@@ -6,6 +6,9 @@ classdef Settings
         patchHalfSize = 3; % the patch radius used for comparing.
         searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
         
+        minimumNormalizedMatchCorrelation = 0.8; % the threshold where a match is called good enough.
+        correlationUniquenessThreshold = 0.1; % the minimum absolute difference between correlations.
+        
         maxBufferedFrames = 100; % the maximum size the frame buffer can be.
         
         initial_T_camFromImu;

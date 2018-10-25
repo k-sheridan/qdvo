@@ -3,7 +3,7 @@ load('/Users/kevinsheridan/Documents/Mac Library/RnD/IARC - Mission 7/invio/octa
 
 settings = Settings();
 
-matcher = ZNCCPatchMatcher();
+matcher = ZNCCPatchMatcher(settings);
 
 % test features in first frame
 features = [[398; 452], [653; 398], [532; 791], [551; 346], [801; 488], [806; 386]];

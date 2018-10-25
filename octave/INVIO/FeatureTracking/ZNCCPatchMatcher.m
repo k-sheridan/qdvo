@@ -5,9 +5,15 @@ classdef ZNCCPatchMatcher
     properties
         warpedSrcPatch % warped patch (template)
         scoreArray % 2D array of scores (ZNCC):
+        settings
     end
     
     methods
+        function [obj] = ZNCCPatchMatcher(settings)
+            % initialize the patch matcher with a settings struct.
+            obj.settings = settings;
+        end
+        
         function [result] = search(obj, landmark, graph, targetKeyframe, radius)
             % perform a pixel level ZNNC search followed by a quadratic fit
             % to estimate the subpixel match result.
@@ -17,7 +23,7 @@ classdef ZNCCPatchMatcher
             % search for best match in target frame (pixel resolution)
         end
         
-        function [] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
+        function [result] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
             % evaluates a window around the center pixel with a ZNCC
             
             obj.scoreArray = -1 * ones(2*searchRadius + 1);
@@ -42,6 +48,31 @@ classdef ZNCCPatchMatcher
                     obj.scoreArray(dy + searchRadius + 1, dx + searchRadius + 1) = score;
                 end
             end
+            
+            % find the best match.
+            [m, n] = size(obj.scoreArray);
+            maxRow = 1;
+            maxCol = 1;
+            for row = (1:m)
+                for col = (1:n)
+                    if (obj.scoreArray(row, col) > obj.scoreArray(maxRow, maxCol))
+                        maxRow = row;
+                        maxCol = col;
+                    end
+                end
+            end
+            
+            result = MatchResult();
+            result.pixel = [maxCol - 1 - searchRadius; maxRow - 1 - searchRadius] + centerPixel;
+            result.covariance = eye(2) * 25;
+            
+            % ensure match is good enough.
+            if (obj.scoreArray(maxRow, maxCol) < obj.settings.minimumNormalizedMatchCorrelation)
+                % match failed
+                result.error = MatchError.MATCH_SCORE_BELOW_THRESHOLD;
+                return
+            end
+            
             
         end
         

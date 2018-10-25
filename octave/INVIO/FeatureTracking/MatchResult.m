@@ -3,8 +3,8 @@ classdef MatchResult
     %by the patch matcher.
     
     properties
-        error % of type MatchError.
-        pixelMatch % the level 0 pixel match.
+        error = MatchError.NONE % of type MatchError.
+        pixel % the level 0 pixel match.
         covariance % the level 0 pixel match uncertainty.
     end
     
