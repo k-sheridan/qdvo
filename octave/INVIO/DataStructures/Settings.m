@@ -7,7 +7,7 @@ classdef Settings
         searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
         
         minimumNormalizedMatchCorrelation = 0.8; % the threshold where a match is called good enough.
-        correlationUniquenessThreshold = 0.1; % the minimum absolute difference between correlations.
+        correlationUniquenessThreshold = 0.1; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         maxBufferedFrames = 100; % the maximum size the frame buffer can be.
         

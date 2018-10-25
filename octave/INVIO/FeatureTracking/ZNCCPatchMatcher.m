@@ -50,17 +50,12 @@ classdef ZNCCPatchMatcher
             end
             
             % find the best match.
-            [m, n] = size(obj.scoreArray);
             maxRow = 1;
             maxCol = 1;
-            for row = (1:m)
-                for col = (1:n)
-                    if (obj.scoreArray(row, col) > obj.scoreArray(maxRow, maxCol))
-                        maxRow = row;
-                        maxCol = col;
-                    end
-                end
-            end
+            [scores, rows] = max(obj.scoreArray);
+            [score, col] = max(scores);
+            maxRow = rows(col);
+            maxCol = col;
             
             result = MatchResult();
             result.pixel = [maxCol - 1 - searchRadius; maxRow - 1 - searchRadius] + centerPixel;
@@ -74,6 +69,12 @@ classdef ZNCCPatchMatcher
                 return
             end
             
+            
+            % TODO now ensure that the match is suficiently unique
+            if (obj.settings.correlationUniquenessThreshold > 0) 
+                % TODO
+            end
+                
             
         end
         

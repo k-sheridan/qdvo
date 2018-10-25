@@ -39,7 +39,7 @@ classdef VIO
             
         end
         
-        function [obj] = addIMUSample(obj, imuMeasurement)
+        function [obj] = addIMUMeasurement(obj, imuMeasurement)
             % Add an imu sample to the VIO pipeline.
         end
         
