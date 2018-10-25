@@ -1,0 +1,17 @@
+load('/Users/kevinsheridan/Documents/Mac Library/RnD/IARC - Mission 7/invio/octave/INVIO/FeatureTracking/test/testData1.mat');
+
+settings = Settings();
+
+centerPixel = [398; 452];
+
+p0 = subPixelPatchFromImage(testImageBuffer{1}.raw_image, centerPixel, 20);
+
+image(p0.image / 2^16 * 255);
+
+figure
+
+for delta = (0:0.1:40)
+    p = subPixelPatchFromImage(testImageBuffer{1}.raw_image, centerPixel + [delta;0], 20);
+    image(p.image / 2^16 * 255);
+    pause(0.1)
+end

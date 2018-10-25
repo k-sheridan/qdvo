@@ -6,7 +6,7 @@ data = zeros(patchRadius * 2 + 1);
 for row = (1:(2*patchRadius + 1))
     for col = (1:(2*patchRadius + 1))
         % use bilinear interpolation to get value between pixels
-        data(row, col) = subPixelIntensity1(centerPixel + [col - 1 - patchRadius; col - 1 - patchRadius], image);
+        data(row, col) = subPixelIntensity1([centerPixel(1) + col - 1 - patchRadius; centerPixel(2) + row - 1 - patchRadius], image);
     end
 end
 
