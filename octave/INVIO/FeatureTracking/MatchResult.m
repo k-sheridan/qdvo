@@ -4,6 +4,7 @@ classdef MatchResult
     
     properties
         error = MatchError.NONE % of type MatchError.
+        zncc % the best normalized correlation 
         pixel % the level 0 pixel match.
         covariance % the level 0 pixel match uncertainty.
     end

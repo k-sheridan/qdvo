@@ -20,10 +20,38 @@ for px = features
 end
 
 
+trackedFeatures = features;
+figure('Name', 'Frame n with initial features')
+resultArray = {};
+
 % search for the patch in frame 1
-tgtKf = KeyFrame();
-tgtKf.frame = testImageBuffer{1};
-matcher.pixelLevelWindowedSearch(patches{1}, features(1:2, 1), tgtKf, 20)
+for frame = testImageBuffer
+    tgtKf = KeyFrame();
+    tgtKf.frame = frame{1};
+    clf;
+    imshow(frame{1}.raw_image);
+    
+    for index = (1:length(trackedFeatures))
+        res = matcher.pixelLevelWindowedSearch(patches{index}, trackedFeatures(1:2, index), tgtKf, 7);
+        trackedFeatures(1:2, index) = res.pixel;
+        resultArray{index} = res;
+    end
+    
+    % draw the results
+    for res = resultArray
+        if (res{1}.error == MatchError.NONE)
+            hold on
+            scatter(res{1}.pixel(1), res{1}.pixel(2), 'go');
+        else
+            hold on
+            scatter(res{1}.pixel(1), res{1}.pixel(2), 'ro');
+        end
+    end
+    
+    pause(1)
+end
+
+
 
 
 

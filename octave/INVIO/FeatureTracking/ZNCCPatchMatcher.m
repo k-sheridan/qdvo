@@ -65,6 +65,7 @@ classdef ZNCCPatchMatcher
             result = MatchResult();
             result.pixel = [maxCol - 1 - searchRadius; maxRow - 1 - searchRadius] + centerPixel;
             result.covariance = eye(2) * 25;
+            result.zncc = obj.scoreArray(maxRow, maxCol);
             
             % ensure match is good enough.
             if (obj.scoreArray(maxRow, maxCol) < obj.settings.minimumNormalizedMatchCorrelation)
