@@ -1,4 +1,4 @@
-function [intensity, pass] = subPixelIntensity1(px, image)
+function [intensity] = subPixelIntensity1(px, image)
 % sub pixel intensity using bilinear interpolation. returns brightness and
 % if it passed. pixel is in [x; y]
 
