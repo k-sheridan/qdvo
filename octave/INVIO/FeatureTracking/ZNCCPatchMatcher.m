@@ -14,7 +14,7 @@ classdef ZNCCPatchMatcher
             obj.settings = settings;
         end
         
-        function [result] = search(obj, landmark, graph, targetKeyframe, radius)
+        function [result] = search(obj, landmark, sourceKeyFrame, targetKeyframe, searchRadius)
             % perform a pixel level ZNNC search followed by a quadratic fit
             % to estimate the subpixel match result.
             

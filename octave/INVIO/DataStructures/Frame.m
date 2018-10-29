@@ -4,8 +4,8 @@ classdef Frame
     properties
         raw_image % Raw pixel data (mono8).
         time % Capture time in seconds
-        
-        state %IMUSTATE Stores the state of this keyframe.
+        cameraModel % an instance of the camera model. 
+        imustate %IMUSTATE Stores the state of this keyframe.
         
     end
     
@@ -16,9 +16,9 @@ classdef Frame
             obj.time = t;
             
             if (nargin > 2)
-                obj.state = imuState;
+                obj.imustate = imuState;
             else
-                obj.state = IMUState();
+                obj.imustate = IMUState();
             end
         end
     end
