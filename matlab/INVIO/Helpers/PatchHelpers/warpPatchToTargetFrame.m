@@ -18,12 +18,12 @@ assert(landmark.kfid == sourceKeyframe.id);
 T_sourceFromWorld = sourceKeyframe.frame.imustate.poseTransform();
 T_targetFromWorld = targetKeyframe.frame.imustate.poseTransform();
 
-T_targetFromSource = inv(T_sourceFromWorld) * T_targetFromWorld;
+T_targetFromSource = inv(T_sourceFromWorld) * T_targetFromWorld
 
 R = T_targetFromSource(1:3, 1:3);
 t = T_targetFromSource(1:3, 4);
 n = landmark.patchNormal;
-point = T_sourceFromWorld * [landmark.bearing; 1] * (1/landmark.zinv); % point in inertial frame
+point = T_sourceFromWorld(1:3, 1:3) * (landmark.bearing * (1/landmark.zinv)) + T_sourceFromWorld(1:3, 4); % point in inertial frame
 d = n' * (T_targetFromSource(1:3, 4) - point);
 
 % compute the homography

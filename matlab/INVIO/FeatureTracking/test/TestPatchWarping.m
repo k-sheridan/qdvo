@@ -1,5 +1,5 @@
 % test the patch warp function
-load('/Users/kevinsheridan/Documents/Mac Library/RnD/IARC - Mission 7/invio/octave/INVIO/FeatureTracking/test/testData1.mat');
+load('testData1.mat');
 
 settings = Settings();
 
@@ -25,10 +25,14 @@ lm.zinvVariance = 1;
 srckf = KeyFrame();
 srckf.id = 1;
 srckf.frame = testImageBuffer{1};
+srckf.frame.imustate = IMUState();
 
 tgtkf = KeyFrame();
 tgtkf.id = 2;
 tgtkf.frame = testImageBuffer{80};
+tgtkf.frame.imustate = IMUState();
+
+patch = warpPatchToTargetFrame(lm, srckf, tgtkf, 20);
 
 
 

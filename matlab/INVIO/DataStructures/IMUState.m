@@ -6,6 +6,7 @@ classdef IMUState
         r % position in world.
         q % attitude in world. (Quaternion: [qw, qx, qy, qz])
         v % velocity in world.
+        w % angular velocity body frame
         
         biases % IMU biases [acc, gyro]
         
@@ -16,18 +17,18 @@ classdef IMUState
         function obj = IMUState()
             % default constructor.
             % \
-            r = zeros(3, 1); % position of imu (inertial frame)
-            q = [0;0;0;1]; % quaternion of imu (inertial frame)
-            v = zeros(3, 1); % velocity of imu (inertial frame)
-            w = zeros(3, 1); % angular velocity of imu (body frame) (for more generic motion models)
-            biases = zeros(6, 1);
+            obj.r = zeros(3, 1); % position of imu (inertial frame)
+            obj.q = [1;0;0;0]; % quaternion of imu (inertial frame)
+            obj.v = zeros(3, 1); % velocity of imu (inertial frame)
+            obj.w = zeros(3, 1); % angular velocity of imu (body frame) (for more generic motion models)
+            obj.biases = zeros(6, 1);
             
-            Sigma = zeros(18);
+            obj.Sigma = zeros(18);
         end
         
         function [T] = poseTransform(obj)
             % create a 4x4 transformation matrix from this state
-            T = [[quat2rotm(obj.q); zeros(1, 3)], obj.r; 1];
+            T = [[quat2rotm(obj.q'); zeros(1, 3)], [obj.r; 1]];
         end
         
     end

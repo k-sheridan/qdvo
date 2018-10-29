@@ -1,4 +1,4 @@
-load('/Users/kevinsheridan/Documents/Mac Library/RnD/IARC - Mission 7/invio/octave/INVIO/FeatureTracking/test/testData1.mat');
+load('testData1.mat');
 
 settings = Settings();
 
