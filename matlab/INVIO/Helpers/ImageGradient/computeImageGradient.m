@@ -9,7 +9,7 @@ if (isempty(xKernel) || isempty(yKernel))
 end
 
 % run kernel over image
-slice = image((pixel(2)-1):(pixel(2)+1), (pixel(1)-1):(pixel(1)+1));
+slice = double(image((pixel(2)-1):(pixel(2)+1), (pixel(1)-1):(pixel(1)+1)));
 grad = [sum(sum(xKernel.*slice)); 
         sum(sum(yKernel.*slice))];
 
