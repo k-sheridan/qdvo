@@ -63,5 +63,9 @@ end
 %xlabel('u (m)')
 %ylabel('v (m)')
 
+% transform the normalized coordinates with the homography and project them
+% to pixels in the source frame. Finally, evaluate the source image at those
+% pixels.
+
 end
 
