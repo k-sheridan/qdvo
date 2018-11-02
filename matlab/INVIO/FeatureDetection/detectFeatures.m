@@ -1,4 +1,4 @@
-function [newFeatures] = detectFeatures(image, cameraModel, currentFeatures, n, gridSize)
+function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, n, gridSize)
 %select new features from a given image. Attempt to find new
 %features in areas with no tracked features. Do not extract features where
 %the mask is ~0 (from vignette). Spatially sample features.
@@ -15,8 +15,13 @@ function [newFeatures] = detectFeatures(image, cameraModel, currentFeatures, n, 
 rowSpacing = floor(m/gridSize)
 colSpacing = floor(n/gridSize)
 
+% smooth image.
+%K = imgaussfilt(double(I),4);
+
 % compute the image gradients
-[gradX, gradY] = gradient(double(image));
+[gradX, gradY] = gradient(I);
+
+%imshow(sqrt(gradX.*gradY))
 
 end
 
