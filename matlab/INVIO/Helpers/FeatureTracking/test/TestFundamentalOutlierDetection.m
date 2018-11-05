@@ -59,7 +59,7 @@ title('Frame 2')
 
 
 
-[F_fit, chi2avg, inliers] = computeFundamentalMatrixRANSAC(features1, features2, 20, 1e-3);
+[F_fit, chi2avg, inliers] = computeFundamentalMatrixRANSAC(features1, features2, 20, 1e-3, 8);
 
 F_fit
 chi2avg

@@ -1,4 +1,4 @@
-function [F, chi2_avg, inlierColumns] = computeFundamentalMatrixRANSAC(bearingVec1, bearingVec2, ransacIters, ransacThreshold)
+function [F, chi2_avg, inlierColumns] = computeFundamentalMatrixRANSAC(bearingVec1, bearingVec2, ransacIters, ransacThreshold, nPoint)
 %COMPUTEFUNDAMENTALMATRIX Use ransac to compute the fundamental matrix
 %bewteen two feature track vectors.
 % feature vector: [[x1_1;y1_1], [x1_2;y1_2], ...]
@@ -8,11 +8,19 @@ function [F, chi2_avg, inlierColumns] = computeFundamentalMatrixRANSAC(bearingVe
 % the inlierColumns vector is a boolean vector which says which tracks are
 % correct.
 
+% make sure nPoint is at least 8
+if (nargin < 5)
+    nPoint = 8;
+else
+    nPoint = max(8, nPoint)
+end
+
 [m1, n1] = size(bearingVec1);
 [m2, n2] = size(bearingVec2);
 
 assert(m1 == 2 && m2 == 2)
 assert(n2 == n1)
+assert(n1 > 8)
 
 inlierMatrix = zeros(ransacIters, length(bearingVec1(1, :)));
 
@@ -20,10 +28,10 @@ iterationInfo = {};
 
 for iterationNumber = (1:ransacIters)
     randomColumns = randperm(n1);
-    randomColumns = randomColumns(1:8);
+    randomColumns = randomColumns(1:nPoint);
     
     % form the correspondence matrix, A, such that A*F = zeros(8, 1)
-    A = zeros(8, 9);
+    A = zeros(nPoint, 9);
     for index = (1:length(randomColumns))
         px1 = bearingVec1(1:2, randomColumns(index));
         px2 = bearingVec2(1:2, randomColumns(index));
