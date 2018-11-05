@@ -39,15 +39,15 @@ end
 Rinv = R';
 tinv = -R'*t;
 
-a = tinv;
+a = t;
 skewT = [0, -a(3), a(2); 
         a(3), 0, -a(1); 
         -a(2), a(1), 0];
 
-F = Rinv * skewT
+F = skewT * R
 
 % manually perturb some correspondences.
-features2(1:2, 1) = features2(1:2, 1) + [0;0.5];
+features2(1:2, 1) = features2(1:2, 1) + [0;-0.1];
 
 % draw the two frames
 scatter(features1(1, :), features1(2, :))
