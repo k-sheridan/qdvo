@@ -67,5 +67,20 @@ end
 % to pixels in the source frame. Finally, evaluate the source image at those
 % pixels.
 
+maxIndex = 2 * patchRadius + 1;
+warpedImageData = zeros(maxIndex);
+
+for row = (1:maxIndex)
+    for col = (1:maxIndex)
+        sourceBearing = H*[targetU(row, col); targetV(row, col); 1];
+        px = sourceKeyframe.frame.cameraModel.project(sourceBearing);
+        
+        intensity = subPixelIntensity1(px, sourceKeyframe.frame.raw_image);
+        
+        warpedImageData(row, col) = intensity;
+    end
+end
+
+warpedPatch = Patch(warpedImageData);
 end
 

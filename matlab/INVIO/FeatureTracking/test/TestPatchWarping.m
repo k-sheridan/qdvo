@@ -6,7 +6,7 @@ settings = Settings();
 matcher = ZNCCPatchMatcher(settings);
 
 % test features in first frame
-feature = [200; 452];
+feature = [210; 452];
 
 figure('Name', 'Frame 1 with initial features')
 imshow(testImageBuffer{1}.raw_image)
@@ -34,7 +34,16 @@ tgtkf.frame = testImageBuffer{80};
 tgtkf.frame.imustate = IMUState();
 tgtkf.frame.cameraModel = cameraModel;
 
+figure
+imshow(tgtkf.frame.raw_image)
+figure
+for delta = (0:0.01:1)
+% set a new pose for the tgt frame
+tgtkf.frame.imustate.r = [delta * 5;0;0]
+tgtkf.frame.imustate.q = eul2quat([0,0 delta * pi/4])'
+    
 patch = warpPatchToTargetFrame(lm, srckf, tgtkf, 20);
 
-
-
+image(patch.image/2^16 * 255)
+drawnow
+end
