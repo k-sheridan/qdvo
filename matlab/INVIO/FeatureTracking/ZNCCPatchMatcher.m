@@ -87,6 +87,8 @@ classdef ZNCCPatchMatcher
             % uniform template patch. It is assummed that the template is
             % textured.
             
+            % one liner: sum(((A-mean(A)).*(B-mean(B))))/sqrt(sum((A-mean(A)).^2 * sum((B-mean(B)).^2)))
+            
             assert(strcmp(class(templatePatch), 'Patch') && strcmp(class(templatePatch), 'Patch'));
             assert(isequal(size(templatePatch.image), size(targetPatch.image)))
             
