@@ -23,7 +23,7 @@ classdef ZNCCPatchMatcher
             % search for best match in target frame (pixel resolution)
         end
         
-        function [result] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
+        function [result, scoreArray] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
             % evaluates a window around the center pixel with a ZNCC
             
             obj.scoreArray = -1 * ones(2*searchRadius + 1);
@@ -49,6 +49,8 @@ classdef ZNCCPatchMatcher
                 end
             end
             
+            scoreArray = obj.scoreArray;
+            
             % find the best match.
             maxRow = 1;
             maxCol = 1;
@@ -61,6 +63,7 @@ classdef ZNCCPatchMatcher
             result.pixel = [maxCol - 1 - searchRadius; maxRow - 1 - searchRadius] + centerPixel;
             result.covariance = eye(2) * 25;
             result.zncc = obj.scoreArray(maxRow, maxCol);
+            
             
             % ensure match is good enough.
             if (obj.scoreArray(maxRow, maxCol) < obj.settings.minimumNormalizedMatchCorrelation)

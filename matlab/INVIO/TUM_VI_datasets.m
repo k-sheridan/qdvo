@@ -53,8 +53,8 @@ vio = VIO(settings);
 for messageNumber = (1 : bag.NumMessages)
     msg = bag.readMessages(messageNumber);
     if (strcmp(char(msgList{messageNumber, 2}), '/cam0/image_raw'))
-        % Add image to slam pipeline
-        mat = msg{1}.readImage;
+        % Add image to slam pipeline, scale to 255
+        mat = msg{1}.readImage / 2^16 * 255;
         
         vio = vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds))
         

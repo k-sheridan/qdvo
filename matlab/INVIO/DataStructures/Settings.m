@@ -3,7 +3,7 @@ classdef Settings
     
     properties
         nFeaturesDesired = 300; % the number of features which are desired for a given keyframe.
-        patchHalfSize = 3; % the patch radius used for comparing.
+        patchHalfSize = 5; % the patch radius used for comparing.
         searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
         
         minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
