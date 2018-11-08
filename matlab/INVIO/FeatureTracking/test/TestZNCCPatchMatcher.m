@@ -33,24 +33,31 @@ for frame = testImageBuffer
     for index = (1:length(trackedFeatures))
         [res, scoreArray] = matcher.pixelLevelWindowedSearch(patches{index}, trackedFeatures(1:2, index), tgtKf, 20);
         
+        
         figure(f2)
+        
+        colormap gray
+        
         subplot(2, 2, 1)
-        image((scoreArray + 1) / 2 * 65)
+        imagesc((scoreArray), [-1, 1])
+        colorbar
         title('ZNCC response')
         
         
-        [dx, dy] = gradient((scoreArray + 1) / 2 * 65);
+        [dx, dy] = gradient((scoreArray));
         
         subplot(2, 2, 2)
-        image(dx)
+        imagesc(dx)
+        colorbar
         title('dzncc/dx')
         
         subplot(2, 2, 3)
-        image(dy)
-        title('dzncc/dy')
+        imagesc((dy.*dx))
+        colorbar
+        title('extrema')
         
         subplot(2, 2, 4)
-        image(patches{index}.image / 2^16 * 65)
+        imagesc(patches{index}.image / 2^16 * 255, [0, 255])
         title('Source Patch')
         
         drawnow
