@@ -17,6 +17,7 @@ medianFilterSize = 3; % this is the size of the median filter kernel
 spatialMaskRadius = 10; % the radius of the spatial mask applied when a feature is at a certain pixel
 structureTensorRadius = 5; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
+edgeWeight = 0.5; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
 
 % compute grid spacing.
 [m, n] = size(I);
@@ -112,7 +113,10 @@ for gridRow = (1:gridSize)
             nu = n-structureTensorRadius;
         end
         
-        candidateArray = {}; % use this to store pixel locations and harris scores
+        numCandidates = sum(sum(thresholdedGrads(ml:mu, nl:nu)));
+        
+        candidateArray = zeros(numCandidates, 3); % use this to store pixel locations and harris scores. [x, y, score; x, y, score;]
+        candidateIndex = 1;
         
         for imageRow = (ml:mu)
             for imageCol = (nl:nu)
@@ -132,10 +136,20 @@ for gridRow = (1:gridSize)
                     
                     harris = detS - harrisK * traceS^2;
                     
+                    score = (harris < 0)*-edgeWeight*harris + (harris >= 0)*harris;
+                    
+                    candidateArray(candidateIndex, 1:3) = [imageRow, imageCol, score];
+                    candidateIndex = candidateIndex+1; % increment
+                    
                 end
                 
             end
         end
+        
+        % sort the candidate array and spatially sample. This is the most
+        % expensive but best method of spatial sampling.
+        
+        candidateArray = sortrows(candidateArray, 3, 'descend')
         
     end
 end
