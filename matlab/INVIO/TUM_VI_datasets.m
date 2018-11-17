@@ -49,16 +49,17 @@ settings.initial_gyroScale = gyroScale;
 
 % Create an instance of a VIO
 vio = VIO(settings);
-
+tlast = 0;
 for messageNumber = (1 : bag.NumMessages)
     msg = bag.readMessages(messageNumber);
+    
     if (strcmp(char(msgList{messageNumber, 2}), '/cam0/image_raw'))
         % Add image to slam pipeline, scale to 255
         mat = double(msg{1}.readImage);
         
         vio = vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds))
         
-        imshow(mat)
+        imshow(mat, [0, 2^16])
     elseif (strcmp(char(msgList{messageNumber, 2}), '/imu0'))
         % Add IMU measurement to slam pipeline.
         

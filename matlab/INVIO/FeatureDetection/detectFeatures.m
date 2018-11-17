@@ -11,14 +11,38 @@ function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, n, grid
 % thresholding.
 
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
+absoluteMinGrad = 500000; % the absolute minumum gradient magnitude 
+spatialSamplingRadius = 10; % the manhattan distance between features
+medianFilterSize = 3; % this is the size of the median filter kernel
+spatialMaskRadius = 10; % the radius of the spatial mask applied when a feature is at a certain pixel
+structureTensorRadius = 5; % the radius used to compute the structure tensor at a pixel.
+harrisK = 0.05; % the constant inside the harris score.
 
 % compute grid spacing.
 [m, n] = size(I);
 rowSpacing = floor(m/gridSize);
 colSpacing = floor(n/gridSize);
 
+averageFeaturesPerGridSection = floor(n / gridSize^2)
+
 % smooth image with median filter.
-K = medfilt2(I);
+K = medfilt2(I, [medianFilterSize, medianFilterSize]);
+
+% initialize the spatial mask with the already detected features.
+% Additionally, count the number of features in each box;
+mask = zeros(m, n);
+featureCountGrid = zeros(gridSize, gridSize);
+
+% determine how many features are in each grid section and fill mask
+for index = (1:length(currentFeatures))
+    px = floor(currentFeatures(1:2, index));
+    gridLocation = floor(px./[rowSpacing; colSpacing]);
+    
+    mask(px(1)-spatialMaskRadius:px(1)+spatialMaskRadius, px(2)-spatialMaskRadius:px(2)+spatialMaskRadius) = ones(2*spatialMaskRadius+1);
+    
+    featureCountGrid(gridLocation(1), gridLocation(2)) = featureCountGrid(gridLocation(1), gridLocation(2)) + 1;
+end
+
 
 % compute the image gradients
 [gradX, gradY] = gradient(K);
@@ -52,7 +76,66 @@ for gridRow = (1:gridSize)
         gradMaxGrid(gridRow, gridCol) = max(max(magGrad(ml:mu, nl:nu)));
         
         thresholdedGrads(ml:mu, nl:nu) = (((magGrad(ml:mu, nl:nu) - gradMeanGrid(gridRow, gridCol))...
-            / (gradMaxGrid(gridRow, gridCol) - gradMeanGrid(gridRow, gridCol))) > invariantThreshold);%.* magGrad(ml:mu, nl:nu);
+            / (gradMaxGrid(gridRow, gridCol) - gradMeanGrid(gridRow, gridCol))) > invariantThreshold)...
+            & magGrad(ml:mu, nl:nu) > absoluteMinGrad;
+        
+    end
+end
+
+% select features with nonmax suppression (rank by harris score) and spatial sampling.
+
+% Harris Score = h = det(S) - k*trace(S), S = structure tensor are pixel.
+% |h| = small -> no texture
+% h <<<<<< 0 -> strong edge
+% h >>>>>> 0 -> strong corner
+
+for gridRow = (1:gridSize)
+    for gridCol = (1:gridSize)
+        
+        % compute how many features are needed in this grid section
+        featureDeficit = averageFeaturesPerGridSection - featureCountGrid(gridRow, gridCol);
+        
+        % compute and sort the scores of all potential features in this
+        % gridsection
+        
+        nl = max((gridCol-1)*colSpacing+1, structureTensorRadius+1);
+        nu = (gridCol)*colSpacing;
+        ml = max((gridRow-1)*rowSpacing+1, structureTensorRadius+1);
+        mu = (gridRow)*rowSpacing;
+        
+        % check if near upper bounds
+        if ((m - mu) < rowSpacing)
+            mu = m-structureTensorRadius;
+        end
+
+        if ((n - nu) < colSpacing)
+            nu = n-structureTensorRadius;
+        end
+        
+        candidateArray = {}; % use this to store pixel locations and harris scores
+        
+        for imageRow = (ml:mu)
+            for imageCol = (nl:nu)
+                
+                if ~mask(imageRow, imageCol) && thresholdedGrads(imageRow, imageCol)
+                    gradXRegion = gradX(imageRow-structureTensorRadius:imageRow+structureTensorRadius,...
+                        imageCol-structureTensorRadius:imageCol+structureTensorRadius);
+                    gradYRegion = gradY(imageRow-structureTensorRadius:imageRow+structureTensorRadius,...
+                        imageCol-structureTensorRadius:imageCol+structureTensorRadius);
+                    
+                    dxdx = sum(sum(gradXRegion.*gradXRegion));
+                    dydy = sum(sum(gradYRegion.*gradYRegion));
+                    dxdy = sum(sum(gradXRegion.*gradYRegion));
+                    
+                    detS = dxdx*dydy - dxdy*dxdy;
+                    traceS = dxdx + dydy;
+                    
+                    harris = detS - harrisK * traceS^2;
+                    
+                end
+                
+            end
+        end
         
     end
 end
