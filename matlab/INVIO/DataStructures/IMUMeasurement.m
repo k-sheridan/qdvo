@@ -7,9 +7,9 @@ classdef IMUMeasurement
         
         t % s
         
-        % Noises are std dviations
-        accelRW % m/s^2.5
-        gyroRW % rad/s^1.5
+        % Noises are std deviations
+        accelRandomWalk % m/s^2.5
+        gyroRandomWalk % rad/s^1.5
         
         accelNoise % m/s^1.5
         gyroNoise % rad/s^0.5

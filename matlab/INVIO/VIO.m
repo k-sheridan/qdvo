@@ -36,11 +36,22 @@ classdef VIO
             % Run frontend visual inertial pose optimization
             
             % Check if current frame is a keyframe.
+            if (isKeyFrame(obj.frameBuffer{end}, obj.graph))
+                % Add a keyframe to the graph.
+                
+                % Take the IMU measurements and store them in an inertial
+                % constraint.
+                
+                
+                % Add the inertial constraint to the graph
+                
+            end
             
         end
         
         function [obj] = addIMUMeasurement(obj, imuMeasurement)
             % Add an imu sample to the VIO pipeline.
+            
         end
         
     end

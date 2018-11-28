@@ -3,8 +3,9 @@ classdef Graph
     % slam information is stored here.
     
     properties
-        keyframeContainer % Array of KeyFrames. 
-        observationContainer % Array of landmark bearing measurements
+        keyframeContainer % Cell array of KeyFrames. 
+        observationConstrainContainer % Cell array of landmark bearing measurements
+        inertialConstraintContainer % Cell array of inertial motion constraints
         
         %TODO add interkeyframe integrated imu motion constraints. keep all
         %raw measurements

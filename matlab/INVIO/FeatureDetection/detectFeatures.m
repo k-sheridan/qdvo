@@ -11,11 +11,10 @@ function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, n, grid
 % thresholding.
 
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
-absoluteMinGrad = 500000; % the absolute minumum gradient magnitude 
-spatialSamplingRadius = 10; % the manhattan distance between features
+absoluteMinGrad = 4000000; % the absolute minumum gradient magnitude 
+spatialSamplingRadius = 20; % the manhattan distance between features
 medianFilterSize = 3; % this is the size of the median filter kernel
-spatialMaskRadius = 10; % the radius of the spatial mask applied when a feature is at a certain pixel
-structureTensorRadius = 5; % the radius used to compute the structure tensor at a pixel.
+structureTensorRadius = 3; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
 edgeWeight = 0.5; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
 
@@ -23,6 +22,8 @@ edgeWeight = 0.5; % value from [0, 1] determines how much we want edges extracte
 [m, n] = size(I);
 rowSpacing = floor(m/gridSize);
 colSpacing = floor(n/gridSize);
+
+newFeatures = [];
 
 averageFeaturesPerGridSection = floor(n / gridSize^2)
 
@@ -115,8 +116,7 @@ for gridRow = (1:gridSize)
         
         numCandidates = sum(sum(thresholdedGrads(ml:mu, nl:nu)));
         
-        candidateArray = zeros(numCandidates, 3); % use this to store pixel locations and harris scores. [x, y, score; x, y, score;]
-        candidateIndex = 1;
+        candidateArray = []; % use this to store pixel locations and harris scores. [x, y, score; x, y, score;]
         
         for imageRow = (ml:mu)
             for imageCol = (nl:nu)
@@ -138,8 +138,7 @@ for gridRow = (1:gridSize)
                     
                     score = (harris < 0)*-edgeWeight*harris + (harris >= 0)*harris;
                     
-                    candidateArray(candidateIndex, 1:3) = [imageRow, imageCol, score];
-                    candidateIndex = candidateIndex+1; % increment
+                    candidateArray = [candidateArray; [imageRow, imageCol, score]];
                     
                 end
                 
@@ -148,9 +147,22 @@ for gridRow = (1:gridSize)
         
         % sort the candidate array and spatially sample. This is the most
         % expensive but best method of spatial sampling.
+        if (length(candidateArray) > 0)
         
-        candidateArray = sortrows(candidateArray, 3, 'descend')
-        
+            candidateArray = sortrows(candidateArray, 3, 'descend');
+            [candidateRow, candidateCol] = size(candidateArray);
+            
+            % final step of spatial sampling these candidates
+            for index = (1:candidateRow)
+                px = candidateArray(index, 1:2)';
+                if (~mask(px(1), px(2))) % if this area is not masked out
+                    newFeatures = [newFeatures, px];
+                    % apply mask to this region
+                    mask((max(px(1)-spatialSamplingRadius, 1):min(px(1)+spatialSamplingRadius, m)), (max(px(2)-spatialSamplingRadius, 1):min(px(2)+spatialSamplingRadius, m)))...
+                    = 1;
+                end
+            end
+        end
     end
 end
 

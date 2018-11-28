@@ -19,8 +19,16 @@ classdef ZNCCPatchMatcher
             % to estimate the subpixel match result.
             
             % warp the patch into the target frame
+            [warpedTemplatePatch] = warpPatchToTargetFrame(landmark, sourceKeyFrame, targetKeyframe, obj.settings.patchHalfSize);
+            
+            % compute the point to search around in the target image given
+            % its pose and the source pose.
+            %P_tgt = inv(T_tgt) * T_src * P_src
+            lmPos_tgt = inv(targetKeyframe.frame.imustate.poseTransform()) * sourceKeyframe.frame.imustate.poseTransform() * ([landmark.bearing;1] / landmark.zinv);
+            [centerPixel, projJac] = targetKeyframe.frame.cameraModel.project(lmPos_tgt);
             
             % search for best match in target frame (pixel resolution)
+            [result, scoreArray] = obj.pixelLevelWindowedSearch(warpedTemplatePatch, centerPixel, targetKeyframe, searchRadius);
         end
         
         function [result, scoreArray] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
