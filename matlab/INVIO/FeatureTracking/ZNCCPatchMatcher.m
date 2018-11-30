@@ -29,6 +29,8 @@ classdef ZNCCPatchMatcher
             
             % search for best match in target frame (pixel resolution)
             [result, scoreArray] = obj.pixelLevelWindowedSearch(warpedTemplatePatch, centerPixel, targetKeyframe, searchRadius);
+            
+            % compute sub pixel estimate.
         end
         
         function [result, scoreArray] = pixelLevelWindowedSearch(obj, srcPatch, centerPixel, targetKeyframe, searchRadius)
