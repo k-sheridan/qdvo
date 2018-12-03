@@ -28,7 +28,7 @@ maxSigma = 25;
 sigmoidConst = 3;
 
 maxRadius = max(patchRadius, kernelRadius);
-
+TUM
 template = patchFromImage(testImageBuffer{1}.raw_image, [293, 431]', patchRadius)
 
 znccImage = -ones(m, n);

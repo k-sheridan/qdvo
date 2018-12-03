@@ -52,7 +52,7 @@ for frame = testImageBuffer
         title('dzncc/dx')
         
         subplot(2, 2, 3)
-        imagesc((dy.*dx))
+        imagesc(abs(dy.*dx))
         colorbar
         title('extrema')
         
