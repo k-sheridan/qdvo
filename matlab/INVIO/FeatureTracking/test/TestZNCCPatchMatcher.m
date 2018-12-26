@@ -6,7 +6,7 @@ settings = Settings();
 matcher = ZNCCPatchMatcher(settings);
 
 % test features in first frame
-features = [[398; 452], [653; 398], [532; 791], [551; 346], [801; 488], [806; 386]];
+features = [[398; 452], [653; 398], [532; 791], [551; 346], [801; 488], [806; 386], [93;772]];
 
 figure('Name', 'Frame 1 with initial features')
 imshow(testImageBuffer{1}.raw_image)
