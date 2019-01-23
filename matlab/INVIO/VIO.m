@@ -6,9 +6,6 @@ classdef VIO
     
     properties
         graph % pose graph / map
-       
-        frameBuffer = {} % stores last N frames
-        imuBuffer = {} % stores last N imu measurements
         
         settings; % settings for the whole vio impl
     end
