@@ -5,14 +5,12 @@ function [warpedPatch] = warpPatchToTargetFrame(landmark, sourceKeyframe, target
 %space.
 
 assert(strcmp(class(landmark), 'Landmark'))
-assert(strcmp(class(sourceKeyframe), 'KeyFrame'))
-assert(strcmp(class(targetKeyframe), 'KeyFrame'))
-assert(strcmp(class(sourceKeyframe.frame), 'Frame'))
-assert(strcmp(class(sourceKeyframe.frame.imustate), 'IMUState'))
-assert(strcmp(class(sourceKeyframe.frame.cameraModel), 'EquidistantCameraModel'))
-assert(strcmp(class(targetKeyframe.frame), 'Frame'))
-assert(strcmp(class(targetKeyframe.frame.imustate), 'IMUState'))
-assert(strcmp(class(targetKeyframe.frame.cameraModel), 'EquidistantCameraModel'))
+assert(strcmp(class(sourceKeyframe), 'Frame'))
+assert(strcmp(class(targetKeyframe), 'Frame'))
+assert(strcmp(class(sourceKeyframe.imustate), 'IMUState'))
+assert(strcmp(class(sourceKeyframe.cameraModel), 'EquidistantCameraModel'))
+assert(strcmp(class(targetKeyframe.imustate), 'IMUState'))
+assert(strcmp(class(targetKeyframe.cameraModel), 'EquidistantCameraModel'))
 
 % landmark must be in the sourceKFs frame of reference
 assert(landmark.kfid == sourceKeyframe.id);
@@ -21,8 +19,8 @@ assert(landmark.kfid == sourceKeyframe.id);
 % H = R - t * n' / d
 
 % compute the homography
-T_sourceFromWorld = sourceKeyframe.frame.imustate.poseTransform();
-T_targetFromWorld = targetKeyframe.frame.imustate.poseTransform();
+T_sourceFromWorld = sourceKeyframe.imustate.poseTransform();
+T_targetFromWorld = targetKeyframe.imustate.poseTransform();
 
 T_targetFromSource = inv(T_sourceFromWorld) * T_targetFromWorld
 
@@ -37,7 +35,7 @@ H = R - t*n' / d;
 
 % project the landmark into the target frame
 pointInTarget = T_targetFromWorld(1:3, 1:3)' * point - T_targetFromWorld(1:3, 1:3)' * T_targetFromWorld(1:3, 4);
-targetPatchCenterPixel = targetKeyframe.frame.cameraModel.project(pointInTarget)
+targetPatchCenterPixel = targetKeyframe.cameraModel.project(pointInTarget)
 
 targetU = zeros(2 * patchRadius + 1);
 targetV = targetU;
@@ -48,7 +46,7 @@ targetV = targetU;
 % The distortion is well approximated by an affine transformation.
 for dx = (-patchRadius:patchRadius)
     for dy = (-patchRadius:patchRadius)
-        bearing = targetKeyframe.frame.cameraModel.unproject(targetPatchCenterPixel + [dx;dy]);
+        bearing = targetKeyframe.cameraModel.unproject(targetPatchCenterPixel + [dx;dy]);
         row = dy + patchRadius + 1;
         col = dx + patchRadius + 1;
         targetU(row, col) = bearing(1);
@@ -73,9 +71,9 @@ warpedImageData = zeros(maxIndex);
 for row = (1:maxIndex)
     for col = (1:maxIndex)
         sourceBearing = H*[targetU(row, col); targetV(row, col); 1];
-        px = sourceKeyframe.frame.cameraModel.project(sourceBearing);
+        px = sourceKeyframe.cameraModel.project(sourceBearing);
         
-        intensity = subPixelIntensity1(px, sourceKeyframe.frame.raw_image);
+        intensity = subPixelIntensity1(px, sourceKeyframe.raw_image);
         
         warpedImageData(row, col) = intensity;
     end

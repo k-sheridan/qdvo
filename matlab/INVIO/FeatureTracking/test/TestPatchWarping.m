@@ -22,25 +22,21 @@ lm.kfid = 1;
 lm.px = feature;
 lm.zinvVariance = 1;
 
-srckf = KeyFrame();
+srckf = Frame(testImageBuffer{1}.raw_image, 0, IMUState());
 srckf.id = 1;
-srckf.frame = testImageBuffer{1};
-srckf.frame.imustate = IMUState();
-srckf.frame.cameraModel = cameraModel;
+srckf.cameraModel = cameraModel;
 
-tgtkf = KeyFrame();
+tgtkf = Frame(testImageBuffer{80}.raw_image, 0, IMUState());
 tgtkf.id = 2;
-tgtkf.frame = testImageBuffer{80};
-tgtkf.frame.imustate = IMUState();
-tgtkf.frame.cameraModel = cameraModel;
+tgtkf.cameraModel = cameraModel;
 
 figure
-imshow(tgtkf.frame.raw_image)
+imshow(tgtkf.raw_image)
 figure
 for delta = (0:0.01:1)
 % set a new pose for the tgt frame
-tgtkf.frame.imustate.r = [delta * 5;0;delta * -3]
-tgtkf.frame.imustate.q = eul2quat([0,0 delta * pi/6])'
+tgtkf.imustate.r = [delta * 5;0;delta * -3];
+tgtkf.imustate.q = eul2quat([0,0 delta * pi/6])';
     
 patch = warpPatchToTargetFrame(lm, srckf, tgtkf, 20);
 
