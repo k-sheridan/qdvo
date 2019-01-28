@@ -27,8 +27,7 @@ resultArray = {};
 
 % search for the patch in frame 1
 for frame = testImageBuffer
-    tgtKf = KeyFrame();
-    tgtKf.frame = frame{1};
+    tgtKf = Frame(frame{1}.raw_image, 0, IMUState());
     
     for index = (1:length(trackedFeatures))
         [res, scoreArray] = matcher.pixelLevelWindowedSearch(patches{index}, trackedFeatures(1:2, index), tgtKf, 20);

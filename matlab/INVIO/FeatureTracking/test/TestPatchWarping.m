@@ -35,8 +35,8 @@ imshow(tgtkf.raw_image)
 figure
 for delta = (0:0.01:1)
 % set a new pose for the tgt frame
-tgtkf.imustate.r = [delta * 5;0;delta * -3];
-tgtkf.imustate.q = eul2quat([0,0 delta * pi/6])';
+tgtkf.imustate.p = [delta * 5;0;delta * -3];
+tgtkf.imustate.R = eul2rotm([0,0 delta * pi/6])';
     
 patch = warpPatchToTargetFrame(lm, srckf, tgtkf, 20);
 

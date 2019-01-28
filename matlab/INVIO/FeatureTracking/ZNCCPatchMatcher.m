@@ -24,8 +24,8 @@ classdef ZNCCPatchMatcher
             % compute the point to search around in the target image given
             % its pose and the source pose.
             %P_tgt = inv(T_tgt) * T_src * P_src
-            lmPos_tgt = inv(targetKeyframe.frame.imustate.poseTransform()) * sourceKeyframe.frame.imustate.poseTransform() * ([landmark.bearing;1] / landmark.zinv);
-            [centerPixel, projJac] = targetKeyframe.frame.cameraModel.project(lmPos_tgt);
+            lmPos_tgt = inv(targetKeyframe.imustate.poseTransform()) * sourceKeyframe.imustate.poseTransform() * ([landmark.bearing;1] / landmark.zinv);
+            [centerPixel, projJac] = targetKeyframe.cameraModel.project(lmPos_tgt);
             
             % search for best match in target frame (pixel resolution)
             [result, scoreArray] = obj.pixelLevelWindowedSearch(warpedTemplatePatch, centerPixel, targetKeyframe, searchRadius);
@@ -49,7 +49,7 @@ classdef ZNCCPatchMatcher
                     patchCenter = centerPixel + [dx;dy];
                     
                     % create patch in tgt image
-                    tgtPatch = patchFromImage(targetKeyframe.frame.raw_image, patchCenter, patchRadius);
+                    tgtPatch = patchFromImage(targetKeyframe.raw_image, patchCenter, patchRadius);
                     
                     % compare the two patches
                     score = obj.zncc(srcPatch, tgtPatch);

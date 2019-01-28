@@ -1,4 +1,4 @@
-load('FeatureTracking/test/testData1.mat')
+load('datasets/testData1.mat')
 
 settings = Settings();
 
