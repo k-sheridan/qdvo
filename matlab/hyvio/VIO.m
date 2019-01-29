@@ -18,31 +18,7 @@ classdef VIO < handle
         end
         
         function [obj] = addFrame(obj, frame)
-            % Add an image to the VIO pipeline. distortion params are from
-            % equidistant distortion model.
-            obj.frameBuffer{end+1} = frame;
-            if (length(obj.frameBuffer) > obj.settings.maxBufferedFrames)
-                obj.frameBuffer = obj.frameBuffer(2:end);
-            end
             
-            % Create a frame object using last frame and buffered IMU
-            % readings.
-            
-            % Track Landmarks from the last N keyframes in the graph
-            
-            % Run frontend visual inertial pose optimization
-            
-            % Check if current frame is a keyframe.
-            if (isKeyFrame(obj.frameBuffer{end}, obj.graph))
-                % Add a keyframe to the graph.
-                
-                % Take the IMU measurements and store them in an inertial
-                % constraint.
-                
-                
-                % Add the inertial constraint to the graph
-                
-            end
             
         end
         

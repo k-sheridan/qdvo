@@ -1,7 +1,7 @@
 % This is meant to test and evaluate my visual inertial slam method on all
 % TUM VI datasets
 clf;
-datasetPath = 'datasets/dataset-room1_1024_16.bag';
+datasetPath = 'datasets/dataset-room1_1024_16/mav0/';
 
 bag = rosbag(datasetPath);
 msgList = bag.MessageList;
