@@ -19,11 +19,9 @@ classdef VIO < handle
         
         function [obj] = addFrame(obj, frame)
             
-            
         end
         
         function [obj] = addIMUMeasurement(obj, imuMeasurement)
-            % Add an imu sample to the VIO pipeline.
             
         end
         

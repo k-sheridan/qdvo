@@ -14,7 +14,7 @@ distortionCoefficients = [0.010171079892421483, -0.010816440029919381, 0.0059427
 accelBias = [-1.30318 -0.391441  0.380509]';
 gyroBias = [0.0283122 0.00723077  0.0165292]';
 
-gryoNoise = 0.00016;
+gyroNoise = 0.00016;
 accelNoise = 0.0028;
 
 accelRandomWalk = 0.00086;
@@ -61,13 +61,29 @@ camEnd = height(cam0);
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
         % Add a frame to vio here
+        rawImage = imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1}));
+        
+        vio.addFrame(Frame(rawImage, cam0(camIndex, 1).x_timestamp_ns_ * 1e-9)); % add the frame
         
         camIndex = camIndex + 1;
     else
-        if length(vio.graph.FrameContainer) > 0
-            % Add the IMU measurement to vio here
-            
-        end
+        % Add the IMU measurement to vio here
+        z = IMUMeasurement();
+        
+        temp = imu0(imuIndex, 2:7);
+        z.gyro = [temp(1, 1).w_RS_S_x_radS__1_; temp(1, 2).w_RS_S_y_radS__1_; temp(1, 3).w_RS_S_z_radS__1_];
+        z.accel = [temp(1, 4).a_RS_S_x_mS__2_; temp(1, 5).a_RS_S_y_mS__2_; temp(1, 6).a_RS_S_z_mS__2_];
+        
+        z.t = imu0(imuIndex, 1).x_timestamp_ns_ * 1e-9;
+        
+        z.accelRandomWalk = ones(3, 1)*accelRandomWalk;
+        z.gyroRandomWalk = ones(3, 1)*gyroRandomWalk;
+        
+        z.accelNoise = ones(3, 1)*accelNoise;
+        z.gyroNoise = ones(3, 1)*gyroNoise;
+        
+        vio.addIMUMeasurement(z); % add to vio
+        
         imuIndex = imuIndex + 1;
     end
 end

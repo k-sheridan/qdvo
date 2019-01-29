@@ -3,7 +3,7 @@ classdef Frame < handle
     
     properties
         raw_image % Raw pixel data (mono8).
-        time % Capture time in seconds
+        t % Capture time in seconds
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
         
@@ -19,7 +19,7 @@ classdef Frame < handle
         function obj = Frame(image, t, imuState)
             % constructs a frame object.
             obj.raw_image = image;
-            obj.time = t;
+            obj.t = t;
             
             if (nargin > 2)
                 obj.imustate = imuState;

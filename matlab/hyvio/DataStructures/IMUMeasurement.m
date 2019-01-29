@@ -7,7 +7,7 @@ classdef IMUMeasurement < handle
         
         t % s
         
-        % Noises are std deviations
+        % Noises are std deviations (3X1)
         accelRandomWalk % m/s^2.5
         gyroRandomWalk % rad/s^1.5
         
