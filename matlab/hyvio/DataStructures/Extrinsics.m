@@ -4,7 +4,7 @@ classdef Extrinsics < handle
     %time quantity.
     
     properties
-        imuToCameraTransformContainer = {};
+        imuToCameraTransformContainer = {}; % {{cameraID=1, T1}, {cameraID=2, T2}}
         scaleParameter = 1.0;
     end
     

@@ -1,10 +1,7 @@
 % This is meant to test and evaluate my visual inertial slam method on all
 % TUM VI datasets
-clf;
+clear
 datasetPath = 'datasets/dataset-room1_1024_16/mav0/';
-
-bag = rosbag(datasetPath);
-msgList = bag.MessageList;
 
 vignette = imread('datasets/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
@@ -49,19 +46,29 @@ settings.initial_gyroScale = gyroScale;
 
 % Create an instance of a VIO
 vio = VIO(settings);
-tlast = 0;
-for messageNumber = (1 : bag.NumMessages)
-    msg = bag.readMessages(messageNumber);
-    
-    if (strcmp(char(msgList{messageNumber, 2}), '/cam0/image_raw'))
-        % Add image to slam pipeline, scale to 255
-        mat = double(msg{1}.readImage);
+
+% Load csv files for imu, camera
+cam0 = readtable(sprintf('%scam0/data.csv', datasetPath));
+imu0 = readtable(sprintf('%simu0/data.csv', datasetPath));
+
+% these indices are the current 
+imuIndex = 1;
+camIndex = 1;
+
+imuEnd = height(imu0);
+camEnd = height(cam0);
+
+while (camIndex <= camEnd)
+    if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
+        % Add a frame to vio here
         
-        vio = vio.addFrame(Frame(mat, msg{1}.Header.Stamp.seconds))
-        
-        imshow(mat, [0, 2^16])
-    elseif (strcmp(char(msgList{messageNumber, 2}), '/imu0'))
-        % Add IMU measurement to slam pipeline.
-        
+        camIndex = camIndex + 1;
+    else
+        if length(vio.graph.FrameContainer) > 0
+            % Add the IMU measurement to vio here
+            
+        end
+        imuIndex = imuIndex + 1;
     end
 end
+
