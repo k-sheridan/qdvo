@@ -1,4 +1,4 @@
-classdef Patch
+classdef Patch < handle
     %PATCH this class is used to compute the transformed patch from the
     %original frame. It also precomputes and stores some info.
     

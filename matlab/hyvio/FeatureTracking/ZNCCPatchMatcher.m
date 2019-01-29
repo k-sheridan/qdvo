@@ -1,4 +1,4 @@
-classdef ZNCCPatchMatcher
+classdef ZNCCPatchMatcher < handle
     %PATCHMATCHER Warps and matches a patch in a new image. This matcher
     %will return a subpixel match.
     

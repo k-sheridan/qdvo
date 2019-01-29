@@ -1,4 +1,4 @@
-classdef LandmarkObservation
+classdef LandmarkObservation < handle
     %OBSERVATION a set of potential correspondences between a landmark and
     %image. This is used to compute a GMM correspondence distribution. It
     %is a hybrid between an indirect and direct method.
@@ -8,9 +8,9 @@ classdef LandmarkObservation
     properties
         potentialCorrespondenceSet = {} % the set of all potential correspondences for a landmark
         
-        observationKfId % id of observation keyframe in pose graph.
-        landmarkKfId % id of landmark keyframe in pose graph.
-        landmarkId % id of landmark in keyframe.
+        observationFrameID % id of observation keyframe in pose graph.
+        landmarkParentFrameID % id of landmark keyframe in pose graph.
+        landmarkID % id of landmark in keyframe.
         
     end
     

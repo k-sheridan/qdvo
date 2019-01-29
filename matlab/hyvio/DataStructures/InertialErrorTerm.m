@@ -3,8 +3,8 @@ classdef InertialErrorTerm
     %preintegrated and full inertial constraint series
     
     properties
-        parentKeyframeID = -1;
-        childKeyframeID = -1;
+        parentFrameID = -1;
+        childFrameID = -1;
         
         imuMeasurementArray = {}; % cell array of IMUMeasurement
         

@@ -1,4 +1,4 @@
-classdef Landmark
+classdef Landmark < handle
     %LANDMARK This is a 3D point in the keyframe it was initially observed
     %in. The point is represented by its bearing and inverse depth. During
     %graph optimization, only the inverse depth is solved for.
@@ -12,8 +12,8 @@ classdef Landmark
         
         patchNormal = [0;0;-1] % The normal of the surface which the feature lies on. This is used for warping the patch for feature tracking. This is optimized by twisting it in 2dof.
         
-        kfid % Id of the observation keyframe.
-        id % Id of this point. Only unique inside the keyframe which it lies.
+        frameID % Id of the observation keyframe.
+        landmarkID % Id of this point. Only unique inside the keyframe which it lies.
     end
     
     methods

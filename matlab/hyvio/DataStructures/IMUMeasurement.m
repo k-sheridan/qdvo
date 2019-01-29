@@ -1,4 +1,4 @@
-classdef IMUMeasurement
+classdef IMUMeasurement < handle
     %IMUMEASUREMENT stores an imu measurement with noises.
     
     properties

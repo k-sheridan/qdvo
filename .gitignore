@@ -7,4 +7,6 @@
 
 *.mp4
 
+datasets/
+
 solveSudoku.m

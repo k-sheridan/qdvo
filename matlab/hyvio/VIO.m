@@ -1,4 +1,4 @@
-classdef VIO
+classdef VIO < handle
     %VIO The main VIO implementation.
     % This is not designed to run fast. It is designed to be easily
     % modified, and test new marginalization, feature tracking, feature

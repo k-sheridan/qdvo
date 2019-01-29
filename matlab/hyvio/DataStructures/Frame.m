@@ -1,4 +1,4 @@
-classdef Frame
+classdef Frame < handle
     %FRAME Helper class for dealing with image
     
     properties
@@ -7,7 +7,7 @@ classdef Frame
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
         
-        id %INT unique keyframe id. This id is used to associate landmarks and measurements with keyframe.
+        ID %INT unique keyframe id. This id is used to associate landmarks and measurements with keyframe.
         
         isKeyframe = false; % this flag classifies this frame as a keyframe.
         

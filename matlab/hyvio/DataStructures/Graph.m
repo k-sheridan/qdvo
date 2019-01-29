@@ -1,4 +1,4 @@
-classdef Graph
+classdef Graph < handle
     %GRAPH This is the pose graph which is constantly optimized. All
     % slam information is stored here.
     
