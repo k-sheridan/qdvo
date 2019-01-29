@@ -1,4 +1,4 @@
-function [frame] = createNewLandMarks(frame, graph, maxFeatures)
+function [frame] = createNewLandmarks(frame, graph, maxFeatures)
 % This function will create new landmarks for a given frame such that a
 % more even feature distribution is achieved. 
 %This should be the only function which has the capability of adding new
@@ -15,7 +15,7 @@ currentFeatures = [];
 numCurrentFeatures = length(currentFeatures);
 
 % Run feature detection
-newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, maxFeatures-numCurrentFeatures, 50);
+newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, maxFeatures-numCurrentFeatures, 50);
 
 % Create new landmarks for each detected feature
 

@@ -61,9 +61,9 @@ camEnd = height(cam0); % this can be manually set to specify the end point
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
         % Add a frame to vio here
-        rawImage = imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1}));
+        rawImage = double(imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1})));
         
-        vio.addFrame(Frame(rawImage, cam0(camIndex, 1).x_timestamp_ns_ * 1e-9)); % add the frame
+        vio.addFrame(Frame(rawImage, cam0(camIndex, 1).x_timestamp_ns_ * 1e-9, cameraModel)); % add the frame
         
         camIndex = camIndex + 1;
     else

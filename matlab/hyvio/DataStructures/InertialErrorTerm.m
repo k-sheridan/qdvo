@@ -1,4 +1,4 @@
-classdef InertialErrorTerm
+classdef InertialErrorTerm < handle
     %INERTIALCONSTRAINT stores the information necessary to form both a
     %preintegrated and full inertial constraint series
     

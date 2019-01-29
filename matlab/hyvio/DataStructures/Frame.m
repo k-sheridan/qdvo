@@ -7,7 +7,7 @@ classdef Frame < handle
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
         
-        ID %INT unique keyframe id. This id is used to associate landmarks and measurements with keyframe.
+        ID = -1 %INT unique keyframe id. This id is used to associate landmarks and measurements with keyframe.
         
         isKeyframe = false; % this flag classifies this frame as a keyframe.
         
@@ -16,12 +16,13 @@ classdef Frame < handle
     end
     
     methods
-        function obj = Frame(image, t, imuState)
+        function obj = Frame(image, t, cameraModel, imuState)
             % constructs a frame object.
             obj.raw_image = image;
             obj.t = t;
+            obj.cameraModel = cameraModel;
             
-            if (nargin > 2)
+            if (nargin > 3)
                 obj.imustate = imuState;
             else
                 obj.imustate = IMUState();

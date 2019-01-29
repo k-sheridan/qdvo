@@ -11,6 +11,9 @@ classdef Graph < handle
     
     methods
         
+        function [] = addFrame(obj, frame)
+        end
+        
     end
 end
 
