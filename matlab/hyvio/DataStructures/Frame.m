@@ -2,7 +2,7 @@ classdef Frame < handle
     %FRAME Helper class for dealing with image
     
     properties
-        raw_image % Raw pixel data (mono8).
+        raw_image % Raw pixel data (grayscale).
         t % Capture time in seconds
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
