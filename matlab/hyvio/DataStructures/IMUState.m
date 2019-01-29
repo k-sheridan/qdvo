@@ -34,6 +34,12 @@ classdef IMUState < handle
             obj.R = quat2rotm(rotm2quat(obj.R));
         end
         
+        % applies a small minimal form update to the state. The order is
+        % listed above.
+        function [] = updateState(dx)
+            
+        end
+        
     end
 end
 
