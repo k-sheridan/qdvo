@@ -12,6 +12,7 @@ classdef Graph < handle
     methods
         
         function [] = addFrame(obj, frame)
+            obj.FrameContainer{end+1} = frame;
         end
         
     end

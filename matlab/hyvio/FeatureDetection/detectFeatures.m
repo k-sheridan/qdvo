@@ -1,4 +1,4 @@
-function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, n, gridSize)
+function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, numFeaturesDesired, gridSize)
 %select new features from a given image. Attempt to find new
 %features in areas with no tracked features. Do not extract features where
 %the mask is ~0 (from vignette). Spatially sample features.
@@ -25,7 +25,7 @@ colSpacing = floor(n/gridSize);
 
 newFeatures = [];
 
-averageFeaturesPerGridSection = floor(n / gridSize^2)
+averageFeaturesPerGridSection = floor(numFeaturesDesired / gridSize^2);
 
 % smooth image with median filter.
 K = medfilt2(I, [medianFilterSize, medianFilterSize]);
@@ -166,7 +166,7 @@ for gridRow = (1:gridSize)
     end
 end
 
-imagesc(thresholdedGrads)
+%imagesc(thresholdedGrads)
 
 end
 
