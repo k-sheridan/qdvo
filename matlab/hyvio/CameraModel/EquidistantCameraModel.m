@@ -78,13 +78,13 @@ classdef EquidistantCameraModel
             if (nargout == 2)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
                 delta = 1e-3;
-                bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1]
+                bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1];
                 
-                u2 = obj.project(bearing + [delta;0;0])
-                u1 = obj.project(bearing + [-delta;0;0])
+                u2 = obj.project(bearing + [delta;0;0]);
+                u1 = obj.project(bearing + [-delta;0;0]);
                 
-                v2 = obj.project(bearing + [0;delta;0])
-                v1 = obj.project(bearing + [0;-delta;0])
+                v2 = obj.project(bearing + [0;delta;0]);
+                v1 = obj.project(bearing + [0;-delta;0]);
                 
                 projectJacobian = [1/(2*delta)*(u2-u1), 1/(2*delta)*(v2-v1)];
             end

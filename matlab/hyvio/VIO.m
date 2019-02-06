@@ -45,7 +45,26 @@ classdef VIO < handle
             
             frame.ID = obj.graph.FrameContainer{end}.ID + 1; % assign ID to new frame
             
+            % pre integrate the temp inertial error term to initialize the
+            % imu state of this frame.
+            obj.interimPreintegrationTerm.preintegrateIMUMeasurements(obj.graph.FrameContainer{end}.imustate.biases);
+            obj.interimPreintegrationTerm.parentFrameID = obj.graph.FrameContainer{end}.ID;
+            obj.interimPreintegrationTerm.childFrameID = frame.ID;
             
+            % initialize this frame's imustate
+            frame.imustate.biases = obj.graph.FrameContainer{end}.imustate.biases;
+            frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p + obj.interimPreintegrationTerm.deltaPosition;
+            frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v + obj.interimPreintegrationTerm.deltaVelocity;
+            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaRotation;
+            
+            % add the frame to the graph
+            obj.graph.addFrame(frame);
+            
+            % add this inerital error term to the graph as an edge between the frame.
+            obj.graph.addInertialConstrain(obj.interimPreintegrationTerm);
+            
+            % reset the interim inertial constraint.
+            obj.interimPreintegrationTerm = InertialErrorTerm();
             
         end
         

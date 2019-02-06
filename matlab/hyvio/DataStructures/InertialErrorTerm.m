@@ -11,22 +11,29 @@ classdef InertialErrorTerm < handle
         initialized = false; % has the preintegrated measurement been computed?
         
         % These are the preintegrated measurements with information.
-        deltaRotation; % relative rotation between parent and child \in SO(3) (rotation matrix)
-        deltaVelocity; % change in velocity from parent to child
-        deltaPosition; % change in position from parent to child
+        deltaRotation = eye(3); % relative rotation between parent and child \in SO(3) (rotation matrix)
+        deltaVelocity = zeros(3, 1); % change in velocity from parent to child
+        deltaPosition = zeros(3, 1); % change in position from parent to child
         
         % biases do not change!
         
         % order of variables: [drot (so(3)), dvel, dpos, dbias_g, dbias_a]
         biasJacobian; % jacobian used to make the preintegrated deltas a linear function of the biases. These must be recomputed if the bias delta is too large (TBD).
         
-        % information matrix
-        Pinv; % 15X15 inverse covariance matrix representing the information these deltas add.
+        % covariance matrix
+        P; % 15X15 covariance matrix representing the uncertainty of these deltas.
         
         
     end
     
     methods
+        
+        % iteratively integrate the imu measurements with the bias estimate
+        % given. Further, propagate the noise into a covariance matrix.
+        % This is all based off cfo's on manifold preintegration paper.
+        function [] = preintegrateIMUMeasurements(obj, biases)
+            disp('not integrating IMU')
+        end
         
     end
 end

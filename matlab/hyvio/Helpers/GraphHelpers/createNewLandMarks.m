@@ -18,6 +18,28 @@ numCurrentFeatures = length(currentFeatures);
 newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, maxFeatures-numCurrentFeatures, 50);
 
 % Create new landmarks for each detected feature
+[~, numFeatures] = size(newFeatures);
+
+for index = (1:numFeatures)
+    [u, unprojectJacobian] = frame.cameraModel.unproject(newFeatures(1:2, index));
+    l = Landmark();
+    l.frameID = frame.ID;
+    l.landmarkID = length(frame.landmarks) + 1; % create a unique landmark ID.
+    
+    l.bearing = u(1:2);
+    l.px = newFeatures(1:2, index);
+    
+    % add unproject jacobian?
+    
+    l.dinv = 1; % initial z inverse 
+    l.dinvPriorUncertainty = 1e12; % initially unknown
+    
+    l.patchNormal = [0;0;-1]; % best guess is that it is facing the camera.
+    
+    % finally, add the landmark.
+    frame.landmarks{end+1} = l;
+    
+end
 
 end
 
