@@ -63,9 +63,23 @@ classdef InertialErrorTerm < handle
                 dRi = so3Exp((obj.imuMeasurementArray{idx}.gyro - biasGyro) * dti);
                 
                 % set up error state dynamics
+                % order: [dp, dphi, dv, dba, dbg]
                 A = [eye(3), -1/2 * obj.deltaR * so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2, diag([dti;dti;dti]);
-                    zeros(3), -obj.deltaR * so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti, eye(3);
-                    zeros(3), dRi', zeros(3)];
+                    zeros(3), dRi', zeros(3);
+                    zeros(3), -obj.deltaR * so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti, eye(3)];
+                
+                % B 
+                B = [1/2 * obj.deltaR * dti^2, zeros(3);
+                    zeros(3), rightJacobianOfSO3(so3Log(obj.deltaR)) * dti
+                    obj.deltaR * dti, zeros(3);];
+                
+                % propagate the uncertainty
+                noise = obj.imuMeasurementArray{idx}.getCov();
+                
+                obj.P(1:9, 1:9) = A * obj.P(1:9, 1:9) * A' + B * noise(1:6, 1:6) * B';
+                
+                % add bias walk
+                obj.P(10:15, 10:15) = noise(7:12, 7:12) * dti^2;
                 
                 % compute integrate delta
                 obj.deltaP = obj.deltaP + obj.deltaV * dti + 1/2 * obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2;
