@@ -17,7 +17,7 @@ classdef IMUMeasurement < handle
     
     methods
         function [R] = getCov(obj)
-            R = diag([obj.accelNoise; obj.gyroNoise; obj.accelRW; obj.gyroRW].^2);
+            R = diag([obj.accelNoise.^2; obj.gyroNoise.^2; obj.accelRandomWalk.^2; obj.gyroRandomWalk.^2]);
         end
     end
 end

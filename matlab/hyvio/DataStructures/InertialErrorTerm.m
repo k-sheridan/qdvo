@@ -6,21 +6,24 @@ classdef InertialErrorTerm < handle
         parentFrameID = -1;
         childFrameID = -1;
         
+        dt = -1;
+        
         imuMeasurementArray = {}; % cell array of IMUMeasurement
         
         initialized = false; % has the preintegrated measurement been computed?
         
         % These are the preintegrated measurements with information.
-        deltaRotation = eye(3); % relative rotation between parent and child \in SO(3) (rotation matrix)
-        deltaVelocity = zeros(3, 1); % change in velocity from parent to child
-        deltaPosition = zeros(3, 1); % change in position from parent to child
+        deltaR = eye(3); % relative rotation between parent and child \in SO(3) (rotation matrix)
+        deltaV = zeros(3, 1); % change in velocity from parent to child
+        deltaP = zeros(3, 1); % change in position from parent to child
         
         % biases do not change!
         
-        % order of variables: [drot (so(3)), dvel, dpos, dbias_g, dbias_a]
+        % order of variables: [dp, dphi, dv, dba, dbg]
         biasJacobian; % jacobian used to make the preintegrated deltas a linear function of the biases. These must be recomputed if the bias delta is too large (TBD).
         
         % covariance matrix
+        % order of variables: [dp, dphi, dv, dba, dbg]
         P; % 15X15 covariance matrix representing the uncertainty of these deltas.
         
         
@@ -31,9 +34,52 @@ classdef InertialErrorTerm < handle
         % iteratively integrate the imu measurements with the bias estimate
         % given. Further, propagate the noise into a covariance matrix.
         % This is all based off cfo's on manifold preintegration paper.
-        function [] = preintegrateIMUMeasurements(obj, biases)
-            disp('not integrating IMU')
+        % Bias order: [ba; bg]
+        function [] = preintegrateIMUMeasurements(obj, biases, t0, tf)
+            biasAccel = biases(1:3);
+            biasGyro = biases(4:6);
+            
+            obj.deltaR = eye(3);
+            obj.deltaV = zeros(3, 1);
+            obj.deltaP = zeros(3, 1);
+            
+            obj.P = zeros(15);
+            
+            finalIdx = length(obj.imuMeasurementArray);
+            
+            for idx = 1:finalIdx
+                dti = 0;
+                if idx == 1
+                    % assume that the imu measurment is valid from t0 to
+                    % the next imu 
+                    dti = obj.imuMeasurementArray{idx+1}.t - t0;
+                elseif idx == finalIdx
+                    % use tf as the upper bound
+                    dti = tf - obj.imuMeasurementArray{idx}.t;  
+                else
+                    dti = obj.imuMeasurementArray{idx+1}.t - obj.imuMeasurementArray{idx}.t;
+                end
+                
+                dRi = so3Exp((obj.imuMeasurementArray{idx}.gyro - biasGyro) * dti);
+                
+                % set up error state dynamics
+                A = [eye(3), -1/2 * obj.deltaR * so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2, diag([dti;dti;dti]);
+                    zeros(3), -obj.deltaR * so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti, eye(3);
+                    zeros(3), dRi', zeros(3)];
+                
+                % compute integrate delta
+                obj.deltaP = obj.deltaP + obj.deltaV * dti + 1/2 * obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2;
+                obj.deltaV = obj.deltaV + obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti;
+                obj.deltaR = obj.deltaR * dRi;
+                
+                
+                obj.dt = obj.dt + dti;
+            end
+            
+            % compute bias jacobians
+            
         end
+        
         
     end
 end
