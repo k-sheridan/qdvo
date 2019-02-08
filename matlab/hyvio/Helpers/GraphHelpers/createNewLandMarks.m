@@ -41,5 +41,7 @@ for index = (1:numFeatures)
     
 end
 
+frame.isKeyframe = true;
+
 end
 

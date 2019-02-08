@@ -86,11 +86,11 @@ classdef InertialErrorTerm < handle
                 obj.deltaV = obj.deltaV + obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti;
                 obj.deltaR = obj.deltaR * dRi;
                 
+                %TODO compute bias jacobians
+                
                 
                 obj.dt = obj.dt + dti;
             end
-            
-            % compute bias jacobians
             
         end
         
