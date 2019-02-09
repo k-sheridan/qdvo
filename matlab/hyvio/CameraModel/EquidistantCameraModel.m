@@ -173,7 +173,7 @@ classdef EquidistantCameraModel
             % if the unproject jacobian is desired use the new bearing to
             % compute the projection jacobian and invert it.
             if (nargout == 3)
-                [px, pJ] = obj.project(bearing);
+                [px, err, pJ] = obj.project(bearing);
                 
                 unprojectJacobian = inv(pJ);
             end
