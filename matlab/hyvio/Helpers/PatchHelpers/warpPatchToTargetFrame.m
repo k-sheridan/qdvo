@@ -13,7 +13,7 @@ assert(strcmp(class(targetKeyframe.imustate), 'IMUState'))
 assert(strcmp(class(targetKeyframe.cameraModel), 'EquidistantCameraModel'))
 
 % landmark must be in the sourceKFs frame of reference
-assert(landmark.kfid == sourceKeyframe.id);
+assert(landmark.frameID == sourceKeyframe.ID);
 
 % Definition of Homography
 % H = R - t * n' / d
@@ -27,7 +27,7 @@ T_targetFromSource = inv(T_sourceFromWorld) * T_targetFromWorld
 R = T_targetFromSource(1:3, 1:3);
 t = T_targetFromSource(1:3, 4);
 n = landmark.patchNormal;
-point = T_sourceFromWorld(1:3, 1:3) * (landmark.bearing * (1/landmark.zinv)) + T_sourceFromWorld(1:3, 4); % point in inertial frame
+point = T_sourceFromWorld(1:3, 1:3) * ([landmark.bearing;1] * (1/landmark.dinv)) + T_sourceFromWorld(1:3, 4); % point in inertial frame
 d = n' * (T_targetFromSource(1:3, 4) - point);
 
 % compute the homography

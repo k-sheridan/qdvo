@@ -14,10 +14,13 @@ s = Settings();
 % multiple cores.
 for idx = (1:length(visibleLandmarkIDs))
     
-    
+    % get the indices to find and modify the landmark
+    [frameIdx] = graph.getFrameIndex(visibleLandmarkIDs{idx}{1})
+    [landmarkIdx] = graph.FrameContainer{frameIdx}.getLandmarkIndex(visibleLandmarkIDs{idx}{2})
     
     % warp source patch to the given frame for evaluation.
-    warpedPatch = warpPatchToTargetFrame()
+    warpedPatch = warpPatchToTargetFrame(graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}, ...
+        graph.FrameContainer{frameIdx}, frame, s.patchHalfSize);
 end
 
 end

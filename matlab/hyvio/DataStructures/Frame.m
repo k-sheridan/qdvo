@@ -31,7 +31,7 @@ classdef Frame < handle
             end
         end
         
-        function [landmarkIndex] = getLandmarkIndexByID(obj, landmarkID)
+        function [landmarkIndex] = getLandmarkIndex(obj, landmarkID)
             landmarkIndex = landmarkID - obj.landmarks{1}.ID + 1;
             
             % is this correct?
