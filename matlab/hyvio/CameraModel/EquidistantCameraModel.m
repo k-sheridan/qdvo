@@ -197,6 +197,29 @@ classdef EquidistantCameraModel
                  dradius_dtheta = dradius_dtheta + obj.order(coeffIndex) * obj.coeffs(coeffIndex) * theta^(obj.order(coeffIndex) - 1);
             end
         end
+        
+        function [onImage] = isPixelOnImage(obj, px)
+            persistent buffer;
+            persistent attenuationMinimum; 
+            attenuationMinimum = 0;
+            buffer = 2;
+            if px(1) <= buffer || px(1) >= (obj.size(1) - buffer)
+                onImage = false;
+                return
+            end
+            
+            if px(2) <= buffer || px(2) >= (obj.size(2) - buffer)
+                onImage = false;
+                return
+            end
+            
+            if obj.attenuation(round(px(2)), round(px(1))) <= attenuationMinimum
+                onImage = false;
+                return
+            end
+            
+            onImage = true;
+        end
     end
 end
 
