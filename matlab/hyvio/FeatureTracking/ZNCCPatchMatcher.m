@@ -99,24 +99,26 @@ classdef ZNCCPatchMatcher < handle
             
             % one liner: sum(((A-mean(A)).*(B-mean(B))))/sqrt(sum((A-mean(A)).^2 * sum((B-mean(B)).^2)))
             
-            assert(strcmp(class(templatePatch), 'Patch') && strcmp(class(templatePatch), 'Patch'));
-            assert(isequal(size(templatePatch.image), size(targetPatch.image)))
+            %assert(isa(templatePatch, 'Patch') && isa(templatePatch, 'Patch'));
+            %assert(isequal(size(templatePatch.image), size(targetPatch.image)));
             
             if (templatePatch.sumZeroMeanSquared <= 1e-8 || targetPatch.sumZeroMeanSquared <= 1e-8)
-                warning('Uniform patch!')
+                %warning('Uniform patch!')
                 score = 0;
                 return
             end
             
-            [m, n] = size(templatePatch.image);
+            %[m, n] = size(templatePatch.image);
             
-            score = 0;
+            %score = 0;
             
-            for row = (1:m)
-                for col = (1:n)
-                    score = score + (templatePatch.image(row, col) - templatePatch.meanIntensity) * (targetPatch.image(row, col) - targetPatch.meanIntensity);
-                end
-            end
+            %for row = (1:m)
+            %    for col = (1:n)
+            %        score = score + (templatePatch.image(row, col) - templatePatch.meanIntensity) * (targetPatch.image(row, col) - targetPatch.meanIntensity);
+            %    end
+            %end
+            
+            score = sum(sum(((templatePatch.image-templatePatch.meanIntensity).*(targetPatch.image - targetPatch.meanIntensity))));
             
             score = score / sqrt(double(templatePatch.sumZeroMeanSquared * targetPatch.sumZeroMeanSquared));
         end
