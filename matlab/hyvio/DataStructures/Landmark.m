@@ -13,7 +13,7 @@ classdef Landmark < handle
         patchNormal = [0;0;-1] % The normal of the surface which the feature lies on. This is used for warping the patch for feature tracking. This is optimized by twisting it in 2dof.
         
         frameID % Id of the observation keyframe.
-        landmarkID % Id of this point. Only unique inside the keyframe which it lies.
+        ID % Id of this point. Only unique inside the keyframe which it lies.
     end
     
     methods

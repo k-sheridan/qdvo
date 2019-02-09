@@ -21,10 +21,16 @@ newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures
 [~, numFeatures] = size(newFeatures);
 
 for index = (1:numFeatures)
-    [u, unprojectJacobian] = frame.cameraModel.unproject(newFeatures(1:2, index));
+    [u, error, ~] = frame.cameraModel.unproject(newFeatures(1:2, index));
+    
+    if error
+        disp('not adding landmark');
+        continue;
+    end
+    
     l = Landmark();
     l.frameID = frame.ID;
-    l.landmarkID = length(frame.landmarks) + 1; % create a unique landmark ID.
+    l.ID = length(frame.landmarks) + 1; % create a unique landmark ID.
     
     l.bearing = u(1:2);
     l.px = newFeatures(1:2, index);

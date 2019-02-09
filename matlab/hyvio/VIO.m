@@ -53,8 +53,10 @@ classdef VIO < handle
             
             % initialize this frame's imustate
             frame.imustate.biases = obj.graph.FrameContainer{end}.imustate.biases;
-            frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p + obj.interimPreintegrationTerm.deltaP;
-            frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v + obj.interimPreintegrationTerm.deltaV;
+            %TODO initialize the position and velocity with inertial error
+            %term
+            frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p;
+            frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v;
             frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR;
             
             % add the frame to the graph

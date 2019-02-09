@@ -4,7 +4,7 @@ function [phi] = so3Log(R)
 
 theta = real(acos((trace(R) - 1)/2));
 
-if norm(theta) < 1e-8
+if norm(theta) < 1e-16
     phi = so3Vee(R); % assuming a small angle approximation R(phi) = I + hat(phi)
 else
     phi = theta/(2*sin(theta)) * so3Vee(R - R');

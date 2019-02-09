@@ -34,7 +34,7 @@ T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
 
 
 % Create a camera model instance 
-cameraModel = EquidistantCameraModel(distortionCoefficients, pi, focalLength, principalPoint, [1024;1024], 10000, vignette);
+cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [1024;1024], 10000, vignette)
 
 % Create a settings struct
 settings = Settings(); % a default settings file for the VIO impl to use

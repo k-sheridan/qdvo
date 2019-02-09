@@ -34,7 +34,7 @@ classdef EquidistantCameraModel
             obj.c = principal;
             obj.fov = fov;
             
-            thetaMax = fov/2; % the maximum theta value in the lookup table
+            thetaMax = pi/2; % the maximum theta value in the lookup table
             obj.radiusLookupTable = zeros(n, 2);
             
             obj.radiusLookupTable(:, 1) = linspace(0, thetaMax, n);
@@ -52,17 +52,26 @@ classdef EquidistantCameraModel
             end
         end
         
-        function [pixel, projectJacobian] = project(obj, pointInCameraFrame)
+        function [pixel, error, projectJacobian] = project(obj, pointInCameraFrame)
             %Project a point in the camera frame into level 0 distorted pixel
             %coordinates. done in the same fashion as kalibr.
             % The projection jacobian maps UNIT PLANE bearing error to
             % pixel error.
             
+            error = 0;
+            
             if (pointInCameraFrame(3) <= 1e-8)
-                warning('point is behind camera')
+                disp('point is behind camera');
+                error = 1;
             end
             
             theta = atan2(sqrt(pointInCameraFrame(1)^2 + pointInCameraFrame(2)^2), abs(pointInCameraFrame(3)));
+            
+            if abs(theta) > obj.fov/2
+                disp('point out of fov');
+                error = 1;
+            end
+            
             psi = atan2(pointInCameraFrame(2), pointInCameraFrame(1));
             
             radius = 0;
@@ -75,7 +84,7 @@ classdef EquidistantCameraModel
             pixel = [bearingDistorted(1) * obj.f(1) + obj.c(1); bearingDistorted(2) * obj.f(2) + obj.c(2)];
             
             % if the projection jacobian is desired compute it.
-            if (nargout == 2)
+            if (nargout == 3)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
                 delta = 1e-3;
                 bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1];
@@ -90,7 +99,7 @@ classdef EquidistantCameraModel
             end
         end
         
-        function [bearing, unprojectJacobian] = unproject(obj, pixel)
+        function [bearing, error, unprojectJacobian] = unproject(obj, pixel)
             % undistorts the pixel onto the image plane in normalized
             % (metric) coordinates.
             % the only way to break this is by asking for a out of bounds
@@ -98,6 +107,8 @@ classdef EquidistantCameraModel
             
             % step 1 normalize the pixel to distorted homogenous
             % coordinates.
+            
+            error = 0;
             
             uvd = [(pixel(1) - obj.c(1)) / obj.f(1); (pixel(2) - obj.c(2)) / obj.f(2)];
             
@@ -135,6 +146,11 @@ classdef EquidistantCameraModel
             
             theta0 = obj.radiusLookupTable(mid, 2);
             
+            if abs(theta0) > obj.fov/2
+                disp('unproject in unstable region!');
+                error = 1;
+            end
+            
             % FINAL STEP minimize the squared radius error
             % r(theta0 + dtheta) ~= r0 + dr_dth(r0)*dtheta
             % rd - r0 - dr_dth(r0)*dtheta = 0
@@ -156,7 +172,7 @@ classdef EquidistantCameraModel
             
             % if the unproject jacobian is desired use the new bearing to
             % compute the projection jacobian and invert it.
-            if (nargout == 2)
+            if (nargout == 3)
                 [px, pJ] = obj.project(bearing);
                 
                 unprojectJacobian = inv(pJ);
