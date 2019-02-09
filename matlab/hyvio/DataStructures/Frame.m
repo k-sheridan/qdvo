@@ -30,6 +30,22 @@ classdef Frame < handle
                 obj.imustate = IMUState();
             end
         end
+        
+        function [landmarkIndex] = getLandmarkIndexByID(obj, landmarkID)
+            landmarkIndex = landmarkID - obj.landmarks{1}.ID + 1;
+            
+            % is this correct?
+            if obj.landmarks{landmarkIndex}.ID ~= landmarkID
+                disp('performing linear search to find frame index');
+                landmarkIndex = -1; % this tells us if search failed
+                for idx = (1:length(obj.landmarks))
+                    if obj.landmarks{idx}.ID == landmarkID
+                        landmarkIndex = idx;
+                        break;
+                    end
+                end
+            end
+        end
     end
 end
 
