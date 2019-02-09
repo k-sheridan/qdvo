@@ -1,6 +1,6 @@
 function [visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph)
 %This functions computes the landmarks visible in a frame given the graph.
-% visibleLandmarkIDs: vector of landmark ids
+% visibleLandmarkIDs: vector of parent + landmark ids: {{parentFrameID, landmarkID}}
 % visibleLandmarkPixelpositions: {[x1;y1], [x2;y2], ....}
 
 assert(frame.ID > 0);
@@ -59,7 +59,7 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
                 continue;
             end
             
-            visibleLandmarkIDs{end+1} = graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.ID;
+            visibleLandmarkIDs{end+1} = {graph.FrameContainer{frameIdx}.ID, graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.ID};
             visibleLandmarkPixelPositions{end+1} = px;
             
         end

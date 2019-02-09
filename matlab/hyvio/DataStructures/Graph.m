@@ -7,6 +7,7 @@ classdef Graph < handle
         LandmarkObservationContainer = {} % Cell array of landmark bearing measurements, ({{observations in frame 1}, {observations in frame 2}, etc.})
         InertialConstraintContainer = {} % Cell array of inertial motion constraints
         extrinsics = Extrinsics();
+        
     end
     
     methods
@@ -20,6 +21,22 @@ classdef Graph < handle
                 disp('Inertial Constraint not preintegrated');
             end
             obj.InertialConstraintContainer{end+1} = inertialErrorTerm;
+        end
+        
+        function [frameIndex] = getFrameIndex(obj, frameID)
+            frameIndex = frameID - obj.FrameContainer{1}.ID + 1;
+            
+            % is this correct?
+            if obj.FrameContainer{frameIndex}.ID ~= frameID
+                disp('performing linear search to find frame index');
+                frameIndex = -1; % this tells us if search failed
+                for idx = (1:length(obj.FrameContainer))
+                    if obj.FrameContainer{idx}.ID == frameID
+                        frameIndex = idx;
+                        break;
+                    end
+                end
+            end
         end
         
     end
