@@ -36,6 +36,8 @@ T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
 % Create a camera model instance 
 cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [1024;1024], 10000, vignette)
 
+maxIntensity = 2^16;
+
 % Create a settings struct
 settings = Settings(); % a default settings file for the VIO impl to use
 settings.initial_T_camFromImu = T_camera0FromImu;
@@ -63,7 +65,7 @@ while (camIndex <= camEnd)
         % Add a frame to vio here
         rawImage = double(imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1})));
         
-        vio.addFrame(Frame(rawImage, cam0(camIndex, 1).x_timestamp_ns_ * 1e-9, cameraModel)); % add the frame
+        vio.addFrame(Frame(rawImage, maxIntensity, cam0(camIndex, 1).x_timestamp_ns_ * 1e-9, cameraModel)); % add the frame
         
         camIndex = camIndex + 1;
     else

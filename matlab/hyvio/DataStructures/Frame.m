@@ -3,6 +3,7 @@ classdef Frame < handle
     
     properties
         raw_image % Raw pixel data (grayscale).
+        maxIntensity % the maximum value the image can have
         t % Capture time in seconds
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
@@ -16,13 +17,14 @@ classdef Frame < handle
     end
     
     methods
-        function obj = Frame(image, t, cameraModel, imuState)
+        function obj = Frame(image, maxIntensity, t, cameraModel, imuState)
             % constructs a frame object.
             obj.raw_image = image;
             obj.t = t;
             obj.cameraModel = cameraModel;
+            obj.maxIntensity = maxIntensity;
             
-            if (nargin > 3)
+            if (nargin > 4)
                 obj.imustate = imuState;
             else
                 obj.imustate = IMUState();

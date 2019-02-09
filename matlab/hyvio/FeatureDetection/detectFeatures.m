@@ -154,11 +154,11 @@ for gridRow = (1:gridSize)
             
             % final step of spatial sampling these candidates
             for index = (1:candidateRow)
-                px = candidateArray(index, 1:2)';
-                if (~mask(px(1), px(2))) % if this area is not masked out
-                    newFeatures = [newFeatures, px];
+                rc = candidateArray(index, 1:2)';
+                if (~mask(rc(1), rc(2))) % if this area is not masked out
+                    newFeatures = [newFeatures, [rc(2); rc(1)]]; % flip back to x, y
                     % apply mask to this region
-                    mask((max(px(1)-spatialSamplingRadius, 1):min(px(1)+spatialSamplingRadius, m)), (max(px(2)-spatialSamplingRadius, 1):min(px(2)+spatialSamplingRadius, m)))...
+                    mask((max(rc(1)-spatialSamplingRadius, 1):min(rc(1)+spatialSamplingRadius, m)), (max(rc(2)-spatialSamplingRadius, 1):min(rc(2)+spatialSamplingRadius, m)))...
                     = 1;
                 end
             end
