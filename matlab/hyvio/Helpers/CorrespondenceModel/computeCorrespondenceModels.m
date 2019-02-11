@@ -37,7 +37,7 @@ for idx = (1:length(visibleLandmarkIDs))
     %drawnow;
     
     % TODO compute the prior and make the window dynamically sized.
-    centerPx = visibleLandmarkPixelPositions{idx};
+    centerPx = round(visibleLandmarkPixelPositions{idx});
     
     potentialCorrespondences = {};
     pm = ZNCCPatchMatcher(s);

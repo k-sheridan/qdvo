@@ -19,35 +19,29 @@ classdef LandmarkObservation < handle
     
     methods
         
-        function [gaussianWeights] = computeGaussianWeights(obj, px, theta)
-            % theta: score threshold, px: evaluate around this pixel.
-            
+        function [gaussianWeights] = computeGaussianWeightsRobustly(obj, px, theta)
+            % computes the inverse gaussian weights which avoids numerical
+            % issues
             n = length(obj.potentialCorrespondenceSet);
-            indexArray = (1:n);
             gaussianWeights = zeros(1, n);
             
-            scoreSum = 0;
-            for idx = indexArray
-                scoreSum = scoreSum + obj.potentialCorrespondenceSet{idx}.score;
+            for i = (1:n)
+                for j = (1:n)
+                    if i == j
+                        gaussianWeights(i) = gaussianWeights(i) + 1;
+                    else
+                        ui = obj.potentialCorrespondenceSet{i}.pixel;
+                        uj = obj.potentialCorrespondenceSet{j}.pixel;
+                        
+                        gaussianWeights(i) = gaussianWeights(i) + ...
+                            ((obj.potentialCorrespondenceSet{j}.score - theta) / (obj.potentialCorrespondenceSet{i}.score - theta)) * ...
+                            exp(-(px - uj)'*(px - uj) + (px - ui)'*(px - ui));
+                    end
+                end
+                
+                gaussianWeights(i) = 1 / gaussianWeights(i);
+                
             end
-            scoreSum = scoreSum - n*theta;
-            
-            % compute the weighted gaussians of each potential
-            % correspondence
-            for idx = indexArray
-                gaussianWeights(idx) = ((obj.potentialCorrespondenceSet{idx}.score - theta) / scoreSum)...
-                    * obj.evaluateUnnormalizedGaussian(potentialCorrespondenceSet{idx}, px);
-            end
-            
-            gmm = sum(gaussianWeights);
-            
-            % TODO check if gmm is too small
-            
-            % finally, compute the weights
-            for idx = indexArray
-                gaussianWeights(idx) = gaussianWeights(idx) / gmm;
-            end
-            
         end
         
         function [g] = evaluateUnnormalizedGaussian(obj, pc, px)
@@ -55,14 +49,13 @@ classdef LandmarkObservation < handle
             % for a given px and correspondence.
             error = (px - pc.pixel);
             
-            g = exp(error' * error); % this is true because the cov = eye(2)
+            g = exp(-error' * error); % this is true because the cov = eye(2)
         end
         
-        function [] computeGMMCovariance(obj)
+        function [] = computeGMMCovariance(obj)
             % this function computes the overall uncertainty in the gmm.
             
         end
-        
     end
 end
 
