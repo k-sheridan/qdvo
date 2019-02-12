@@ -13,8 +13,8 @@ classdef Extrinsics < handle
     
     methods
         function [] = addIMU2CameraExtrinsic(obj, camID, R, t)
-            obj.imuToCameraTransformContainer
-            %obj.imuToCameraTransformContainer{camID} = {camID, R, t};
+            %obj.imuToCameraTransformContainer
+            obj.imuToCameraTransformContainer{camID} = {camID, R, t};
         end
         
         function [imu2CameraR, imu2Camerat] = getImu2CameraTransform(obj, camID)

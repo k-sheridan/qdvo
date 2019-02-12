@@ -1,6 +1,6 @@
 % This is meant to test and evaluate my visual inertial slam method on all
 % TUM VI datasets
-clear
+clear all
 datasetPath = 'datasets/dataset-room1_1024_16/mav0/';
 
 vignette = imread('datasets/vignette.png', 'PNG'); % used as mask for feature tracking and selection
