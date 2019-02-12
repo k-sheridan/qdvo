@@ -2,6 +2,8 @@ function [landmarkObservationArray] = computeCorrespondenceModels(frame, graph)
 %COMPUTECORRESPONDENCEMODELS generates the correspondence distributions for
 % the given frame.
 
+fprintf('computing correspondence models for frame: %i\n', frame.ID);
+
 % this function must be optimized. it is currently ~4s for 200 features.
 % This will be less in cpp, but still.
 
@@ -57,7 +59,7 @@ for idx = (1:length(visibleLandmarkIDs))
             try
                 [patch] = patchFromImage(frame.raw_image, centerPx + [dx;dy], s.patchHalfSize);
             catch
-                disp('failed to get patch for potential correspondence.');
+                %disp('failed to get patch for potential correspondence.');
                 continue;
             end
             

@@ -10,6 +10,6 @@ hy = centerPixel(2) + patchRadius;
 
 % TODO check that the bounds are feasible
 
-patch = Patch(double(image(ly:hy, lx:hx)));
+patch = Patch((image(ly:hy, lx:hx)));
 end
 

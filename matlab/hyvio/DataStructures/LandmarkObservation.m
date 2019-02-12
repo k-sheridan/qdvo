@@ -13,8 +13,6 @@ classdef LandmarkObservation < handle
         landmarkParentFrameID % id of landmark keyframe in pose graph.
         landmarkID % id of landmark in keyframe.
         
-        cov;
-        
     end
     
     methods
@@ -52,7 +50,7 @@ classdef LandmarkObservation < handle
             g = exp(-error' * error); % this is true because the cov = eye(2)
         end
         
-        function [] = computeGMMCovariance(obj)
+        function [cov] = computeGMMCovariance(obj)
             % this function computes the overall uncertainty in the gmm.
             
         end

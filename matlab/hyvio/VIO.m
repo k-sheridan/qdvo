@@ -6,7 +6,7 @@ classdef VIO < handle
     
     properties
         graph % pose graph / map
-        interimPreintegrationTerm = InertialErrorTerm(); % used to cache the set of IMU's between frames.
+        interimPreintegrationTerm = PreintegratedIMUMeasurement(); % used to cache the set of IMU's between frames.
         settings; % settings for the whole vio impl
     end
     
@@ -15,7 +15,7 @@ classdef VIO < handle
             %VIO Construct a VIO instance. scales are 3x3 matrices
             obj.graph = Graph();
             obj.settings = settings;
-            obj.interimPreintegrationTerm = InertialErrorTerm();
+            obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
             obj.graph.extrinsics.addIMU2CameraExtrinsic(1, obj.settings.initial_T_camFromImu(1:3, 1:3), obj.settings.initial_T_camFromImu(1:3, 4));
         end
         
@@ -25,7 +25,7 @@ classdef VIO < handle
                 frame.ID = 1;
                 
                 % prep interim Inertial error term
-                obj.interimPreintegrationTerm = InertialErrorTerm();
+                obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
                 obj.interimPreintegrationTerm.parentFrameID = frame.ID;
                 
                 % since this is the first frame, it is a keyframe
@@ -39,6 +39,7 @@ classdef VIO < handle
                 
                 % Add the frame to the graph
                 obj.graph.addFrame(frame);
+                
                 
                 return
             end
@@ -65,8 +66,18 @@ classdef VIO < handle
             % add this inerital error term to the graph as an edge between the frame.
             obj.graph.addInertialConstrain(obj.interimPreintegrationTerm);
             
+            % compute correspondence models for the landmarks visible in
+            % this frame.
+            [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
+            
+            % Add the observations to the graph
+            frameObs = FrameObservationContainer();
+            frameObs.frameID = frame.ID;
+            frameObs.landmarkObservations = landmarkObservations;
+            obj.graph.LandmarkObservationContainer{end+1} = frameObs;
+            
             % reset the interim inertial constraint.
-            obj.interimPreintegrationTerm = InertialErrorTerm();
+            obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
             
         end
         

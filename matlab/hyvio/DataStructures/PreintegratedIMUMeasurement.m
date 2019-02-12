@@ -1,4 +1,4 @@
-classdef InertialErrorTerm < handle
+classdef PreintegratedIMUMeasurement < handle
     %INERTIALCONSTRAINT stores the information necessary to form both a
     %preintegrated and full inertial constraint series
     
@@ -47,6 +47,8 @@ classdef InertialErrorTerm < handle
             
             finalIdx = length(obj.imuMeasurementArray);
             
+            obj.dt = 0;
+            
             for idx = 1:finalIdx
                 dti = 0;
                 if idx == 1
@@ -91,6 +93,8 @@ classdef InertialErrorTerm < handle
                 
                 obj.dt = obj.dt + dti;
             end
+            
+            obj.initialized = true;
             
         end
         
