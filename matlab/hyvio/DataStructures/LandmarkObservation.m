@@ -50,9 +50,26 @@ classdef LandmarkObservation < handle
             g = exp(-error' * error); % this is true because the cov = eye(2)
         end
         
-        function [cov] = computeGMMCovariance(obj)
+        function [cov, mean] = computeGMMCovariance(obj)
             % this function computes the overall uncertainty in the gmm.
+            pxSum = [0;0];
             
+            theta = Settings().minimumNormalizedMatchCorrelation;
+            
+            
+            
+            for pc = obj.potentialCorrespondenceSet
+                pxSum = pxSum + pc{1}.pixel;
+            end
+            
+            mean = pxSum / length(obj.potentialCorrespondenceSet);
+            
+            cov = eye(2);
+            
+            for pc = obj.potentialCorrespondenceSet
+                error = pc{1}.pixel - mean;
+                cov = cov + (pc{1}.score - theta) / (1 - theta) * (error*error');
+            end
         end
     end
 end

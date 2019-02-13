@@ -4,7 +4,7 @@ classdef Graph < handle
     
     properties
         FrameContainer = {} % Cell array of Frames. 
-        LandmarkObservationContainer = {} % Cell array of landmark bearing measurements, ({{observations in frame 1}, {observations in frame 2}, etc.})
+        FrameObservationContainer = {} % Cell array of landmark bearing measurements, ({{observations in frame 1}, {observations in frame 2}, etc.})
         InertialConstraintContainer = {} % Cell array of inertial motion constraints
         extrinsics = Extrinsics();
         
@@ -33,6 +33,22 @@ classdef Graph < handle
                 for idx = (1:length(obj.FrameContainer))
                     if obj.FrameContainer{idx}.ID == frameID
                         frameIndex = idx;
+                        break;
+                    end
+                end
+            end
+        end
+        
+        function [frameObservationsIndex] = getFrameObservationsIndex(obj, frameID)
+            frameObservationsIndex = frameID - obj.FrameObservationContainer{1}.frameID + 1;
+            
+            % is this correct?
+            if obj.FrameObservationContainer{frameObservationsIndex}.frameID ~= frameID
+                disp('performing linear search to find frame index');
+                frameObservationsIndex = -1; % this tells us if search failed
+                for idx = (1:length(obj.FrameObservationContainer))
+                    if obj.FrameObservationContainer{idx}.frameID == frameID
+                        frameObservationsIndex = idx;
                         break;
                     end
                 end

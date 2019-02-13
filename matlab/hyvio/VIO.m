@@ -40,6 +40,10 @@ classdef VIO < handle
                 % Add the frame to the graph
                 obj.graph.addFrame(frame);
                 
+                % add empty frame observations
+                fo = FrameObservationContainer();
+                fo.frameID = frame.ID;
+                obj.graph.FrameObservationContainer{end+1} = fo;
                 
                 return
             end
@@ -75,10 +79,13 @@ classdef VIO < handle
             frameObs = FrameObservationContainer();
             frameObs.frameID = frame.ID;
             frameObs.landmarkObservations = landmarkObservations;
-            obj.graph.LandmarkObservationContainer{end+1} = frameObs;
+            obj.graph.FrameObservationContainer{end+1} = frameObs;
             
             % reset the interim inertial constraint.
             obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
+            
+            % Run the relevant optimization step for the current state of
+            % the system.
             
         end
         
