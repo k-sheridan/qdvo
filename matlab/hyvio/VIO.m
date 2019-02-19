@@ -74,6 +74,7 @@ classdef VIO < handle
             % compute correspondence models for the landmarks visible in
             % this frame.
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
+            fprintf('Found %i correspondence models\n', length(landmarkObservations));
             
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
@@ -86,6 +87,8 @@ classdef VIO < handle
             
             % Run the relevant optimization step for the current state of
             % the system.
+            drawFrameGraph(obj.graph);
+            drawnow
             
         end
         

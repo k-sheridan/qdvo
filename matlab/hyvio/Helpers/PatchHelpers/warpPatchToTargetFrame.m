@@ -1,4 +1,4 @@
-function [warpedPatch, error] = warpPatchToTargetFrame(landmark, sourceKeyframe, targetKeyframe, patchRadius)
+function [warpedPatch, error] = warpPatchToTargetFrame(landmark, sourceKeyframe, targetKeyframe, graph, patchRadius)
 %WARPPATCHTOTARGETFRAME This function will use a homographic transform to
 %warp a patch in the source frame into the target frame. This assumes that
 %the patch represents a planar feature with known normal and point in
@@ -21,10 +21,11 @@ assert(landmark.frameID == sourceKeyframe.ID);
 % H = R - t * n' / d
 
 % compute the homography
-T_sourceFromWorld = sourceKeyframe.imustate.poseTransform();
-T_targetFromWorld = targetKeyframe.imustate.poseTransform();
+T_i_c = graph.extrinsics.getImu2CameraTransform(sourceKeyframe.camID);
+T_sourceFromWorld = sourceKeyframe.imustate.poseTransform() * T_i_c;
+T_targetFromWorld = targetKeyframe.imustate.poseTransform() * T_i_c;
 
-T_targetFromSource = (T_sourceFromWorld) \ T_targetFromWorld;
+T_targetFromSource = (T_sourceFromWorld) \ (T_targetFromWorld);
 
 R = T_targetFromSource(1:3, 1:3);
 t = T_targetFromSource(1:3, 4);
@@ -33,7 +34,7 @@ point = T_sourceFromWorld(1:3, 1:3) * ([landmark.bearing;1] * (1/landmark.dinv))
 d = n' * (T_targetFromSource(1:3, 4) - point);
 
 % compute the homography
-H = R - t*n' / d;
+H = R;
 
 % project the landmark into the target frame
 pointInTarget = T_targetFromWorld(1:3, 1:3)' * point - T_targetFromWorld(1:3, 1:3)' * T_targetFromWorld(1:3, 4);

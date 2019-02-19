@@ -19,7 +19,7 @@ for idx = (1:length(frame.landmarks))
     
     z = 1/frame.landmarks{idx}.dinv;
     
-    row = min((zmax - z) / zmax * res + 1 , res);
+    row = min(round((zmax - z) / zmax * res + 1) , res);
     c = cmap(row, 1:3);
     
     colorArr(idx, 1:3) = c;

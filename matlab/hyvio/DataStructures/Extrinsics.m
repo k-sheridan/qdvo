@@ -17,9 +17,9 @@ classdef Extrinsics < handle
             obj.imuToCameraTransformContainer{camID} = {camID, R, t};
         end
         
-        function [imu2CameraR, imu2Camerat] = getImu2CameraTransform(obj, camID)
-            imu2CameraR = obj.imuToCameraTransformContainer{camID}{2};
-            imu2Camerat = obj.imuToCameraTransformContainer{camID}{3};
+        function [T] = getImu2CameraTransform(obj, camID)
+            T = [obj.imuToCameraTransformContainer{camID}{2}, obj.imuToCameraTransformContainer{camID}{3};
+                zeros(1, 3), 1];
         end
     end
 end

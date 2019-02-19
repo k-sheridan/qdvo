@@ -13,6 +13,8 @@ classdef LandmarkObservation < handle
         landmarkParentFrameID % id of landmark keyframe in pose graph.
         landmarkID % id of landmark in keyframe.
         
+        searchPatch; % for debugging.
+        
     end
     
     methods

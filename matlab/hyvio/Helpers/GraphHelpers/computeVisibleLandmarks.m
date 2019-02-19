@@ -14,6 +14,8 @@ keyframesChecked = 0;
 visibleLandmarkIDs = {};
 visibleLandmarkPixelPositions = {};
 
+T_i_c = graph.extrinsics.getImu2CameraTransform(frame.camID);
+
 for frameIdx = (length(graph.FrameContainer):-1:1)
     if graph.FrameContainer{frameIdx}.isKeyframe
         
@@ -26,8 +28,8 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
             
             % inv(T_w2c)*T_w2l*bearing/dinv
             % best estimate of landmark position in current frame
-            T = inv(graph.FrameContainer{frameIdx}.imustate.poseTransform()) * ...
-                frame.imustate.poseTransform();
+            T = inv(graph.FrameContainer{frameIdx}.imustate.poseTransform() * T_i_c) * ...
+                frame.imustate.poseTransform() * T_i_c;
             
             r_cam = T(1:3, 1:3) * ...
                 [graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.bearing; 1] * ...

@@ -3,7 +3,7 @@ function [] = drawFrame(frame, graph)
 
 drawErrorBars = false;
 drawGMMMeans = true;
-drawCorrespondencePriors = false;
+drawCorrespondencePriors = true;
 
 
 I = frame.raw_image / frame.maxIntensity;
@@ -45,8 +45,10 @@ end
 
 if drawCorrespondencePriors
     
-    res = 100;
+    res = 1000;
     cmap = hot(res);
+    
+    zmax = 10;
     
     pxArr = [];
     colorArr = [];
@@ -55,14 +57,40 @@ if drawCorrespondencePriors
    
     idx = 1;
     
+    %ASSUMING: camera 1
+    T_i_c = graph.extrinsics.getImu2CameraTransform(frame.camID);
+    
     for lo = fo.landmarkObservations
         
+        obsIdx = graph.getFrameIndex(lo{1}.observationFrameID);
+        parentIdx = graph.getFrameIndex(lo{1}.landmarkParentFrameID);
+        landmarkIdx = graph.FrameContainer{parentIdx}.getLandmarkIndex(lo{1}.landmarkID);
+        
+        T_w_pi = graph.FrameContainer{parentIdx}.imustate.poseTransform();
+        T_w_oi = graph.FrameContainer{obsIdx}.imustate.poseTransform();
+        bearing = graph.FrameContainer{parentIdx}.landmarks{landmarkIdx}.bearing;
+        dinv = graph.FrameContainer{parentIdx}.landmarks{landmarkIdx}.dinv;
         
         
+        % project the landmark into the camera frame.
+        % T_oc_pc = inv(T_w_oi * T_i_c) * T_w_pi * T_i_c
+        T_oc_pc = inv(T_w_oi * T_i_c) * T_w_pi * T_i_c;
         
-        pxArr(idx, 1:4) = [pc{1}.pixel(1), pc{1}.pixel(2), 1, 1];
+        r_o = T_oc_pc(1:3, 1:3) * ([bearing; 1] / dinv) + T_oc_pc(1:3, 4);
         
-        row = min(round(((pc{1}.score - theta) / (1 - theta)) * res + 1) , res);
+        % project the observation frame landmark into pixel space.
+        [px, err] = graph.FrameContainer{obsIdx}.cameraModel.project(r_o);
+        
+        if (err)
+            disp('projection failed');
+            continue;
+        end
+        
+        pxArr(idx, 1:3) = [px', 3];
+        
+        z = r_o(3);
+    
+        row = min(round((zmax - z) / zmax * res + 1) , res);
         c = cmap(row, 1:3);
         
         colorArr(idx, 1:3) = c;
@@ -71,7 +99,7 @@ if drawCorrespondencePriors
         
     end
     
-    I = insertShape(I, 'FilledRectangle', pxArr,'color',colorArr);
+    I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr);
     
 end
 

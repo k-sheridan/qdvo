@@ -27,7 +27,7 @@ for idx = (1:length(visibleLandmarkIDs))
     
     % warp source patch to the given frame for evaluation.
     [warpedPatch, error] = warpPatchToTargetFrame(graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}, ...
-        graph.FrameContainer{frameIdx}, frame, s.patchHalfSize);
+        graph.FrameContainer{frameIdx}, frame, graph, s.patchHalfSize);
     
     if error
         disp('patch warp failed, skipping.');
@@ -89,6 +89,10 @@ for idx = (1:length(visibleLandmarkIDs))
         lo.landmarkParentFrameID = visibleLandmarkIDs{idx}{1};
         lo.landmarkID = visibleLandmarkIDs{idx}{2};
         lo.observationFrameID = frame.ID;
+        
+        % debug
+        lo.searchPatch = warpedPatch;
+        
         
         % add to the returned array
         landmarkObservationArray{end+1} = lo;
