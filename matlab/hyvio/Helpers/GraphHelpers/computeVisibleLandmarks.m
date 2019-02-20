@@ -53,11 +53,10 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
             end
             
             % at this point we can call this landmark 'visible'
-            
-            [px, error] = frame.cameraModel.project(r_cam);
-            
-            if error
-                disp('could not project feature into camera');
+            try
+                [px] = frame.cameraModel.project(r_cam);
+            catch e
+                fprintf('Project Failed: %s\n', e.message);
                 continue;
             end
             

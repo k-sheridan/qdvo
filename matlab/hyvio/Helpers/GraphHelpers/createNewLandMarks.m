@@ -21,10 +21,10 @@ newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures
 [~, numFeatures] = size(newFeatures);
 
 for index = (1:numFeatures)
-    [u, error, ~] = frame.cameraModel.unproject(newFeatures(1:2, index));
-    
-    if error
-        disp('not adding landmark');
+    try
+        [u] = frame.cameraModel.unproject(newFeatures(1:2, index)); 
+    catch e
+        fprintf('Unproject Failed: %s\n', e.message);
         continue;
     end
     

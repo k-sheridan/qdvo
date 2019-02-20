@@ -52,7 +52,7 @@ classdef EquidistantCameraModel
             end
         end
         
-        function [pixel, error, projectJacobian] = project(obj, pointInCameraFrame)
+        function [pixel, projectJacobian] = project(obj, pointInCameraFrame)
             %Project a point in the camera frame into level 0 distorted pixel
             %coordinates. done in the same fashion as kalibr.
             % The projection jacobian maps UNIT PLANE bearing error to
@@ -64,6 +64,8 @@ classdef EquidistantCameraModel
                 disp('point is behind camera');
                 error = 1;
             end
+            
+            pointInCameraFrame = pointInCameraFrame / pointInCameraFrame(3); % make point homogenous.
             
             theta = atan2(sqrt(pointInCameraFrame(1)^2 + pointInCameraFrame(2)^2), abs(pointInCameraFrame(3)));
             
@@ -84,7 +86,7 @@ classdef EquidistantCameraModel
             pixel = [bearingDistorted(1) * obj.f(1) + obj.c(1); bearingDistorted(2) * obj.f(2) + obj.c(2)];
             
             % if the projection jacobian is desired compute it.
-            if (nargout == 3)
+            if (nargout == 2)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
                 delta = 1e-3;
                 bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1];
@@ -99,7 +101,7 @@ classdef EquidistantCameraModel
             end
         end
         
-        function [bearing, error, unprojectJacobian] = unproject(obj, pixel)
+        function [bearing, unprojectJacobian] = unproject(obj, pixel)
             % undistorts the pixel onto the image plane in normalized
             % (metric) coordinates.
             % the only way to break this is by asking for a out of bounds
@@ -172,8 +174,8 @@ classdef EquidistantCameraModel
             
             % if the unproject jacobian is desired use the new bearing to
             % compute the projection jacobian and invert it.
-            if (nargout == 3)
-                [px, err, pJ] = obj.project(bearing);
+            if (nargout == 2)
+                [px, pJ] = obj.project(bearing);
                 
                 unprojectJacobian = inv(pJ);
             end

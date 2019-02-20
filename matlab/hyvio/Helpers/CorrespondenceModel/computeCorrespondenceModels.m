@@ -26,11 +26,11 @@ for idx = (1:length(visibleLandmarkIDs))
     [landmarkIdx] = graph.FrameContainer{frameIdx}.getLandmarkIndex(visibleLandmarkIDs{idx}{2});
     
     % warp source patch to the given frame for evaluation.
-    [warpedPatch, error] = warpPatchToTargetFrame(graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}, ...
-        graph.FrameContainer{frameIdx}, frame, graph, s.patchHalfSize);
-    
-    if error
-        disp('patch warp failed, skipping.');
+    try
+        [warpedPatch] = warpPatchToTargetFrame(graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}, ...
+            graph.FrameContainer{frameIdx}, frame, graph, s.patchHalfSize);
+    catch e
+        fprintf('Patch Warp Failed: %s\n', e.message);
         continue;
     end
     
@@ -58,8 +58,8 @@ for idx = (1:length(visibleLandmarkIDs))
         for dy = (-s.searchRadius:s.searchRadius)
             try
                 [patch] = patchFromImage(frame.raw_image, centerPx + [dx;dy], s.patchHalfSize);
-            catch
-                %disp('failed to get patch for potential correspondence.');
+            catch e
+                fprintf('Patch Create Failed: %s\n', e.message);
                 continue;
             end
             
@@ -67,7 +67,7 @@ for idx = (1:length(visibleLandmarkIDs))
             try
                 [score] = pm.zncc(warpedPatch, patch);
             catch e
-                fprintf(1,'zncc error! The message was:\n%s',e.message);
+                fprintf(1,'zncc error! The message was:%s\n',e.message);
                 continue;
             end
             
