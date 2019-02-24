@@ -1,15 +1,15 @@
 % This is meant to test and evaluate my visual inertial slam method on all
 % TUM VI datasets
 clear all
-datasetPath = 'datasets/dataset-room1_1024_16/mav0/';
+datasetPath = 'datasets/dataset-calib-imu1_512_16/mav0/';
 
-vignette = imread('datasets/vignette.png', 'PNG'); % used as mask for feature tracking and selection
+vignette = imread('datasets/dataset-calib-imu1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
 % Precalibrated extrinsic and intrinsics. These will be refined / estimated
 % in the pipeline, but are used as good initial guesses.
-focalLength = [380.81042871360756, 380.81194179427075];
-principalPoint = [510.29465304840727, 514.3304630538506];
-distortionCoefficients = [0.010171079892421483, -0.010816440029919381, 0.005942781769412756, -0.001662284667857643];
+focalLength = [190.97847715128717, 190.9733070521226];
+principalPoint = [254.93170605935475, 256.8974428996504];
+distortionCoefficients = [0.0034823894022493434, 0.0007150348452162257, -0.0020532361418706202, 0.00020293673591811182];
 
 accelBias = [-1.30318 -0.391441  0.380509]';
 gyroBias = [0.0283122 0.00723077  0.0165292]';
@@ -55,7 +55,7 @@ imu0 = readtable(sprintf('%simu0/data.csv', datasetPath));
 
 % these indices are the current 
 imuIndex = 1;
-camIndex = 1; % this can be set to specify the start point.
+camIndex = 22*20 + 11; % this can be set to specify the start point.
 
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point

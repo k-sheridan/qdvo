@@ -5,7 +5,7 @@ if nargin < 2
 end
 
 hFig = figure(1);
-set(hFig, 'Position', [0 0 1000 500])
+set(hFig, 'Position', [0 0 1500 700])
 
 % draw keyframes
 kfCount = 1;

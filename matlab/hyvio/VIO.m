@@ -63,7 +63,7 @@ classdef VIO < handle
             frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p;
             frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v;
             % always use gyro to initialize the orientation.
-            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR;
+            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR
             
             % add the frame to the graph
             obj.graph.addFrame(frame);
@@ -98,7 +98,7 @@ classdef VIO < handle
                 disp('Add IMU measurement to temp InertialErrorTerm')
                 obj.interimPreintegrationTerm.imuMeasurementArray{end+1} = imuMeasurement;
             else
-                disp('No frame has been added yet, skipping IMU measurement.')
+                %disp('No frame has been added yet, skipping IMU measurement.')
             end
         end
         

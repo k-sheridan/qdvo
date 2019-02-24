@@ -79,12 +79,12 @@ if drawCorrespondencePriors
         r_o = T_oc_pc(1:3, 1:3) * ([bearing; 1] / dinv) + T_oc_pc(1:3, 4);
         
         % project the observation frame landmark into pixel space.
-        [px, err] = graph.FrameContainer{obsIdx}.cameraModel.project(r_o);
-        
-        if (err)
-            disp('projection failed');
+        try
+            [px] = graph.FrameContainer{obsIdx}.cameraModel.project(r_o);
+        catch
             continue;
         end
+        
         
         pxArr(idx, 1:3) = [px', 3];
         

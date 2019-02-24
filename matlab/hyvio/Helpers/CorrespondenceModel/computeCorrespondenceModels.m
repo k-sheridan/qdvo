@@ -59,7 +59,7 @@ for idx = (1:length(visibleLandmarkIDs))
             try
                 [patch] = patchFromImage(frame.raw_image, centerPx + [dx;dy], s.patchHalfSize);
             catch e
-                fprintf('Patch Create Failed: %s\n', e.message);
+                %fprintf('Patch Create Failed: %s\n', e.message);
                 continue;
             end
             

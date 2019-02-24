@@ -2,6 +2,8 @@ function [warpedPatch] = warpPatchToTargetFrame(landmark, sourceFrame, targetFra
 %WARPPATCHTOTARGETFRAME This function computes the warped patch to search
 %with in the target frame.
 
+%s = Settings();
+
 T_w_sourceImu = sourceFrame.imustate.poseTransform();
 T_w_targetImu = targetFrame.imustate.poseTransform();
 T_i_c = graph.extrinsics.getImu2CameraTransform(targetFrame.camID);
@@ -22,6 +24,35 @@ u0 = p0 / p0(3);
 
 % compute the center pixel position
 [px0, projJac] = targetFrame.cameraModel.project(u0);
+unprojJac = inv(projJac); % maps small change in pixel position to small change in HOMOGENOUS bearing position.
+
+image = zeros(2*patchRadius + 1);
+
+for dpx = (-patchRadius:patchRadius)
+    for dpy = (-patchRadius:patchRadius)
+        u = [u0(1:2, 1) + unprojJac * [dpx;dpy]; 1];
+        p = T_sourceCam_targetCam(1:3, 1:3) * ((p0'*n) / (u'*n)) * u + T_sourceCam_targetCam(1:3, 4);
+        
+        try
+            px_sample = sourceFrame.cameraModel.project(p);
+        catch e
+            error('Projection failed: %s\n', e.message);
+            return;
+        end
+        
+        try
+            brightness = subPixelIntensity1(px_sample, sourceFrame.raw_image);
+        catch
+            error('Cant compute brightness.');
+            return
+        end
+        
+        image(dpy + patchRadius + 1, dpx + patchRadius + 1) = brightness;
+        
+    end
+end
+
+warpedPatch = Patch(image);
                      
 end
 

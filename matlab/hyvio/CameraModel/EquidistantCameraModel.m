@@ -58,11 +58,9 @@ classdef EquidistantCameraModel
             % The projection jacobian maps UNIT PLANE bearing error to
             % pixel error.
             
-            error = 0;
             
             if (pointInCameraFrame(3) <= 1e-8)
-                disp('point is behind camera');
-                error = 1;
+                error('point is behind camera');
             end
             
             pointInCameraFrame = pointInCameraFrame / pointInCameraFrame(3); % make point homogenous.
@@ -70,8 +68,7 @@ classdef EquidistantCameraModel
             theta = atan2(sqrt(pointInCameraFrame(1)^2 + pointInCameraFrame(2)^2), abs(pointInCameraFrame(3)));
             
             if abs(theta) > obj.fov/2
-                disp('point out of fov');
-                error = 1;
+                error('point out of fov');
             end
             
             psi = atan2(pointInCameraFrame(2), pointInCameraFrame(1));
@@ -110,7 +107,6 @@ classdef EquidistantCameraModel
             % step 1 normalize the pixel to distorted homogenous
             % coordinates.
             
-            error = 0;
             
             uvd = [(pixel(1) - obj.c(1)) / obj.f(1); (pixel(2) - obj.c(2)) / obj.f(2)];
             
@@ -149,8 +145,7 @@ classdef EquidistantCameraModel
             theta0 = obj.radiusLookupTable(mid, 2);
             
             if abs(theta0) > obj.fov/2
-                disp('unproject in unstable region!');
-                error = 1;
+                error('unproject in unstable region!');
             end
             
             % FINAL STEP minimize the squared radius error

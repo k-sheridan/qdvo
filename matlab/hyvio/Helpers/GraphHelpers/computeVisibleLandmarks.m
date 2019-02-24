@@ -28,12 +28,12 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
             
             % inv(T_w2c)*T_w2l*bearing/dinv
             % best estimate of landmark position in current frame
-            T = inv(graph.FrameContainer{frameIdx}.imustate.poseTransform() * T_i_c) * ...
-                frame.imustate.poseTransform() * T_i_c;
+            T_target_source = (frame.imustate.poseTransform() * T_i_c) \ ...
+                (graph.FrameContainer{frameIdx}.imustate.poseTransform() * T_i_c);
             
-            r_cam = T(1:3, 1:3) * ...
+            r_cam = T_target_source(1:3, 1:3) * ...
                 [graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.bearing; 1] * ...
-                1/graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.dinv + T(1:3, 4);
+                1/graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.dinv + T_target_source(1:3, 4);
             
             if r_cam(3) < minimumDepth
                 disp('potential landmark behind camera')
@@ -42,7 +42,7 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
             
             
             % perform normal check
-            patchNormInCurrentFrame = T(1:3, 1:3) * graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.patchNormal;
+            patchNormInCurrentFrame = T_target_source(1:3, 1:3) * graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.patchNormal;
             
             % Assume patchNorm is unit vec
             assert(abs(norm(patchNormInCurrentFrame) - 1) < 1e-6);
