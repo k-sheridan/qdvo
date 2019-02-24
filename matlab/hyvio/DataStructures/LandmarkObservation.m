@@ -33,11 +33,13 @@ classdef LandmarkObservation < handle
                         ui = obj.potentialCorrespondenceSet{i}.pixel;
                         uj = obj.potentialCorrespondenceSet{j}.pixel;
                         
-                        gaussianWeights(i) = gaussianWeights(i) + ...
-                            ((obj.potentialCorrespondenceSet{j}.score - theta) / (obj.potentialCorrespondenceSet{i}.score - theta)) * ...
-                            exp(-(px - uj)'*(px - uj) + (px - ui)'*(px - ui));
+                        e = exp(-(px - uj)'*(px - uj) + (px - ui)'*(px - ui));
+                        w = ((obj.potentialCorrespondenceSet{j}.score - theta) / (obj.potentialCorrespondenceSet{i}.score - theta));
+                        
+                        gaussianWeights(i) = gaussianWeights(i) + w * e;
                     end
                 end
+                
                 
                 gaussianWeights(i) = 1 / gaussianWeights(i);
                 

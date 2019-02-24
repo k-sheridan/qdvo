@@ -6,7 +6,7 @@ classdef Settings < handle
         patchHalfSize = 4; % the patch radius used for comparing.
         searchRadius = 15; % The radius which the pixel resolution patch matcher searches.
         
-        minimumNormalizedMatchCorrelation = 0.7; % the threshold where a match is called good enough.
+        minimumNormalizedMatchCorrelation = 0.8; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         maxBufferedFrames = 100; % the maximum size the frame buffer can be.

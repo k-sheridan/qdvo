@@ -87,8 +87,7 @@ classdef VIO < handle
             
             % Run the relevant optimization step for the current state of
             % the system.
-            drawFrameGraph(obj.graph);
-            drawnow
+            
             
         end
         
