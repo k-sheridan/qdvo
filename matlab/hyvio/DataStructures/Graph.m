@@ -36,6 +36,7 @@ classdef Graph < handle
                         break;
                     end
                 end
+                error('index not found for id')
             end
         end
         

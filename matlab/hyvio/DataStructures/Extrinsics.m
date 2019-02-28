@@ -5,6 +5,9 @@ classdef Extrinsics < handle
     
     % imu2Camera: transforms a a point in the camera frame to the imu frame
     
+    % imu2camera update form: [dp, dphi]
+    % gravityVector update form: [dphi]
+    
     properties (Access = private)
         imuToCameraTransformContainer = {}; % {{cameraID=1, R1, t1}, {cameraID=2, R2, t2}}
         scaleParameter = 1.0;

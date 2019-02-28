@@ -4,8 +4,8 @@ classdef Landmark < handle
     %graph optimization, only the inverse depth is solved for.
     
     properties
-        bearing % [u,v] (m)
-        px % [x, y] This is used for patch matching.
+        bearing % [u;v] (m)
+        px % [x; y] This is used for patch matching.
         dinv % Inverse depth of the landmark in the observation keyframe (1/m).
         
         dinvPriorUncertainty % The 1D inverse depth uncertainty (1/z^2). This is just used once, then marginalization takes over.

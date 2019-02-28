@@ -72,7 +72,7 @@ classdef PreintegratedIMUMeasurement < handle
                 
                 % B 
                 B = [1/2 * obj.deltaR * dti^2, zeros(3);
-                    zeros(3), rightJacobianOfSO3(so3Log(obj.deltaR)) * dti
+                    zeros(3), rightJacobianOfSO3(obj.imuMeasurementArray{idx}.gyro - biasGyro) * dti
                     obj.deltaR * dti, zeros(3);];
                 
                 % propagate the uncertainty

@@ -86,7 +86,7 @@ if drawCorrespondencePriors
         end
         
         
-        pxArr(idx, 1:3) = [px', 3];
+        pxArr(idx, 1:3) = [px', 1];
         
         z = r_o(3);
     
@@ -99,7 +99,7 @@ if drawCorrespondencePriors
         
     end
     
-    I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr);
+    I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr, 'Opacity', 0.9);
     
 end
 

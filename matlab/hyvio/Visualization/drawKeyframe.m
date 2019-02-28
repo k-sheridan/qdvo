@@ -26,7 +26,7 @@ for idx = (1:length(frame.landmarks))
     
 end
 
-I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr);
+I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr, 'Opacity', 1);
 
 imshow(I);
 
