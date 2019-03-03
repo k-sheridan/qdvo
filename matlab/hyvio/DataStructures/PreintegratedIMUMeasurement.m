@@ -17,10 +17,14 @@ classdef PreintegratedIMUMeasurement < handle
         deltaV = zeros(3, 1); % change in velocity from parent to child
         deltaP = zeros(3, 1); % change in position from parent to child
         
-        % biases do not change!
+        %Assume biases do not change!
+        biasLinearlizationPoint = []; % the bias vector at which the term was preintegrated. [ba;bg]
         
-        % order of variables: [dp, dphi, dv, dba, dbg]
-        biasJacobian; % jacobian used to make the preintegrated deltas a linear function of the biases. These must be recomputed if the bias delta is too large (TBD).
+        dDR_dbg = []; %3X3
+        dDV_dba = []; %3X3
+        dDV_dbg = []; %3X3
+        dDP_dba = []; %3X3
+        dDP_dbg = []; %3X3
         
         % covariance matrix
         % order of variables: [dp, dphi, dv, dba, dbg]
@@ -42,6 +46,14 @@ classdef PreintegratedIMUMeasurement < handle
             obj.deltaR = eye(3);
             obj.deltaV = zeros(3, 1);
             obj.deltaP = zeros(3, 1);
+            
+            obj.dDR_dbg = zeros(3);
+            obj.dDV_dbg = zeros(3);
+            obj.dDP_dbg = zeros(3);
+            obj.dDV_dba = zeros(3);
+            obj.dDP_dba = zeros(3);
+            
+            obj.biasLinearlizationPoint = biases;
             
             obj.P = zeros(15);
             
@@ -86,13 +98,26 @@ classdef PreintegratedIMUMeasurement < handle
                 % compute integrate delta
                 obj.deltaP = obj.deltaP + obj.deltaV * dti + 1/2 * obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2;
                 obj.deltaV = obj.deltaV + obj.deltaR * (obj.imuMeasurementArray{idx}.accel - biasAccel) * dti;
-                obj.deltaR = obj.deltaR * dRi;
+                obj.deltaR = obj.deltaR * dRi; % gives dR_i_k+1
                 
-                %TODO compute bias jacobians
+                % Compute bias jacobians.
+                % first handle the rotation jacobian
+                obj.dDR_dbg = obj.dDR_dbg + obj.deltaR * rightJacobianOfSO3((obj.imuMeasurementArray{idx}.gyro - biasGyro)) * dti;
+                obj.dDV_dba = obj.dDV_dba + dti;
+                obj.dDV_dbg = obj.dDV_dbg + so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti;
+                obj.dDP_dba = obj.dDP_dba + dti^2;
+                obj.dDP_dbg = obj.dDP_dbg + so3Hat(obj.imuMeasurementArray{idx}.accel - biasAccel) * dti^2;
                 
                 
                 obj.dt = obj.dt + dti;
             end
+            
+            % Finish the bias jacobians
+            obj.dDR_dbg = -obj.deltaR' * obj.dDR_dbg;
+            obj.dDV_dba = -obj.deltaR * obj.dDV_dba;
+            obj.dDV_dbg = -obj.deltaR * obj.dDV_dbg * obj.dDR_dbg;
+            obj.dDP_dba = -3/2 * obj.deltaR * obj.dDP_dba;
+            obj.dDP_dbg = -3/2 * obj.deltaR * obj.dDP_dbg * obj.dDR_dbg;
             
             obj.initialized = true;
             
