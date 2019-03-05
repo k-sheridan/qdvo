@@ -36,7 +36,7 @@ classdef IMUState < handle
         
         % applies a small minimal form update to the state. The order is
         % listed above. [dp, dphi, dv, dba, dbg]
-        function [] = updateState(obj, dx)
+        function [] = update(obj, dx)
             obj.p = obj.p + dx(1:3);
             obj.R = obj.R * so3Exp(dx(4:6));
             obj.v = obj.v + dx(7:9);

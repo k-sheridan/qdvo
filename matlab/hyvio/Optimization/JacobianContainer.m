@@ -5,7 +5,7 @@ classdef JacobianContainer
         % each of these store jacobians 
         landmarkJacobians = {}; %{parentFrameID, LandmarkID, J}
         imustateJacobians = {}; %{obsFrameID, J}
-        extrinsicJacobians = {};
+        extrinsicJacobians = {}; %{key, J}
         
     end 
     

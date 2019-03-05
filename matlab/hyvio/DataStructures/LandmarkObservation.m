@@ -9,6 +9,7 @@ classdef LandmarkObservation < handle
     properties
         potentialCorrespondenceSet = {} % the set of all potential correspondences for a landmark
         
+        theta % the threshold used for matching
         observationFrameID % id of observation keyframe in pose graph.
         landmarkParentFrameID % id of landmark keyframe in pose graph.
         landmarkID % id of landmark in keyframe.

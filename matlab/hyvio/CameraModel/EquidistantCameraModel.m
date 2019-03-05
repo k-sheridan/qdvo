@@ -85,7 +85,7 @@ classdef EquidistantCameraModel
             % if the projection jacobian is desired compute it.
             if (nargout == 2)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
-                delta = 1e-3;
+                delta = 1e-6;
                 bearing = [norm(pointInCameraFrame(1:2)) * [cos(psi); sin(psi)]; 1];
                 
                 u2 = obj.project(bearing + [delta;0;0]);

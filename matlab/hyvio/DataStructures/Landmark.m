@@ -17,7 +17,10 @@ classdef Landmark < handle
     end
     
     methods
-        
+        % applys an additive update to the dinv
+        function [] = update(obj, delta)
+            obj.dinv = obj.dinv + delta;
+        end
     end
 end
 

@@ -89,6 +89,7 @@ for idx = (1:length(visibleLandmarkIDs))
         lo.landmarkParentFrameID = visibleLandmarkIDs{idx}{1};
         lo.landmarkID = visibleLandmarkIDs{idx}{2};
         lo.observationFrameID = frame.ID;
+        lo.theta = s.minimumNormalizedMatchCorrelation;
         
         % debug
         lo.searchPatch = warpedPatch;

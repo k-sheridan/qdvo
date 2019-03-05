@@ -3,17 +3,15 @@ classdef Optimizer < handle
     %of the graph given a set of error terms.
     
     properties (Access = private)
-        residualJacobianBuffer = {}; % stores all of the jacobians and residuals for the update. {residual, JacobianContainer}
+        constraintBuffer = {}; % stores all of the jacobians and residuals for the update. {residual, information, JacobianContainer}
         errorTermContainer = {}; % stores all error terms for this optimizer.
         
-        id2IndexMap = containers.Map(); % use: map('m->n') => indices of landmark n from frame m in the update vector. n <= 0 for a frame's imustate reference
-        maxIndex = 0; % this is used to keep track of the size of the update vector.
+        indexHandler; % this handles the tricky step of knowing what variable is associated to whhich index. This also handles the keys.
     end
     
     methods
         function [obj] = Optimizer()
-            obj.id2IndexMap = containers.Map();
-            obj.residualJacobianBuffer = {};
+            obj.indexHandler = IndexHandler();
             obj.errorTermContainer = {};
         end
         
