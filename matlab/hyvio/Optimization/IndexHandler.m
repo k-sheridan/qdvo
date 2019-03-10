@@ -1,6 +1,5 @@
 classdef IndexHandler < handle
-    %INDEXHANDLER Summary of this class goes here
-    %   Detailed explanation goes here
+    %INDEXHANDLER This class handles the mapping between a graph and linear system. 
     
     properties %(Access = private)
         id2IndexMap = containers.Map();

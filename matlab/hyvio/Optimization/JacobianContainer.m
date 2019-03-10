@@ -3,9 +3,9 @@ classdef JacobianContainer
     
     properties
         % each of these store jacobians 
-        landmarkJacobians = {}; %{parentFrameID, LandmarkID, J}
-        imustateJacobians = {}; %{obsFrameID, J}
-        extrinsicJacobians = {}; %{key, J}
+        landmarkJacobians = {}; %{{parentFrameID, LandmarkID, J}}
+        imustateJacobians = {}; %{{obsFrameID, J}}
+        extrinsicJacobians = {}; %{{key, J}}
         
     end 
     
