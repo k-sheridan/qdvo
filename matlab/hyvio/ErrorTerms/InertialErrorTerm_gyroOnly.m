@@ -21,18 +21,39 @@ classdef InertialErrorTerm_gyroOnly
             childFrameIdx = graph.getFrameIndex(obj.preintegratedIMUMeasurement.childFrameID);
             parentFrameIdx = graph.getFrameIndex(obj.preintegratedIMUMeasurement.parentFrameID);
             
+            if all(graph.FrameContainer{parentFrameIdx}.imustate.biases ~= obj.preintegratedIMUMeasurement.biasLinearlizationPoint)
+                error('biases of preintegrated imu are not equal to parent biases!');
+            end
+            
             Ri = graph.FrameContainer{parentFrameIdx}.imustate.R;
             Rj = graph.FrameContainer{childFrameIdx}.imustate.R;
             
-            residual = so3Log(obj.preintegratedIMUMeasurement.deltaR' * Ri' * Rj);
+            dR = obj.preintegratedIMUMeasurement.deltaR' * Ri' * Rj;
+            residual = so3Log(dR);
             
             % set information matrix
-            if nargout == 2
+            if nargout >= 2
                 information = inv(obj.preintegratedIMUMeasurement.P(4:6, 4:6));
             end
             
             % compute jacobians
-            if nargout == 3
+            if nargout >= 3
+                jacobians = JacobianContainer();
+                Jr_inv = inv(rightJacobianOfSO3(residual));
+                % 1) parent frame jacobians (i).
+                drR_dphi_i = -Jr_inv * Rj'*Ri;
+                drR_bg = -Jr_inv * dR' * obj.preintegratedIMUMeasurement.dDR_dbg;
+                
+                J1 = [zeros(3), drR_dphi_i, zeros(3, 6), drR_bg];
+                
+                jacobians.imustateJacobians{1} = {obj.preintegratedIMUMeasurement.parentFrameID, J1};
+                
+                % 2) child frame jacobians (j).
+                drR_dphi_j = Jr_inv;
+                
+                J2 = [zeros(3), drR_dphi_j, zeros(3, 9)];
+                
+                jacobians.imustateJacobians{2} = {obj.preintegratedIMUMeasurement.childFrameID, J2};
             end
                 
         end

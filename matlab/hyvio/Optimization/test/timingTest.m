@@ -1,0 +1,1 @@
+vba.optimize(vio.graph)

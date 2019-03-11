@@ -49,6 +49,10 @@ classdef IndexHandler < handle
             indices = obj.id2IndexMap(obj.imustateKey(frameID));
         end
         
+        function [indices] = getExtrinsicIndices(obj, key)
+            indices = obj.id2IndexMap(key);
+        end
+        
         % removes variable by moving it to the top of the system and
         % deleting it.
         function [A, b] = removeVariable(obj, key, A, b)
@@ -122,6 +126,10 @@ classdef IndexHandler < handle
                 b((length(originalIndices)+1:originalIndices(end)), 1) = binitial((1:originalIndices(1)-1), :);
             end
             
+        end
+        
+        function [dim] = dimensions(obj)
+            dim = obj.maxIndex;
         end
     end
 end
