@@ -14,7 +14,11 @@ classdef PriorErrorTerm < handle
     
     methods
         function obj = PriorErrorTerm()
-            
+            obj.A = [];
+            obj.b = [];
+            obj.dx0 = [];
+            obj.indexHandler = IndexHandler();
+            obj.indexHandler.reset();
         end
         
         % This simply initializes the error term as a uniformly uncertain
@@ -45,6 +49,82 @@ classdef PriorErrorTerm < handle
             obj.A = A;
             obj.b = b;
             obj.dx0 = zeros(obj.indexHandler.dimensions(), 1);
+        end
+        
+        %% add new variables to the prior error term.
+        function [] = addLandmark(obj, parentFrameID, landmarkID, informationMatrix)
+            key = obj.indexHandler.landmarkKey(parentFrameID, landmarkID);
+            
+            if ~obj.indexHandler.hasKey(key)
+                % now we know that this variable will be added to the end
+                % of the variable order.
+                [m,n] = size(informationMatrix);
+                if m ~= n
+                    error('information matrices must be square!')
+                end
+                
+                if m ~= 1
+                    error('information matrix not the correct size')
+                end
+            
+                obj.indexHandler.addLandmark(parentFrameID, landmarkID);
+            
+                indices = obj.indexHandler.getLandmarkIndices(parentFrameID, landmarkID);
+                
+                obj.A = padarray(obj.A,[m,m],0,'post');
+                obj.A(indices, indices) = informationMatrix;
+                
+                obj.b = [obj.b; zeros(m, 1)];
+                obj.dx0 = [obj.dx0; zeros(m, 1)];
+            end
+        end
+        
+        function [] = addImustate(obj, frameId, informationMatrix)
+            key = obj.indexHandler.imustateKey(frameId);
+            
+            if ~obj.indexHandler.hasKey(key)
+                % now we know that this variable will be added to the end
+                % of the variable order.
+                [m,n] = size(informationMatrix);
+                if m ~= n
+                    error('information matrices must be square!')
+                end
+                
+                if m ~= 15
+                    error('information matrix not the correct size')
+                end
+            
+                obj.indexHandler.addImustate(frameId);
+            
+                indices = obj.indexHandler.getImustateIndices(frameId);
+                
+                obj.A = padarray(obj.A,[m,m],0,'post');
+                obj.A(indices, indices) = informationMatrix;
+                
+                obj.b = [obj.b; zeros(m, 1)];
+                obj.dx0 = [obj.dx0; zeros(m, 1)];
+            end
+        end
+        
+        function [] = addExtrinsic(obj, key, informationMatrix)
+            if ~obj.indexHandler.hasKey(key)
+                % now we know that this variable will be added to the end
+                % of the variable order.
+                [m,n] = size(informationMatrix);
+                if m ~= n
+                    error('information matrices must be square!')
+                end
+            
+                obj.indexHandler.addExtrinsic(key, m);
+            
+                indices = obj.indexHandler.getExtrinsicIndices(key);
+                
+                obj.A = padarray(obj.A,[m,m],0,'post');
+                obj.A(indices, indices) = informationMatrix;
+                
+                obj.b = [obj.b; zeros(m, 1)];
+                obj.dx0 = [obj.dx0; zeros(m, 1)];
+            end
         end
         
     end

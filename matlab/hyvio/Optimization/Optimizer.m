@@ -6,16 +6,15 @@ classdef Optimizer < handle
         constraintBuffer = {}; % stores all of the jacobians and residuals for the update. struct(residual, information, jacobians)
         errorTermContainer = {}; % stores all error terms for this optimizer.
         
-        prior;
+        prior; % this handles the tricky step of knowing what variable is associated to whhich index. This also handles the keys.
+        % this also contains a quadratic (gaussian) prior error term.
         
         A = [];
         b = [];
-        indexHandler; % this handles the tricky step of knowing what variable is associated to whhich index. This also handles the keys.
     end
     
     methods
         function [obj] = Optimizer()
-            obj.indexHandler = IndexHandler();
             obj.errorTermContainer = {};
             obj.prior = PriorErrorTerm;
         end
@@ -42,21 +41,16 @@ classdef Optimizer < handle
             
             length(obj.constraintBuffer)
             
-            % Setup the indexhandler for this optimization.
-            obj.initializeIndexHandler();
-            
-            % TODO make sure the prior error term is compatible with the current
-            % variable order.
-            
-            
+            % Setup the indexhandler/prior for this optimization.
+            obj.initialize();
             
             
             % perform gauss newton optimization.
             niter = 10;
             for it = (1:niter)
                 % reset A, and b;
-                obj.A = zeros(obj.indexHandler.dimensions());
-                obj.b = zeros(obj.indexHandler.dimensions(), 1);
+                obj.A = zeros(obj.prior.indexHandler.dimensions());
+                obj.b = zeros(obj.prior.indexHandler.dimensions(), 1);
                 % build A and b
                 for c = obj.constraintBuffer
                     J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
@@ -90,7 +84,7 @@ classdef Optimizer < handle
         % creates a sparse matrix, J, such that J*dx ~ r
         function [J] = createConstraintJacobian(obj, jacobianContainer, residualDim)
             % create an empty J first.
-            J = zeros(residualDim, obj.indexHandler.dimensions());
+            J = zeros(residualDim, obj.prior.indexHandler.dimensions());
             
             % landmarks
             for idx = (1:length(jacobianContainer.landmarkJacobians))
@@ -99,7 +93,7 @@ classdef Optimizer < handle
                 lid = jacobianContainer.landmarkJacobians{idx}{2};
                 jac = jacobianContainer.landmarkJacobians{idx}{3};
                 
-                J(1:residualDim, obj.indexHandler.getLandmarkIndices(pid, lid)) = jac;
+                J(1:residualDim, obj.prior.indexHandler.getLandmarkIndices(pid, lid)) = jac;
             end
             
             % imustates
@@ -108,7 +102,7 @@ classdef Optimizer < handle
                 fid = jacobianContainer.imustateJacobians{idx}{1};
                 jac = jacobianContainer.imustateJacobians{idx}{2};
                 
-                J(1:residualDim, obj.indexHandler.getImustateIndices(fid)) = jac;
+                J(1:residualDim, obj.prior.indexHandler.getImustateIndices(fid)) = jac;
             end
             
             % extrinsics
@@ -117,7 +111,7 @@ classdef Optimizer < handle
                 key = jacobianContainer.extrinsicJacobians{idx}{1};
                 jac = jacobianContainer.extrinsicJacobians{idx}{2};
                 
-                J(1:residualDim, obj.indexHandler.getExtrinsicIndices(key)) = jac;
+                J(1:residualDim, obj.prior.indexHandler.getExtrinsicIndices(key)) = jac;
             end
             
             sJ = sparse(J);
@@ -126,11 +120,10 @@ classdef Optimizer < handle
         % looks at the variables to be optimized (in constraint buffer), and makes a mapping
         % between their id and indices.
         function [] = initializeIndexHandler(obj)
-            %TODO check if the prior error term already has an index
-            %handler from a previous optimization.
-            
-            % reset the current IndexHandler
-            obj.indexHandler.reset();
+            % the prior error term controls/handles the variable order of
+            % the optimization. However, as new variables are added to the
+            % optimization, we need to add them to the prior and make a
+            % spot for them.
             
             % sweep for the extrinsics.
             for idx = (1:length(obj.constraintBuffer))
@@ -139,7 +132,8 @@ classdef Optimizer < handle
                 for innerIdx = (1:length(jc.jacobians.extrinsicJacobians))
                     j = jc.jacobians.extrinsicJacobians{innerIdx};
                     key = j{1};
-                    obj.indexHandler.addExtrinsic(key); % this checks if the landmark has already been added, and adds it.
+                    error('I cant handle this right now in the optimizer!')
+                    obj.prior.addExtrinsic(key); % this checks if the landmark has already been added, and adds it.
                 end
             end
             
@@ -151,7 +145,7 @@ classdef Optimizer < handle
                     j = jc.jacobians.landmarkJacobians{innerIdx};
                     pidx = j{1};
                     lidx = j{2};
-                    obj.indexHandler.addLandmark(pidx, lidx); % this checks if the landmark has already been added, and adds it.
+                    obj.prior.addLandmark(pidx, lidx); % this checks if the landmark has already been added, and adds it.
                 end
             end
             
@@ -161,8 +155,8 @@ classdef Optimizer < handle
                 
                 for innerIdx = (1:length(jc.jacobians.imustateJacobians))
                     j = jc.jacobians.imustateJacobians{innerIdx};
-                    fidx = j{1};
-                    obj.indexHandler.addImustate(fidx); % this checks if the landmark has already been added, and adds it.
+                    fid = j{1};
+                    obj.prior.addImustate(fid); % this checks if the landmark has already been added, and adds it.
                 end
             end
             

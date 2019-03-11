@@ -15,6 +15,10 @@ classdef IndexHandler < handle
             key = sprintf('%i->%i', parentFrameID, landmarkID);
         end
         
+        function [bool] = hasKey(obj, key)
+            bool = obj.id2IndexMap.isKey(key);
+        end
+        
         function [] = reset(obj)
             obj.id2IndexMap = containers.Map();
             obj.maxIndex = 0;
