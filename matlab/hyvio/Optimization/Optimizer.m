@@ -67,6 +67,7 @@ classdef Optimizer < handle
                 toc
                 
             end
+            obj.b
             image(obj.A)
         end
         
