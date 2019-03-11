@@ -52,12 +52,25 @@ classdef Optimizer < handle
                 obj.A = zeros(obj.prior.indexHandler.dimensions());
                 obj.b = zeros(obj.prior.indexHandler.dimensions(), 1);
                 % build A and b
+                whitenedSqError = 0;
                 for c = obj.constraintBuffer
                     J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
                     sW = sparse(c{1}.information);
                     obj.A = obj.A + J'*sW*J;
                     obj.b = obj.b + J'*sW*c{1}.residual;
+                    
+                    whitenedSqError = whitenedSqError + c{1}.residual'*sW*c{1}.residual;
                 end
+                % Compute the average weighted squared error.
+                avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
+                
+                % add the prior constraint
+                obj.A = obj.A + obj.prior.A;
+                obj.b = obj.b + obj.prior.b;
+                
+                %opts.POSDEF = true;
+                opts.SYM = true;
+                dx = linsolve(obj.A, obj.b, opts)
                 
                 % after update, recompute the residuals
                 tic
@@ -66,7 +79,7 @@ classdef Optimizer < handle
                 
             end
             obj.b
-            image(obj.A)
+            image((obj.A))
         end
         
         function [] = computeResiduals(obj, graph)
@@ -119,7 +132,7 @@ classdef Optimizer < handle
         
         % looks at the variables to be optimized (in constraint buffer), and makes a mapping
         % between their id and indices.
-        function [] = initializeIndexHandler(obj)
+        function [] = initialize(obj)
             % the prior error term controls/handles the variable order of
             % the optimization. However, as new variables are added to the
             % optimization, we need to add them to the prior and make a
@@ -145,7 +158,10 @@ classdef Optimizer < handle
                     j = jc.jacobians.landmarkJacobians{innerIdx};
                     pidx = j{1};
                     lidx = j{2};
-                    obj.prior.addLandmark(pidx, lidx); % this checks if the landmark has already been added, and adds it.
+                    %TODO set this from a global setting
+                    pinv = 1e-24;
+                    
+                    obj.prior.addLandmark(pidx, lidx, pinv); % this checks if the landmark has already been added, and adds it.
                 end
             end
             
@@ -156,7 +172,14 @@ classdef Optimizer < handle
                 for innerIdx = (1:length(jc.jacobians.imustateJacobians))
                     j = jc.jacobians.imustateJacobians{innerIdx};
                     fid = j{1};
-                    obj.prior.addImustate(fid); % this checks if the landmark has already been added, and adds it.
+                    
+                    %TODO make this a setting
+                    pinv = diag(ones(1, 15) * 1e-24);
+                    if fid == 1
+                        pinv(1:6, 1:6) = eye(6)*1e24; % this says that the pose of the first frame is known 100%.
+                    end
+                    
+                    obj.prior.addImustate(fid, pinv); % this checks if the landmark has already been added, and adds it.
                 end
             end
             

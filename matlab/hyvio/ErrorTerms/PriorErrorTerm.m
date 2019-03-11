@@ -93,6 +93,10 @@ classdef PriorErrorTerm < handle
                 if m ~= 15
                     error('information matrix not the correct size')
                 end
+                
+                %if any(any(isnan(informationMatrix)))
+                 %   error('nan information')
+                %end
             
                 obj.indexHandler.addImustate(frameId);
             

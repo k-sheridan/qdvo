@@ -20,6 +20,7 @@ classdef Landmark < handle
         % applys an additive update to the dinv
         function [] = update(obj, delta)
             obj.dinv = obj.dinv + delta;
+            obj.dinv = min(0, obj.dinv);
         end
     end
 end
