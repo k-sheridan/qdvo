@@ -26,10 +26,12 @@ classdef InertialErrorTerm_gyroOnly
             end
             
             Ri = graph.FrameContainer{parentFrameIdx}.imustate.R;
+            bi = graph.FrameContainer{parentFrameIdx}.imustate.biases;
             Rj = graph.FrameContainer{childFrameIdx}.imustate.R;
+            bj = graph.FrameContainer{childFrameIdx}.imustate.biases;
             
             dR = obj.preintegratedIMUMeasurement.deltaR' * Ri' * Rj;
-            residual = so3Log(dR);
+            residual = [so3Log(dR); (bi-bj)];
             
             % set information matrix
             if nargout >= 2
@@ -44,14 +46,16 @@ classdef InertialErrorTerm_gyroOnly
                 drR_dphi_i = -Jr_inv * Rj'*Ri;
                 drR_bg = -Jr_inv * dR' * obj.preintegratedIMUMeasurement.dDR_dbg;
                 
-                J1 = [zeros(3), drR_dphi_i, zeros(3, 6), drR_bg];
+                J1 = [[zeros(3), drR_dphi_i, zeros(3, 6), drR_bg];
+                      [zeros(6, 9), eye(6)]];
                 
                 jacobians.imustateJacobians{1} = {obj.preintegratedIMUMeasurement.parentFrameID, J1};
                 
                 % 2) child frame jacobians (j).
                 drR_dphi_j = Jr_inv;
                 
-                J2 = [zeros(3), drR_dphi_j, zeros(3, 9)];
+                J2 = [[zeros(3), drR_dphi_j, zeros(3, 9)];
+                      [zeros(6, 9), -eye(6)]];
                 
                 jacobians.imustateJacobians{2} = {obj.preintegratedIMUMeasurement.childFrameID, J2};
             end
