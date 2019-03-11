@@ -40,6 +40,14 @@ classdef IndexHandler < handle
             end
         end
         
+        % adds indices for a imustate
+        function [] = addExtrinsic(obj, key, dim)
+            if ~obj.id2IndexMap.isKey(key)
+                obj.id2IndexMap(key) = (obj.maxIndex+1:obj.maxIndex+dim);
+                obj.maxIndex = obj.maxIndex+dim;
+            end
+        end
+        
         % gets the indices of a landmark
         function [indices] = getLandmarkIndices(obj, parentFrameID, landmarkID)
             indices = obj.id2IndexMap(obj.landmarkKey(parentFrameID, landmarkID));

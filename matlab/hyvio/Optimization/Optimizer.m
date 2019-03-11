@@ -6,6 +6,8 @@ classdef Optimizer < handle
         constraintBuffer = {}; % stores all of the jacobians and residuals for the update. struct(residual, information, jacobians)
         errorTermContainer = {}; % stores all error terms for this optimizer.
         
+        prior;
+        
         A = [];
         b = [];
         indexHandler; % this handles the tricky step of knowing what variable is associated to whhich index. This also handles the keys.
@@ -15,6 +17,7 @@ classdef Optimizer < handle
         function [obj] = Optimizer()
             obj.indexHandler = IndexHandler();
             obj.errorTermContainer = {};
+            obj.prior = PriorErrorTerm;
         end
         
         function [] = addErrorTerm(obj, errorTerm)
@@ -42,8 +45,9 @@ classdef Optimizer < handle
             % Setup the indexhandler for this optimization.
             obj.initializeIndexHandler();
             
-            % TODO make the prior error term compatible with the current
+            % TODO make sure the prior error term is compatible with the current
             % variable order.
+            
             
             
             
@@ -122,6 +126,9 @@ classdef Optimizer < handle
         % looks at the variables to be optimized (in constraint buffer), and makes a mapping
         % between their id and indices.
         function [] = initializeIndexHandler(obj)
+            %TODO check if the prior error term already has an index
+            %handler from a previous optimization.
+            
             % reset the current IndexHandler
             obj.indexHandler.reset();
             

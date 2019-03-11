@@ -28,6 +28,25 @@ classdef PriorErrorTerm < handle
             obj.A = diag(varVec);
         end
         
+        % This function will set the new prior. (this is typically used
+        % after marginalizing variables).
+        % dx0 will be set to 0!
+        function [] = initialize(obj, indexHandler, A, b)
+            % check that A and b have the same dimensions as the variables.
+            if length(b) ~= indexHandler.dimensions()
+                error('b dimensions wrong');
+            end
+            [m,n] = size(A);
+            if n ~= indexHandler.dimensions() || m ~= n
+                error('A dimensions wrong');
+            end
+            
+            obj.indexHandler = indexHandler;
+            obj.A = A;
+            obj.b = b;
+            obj.dx0 = zeros(obj.indexHandler.dimensions(), 1);
+        end
+        
     end
 end
 

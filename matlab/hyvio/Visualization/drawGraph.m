@@ -20,6 +20,7 @@ for idx = (1:length(graph.FrameContainer))
     end
 end
 
+set(gca,'Color','k')
 hold off
 end
 
