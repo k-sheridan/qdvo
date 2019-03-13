@@ -37,7 +37,7 @@ for index = (1:numFeatures)
     
     % add unproject jacobian?
     
-    l.dinv = 1; % initial z inverse 
+    l.dinv = 1/5; % initial z inverse 
     l.dinvPriorUncertainty = 1e12; % initially unknown
     
     l.patchNormal = [0;0;-1]; % best guess is that it is facing the camera.

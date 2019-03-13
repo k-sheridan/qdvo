@@ -35,7 +35,8 @@ classdef InertialErrorTerm_gyroOnly
             
             % set information matrix
             if nargout >= 2
-                information = inv(obj.preintegratedIMUMeasurement.P(4:6, 4:6));
+                information = inv([obj.preintegratedIMUMeasurement.P(4:6, 4:6), zeros(3, 6);
+                                zeros(6, 3), obj.preintegratedIMUMeasurement.P(10:15, 10:15)]);
             end
             
             % compute jacobians

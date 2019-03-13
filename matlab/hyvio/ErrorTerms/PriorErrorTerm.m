@@ -21,6 +21,11 @@ classdef PriorErrorTerm < handle
             obj.indexHandler.reset();
         end
         
+        % applies additive update to the quadratic prior error term.
+        function [] = update(obj, dx)
+            obj.dx0 = obj.dx0 + dx;
+        end
+        
         % This simply initializes the error term as a uniformly uncertain
         % gaussian.
         function [] = initializePriorUncertain(obj, indexHandler, inverseUncertainty)

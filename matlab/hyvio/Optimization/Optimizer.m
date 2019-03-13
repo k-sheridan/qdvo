@@ -44,9 +44,12 @@ classdef Optimizer < handle
             % Setup the indexhandler/prior for this optimization.
             obj.initialize();
             
+            % make a delta vec;
+            deltaArray = [];
+            avgWhiteSqErrorArray = [];
             
             % perform gauss newton optimization.
-            niter = 10;
+            niter = 2;
             for it = (1:niter)
                 % reset A, and b;
                 obj.A = zeros(obj.prior.indexHandler.dimensions());
@@ -61,25 +64,44 @@ classdef Optimizer < handle
                     
                     whitenedSqError = whitenedSqError + c{1}.residual'*sW*c{1}.residual;
                 end
-                % Compute the average weighted squared error.
-                avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
                 
                 % add the prior constraint
                 obj.A = obj.A + obj.prior.A;
-                obj.b = obj.b + obj.prior.b;
+                obj.b = obj.b + (obj.prior.b - obj.prior.A*obj.prior.dx0);
+                
+                % Compute the average weighted squared error.
+                avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
+                
+                % append the errors
+                avgWhiteSqErrorArray = [avgWhiteSqErrorArray, avgWhiteSqError]
+                
+                % check if the error has increased
+                if it > 1
+                    if avgWhiteSqErrorArray(end) >= avgWhiteSqErrorArray(end-1)
+                        % The avg error has increased. 
+                        disp('error has increased!')
+                    end
+                end
                 
                 %opts.POSDEF = true;
                 opts.SYM = true;
-                dx = linsolve(obj.A, obj.b, opts)
+                dx = linsolve(obj.A, obj.b, opts);
+                
+                % append deltas
+                deltaArray = [deltaArray, dx];
+                
+                % apply the update.
+                [graph] = obj.applyUpdate(graph, dx);
+                
+                graph.FrameContainer{1}.imustate.p
+                graph.FrameContainer{1}.imustate.R
+                graph.FrameContainer{1}.imustate.v
                 
                 % after update, recompute the residuals
-                tic
                 obj.computeResiduals(graph);
-                toc
                 
             end
-            obj.b
-            image((obj.A))
+            
         end
         
         function [] = computeResiduals(obj, graph)
@@ -93,6 +115,7 @@ classdef Optimizer < handle
             end
             
         end
+       
         
         % creates a sparse matrix, J, such that J*dx ~ r
         function [J] = createConstraintJacobian(obj, jacobianContainer, residualDim)
@@ -182,6 +205,20 @@ classdef Optimizer < handle
                     obj.prior.addImustate(fid, pinv); % this checks if the landmark has already been added, and adds it.
                 end
             end
+            
+            % check the index handler
+            obj.prior.indexHandler.checkVariables();
+            
+        end
+        
+        % updates the graph and prior error term with a generalized
+        % addition operator.
+        function [graph] = applyUpdate(obj, graph, dx)
+            % first update the prior error term.
+            obj.prior.update(dx);
+            
+            % Update the graph using the index handler.
+            [graph] = obj.prior.indexHandler.updateGraph(graph, dx);
             
         end
     end

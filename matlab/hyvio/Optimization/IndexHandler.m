@@ -1,18 +1,73 @@
 classdef IndexHandler < handle
     %INDEXHANDLER This class handles the mapping between a graph and linear system. 
     
-    properties %(Access = private)
+    properties (Access = private)
         id2IndexMap = containers.Map();
         maxIndex = 0;
     end
     
     methods
+        
         function [key] = imustateKey(obj, frameID)
             key = sprintf('%i->0', frameID);
         end
         
         function [key] = landmarkKey(obj, parentFrameID, landmarkID)
             key = sprintf('%i->%i', parentFrameID, landmarkID);
+        end
+        
+        % goes through the keys (indices) and applies the update to the graph.
+        function [graph] = updateGraph(obj, graph, dx)
+            % check the index handler
+            obj.checkVariables();
+            
+            % go through all keys and update the corresponding variable in
+            % the graph.
+            for k = obj.id2IndexMap.keys
+                % if the key contains '->' it is either a landmark or
+                % imustate.
+                subdx = dx(obj.id2IndexMap(k{1}), 1)
+                
+                if ~isempty(regexp(k{1}, '->', 'match'))
+                    ids_char = strsplit(k{1}, '->');
+                    
+                    if length(ids_char) ~= 2
+                        error('something is wrong with a key')
+                    end
+                    
+                    ids = {str2num(ids_char{1}), str2num(ids_char{2})};
+                    
+                    frameIndex = graph.getFrameIndex(ids{1});
+                    
+                    if ids{2} == 0
+                        % this is an imustate.
+                        graph.FrameContainer{frameIndex}.imustate.update(subdx);
+                    else
+                        % this is a landmark.
+                        landmarkIndex = graph.FrameContainer{frameIndex}.getLandmarkIndex(ids{2});
+                        graph.FrameContainer{frameIndex}.landmarks{landmarkIndex}.update(subdx);
+                    end
+                else
+                    error('cant update extrinsics yet.')
+                end
+            end
+        end
+        
+        % this functions ensures that there are no duplicate variable
+        % references. It also ensures that all indices are accounted for.
+        function [] = checkVariables(obj)
+            testVec = zeros(obj.dimensions(), 1);
+            for k = obj.id2IndexMap.keys
+                if any(testVec(obj.id2IndexMap(k{1}), 1))
+                    error('index handler broken. Has duplicate index reference');
+                end
+                
+                testVec(obj.id2IndexMap(k{1}), 1) = 1;
+            end
+            
+            if ~all(testVec)
+                error('index unaccounted for!')
+            end
         end
         
         function [bool] = hasKey(obj, key)
@@ -81,6 +136,7 @@ classdef IndexHandler < handle
             
             if nargin >= 2
                 obj.id2IndexMap.remove(key);
+                obj.maxIndex = obj.maxIndex - length(removeIndices);
                 for k = obj.id2IndexMap.keys
                     obj.id2IndexMap(k{1}) = obj.id2IndexMap(k{1}) - removeIndices(end);
                 end
