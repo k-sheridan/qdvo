@@ -2,6 +2,8 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
     % error term which seeks to minimize the negative log likelihood of the
     % correspondence distribution by optimizing the imustate of the observing
     % frame and the inverse depth of the landmark in its parent frame.
+    % jacobians describe how the error changes with a small perturbation of
+    % the state.
     
     properties (Access = private)
         
@@ -57,7 +59,7 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
             % compute the resultant error
             residual = [0;0]; % In pixel coordinates.
             for idx = (1:length(obj.landmarkObservation.potentialCorrespondenceSet))
-                residual = residual + weights(idx) * (obj.landmarkObservation.potentialCorrespondenceSet{idx}.pixel - px);
+                residual = residual + weights(idx) * (px - obj.landmarkObservation.potentialCorrespondenceSet{idx}.pixel);
             end
             
             if nargout >= 2

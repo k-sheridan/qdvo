@@ -23,3 +23,24 @@ title('Equidistant Distortion Model')
 xlabel('pixel')
 ylabel('pixel')
 grid on
+
+
+% test project jacobians
+pos = [0.1;-0.2;2];
+J = zeros(2, 3);
+dx = zeros(3, 1);
+delta = 1e-4;
+
+for idx = (1:3)
+    dx(idx) = dx(idx) + delta;
+    pxHigh = cm.project(pos+dx);
+    dx(idx) = dx(idx) - 2*delta;
+    pxLow = cm.project(pos+dx);
+    dx(idx) = dx(idx) + delta;
+    J(1:2, idx) = (pxHigh-pxLow)/(2*delta);
+end
+
+[px,jac] = cm.project(pos);
+
+jac * [1/pos(3), 0, -pos(1)/pos(3)^2; 0, 1/pos(3), -pos(2)/pos(3)^2]
+J
