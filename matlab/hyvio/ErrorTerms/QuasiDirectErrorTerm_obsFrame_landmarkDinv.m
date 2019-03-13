@@ -40,16 +40,16 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
             dinv = graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.dinv;
             u0 = [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing; 1];
             
-            transform = inv([A, d; zeros(1, 3), 1] * T) * [B, e; zeros(1, 3), 1] * T;
+            %transform = inv([A, d; zeros(1, 3), 1] * T) * [B, e; zeros(1, 3), 1] * T;
             
             % compute the residual
-            p_obs = C'*A'*B*C*u0*(1/dinv) + A'*C'*(B*f + e - A*f - d);
+            p_obs = C'*A'*B*C*u0*(1/dinv) + C'*A'*(B*f + e - A*f - d);
+            %trans = inv([A, d; zeros(1, 3), 1] * T) * [B, e; zeros(1, 3), 1] * T;
+            %p_obs = trans(1:3, 1:3) * u0/dinv + trans(1:3, 4);
             
             % project the point into pixel space.
             % NOTE: projJac
             [px, projJac] = graph.FrameContainer{observationFrameIdx}.cameraModel.project(p_obs);
-            
-            px
             
             % compute the residual weights.
             weights = obj.landmarkObservation.computeGaussianWeightsRobustly(px, obj.landmarkObservation.theta);
@@ -75,8 +75,8 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
                 jacobians.landmarkJacobians{1} = {obj.landmarkObservation.landmarkParentFrameID, obj.landmarkObservation.landmarkID, J_dinv};
                 
                 % Observation Jacobian - imustate order: [dp, dphi, dv, dba, dbg]
-                J_dt_o = -projJac * dPi * (A'*C');
-                J_dphi_o = -projJac * dPi * (C' * so3Hat(A'*B*C*u0*1/dinv) + so3Hat(A'*C'*(B*f + e - A*f - d)));
+                J_dt_o = -projJac * dPi * (C'*A');
+                J_dphi_o = -projJac * dPi * (C' * so3Hat(A'*B*C*u0*1/dinv) + C' * so3Hat(A'*(B*f + e - A*f - d)));
                 jacobians.imustateJacobians{1} = {obj.landmarkObservation.observationFrameID, [J_dt_o, J_dphi_o, zeros(2, 9)]};
                 
                 
