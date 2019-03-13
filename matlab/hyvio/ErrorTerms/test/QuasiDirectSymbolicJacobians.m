@@ -3,8 +3,8 @@ syms phix phiy phiz dtx dty dtz
 
 assume([phix,phiy,phiz, dtx, dty, dtz], 'real')
 
-A = so3Exp(0*[1,3,3]);
-B = so3Exp(0*[1,4,3]);
+A = so3Exp(1*[1,3,3]);
+B = so3Exp(1*[1,4,3]);
 C = so3Exp(1*[1,2,3]);
 d = 1*[1;2;3];
 e = 1*[1;5;3];
@@ -16,6 +16,8 @@ theta = norm([phix,phiy,phiz]);
 K = so3Hat([phix,phiy,phiz]/theta);
 exp_dphi = eye(3) + sin(theta)*K + (1 - cos(theta))*K^2;
 dt = [dtx;dty;dtz];
+
+isHat = double(subs([diff(exp_dphi, phix), diff(exp_dphi, phiy), diff(exp_dphi, phiz)], [phix,phiy,phiz], 1e-24*[1,1,1]))
 
 %proj = C'*(A*exp_dphi)'*B*C*u0*1/dinv + C'*(A*exp_dphi)'*(B*f + e - A*exp_dphi*f - (d+dt));
 T = [C, f; zeros(1, 3), 1];

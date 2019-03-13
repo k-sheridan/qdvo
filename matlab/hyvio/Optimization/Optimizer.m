@@ -60,14 +60,14 @@ classdef Optimizer < handle
                     J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
                     sW = sparse(c{1}.information);
                     obj.A = obj.A + J'*sW*J;
-                    obj.b = obj.b + J'*sW*c{1}.residual;
+                    obj.b = obj.b - J'*sW*c{1}.residual;
                     
                     whitenedSqError = whitenedSqError + c{1}.residual'*sW*c{1}.residual;
                 end
                 
                 % add the prior constraint
                 obj.A = obj.A + obj.prior.A;
-                obj.b = obj.b + (obj.prior.b - obj.prior.A*obj.prior.dx0);
+                obj.b = obj.b - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
                 
                 % Compute the average weighted squared error.
                 avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
