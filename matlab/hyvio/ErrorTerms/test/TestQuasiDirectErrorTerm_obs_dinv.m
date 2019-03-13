@@ -5,7 +5,7 @@ cm = cm.cm;
 
 for testNumber = (1:100)
     u0 = ([rand; rand]-0.5) * 4;
-    dinv = rand * 10;
+    dinv = rand * 1 + 0.1;
     
     l = Landmark();
     l.dinv = dinv;
@@ -24,7 +24,7 @@ for testNumber = (1:100)
     
     imu2 = IMUState();
     
-    imu2.p = 0.1*[rand;rand;rand];
+    imu2.p = 0.5*[rand;rand;rand];
     imu2.R = so3Exp(0.05*[rand;rand;rand]);
     
     f2 = Frame([], 0, 0, cm, imu2);
@@ -45,7 +45,8 @@ for testNumber = (1:100)
     
     p_obs = T(1:3, 1:3) * [u0;1] * (1/dinv) + T(1:3, 4);
     
-    px = cm.project(p_obs)
+    %px = cm.project(p_obs) + [randn;randn];
+    px = cm.project(p_obs);
     
     pc = PotentialCorrespondence();
     pc.pixel = px;
@@ -59,6 +60,48 @@ for testNumber = (1:100)
     
     et = QuasiDirectErrorTerm_obsFrame_landmarkDinv(lo);
     
-    [res, pinv, jacs] = et.computeResidual(g)
+    delta = 1e-3;
+    [res, pinv, jacs] = et.computeResidual(g);
+    
+    % dinv jacobain check
+    g.FrameContainer{1}.landmarks{1}.update(delta);
+    resHigh = et.computeResidual(g);
+    g.FrameContainer{1}.landmarks{1}.update(-2*delta);
+    resLow = et.computeResidual(g);
+    g.FrameContainer{1}.landmarks{1}.update(delta);
+    Jnum = -(resHigh - resLow) / (2*delta);
+    jacs.landmarkJacobians{1}{3};
+    
+    error = sum(sum((Jnum - jacs.landmarkJacobians{1}{3}).^2));
+    
+    if error > 1e-8
+        error('dinv jacobian wrong!')
+    end
+    
+    % obs imustate jacobians
+    Jnum = zeros(2,15);
+    dx = zeros(15, 1);
+    
+    for idx = (1:15)
+        dx(idx) = dx(idx) + delta;
+        g.FrameContainer{1}.imustate.update(dx);
+        resHigh = et.computeResidual(g);
+        dx(idx) = dx(idx) - 2*delta;
+        g.FrameContainer{1}.imustate.update(dx);
+        resLow = et.computeResidual(g);
+        dx(idx) = dx(idx) + delta;
+        g.FrameContainer{1}.imustate.update(dx);
+        Jnum(1:2, idx) = -(resHigh - resLow) / (2*delta);
+    end
+    
+    error = sum(sum((Jnum - jacs.imustateJacobians{1}{2}).^2));
+    
+    Jnum
+    jacs.imustateJacobians{1}{2}
+    
+    if error > 1e-8
+        error
+        error('obs imustate jacobian wrong!')
+    end
     
 end

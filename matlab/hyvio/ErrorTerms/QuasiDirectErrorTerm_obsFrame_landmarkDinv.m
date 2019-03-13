@@ -76,7 +76,7 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
                 
                 % Observation Jacobian - imustate order: [dp, dphi, dv, dba, dbg]
                 J_dt_o = -projJac * dPi * (C'*A');
-                J_dphi_o = -projJac * dPi * (C' * so3Hat(A'*B*C*u0*1/dinv) + C' * so3Hat(A'*(B*f + e - A*f - d)));
+                J_dphi_o = projJac * dPi * (C' * so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e - d)));
                 jacobians.imustateJacobians{1} = {obj.landmarkObservation.observationFrameID, [J_dt_o, J_dphi_o, zeros(2, 9)]};
                 
                 
