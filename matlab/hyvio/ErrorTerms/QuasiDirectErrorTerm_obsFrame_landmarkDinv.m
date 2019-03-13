@@ -40,6 +40,8 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
             dinv = graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.dinv;
             u0 = [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing; 1];
             
+            transform = inv([A, d; zeros(1, 3), 1] * T) * [B, e; zeros(1, 3), 1] * T;
+            
             % compute the residual
             p_obs = C'*A'*B*C*u0*(1/dinv) + A'*C'*(B*f + e - A*f - d);
             
@@ -47,6 +49,7 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
             % NOTE: projJac
             [px, projJac] = graph.FrameContainer{observationFrameIdx}.cameraModel.project(p_obs);
             
+            px
             
             % compute the residual weights.
             weights = obj.landmarkObservation.computeGaussianWeightsRobustly(px, obj.landmarkObservation.theta);
@@ -64,8 +67,8 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
             % Jacobian Computation
             if nargout >= 3
                 jacobians = JacobianContainer();
-                dPi = [1/p_obs(3), 0, -p_obs(1)/p_obs(3);
-                        0, 1/p_obs(3), -p_obs(2)/p_obs(3)];
+                dPi = [1/p_obs(3), 0, -p_obs(1)/p_obs(3)^2;
+                        0, 1/p_obs(3), -p_obs(2)/p_obs(3)^2];
                 
                 % Landmark Jacobian
                 J_dinv = -projJac * dPi * (C'*A'*B*C*u0*1/dinv^2);
