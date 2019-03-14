@@ -4,7 +4,7 @@ function [] = drawFrame(frame, graph)
 drawErrorBars = false;
 drawGMMMeans = true;
 drawCorrespondencePriors = true;
-
+    
 
 I = frame.raw_image / frame.maxIntensity;
 

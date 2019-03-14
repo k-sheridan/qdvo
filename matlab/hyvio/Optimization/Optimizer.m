@@ -48,7 +48,8 @@ classdef Optimizer < handle
             deltaArray = [];
             avgWhiteSqErrorArray = [];
             
-            lambda = 1e-1;
+            lambda = 1e9;
+            v = 10;
             
             % perform gauss newton optimization.
             niter = 20;
@@ -82,6 +83,8 @@ classdef Optimizer < handle
                     if avgWhiteSqErrorArray(end) >= avgWhiteSqErrorArray(end-1)
                         % The avg error has increased. 
                         disp('error has increased!')
+                    else
+                        lambda = lambda / v
                     end
                 end
                 
@@ -90,7 +93,7 @@ classdef Optimizer < handle
                 
                 %opts.POSDEF = true;
                 opts.SYM = true;
-                dx = linsolve(obj.A, obj.b, opts)
+                dx = linsolve(obj.A, obj.b, opts);
                 
                 % append deltas
                 deltaArray = [deltaArray, dx];
