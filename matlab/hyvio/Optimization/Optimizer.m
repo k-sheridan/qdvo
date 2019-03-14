@@ -48,8 +48,10 @@ classdef Optimizer < handle
             deltaArray = [];
             avgWhiteSqErrorArray = [];
             
+            lambda = 1e-1;
+            
             % perform gauss newton optimization.
-            niter = 2;
+            niter = 20;
             for it = (1:niter)
                 % reset A, and b;
                 obj.A = zeros(obj.prior.indexHandler.dimensions());
@@ -83,9 +85,12 @@ classdef Optimizer < handle
                     end
                 end
                 
+                % LevenbergMarquardt
+                obj.A = obj.A + lambda*diag(diag(obj.A));
+                
                 %opts.POSDEF = true;
                 opts.SYM = true;
-                dx = linsolve(obj.A, obj.b, opts);
+                dx = linsolve(obj.A, obj.b, opts)
                 
                 % append deltas
                 deltaArray = [deltaArray, dx];
@@ -93,9 +98,16 @@ classdef Optimizer < handle
                 % apply the update.
                 [graph] = obj.applyUpdate(graph, dx);
                 
-                graph.FrameContainer{1}.imustate.p
-                graph.FrameContainer{1}.imustate.R
-                graph.FrameContainer{1}.imustate.v
+                %drawFrameGraph(graph);
+                %drawnow;
+                
+                %graph.FrameContainer{1}.imustate.p
+                %graph.FrameContainer{1}.imustate.R
+                %graph.FrameContainer{1}.imustate.v
+                
+                if it >= niter
+                    break;
+                end
                 
                 % after update, recompute the residuals
                 obj.computeResiduals(graph);

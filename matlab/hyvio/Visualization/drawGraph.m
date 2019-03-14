@@ -16,7 +16,7 @@ for idx = (1:length(graph.FrameContainer))
         dinv = graph.FrameContainer{idx}.landmarks{lidx}.dinv;
         
         p_inWorld = T_w_c(1:3, 1:3) * [u0;1] * (1/dinv) + T_w_c(1:3, 4);
-        %plot3(p_inWorld(1), p_inWorld(2), p_inWorld(3), 'ro');
+        plot3(p_inWorld(1), p_inWorld(2), p_inWorld(3), 'ro');
     end
 end
 
