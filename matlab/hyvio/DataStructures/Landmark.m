@@ -8,7 +8,7 @@ classdef Landmark < handle
         px % [x; y] This is used for patch matching.
         dinv % Inverse depth of the landmark in the observation keyframe (1/m).
         
-        dinvPriorUncertainty % The 1D inverse depth uncertainty (1/z^2). This is just used once, then marginalization takes over.
+        dinvPriorUncertainty = 1e24 % The 1D inverse depth uncertainty (1/z^2). This is just used once, then marginalization takes over.
         
         patchNormal = [0;0;-1] % The normal of the surface which the feature lies on. This is used for warping the patch for feature tracking. This is optimized by twisting it in 2dof.
         

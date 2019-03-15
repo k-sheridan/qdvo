@@ -40,6 +40,13 @@ classdef Graph < handle
             end
         end
         
+        % gets a copy of the landmark by its id.
+        function [l] = getLandmark(obj, parentFrameID, landmarkID)
+            fidx = obj.getFrameIndex(parentFrameID);
+            lidx = obj.FrameContainer{fidx}.getLandmarkIndex(landmarkID);
+            l = obj.FrameContainer{fidx}.landmarks{lidx};
+        end
+        
         function [frameObservationsIndex] = getFrameObservationsIndex(obj, frameID)
             frameObservationsIndex = frameID - obj.FrameObservationContainer{1}.frameID + 1;
             

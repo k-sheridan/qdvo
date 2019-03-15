@@ -42,7 +42,7 @@ classdef Optimizer < handle
             length(obj.constraintBuffer)
             
             % Setup the indexhandler/prior for this optimization.
-            obj.initialize();
+            obj.initialize(graph);
             
             % make a delta vec;
             deltaArray = [];
@@ -170,7 +170,7 @@ classdef Optimizer < handle
         
         % looks at the variables to be optimized (in constraint buffer), and makes a mapping
         % between their id and indices.
-        function [] = initialize(obj)
+        function [] = initialize(obj, graph)
             % the prior error term controls/handles the variable order of
             % the optimization. However, as new variables are added to the
             % optimization, we need to add them to the prior and make a
@@ -194,12 +194,15 @@ classdef Optimizer < handle
                 
                 for innerIdx = (1:length(jc.jacobians.landmarkJacobians))
                     j = jc.jacobians.landmarkJacobians{innerIdx};
-                    pidx = j{1};
-                    lidx = j{2};
-                    %TODO set this from a global setting
-                    pinv = 1e-24;
+                    pid = j{1};
+                    lid = j{2};
+                    %set this from the landmark itself
+                    pinv = 1/graph.getLandmark(pid, lid).dinvPriorUncertainty;
+                    if ~isfinite(pinv)
+                        error('landmark information not finite!');
+                    end
                     
-                    obj.prior.addLandmark(pidx, lidx, pinv); % this checks if the landmark has already been added, and adds it.
+                    obj.prior.addLandmark(pid, lid, pinv); % this checks if the landmark has already been added, and adds it.
                 end
             end
             
