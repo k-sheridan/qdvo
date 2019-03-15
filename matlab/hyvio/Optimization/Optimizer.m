@@ -2,7 +2,7 @@ classdef Optimizer < handle
     %OPTIMIZER The goal of this class is to handle the actual optimization
     %of the graph given a set of error terms.
     
-    properties %(Access = private)
+    properties (Access = private)
         constraintBuffer = {}; % stores all of the jacobians and residuals for the update. struct(residual, information, jacobians)
         errorTermContainer = {}; % stores all error terms for this optimizer.
         
@@ -20,7 +20,7 @@ classdef Optimizer < handle
     methods
         function [obj] = Optimizer()
             obj.errorTermContainer = {};
-            obj.prior = PriorErrorTerm;
+            obj.prior = PriorErrorTerm();
         end
         
         function [] = addErrorTerm(obj, errorTerm)
@@ -34,6 +34,10 @@ classdef Optimizer < handle
         
         function [num] = numberOfErrorTerms(obj)
             num = length(obj.errorTermContainer);
+        end
+        
+        function [prior] = getPrior(obj)
+            prior = obj.prior;
         end
         
         % using the error terms currently in the optimizer, optimize the
@@ -249,14 +253,34 @@ classdef Optimizer < handle
         % error terms associated to the marginalized state with a single
         % quadratic error term.
         function [] = marginalizeImustate(obj, id)
+            % move this variable set to the top of the problem.
+            % VERY IMPORTANT: the prior must also be shifted with the
+            % variables.
+            key = obj.prior.indexHandler.imustateKey(id);
+            [obj.prior.A, obj.prior.b] = obj.prior.indexHandler.moveVariableToTop(key, obj.prior.A, obj.prior.b);
+            
+            
+            Am = zeros(obj.prior.indexHandler.dimensions());
+            bm = zeros(obj.prior.indexHandler.dimensions(), 1);
             for c = obj.constraintBuffer
                 for jc = c{1}.jacobians.imustateJacobians
                     if jc{1}{1} == id
                         J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
-                        jc
+                        
+                        Am = Am + J'*c{1}.information*J;
+                        bm = bm - J'*c{1}.information*c{1}.residual;
                     end
                 end
             end
+            
+            Am = Am + obj.prior.A;
+            bm = bm - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
+            
+            % use the schur complement to compute the conditional variance.
+            upperIndices = obj.prior.indexHandler.getImustateIndices(id);
+            lowerIndices = ((upperIndices(end)+1):obj.prior.indexHandler.dimensions());
+            
+            image(Am)
         end
     end
 end

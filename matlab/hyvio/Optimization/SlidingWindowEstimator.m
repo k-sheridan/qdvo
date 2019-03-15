@@ -20,7 +20,7 @@ classdef SlidingWindowEstimator < handle
         function initializeVisualErrorTerms(obj, graph)
             % get the frame ids to be optimized
             obj.frameIdsToOptimize = [];
-            for idx = (length(graph.FrameContainer):-1:length(graph.FrameContainer)-obj.windowSize+1)
+            for idx = ((length(graph.FrameContainer)-obj.windowSize+1):length(graph.FrameContainer))
                 obj.frameIdsToOptimize = [obj.frameIdsToOptimize, graph.FrameContainer{idx}.ID];
                 
                 % while in this loop add the visual constraints for these
@@ -53,7 +53,7 @@ classdef SlidingWindowEstimator < handle
             % optimized. This excludes the inertial constrain between the
             % oldest frme and the one before it.
             % we expect this will add windowSize-1 inertial constraints
-            for idx = (length(graph.InertialConstraintContainer):-1:length(graph.InertialConstraintContainer)-obj.windowSize+2)
+            for idx = ((length(graph.InertialConstraintContainer)-obj.windowSize+2):length(graph.InertialConstraintContainer))
                 if ~any(graph.InertialConstraintContainer{idx}.parentFrameID == obj.frameIdsToOptimize) ||...
                         ~any(graph.InertialConstraintContainer{idx}.childFrameID == obj.frameIdsToOptimize)
                     error('inertial error term is out of the window!');
@@ -70,6 +70,13 @@ classdef SlidingWindowEstimator < handle
             graph = obj.optimizer.optimize(graph);
             
             %TODO determine if the optimization failed and revert it.
+        end
+        
+        % removes the oldest frame from the window and approximates its
+        % information with a quadratic error (prior)
+        function [] = marginalizeOldestFrame(obj)
+            fid = min(obj.frameIdsToOptimize);
+            obj.optimizer.marginalizeImustate(fid);
         end
         
     end

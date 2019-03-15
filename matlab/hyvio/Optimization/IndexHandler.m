@@ -8,6 +8,11 @@ classdef IndexHandler < handle
     
     methods
         
+        function [obj] = IndexHandler()
+            obj.id2IndexMap = containers.Map();
+            obj.maxIndex = 0;
+        end
+        
         function [key] = imustateKey(obj, frameID)
             key = sprintf('%i->0', frameID);
         end
