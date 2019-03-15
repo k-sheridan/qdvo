@@ -7,6 +7,7 @@ classdef VIO < handle
     properties
         graph % pose graph / map
         interimPreintegrationTerm = PreintegratedIMUMeasurement(); % used to cache the set of IMU's between frames.
+        swe; % a global sliding window estimator 
         settings; % settings for the whole vio impl
     end
     
@@ -17,6 +18,9 @@ classdef VIO < handle
             obj.settings = settings;
             obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
             obj.graph.extrinsics.addIMU2CameraExtrinsic(1, obj.settings.initial_T_camFromImu(1:3, 1:3), obj.settings.initial_T_camFromImu(1:3, 4));
+            
+            % create a sliding window estimator.
+            obj.swe = SlidingWindowEstimator(3);
         end
         
         function [] = addFrame(obj, frame)

@@ -47,8 +47,6 @@ classdef Optimizer < handle
             obj.constraintBuffer = cell(1, length(obj.errorTermContainer));
             obj.computeResiduals(graph);
             
-            length(obj.constraintBuffer)
-            
             % Setup the indexhandler/prior for this optimization.
             obj.initialize(graph);
             
@@ -84,13 +82,14 @@ classdef Optimizer < handle
                 avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
                 
                 % append the errors
-                obj.avgWhiteSqErrorArray = [obj.avgWhiteSqErrorArray, avgWhiteSqError]
+                obj.avgWhiteSqErrorArray = [obj.avgWhiteSqErrorArray, avgWhiteSqError];
                 
                 % check if the error has increased
                 if it > 1
                     if obj.avgWhiteSqErrorArray(end) >= obj.avgWhiteSqErrorArray(end-1)
                         % The avg error has increased. 
                         disp('error has increased!')
+                        break;
                         lambda = lambda * v
                     else
                         lambda = lambda / v
@@ -277,10 +276,18 @@ classdef Optimizer < handle
             bm = bm - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
             
             % use the schur complement to compute the conditional variance.
-            upperIndices = obj.prior.indexHandler.getImustateIndices(id);
-            lowerIndices = ((upperIndices(end)+1):obj.prior.indexHandler.dimensions());
+            mInd = obj.prior.indexHandler.getImustateIndices(id);
+            rInd = ((mInd(end)+1):obj.prior.indexHandler.dimensions());
             
-            image(Am)
+            bp = bm(rInd, 1) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * bm(mInd, 1);
+            Ap = Am(rInd, rInd) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * Am(mInd, rInd);
+            
+            % remove the variables
+            obj.prior.indexHandler.removeVariable(key);
+            obj.prior.A = Ap;
+            obj.prior.b = bp;
+            obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
+            obj.prior.indexHandler.checkVariables();
         end
     end
 end

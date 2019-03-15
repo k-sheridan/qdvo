@@ -1,4 +1,4 @@
-function [] = draw3DCamera(T_world_cam, size)
+function [] = draw3DCamera(T_world_cam, size, color)
 %DRAW3DCAMERA renders a 3D camera with lines.
 
 R_w_c = T_world_cam(1:3, 1:3);
@@ -25,7 +25,7 @@ pt2 = R_w_c*pt2 + tArr;
 
    
 for idx = (1:length(pt1))
-    line([pt1(1, idx), pt2(1, idx)], [pt1(2, idx), pt2(2, idx)], [pt1(3, idx), pt2(3, idx)])
+    line([pt1(1, idx), pt2(1, idx)], [pt1(2, idx), pt2(2, idx)], [pt1(3, idx), pt2(3, idx)], 'Color', color)
 end
    
 end

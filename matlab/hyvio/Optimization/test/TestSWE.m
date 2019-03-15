@@ -1,9 +1,9 @@
-swe = SlidingWindowEstimator(3);
+swe = SlidingWindowEstimator(10);
 swe.optimizer.numberOfErrorTerms()
 swe.initializeGyroOnly(vio.graph);
-swe.optimizer.numberOfErrorTerms()
+swe.optimizer.numberOfErrorTerms();
 swe.frameIdsToOptimize
-vio.graph = swe.optimize(vio.graph)
+vio.graph = swe.optimize(vio.graph);
 
 
 

@@ -60,7 +60,7 @@ camIndex = 1; % this can be set to specify the start point.
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point
 
-camEnd = 3;
+camEnd = 10;
 
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
