@@ -14,6 +14,8 @@ classdef SlidingWindowEstimator < handle
             obj.windowSize;
         end
         
+        function [] = initializeGyroOnly(obj, graph)
+        end
         
     end
 end

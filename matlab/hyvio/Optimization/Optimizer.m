@@ -236,6 +236,20 @@ classdef Optimizer < handle
             [graph] = obj.prior.indexHandler.updateGraph(graph, dx);
             
         end
+        
+        % marginalizes an imustate out of the problem by approximating all
+        % error terms associated to the marginalized state with a single
+        % quadratic error term.
+        function [] = marginalizeImustate(obj, id)
+            for c = obj.constraintBuffer
+                for jc = c{1}.jacobians.imustateJacobians
+                    if jc{1}{1} == id
+                        J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                        jc
+                    end
+                end
+            end
+        end
     end
 end
 

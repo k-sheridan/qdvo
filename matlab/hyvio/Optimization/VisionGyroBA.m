@@ -7,8 +7,8 @@ classdef VisionGyroBA < handle
     end
     
     methods
-        % constructs error terms, and optimizes the graph.
-        function [graph] = optimize(obj, graph)
+        
+        function [] = initialize(obj, graph)
             % clear the previous error terms from the optimizer
             obj.optimizer.clearErrorTerms();
             % add inertial (gyro) constraints
@@ -26,6 +26,11 @@ classdef VisionGyroBA < handle
             end
             
             obj.optimizer.numberOfErrorTerms()
+        end
+        
+        % constructs error terms, and optimizes the graph.
+        function [graph] = optimize(obj, graph)
+            
             
             % run the optimizer
             graph = obj.optimizer.optimize(graph);
