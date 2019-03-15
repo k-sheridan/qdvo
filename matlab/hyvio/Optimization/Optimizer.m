@@ -2,7 +2,7 @@ classdef Optimizer < handle
     %OPTIMIZER The goal of this class is to handle the actual optimization
     %of the graph given a set of error terms.
     
-    properties (Access = private)
+    properties %(Access = private)
         constraintBuffer = {}; % stores all of the jacobians and residuals for the update. struct(residual, information, jacobians)
         errorTermContainer = {}; % stores all error terms for this optimizer.
         
@@ -11,6 +11,10 @@ classdef Optimizer < handle
         
         A = [];
         b = [];
+        
+        % for debugging and mroe
+        deltaArray;
+        avgWhiteSqErrorArray;
     end
     
     methods
@@ -45,10 +49,10 @@ classdef Optimizer < handle
             obj.initialize(graph);
             
             % make a delta vec;
-            deltaArray = [];
-            avgWhiteSqErrorArray = [];
+            obj.deltaArray = [];
+            obj.avgWhiteSqErrorArray = [];
             
-            lambda = 1e9;
+            lambda = 1e6;
             v = 10;
             
             % perform gauss newton optimization.
@@ -76,13 +80,14 @@ classdef Optimizer < handle
                 avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
                 
                 % append the errors
-                avgWhiteSqErrorArray = [avgWhiteSqErrorArray, avgWhiteSqError]
+                obj.avgWhiteSqErrorArray = [obj.avgWhiteSqErrorArray, avgWhiteSqError]
                 
                 % check if the error has increased
                 if it > 1
-                    if avgWhiteSqErrorArray(end) >= avgWhiteSqErrorArray(end-1)
+                    if obj.avgWhiteSqErrorArray(end) >= obj.avgWhiteSqErrorArray(end-1)
                         % The avg error has increased. 
                         disp('error has increased!')
+                        lambda = lambda * v
                     else
                         lambda = lambda / v
                     end
@@ -96,7 +101,7 @@ classdef Optimizer < handle
                 dx = linsolve(obj.A, obj.b, opts);
                 
                 % append deltas
-                deltaArray = [deltaArray, dx];
+                obj.deltaArray = [obj.deltaArray, dx];
                 
                 % apply the update.
                 [graph] = obj.applyUpdate(graph, dx);

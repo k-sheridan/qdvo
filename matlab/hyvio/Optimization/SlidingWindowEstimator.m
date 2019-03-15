@@ -64,6 +64,14 @@ classdef SlidingWindowEstimator < handle
             end
         end
         
+        % optimize the graph
+        function [graph] = optimize(obj, graph)
+            % run the optimizer
+            graph = obj.optimizer.optimize(graph);
+            
+            %TODO determine if the optimization failed and revert it.
+        end
+        
     end
 end
 
