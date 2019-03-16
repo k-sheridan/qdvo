@@ -28,7 +28,7 @@ if drawGMMMeans
         for pc = lo{1}.potentialCorrespondenceSet
             pxArr(idx, 1:4) = [pc{1}.pixel(1), pc{1}.pixel(2), 1, 1];
             
-            row = min(round(((pc{1}.score - theta) / (1 - theta)) * res + 1) , res);
+            row = min(round(((pc{1}.score)) * res + 1) , res);
             c = cmap(row, 1:3);
             
             colorArr(idx, 1:3) = c;

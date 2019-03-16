@@ -20,7 +20,7 @@ classdef LandmarkObservation < handle
     
     methods
         
-        function [gaussianWeights] = computeGaussianWeightsRobustly(obj, px, theta)
+        function [gaussianWeights] = computeGaussianWeightsRobustly(obj, px)
             % computes the inverse gaussian weights which avoids numerical
             % issues
             n = length(obj.potentialCorrespondenceSet);
@@ -34,8 +34,8 @@ classdef LandmarkObservation < handle
                         ui = obj.potentialCorrespondenceSet{i}.pixel;
                         uj = obj.potentialCorrespondenceSet{j}.pixel;
                         
-                        e = exp(-(px - uj)'*(px - uj) + (px - ui)'*(px - ui));
-                        w = ((obj.potentialCorrespondenceSet{j}.score - theta) / (obj.potentialCorrespondenceSet{i}.score - theta));
+                        e = exp(-1/2*(px - uj)'*(px - uj) + 1/2*(px - ui)'*(px - ui));
+                        w = ((obj.potentialCorrespondenceSet{j}.score) / (obj.potentialCorrespondenceSet{i}.score));
                         
                         gaussianWeights(i) = gaussianWeights(i) + w * e;
                     end
@@ -47,19 +47,47 @@ classdef LandmarkObservation < handle
             end
         end
         
+        % Computes the weighted error of the form: (px - z_i)
+        % assumes the cov of each potential correspondence is 1 px^2
+        function [residual] = computeResidual(obj, px)
+            n = length(obj.potentialCorrespondenceSet);
+            errorArray = zeros(2, n); % an array of column vectors for each PC.
+            scoreArray = zeros(1, n);
+            idx = 1;
+            for pc = obj.potentialCorrespondenceSet
+                errorArray(1:2, idx) = px - pc{1}.pixel;
+                scoreArray(1, idx) = pc{1}.score;
+                idx = idx + 1;
+            end
+            
+            sqErrorArray = -1/2*sum((errorArray.^2));
+            
+            expArr_score = exp(sqErrorArray).*scoreArray;
+            
+            GMM = sum(expArr_score);
+            
+            if GMM < realmin
+                error('cannot compute the reidual! error too large.')
+            end
+            
+            weights = expArr_score / GMM;
+            
+            residual = (errorArray.*weights);
+            residual = [sum(residual(1,:)); sum(residual(2,:))];
+        end
+        
         function [g] = evaluateUnnormalizedGaussian(obj, pc, px)
             % computes the exponential part of the gaussian distribution
             % for a given px and correspondence.
             error = (px - pc.pixel);
             
-            g = exp(-error' * error); % this is true because the cov = eye(2)
+            g = exp(-1/2*error' * error); % this is true because the cov = eye(2)
         end
         
         function [cov, mean] = computeGMMCovariance(obj)
             % this function computes the overall uncertainty in the gmm.
             pxSum = [0;0];
-            
-            theta = Settings().minimumNormalizedMatchCorrelation;
+           
             
             
             
@@ -73,7 +101,7 @@ classdef LandmarkObservation < handle
             
             for pc = obj.potentialCorrespondenceSet
                 error = pc{1}.pixel - mean;
-                cov = cov + (pc{1}.score - theta) / (1 - theta) * (error*error');
+                cov = cov + (pc{1}.score) * (error*error');
             end
         end
     end

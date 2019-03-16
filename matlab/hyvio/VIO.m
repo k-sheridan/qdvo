@@ -20,7 +20,7 @@ classdef VIO < handle
             obj.graph.extrinsics.addIMU2CameraExtrinsic(1, obj.settings.initial_T_camFromImu(1:3, 1:3), obj.settings.initial_T_camFromImu(1:3, 4));
             
             % create a sliding window estimator.
-            obj.swe = SlidingWindowEstimator(3);
+            obj.swe = SlidingWindowEstimator(2);
         end
         
         function [] = addFrame(obj, frame)
@@ -91,9 +91,10 @@ classdef VIO < handle
             
             % Run the relevant optimization step for the current state of
             % the system.
-            
+            obj.runSlidingWindowEstimator();
             
         end
+        
         
         function [] = addIMUMeasurement(obj, imuMeasurement)
             %add this measurement to the temporary IMU preintegration.
@@ -102,6 +103,19 @@ classdef VIO < handle
                 obj.interimPreintegrationTerm.imuMeasurementArray{end+1} = imuMeasurement;
             else
                 %disp('No frame has been added yet, skipping IMU measurement.')
+            end
+        end
+        
+        % This will set up and run the sliding window estimator given the
+        % current state of the system. It will also marginalize out old
+        % states locally.
+        function [] = runSlidingWindowEstimator(obj)
+            obj.swe.initializeGyroOnly(obj.graph);
+            obj.graph = obj.swe.optimize(obj.graph);
+            
+            % marginalize the last imustate if the estimator is full.
+            if length(obj.swe.frameIdsToOptimize) >= obj.swe.windowSize
+                obj.swe.marginalizeOldestFrame();
             end
         end
         

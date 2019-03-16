@@ -21,6 +21,11 @@ classdef SlidingWindowEstimator < handle
             % get the frame ids to be optimized
             obj.frameIdsToOptimize = [];
             for idx = ((length(graph.FrameContainer)-obj.windowSize+1):length(graph.FrameContainer))
+                
+                if idx <= 0
+                    continue;
+                end
+                
                 obj.frameIdsToOptimize = [obj.frameIdsToOptimize, graph.FrameContainer{idx}.ID];
                 
                 % while in this loop add the visual constraints for these
@@ -54,6 +59,11 @@ classdef SlidingWindowEstimator < handle
             % oldest frme and the one before it.
             % we expect this will add windowSize-1 inertial constraints
             for idx = ((length(graph.InertialConstraintContainer)-obj.windowSize+2):length(graph.InertialConstraintContainer))
+                
+                if idx <= 0
+                    continue;
+                end
+                
                 if ~any(graph.InertialConstraintContainer{idx}.parentFrameID == obj.frameIdsToOptimize) ||...
                         ~any(graph.InertialConstraintContainer{idx}.childFrameID == obj.frameIdsToOptimize)
                     error('inertial error term is out of the window!');

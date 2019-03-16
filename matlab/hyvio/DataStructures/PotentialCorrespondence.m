@@ -3,8 +3,8 @@ classdef PotentialCorrespondence < handle
     % between a landmark and pixel.
     
     properties
-        pixel
-        score
+        pixel % must be column vec
+        score % \in [0,1]
     end
     
     methods

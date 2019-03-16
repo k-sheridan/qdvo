@@ -2,7 +2,7 @@ classdef Optimizer < handle
     %OPTIMIZER The goal of this class is to handle the actual optimization
     %of the graph given a set of error terms.
     
-    properties (Access = private)
+    properties %(Access = private)
         constraintBuffer = {}; % stores all of the jacobians and residuals for the update. struct(residual, information, jacobians)
         errorTermContainer = {}; % stores all error terms for this optimizer.
         

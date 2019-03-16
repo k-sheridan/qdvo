@@ -75,7 +75,7 @@ for idx = (1:length(visibleLandmarkIDs))
                 %add the potential correspondence.
                 pc = PotentialCorrespondence();
                 pc.pixel = centerPx + [dx;dy];
-                pc.score = score;
+                pc.score = (score - s.minimumNormalizedMatchCorrelation) / (1 - s.minimumNormalizedMatchCorrelation);
                 potentialCorrespondences{end+1} = pc;
             end
             

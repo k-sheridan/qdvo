@@ -5,13 +5,15 @@ if nargin < 2
 end
 
 hFig = figure(1);
-set(hFig, 'Position', [0 0 1000 500])
+%set(hFig, 'Position', [0 0 1000 500])
+
+clf
 
 % draw keyframes
 kfCount = 1;
 for idx = (1:length(graph.FrameContainer))
     if graph.FrameContainer{idx}.isKeyframe
-        subplot(1, n+1, kfCount);
+        subplot(1, n+2, kfCount);
         
         drawKeyframe(graph.FrameContainer{idx});
         
@@ -24,8 +26,12 @@ for idx = (1:length(graph.FrameContainer))
 end
 
 % draw currentFrame
-subplot(1, n+1, n+1);
+subplot(1, n+2, n+1);
 drawFrame(graph.FrameContainer{end}, graph)
+
+% draw the graph
+subplot(1, n+2, n+2);
+drawGraph(graph)
 
 end
 
