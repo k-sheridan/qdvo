@@ -17,13 +17,13 @@ for idx = (1:length(graph.FrameContainer))
     else
     end
     
-    for lidx = 1:length(graph.FrameContainer{idx}.landmarks)
-        u0 = graph.FrameContainer{idx}.landmarks{lidx}.bearing;
-        dinv = graph.FrameContainer{idx}.landmarks{lidx}.dinv;
-        
-        p_inWorld = T_w_c(1:3, 1:3) * [u0;1] * (1/dinv) + T_w_c(1:3, 4);
-        plot3(p_inWorld(1), p_inWorld(2), p_inWorld(3), 'ro');
-    end
+%     for lidx = 1:length(graph.FrameContainer{idx}.landmarks)
+%         u0 = graph.FrameContainer{idx}.landmarks{lidx}.bearing;
+%         dinv = graph.FrameContainer{idx}.landmarks{lidx}.dinv;
+%         
+%         p_inWorld = T_w_c(1:3, 1:3) * [u0;1] * (1/dinv) + T_w_c(1:3, 4);
+%         plot3(p_inWorld(1), p_inWorld(2), p_inWorld(3), 'ro');
+%     end
 end
 
 %set(gca,'Color','k')

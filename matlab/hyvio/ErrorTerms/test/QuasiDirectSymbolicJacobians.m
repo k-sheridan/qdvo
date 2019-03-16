@@ -1,5 +1,5 @@
 clear
-syms phix phiy phiz dtx dty dtz
+syms phix phiy phiz dtx dty dtz ddinv
 
 assume([phix,phiy,phiz, dtx, dty, dtz], 'real')
 
@@ -9,7 +9,7 @@ C = so3Exp(1*[1,2,3]);
 d = 1*[1;2;3];
 e = 1*[1;5;3];
 f = 1*[1;2;3];
-dinv = 1;
+dinv = 0.2;
 u0 = [0;0;1];
 
 theta = norm([phix,phiy,phiz]);
@@ -22,19 +22,22 @@ isHat = double(subs([diff(exp_dphi, phix), diff(exp_dphi, phiy), diff(exp_dphi, 
 %proj = C'*(A*exp_dphi)'*B*C*u0*1/dinv + C'*(A*exp_dphi)'*(B*f + e - A*exp_dphi*f - (d+dt));
 T = [C, f; zeros(1, 3), 1];
 trans = inv([A*exp_dphi, d+dt; zeros(1, 3), 1] * T) * [B, e; zeros(1, 3), 1] * T;
-proj = trans(1:3, 1:3) * u0/dinv + trans(1:3, 4);
+proj = trans(1:3, 1:3) * u0/(dinv+ddinv) + trans(1:3, 4);
 u = [proj(1)/proj(3); proj(2)/proj(3)];
 
 p_obs = C'*(A)'*B*C*u0*1/dinv + C'*(A)'*(B*f + e - A*f - (d))
 dPi = [1/p_obs(3), 0, -p_obs(1)/p_obs(3)^2;
     0, 1/p_obs(3), -p_obs(2)/p_obs(3)^2];
 
-symJac = double(subs([diff(u, phix), diff(u, phiy), diff(u, phiz)], [phix,phiy,phiz, dtx,dty,dtz], 1e-24*[1,1,1,1,1,1]))
+symJac = double(subs([diff(u, phix), diff(u, phiy), diff(u, phiz)], [phix,phiy,phiz, dtx,dty,dtz, ddinv], 1e-24*[1,1,1,1,1,1,1]))
 %symJac = double([diff(u, phix), diff(u, phiy), diff(u, phiz)])
 analJac = dPi * (C'*so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e - d)))
 
-symJac = double(subs([diff(u, dtx), diff(u, dty), diff(u, dtz)], [phix,phiy,phiz, dtx,dty,dtz], 1e-24*[1,1,1,1,1,1]))
+symJac = double(subs([diff(u, dtx), diff(u, dty), diff(u, dtz)], [phix,phiy,phiz, dtx,dty,dtz,ddinv], 1e-24*[1,1,1,1,1,1,1]))
 analJac = dPi * -(C'*A')
+
+symJac = double(subs([diff(u, ddinv)], [phix,phiy,phiz, dtx,dty,dtz,ddinv], 1e-24*[1,1,1,1,1,1,1]))
+analJac = dPi * -(C'*A'*B*C*u0*1/dinv^2)
 
 % check that error term is functioning properly.
 cm = load('/Users/kevinsheridan/Documents/Mac Library/RnD/hyvio/matlab/hyvio/ErrorTerms/test/testCameraModel.mat');

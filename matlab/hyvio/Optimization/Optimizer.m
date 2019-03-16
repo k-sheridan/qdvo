@@ -54,11 +54,11 @@ classdef Optimizer < handle
             obj.deltaArray = [];
             obj.avgWhiteSqErrorArray = [];
             
-            lambda = 1e6;
+            lambda = 1e3;
             v = 10;
             
             % perform gauss newton optimization.
-            niter = 20;
+            niter = 10;
             for it = (1:niter)
                 % reset A, and b;
                 obj.A = zeros(obj.prior.indexHandler.dimensions());
@@ -89,7 +89,7 @@ classdef Optimizer < handle
                     if obj.avgWhiteSqErrorArray(end) >= obj.avgWhiteSqErrorArray(end-1)
                         % The avg error has increased. 
                         disp('error has increased!')
-                        break;
+                        %break;
                         lambda = lambda * v
                     else
                         lambda = lambda / v

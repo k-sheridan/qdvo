@@ -7,7 +7,7 @@ classdef VIO < handle
     properties
         graph % pose graph / map
         interimPreintegrationTerm = PreintegratedIMUMeasurement(); % used to cache the set of IMU's between frames.
-        swe; % a global sliding window estimator 
+        swe; % a global sliding window estimator
         settings; % settings for the whole vio impl
     end
     
@@ -92,6 +92,14 @@ classdef VIO < handle
             % Run the relevant optimization step for the current state of
             % the system.
             obj.runSlidingWindowEstimator();
+            
+            % Check if this frame is a keyframe
+            if isKeyframe(obj.graph.FrameContainer{end}, obj.graph)
+                % create new landmarks
+                obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
+                obj.graph.FrameContainer{end}.isKeyframe = true;
+                fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
+            end
             
         end
         

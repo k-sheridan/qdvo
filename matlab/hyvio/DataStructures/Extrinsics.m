@@ -24,6 +24,18 @@ classdef Extrinsics < handle
             T = [obj.imuToCameraTransformContainer{camID}{2}, obj.imuToCameraTransformContainer{camID}{3};
                 zeros(1, 3), 1];
         end
+        
+        function [scale] = getScaleParameter(obj)
+            scale = obj.scaleParameter;
+        end
+        
+        function [] = updateScaleParameter(obj, dx)
+            if length(dx) ~= 1
+                error('scale dimension not 1');
+            end
+            
+            obj.scaleParameter = obj.scaleParameter + dx;
+        end
     end
 end
 

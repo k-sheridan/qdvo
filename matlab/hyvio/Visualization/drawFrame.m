@@ -28,7 +28,7 @@ if drawGMMMeans
         for pc = lo{1}.potentialCorrespondenceSet
             pxArr(idx, 1:4) = [pc{1}.pixel(1), pc{1}.pixel(2), 1, 1];
             
-            row = min(round(((pc{1}.score)) * res + 1) , res);
+            row = max(min(round(((pc{1}.score)) * res + 1) , res), 1);
             c = cmap(row, 1:3);
             
             colorArr(idx, 1:3) = c;
@@ -90,7 +90,7 @@ if drawCorrespondencePriors
         
         z = r_o(3);
     
-        row = min(round((zmax - z) / zmax * res + 1) , res);
+        row = max(min(round((zmax - z) / zmax * res + 1) , res), 1);
         c = cmap(row, 1:3);
         
         colorArr(idx, 1:3) = c;

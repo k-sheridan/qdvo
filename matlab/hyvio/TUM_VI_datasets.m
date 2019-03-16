@@ -72,7 +72,7 @@ while (camIndex <= camEnd)
         camIndex = camIndex + 1;
         
         % draw
-        drawFrameGraph(vio.graph);
+        drawFrameGraph(vio.graph, 3);
         drawnow
         
     else
