@@ -4,6 +4,7 @@ classdef ORB
     
     properties
         pattern; % the orb descriptor pattern [[x1;y1;x2;y2],[x;y],....]
+        patchRadius; % the patch required to compute this descriptor.
     end
     
     methods
@@ -11,7 +12,9 @@ classdef ORB
         function [obj] = ORB()
             rng(1);
             %obj.pattern = obj.bit_pattern_31();
-            obj.pattern = obj.randomPattern(7, 64, 5);
+            obj.patchRadius = 7;
+            obj.pattern = obj.randomPattern(obj.patchRadius, 128, 10);
+            
         end
         
         function [pattern] = randomPattern(obj, radius, n, minDist)
@@ -21,10 +24,20 @@ classdef ORB
                 pattern(1:4, idx) = [randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius])];
                 
                 dist = 0;
+                repeated = true;
                 
-                while dist < minDist
+                while dist < minDist || repeated
                     pattern(1:4, idx) = [randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius])];
                     dist = norm(pattern(3:4, idx) -  pattern(1:2, idx));
+                    
+                    repeated = false;
+                    for innerIdx = (1:idx-1)
+                        if all(pattern(1:4, idx) == pattern(1:4, innerIdx))
+                            repeated = true;
+                            disp('repeat')
+                            break;
+                        end
+                    end
                 end
             end
         end
@@ -294,6 +307,26 @@ classdef ORB
                 line([obj.pattern(1,idx),obj.pattern(3,idx)], [obj.pattern(2,idx),obj.pattern(4,idx)])
             end
         end
+        
+        % extracts a logical array descriptor from the image around a
+        % center pixel: [x;y]
+        function [descriptor] = evaluate(obj, image, center)
+            [m,n] = size(image);
+            descriptor = image(sub2ind([m,n], obj.pattern(2, :) + center(2), obj.pattern(1, :) + center(1))) < ...
+                image(sub2ind([m,n], obj.pattern(4, :) + center(2), obj.pattern(3, :) + center(1)));
+        end
+        
+        % evaluates the hamming distance between the two descriptors.
+        function [ham] = hammingDistance(obj, d1, d2)
+            ham = sum(~xor(d1,d2));
+        end
+        
+        % evaluates the nondimensional hamming distance [0,1]
+        function [score] = compare(obj, d1, d2)
+            [~,max] = size(obj.pattern);
+            score = obj.hammingDistance(d1, d2) / max;
+        end
+        
     end
 end
 
