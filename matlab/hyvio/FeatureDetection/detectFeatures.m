@@ -10,6 +10,8 @@ function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, numFeat
 % use a DSO like feature detection method with locally adaptive
 % thresholding.
 
+fprintf('Looking for %i new features\n', numFeaturesDesired);
+
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
 absoluteMinGrad = 4000000; % the absolute minumum gradient magnitude 
 spatialSamplingRadius = 20; % the manhattan distance between features
@@ -25,7 +27,7 @@ colSpacing = floor(n/gridSize);
 
 newFeatures = [];
 
-averageFeaturesPerGridSection = floor(numFeaturesDesired / gridSize^2);
+averageFeaturesPerGridSection = ceil(numFeaturesDesired / gridSize^2);
 
 % smooth image with median filter.
 K = medfilt2(I, [medianFilterSize, medianFilterSize]);
@@ -39,8 +41,9 @@ featureCountGrid = zeros(gridSize, gridSize);
 for index = (1:length(currentFeatures))
     px = floor(currentFeatures(1:2, index));
     gridLocation = floor(px./[rowSpacing; colSpacing]);
+    gridLocation = max(min(gridLocation, gridSize),1);
     
-    mask(px(1)-spatialMaskRadius:px(1)+spatialMaskRadius, px(2)-spatialMaskRadius:px(2)+spatialMaskRadius) = ones(2*spatialMaskRadius+1);
+    mask(max(px(1)-spatialSamplingRadius, 1):min(px(1)+spatialSamplingRadius, m), max(px(2)-spatialSamplingRadius, 1):min(px(2)+spatialSamplingRadius, n)) = 1;
     
     featureCountGrid(gridLocation(1), gridLocation(2)) = featureCountGrid(gridLocation(1), gridLocation(2)) + 1;
 end
@@ -157,11 +160,23 @@ for gridRow = (1:gridSize)
                 rc = candidateArray(index, 1:2)';
                 if (~mask(rc(1), rc(2))) % if this area is not masked out
                     newFeatures = [newFeatures, [rc(2); rc(1)]]; % flip back to x, y
+                    
+                    featureDeficit = featureDeficit - 1; % decrement the feature deficit
+                    
                     % apply mask to this region
                     mask((max(rc(1)-spatialSamplingRadius, 1):min(rc(1)+spatialSamplingRadius, m)), (max(rc(2)-spatialSamplingRadius, 1):min(rc(2)+spatialSamplingRadius, m)))...
                     = 1;
+                
+                    if featureDeficit <= 0
+                        break;
+                    end
                 end
             end
+           
+        end
+        
+        if length(newFeatures) >= numFeaturesDesired
+            return;
         end
     end
 end

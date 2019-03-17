@@ -31,7 +31,14 @@ classdef IndexHandler < handle
             for k = obj.id2IndexMap.keys
                 % if the key contains '->' it is either a landmark or
                 % imustate.
-                subdx = dx(obj.id2IndexMap(k{1}), 1);
+                try
+                    subdx = dx(obj.id2IndexMap(k{1}), 1);
+                catch
+                    fprintf('CANT UPDATE WITH KEY: %s\n Skiping.\n', k{1});
+                    dx
+                    obj.id2IndexMap(k{1})
+                    continue;
+                end
                 
                 if ~isempty(regexp(k{1}, '->', 'match'))
                     ids_char = strsplit(k{1}, '->');

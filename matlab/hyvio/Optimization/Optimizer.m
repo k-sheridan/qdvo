@@ -130,7 +130,14 @@ classdef Optimizer < handle
         function [] = computeResiduals(obj, graph)
             
             for idx = (1:length(obj.errorTermContainer))
-                [r, information, J] = obj.errorTermContainer{idx}.computeResidual(graph);
+                try
+                    [r, information, J] = obj.errorTermContainer{idx}.computeResidual(graph);
+                catch
+                    disp('could not compute the residual');
+                    s = struct('residual', [], 'information', [], 'jacobians', JacobianContainer());
+                    obj.constraintBuffer{idx} = s;
+                    continue;
+                end
                 
                 s = struct('residual', r, 'information', information, 'jacobians', J);
                 

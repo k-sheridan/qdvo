@@ -2,7 +2,7 @@ function [] = drawFrame(frame, graph)
 %DRAWFRAME draws the frame and its correspondence models
 
 drawErrorBars = false;
-drawGMMMeans = true;
+drawGMMMeans = false;
 drawCorrespondencePriors = true;
     
 

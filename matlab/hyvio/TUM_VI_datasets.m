@@ -27,10 +27,10 @@ gyroScale = [0.943611, 0.00148681, 0.000824366;
             0.000369694, 1.09413, -0.00273521;
              -0.00175252, 0.00834754, 1.01588];
 
-T_camera0FromImu = [-0.99953783, 0.02917807, -0.0085308, 0.04709425;
-    0.00752659, -0.03435493, -0.99938135, -0.04788273; 
-    -0.0294531, -0.99898367, 0.03411944, -0.06972948; 
-    0, 0, 0, 1];
+T_camera0FromImu = [[-0.99954072 0.02910045 -0.00845616 0.04812531];
+[ 0.00741901 -0.03556579 -0.9993398 -0.04626899];
+[-0.02938199 -0.99894356 0.03533356 -0.06808129];
+[ 0. 0. 0. 1. ]];
 
 
 % Create a camera model instance 
@@ -60,10 +60,16 @@ camIndex = 1; % this can be set to specify the start point.
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point
 
-camEnd = 140;
+camEnd = 200;
 
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
+        % skip every other frame
+        if mod(camIndex, 2)
+            camIndex = camIndex + 1;
+            continue;
+        end
+        
         % Add a frame to vio here
         rawImage = double(imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1})));
         
@@ -72,7 +78,7 @@ while (camIndex <= camEnd)
         camIndex = camIndex + 1;
         
         % draw
-        drawFrameGraph(vio.graph, 3);
+        drawFrameGraph(vio.graph);
         drawnow
         
     else

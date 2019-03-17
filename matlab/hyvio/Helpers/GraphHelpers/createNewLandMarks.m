@@ -1,6 +1,6 @@
 function [frame] = createNewLandmarks(frame, graph, maxFeatures)
 % This function will create new landmarks for a given frame such that a
-% more even feature distribution is achieved. 
+% more even feature distribution is achieved.
 %This should be the only function which has the capability of adding new
 %landmarks.
 % MaxFeatures - integer which specifies the desired number of visible features in
@@ -10,19 +10,32 @@ function [frame] = createNewLandmarks(frame, graph, maxFeatures)
 
 
 
-%TODO compute the set of pixels which already have a visible landmark.
-currentFeatures = [];
-numCurrentFeatures = length(currentFeatures);
+%compute the set of pixels which already have a visible landmark.
+
+[ids, temp] = computeVisibleLandmarks(frame, graph);
+numCurrentFeatures = length(temp);
+
+currentFeatures = zeros(2, numCurrentFeatures);
+idx = 1;
+for f = temp
+    currentFeatures(1:2, idx) = f{1};
+    idx = idx + 1;
+end
+
+
+fprintf('Current Feature Count: %i\n', numCurrentFeatures);
 
 % Run feature detection
-newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, maxFeatures-numCurrentFeatures, 50);
+newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), 50);
+
+fprintf('Found %i new features\n', length(newFeatures));
 
 % Create new landmarks for each detected feature
 [~, numFeatures] = size(newFeatures);
 
 for index = (1:numFeatures)
     try
-        [u] = frame.cameraModel.unproject(newFeatures(1:2, index)); 
+        [u] = frame.cameraModel.unproject(newFeatures(1:2, index));
     catch e
         fprintf('Unproject Failed: %s\n', e.message);
         continue;
@@ -37,7 +50,7 @@ for index = (1:numFeatures)
     
     % add unproject jacobian?
     
-    l.dinv = 1/5; % initial z inverse 
+    l.dinv = 1/5; % initial z inverse
     l.dinvPriorUncertainty = 1e12; % initially unknown
     
     l.patchNormal = [0;0;-1]; % best guess is that it is facing the camera.

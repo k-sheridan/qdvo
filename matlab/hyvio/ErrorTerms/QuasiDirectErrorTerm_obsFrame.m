@@ -54,12 +54,7 @@ classdef QuasiDirectErrorTerm_obsFrame
             [px, projJac] = graph.FrameContainer{observationFrameIdx}.cameraModel.project(p_obs);
             
             % compute the residual weights.
-            try
-                residual = obj.landmarkObservation.computeResidual(px);
-            catch
-                disp('nah')
-            end
-            
+            residual = obj.landmarkObservation.computeResidual(px);
             
             if nargout >= 2
                 information = obj.Pinv;

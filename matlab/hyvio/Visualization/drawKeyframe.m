@@ -5,7 +5,7 @@ function [] = drawKeyframe(frame)
 res = 1000;
 zmax = 10;
 
-circlerad = 1;
+circlerad = 3;
 
 cmap = hot(res);
 

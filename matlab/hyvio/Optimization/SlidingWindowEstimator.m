@@ -47,6 +47,16 @@ classdef SlidingWindowEstimator < handle
         end
         
         % initialize the estimator with all error terms involving the
+        % latest n states (visual constraints only).
+        function [] = initializeVisionOnly(obj, graph)
+            % empty the error term container.
+            obj.optimizer.clearErrorTerms();
+            
+            obj.initializeVisualErrorTerms(graph);
+            
+        end
+        
+        % initialize the estimator with all error terms involving the
         % latest n states and any inertial constraints between them.
         function [] = initializeGyroOnly(obj, graph)
             % empty the error term container.

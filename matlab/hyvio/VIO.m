@@ -99,6 +99,9 @@ classdef VIO < handle
                 obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
                 obj.graph.FrameContainer{end}.isKeyframe = true;
                 fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
+                
+                % optimize the previous landmarks and current frame.
+                obj.runVisualBundleAdjustment();
             end
             
         end
@@ -125,6 +128,12 @@ classdef VIO < handle
             if length(obj.swe.frameIdsToOptimize) >= obj.swe.windowSize
                 obj.swe.marginalizeOldestFrame();
             end
+        end
+        
+        function [] = runVisualBundleAdjustment(obj)
+            vba = VisualBA();
+            vba.initialize(obj.graph);
+            obj.graph = vba.optimize(obj.graph);
         end
         
     end

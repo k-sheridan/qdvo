@@ -5,9 +5,10 @@ function [visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLan
 
 assert(frame.ID > 0);
 
-maximumKeyframes = 10;
+maximumKeyframes = 40;
 minimumDepth = 0.01;
 minimumCos = cosd(70);
+maximumRadiusRatio = 0.8;
 
 keyframesChecked = 0;
 
@@ -59,6 +60,7 @@ for frameIdx = (length(graph.FrameContainer):-1:1)
                 fprintf('Project Failed: %s\n', e.message);
                 continue;
             end
+        
             
             visibleLandmarkIDs{end+1} = {graph.FrameContainer{frameIdx}.ID, graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.ID};
             visibleLandmarkPixelPositions{end+1} = px;
