@@ -14,6 +14,9 @@ classdef Settings < handle
         
         maxBufferedFrames = 100; % the maximum size the frame buffer can be.
         
+        patchComparison = 'BRIEF'; % types: 'ZNCC', 'BRIEF'
+        
+        
         initial_T_camFromImu;
         initial_accelBias;
         initial_gyroBias;

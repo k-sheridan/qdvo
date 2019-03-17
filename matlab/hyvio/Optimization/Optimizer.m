@@ -66,7 +66,11 @@ classdef Optimizer < handle
                 % build A and b
                 whitenedSqError = 0;
                 for c = obj.constraintBuffer
-                    J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                    try
+                        J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                    catch
+                        continue;
+                    end
                     sW = sparse(c{1}.information);
                     obj.A = obj.A + J'*sW*J;
                     obj.b = obj.b - J'*sW*c{1}.residual;
@@ -98,6 +102,7 @@ classdef Optimizer < handle
                 
                 % LevenbergMarquardt
                 obj.A = obj.A + lambda*diag(diag(obj.A));
+                
                 
                 %opts.POSDEF = true;
                 opts.SYM = true;
@@ -149,6 +154,10 @@ classdef Optimizer < handle
         
         % creates a sparse matrix, J, such that J*dx ~ r
         function [J] = createConstraintJacobian(obj, jacobianContainer, residualDim)
+            if residualDim == 0
+                error('constraint cannot have a 0 dimension residual!');
+            end
+            
             % create an empty J first.
             J = zeros(residualDim, obj.prior.indexHandler.dimensions());
             
@@ -271,7 +280,11 @@ classdef Optimizer < handle
             for c = obj.constraintBuffer
                 for jc = c{1}.jacobians.imustateJacobians
                     if jc{1}{1} == id
-                        J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                        try
+                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                        catch
+                            continue;
+                        end
                         
                         Am = Am + J'*c{1}.information*J;
                         bm = bm - J'*c{1}.information*c{1}.residual;

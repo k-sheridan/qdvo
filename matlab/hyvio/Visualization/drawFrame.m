@@ -2,8 +2,8 @@ function [] = drawFrame(frame, graph)
 %DRAWFRAME draws the frame and its correspondence models
 
 drawErrorBars = false;
-drawGMMMeans = false;
-drawCorrespondencePriors = true;
+drawGMMMeans = true;
+drawCorrespondencePriors = false;
     
 
 I = frame.raw_image / frame.maxIntensity;
@@ -86,7 +86,7 @@ if drawCorrespondencePriors
         end
         
         
-        pxArr(idx, 1:3) = [px', 1];
+        pxArr(idx, 1:3) = [px', 2];
         
         z = r_o(3);
     
