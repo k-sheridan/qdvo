@@ -12,6 +12,8 @@ classdef Landmark < handle
         
         patchNormal = [0;0;-1] % The normal of the surface which the feature lies on. This is used for warping the patch for feature tracking. This is optimized by twisting it in 2dof.
         
+        status = LandmarkStatus.INACTIVE; % If the point is active it will be used in the SWE.
+        
         frameID % Id of the observation keyframe.
         ID % Id of this point. Only unique inside the keyframe which it lies.
     end

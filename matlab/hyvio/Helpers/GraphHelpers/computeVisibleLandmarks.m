@@ -1,11 +1,16 @@
-function [visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph)
+function [visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph, nKf)
 %This functions computes the landmarks visible in a frame given the graph.
 % visibleLandmarkIDs: vector of parent + landmark ids: {{parentFrameID, landmarkID}}
 % visibleLandmarkPixelpositions: {[x1;y1], [x2;y2], ....}
 
 assert(frame.ID > 0);
 
-maximumKeyframes = 40;
+if nargin >= 3
+    maximumKeyframes = nKf;
+else
+    maximumKeyframes = 40;
+end
+
 minimumDepth = 0.01;
 minimumCos = cosd(70);
 maximumRadiusRatio = 0.8;

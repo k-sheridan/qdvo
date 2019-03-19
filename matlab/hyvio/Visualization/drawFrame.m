@@ -3,8 +3,8 @@ function [] = drawFrame(frame, graph)
 
 drawErrorBars = false;
 drawGMMMeans = true;
-drawCorrespondencePriors = false;
-    
+drawCorrespondencePriors = true;
+
 
 I = frame.raw_image / frame.maxIntensity;
 

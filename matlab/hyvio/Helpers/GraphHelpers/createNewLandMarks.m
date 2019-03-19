@@ -12,18 +12,20 @@ function [frame] = createNewLandmarks(frame, graph, maxFeatures)
 
 %compute the set of pixels which already have a visible landmark.
 
-[ids, temp] = computeVisibleLandmarks(frame, graph);
-numCurrentFeatures = length(temp);
+% [ids, temp] = computeVisibleLandmarks(frame, graph);
+% numCurrentFeatures = length(temp);
+% 
+% currentFeatures = zeros(2, numCurrentFeatures);
+% idx = 1;
+% for f = temp
+%     currentFeatures(1:2, idx) = f{1};
+%     idx = idx + 1;
+% end
 
-currentFeatures = zeros(2, numCurrentFeatures);
-idx = 1;
-for f = temp
-    currentFeatures(1:2, idx) = f{1};
-    idx = idx + 1;
-end
+currentFeatures = [];
+numCurrentFeatures = 0;
 
-
-fprintf('Current Feature Count: %i\n', numCurrentFeatures);
+%fprintf('Current Feature Count: %i\n', numCurrentFeatures);
 
 % Run feature detection
 newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), 50);

@@ -9,12 +9,12 @@ classdef Settings < handle
         minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
-        trans2DepthRatio = 0.05; % the ratio of translation from last keyframe to avg scene depth when a keyframe is made.
+        trans2DepthRatio = 0.02; % the ratio of translation from last keyframe to avg scene depth when a keyframe is made.
         minimumFeatures = 40; % th minimum feature number in a frame.
         
-        maxBufferedFrames = 100; % the maximum size the frame buffer can be.
+        windowSize = 7; % the SWE window size.
         
-        patchComparison = 'BRIEF'; % types: 'ZNCC', 'BRIEF'
+        patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
         
         
         initial_T_camFromImu;

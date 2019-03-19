@@ -14,6 +14,8 @@ classdef Frame < handle
         
         isKeyframe = false; % this flag classifies this frame as a keyframe.
         
+        status = FrameStatus.INACTIVE; % describes if the frame is currently in the SWE.
+        
         landmarks = {}; %In this method landmarks are represented in the frame from which they were first observed (empty if not keyframe).
         
     end

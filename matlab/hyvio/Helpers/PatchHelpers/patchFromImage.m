@@ -8,7 +8,6 @@ hx = centerPixel(1) + patchRadius;
 ly = centerPixel(2) - patchRadius;
 hy = centerPixel(2) + patchRadius;
 
-% TODO check that the bounds are feasible
 
 patch = Patch((image(ly:hy, lx:hx)));
 end

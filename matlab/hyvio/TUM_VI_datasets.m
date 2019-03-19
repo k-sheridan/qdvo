@@ -34,7 +34,7 @@ T_camera0FromImu = [[-0.99954072 0.02910045 -0.00845616 0.04812531];
 
 
 % Create a camera model instance 
-cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [1024;1024], 10000, vignette)
+cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [1024;1024], 10000, vignette);
 
 maxIntensity = 2^16;
 
@@ -60,7 +60,7 @@ camIndex = 1; % this can be set to specify the start point.
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point
 
-camEnd = 200;
+camEnd = 700;
 
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)

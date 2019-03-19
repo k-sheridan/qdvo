@@ -13,7 +13,7 @@ classdef ORB
             rng(1);
             %obj.pattern = obj.bit_pattern_31();
             obj.patchRadius = 7;
-            obj.pattern = obj.randomPattern(obj.patchRadius, 256, 5);
+            obj.pattern = obj.randomPattern(obj.patchRadius, 64, 10);
             
         end
         
@@ -21,13 +21,18 @@ classdef ORB
             pattern = zeros(4, n);
             
             for idx = (1:n)
-                pattern(1:4, idx) = [randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius])];
-                
                 dist = 0;
                 repeated = true;
                 
                 while dist < minDist || repeated
-                    pattern(1:4, idx) = [randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius])];
+                    %pattern(1:4, idx) = [randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius]); randi([-radius,radius])];
+                    center = max(min([randn;randn], radius), -radius);
+                    angle = rand*2*pi;
+                    r1 = rand*radius;
+                    r2 = -rand*radius;
+                    p1 = max(min(center + [cos(angle); sin(angle)]*r1, radius), -radius);
+                    p2 = max(min(center + [cos(angle); sin(angle)]*r2, radius), -radius);
+                    pattern(1:4, idx) = [p1;p2];
                     dist = norm(pattern(3:4, idx) -  pattern(1:2, idx));
                     
                     repeated = false;
@@ -306,6 +311,11 @@ classdef ORB
             for idx = (1:length(obj.pattern))
                 line([obj.pattern(1,idx),obj.pattern(3,idx)], [obj.pattern(2,idx),obj.pattern(4,idx)])
             end
+            
+            title('BRIEF Descriptor Pattern')
+            xticks(-obj.patchRadius:obj.patchRadius)
+            yticks(-obj.patchRadius:obj.patchRadius)
+            grid on;
         end
         
         % extracts a logical array descriptor from the image around a

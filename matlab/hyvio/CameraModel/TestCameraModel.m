@@ -4,8 +4,8 @@ cm = EquidistantCameraModel([0.010171079892421483, -0.010816440029919381, 0.0059
     pi, [380.81042871360756, 380.81194179427075], [510.29465304840727, 514.3304630538506], [1024, 1024], 10000, vignette)
 
 points = [];
-for x = (-20:0.2:20)
-    for y = (-20:0.2:20)
+for x = (-5:0.2:5)
+    for y = (-5:0.2:5)
         pixel = cm.project([x;y;1]);
         if (pixel(1) >= 0 && pixel(1) <= 1024 && pixel(2) >= 0 && pixel(2) <= 1024)
             points = [points, pixel];
@@ -13,13 +13,13 @@ for x = (-20:0.2:20)
     end
 end
 
-imshow(vignette)
+%imshow(vignette)
 hold on
 scatter(points(1, :), points(2, :), 'x')
 xlim([-150, 1200])
 ylim([-150, 1200])
 daspect([1, 1 ,1])
-title('Equidistant Distortion Model')
+title('Equidistant Distortion Model: 10mX10m Grid 1 meter from camera')
 xlabel('pixel')
 ylabel('pixel')
 grid on

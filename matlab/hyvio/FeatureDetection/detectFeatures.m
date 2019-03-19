@@ -14,7 +14,7 @@ fprintf('Looking for %i new features\n', numFeaturesDesired);
 
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
 absoluteMinGrad = 4000000; % the absolute minumum gradient magnitude 
-spatialSamplingRadius = 20; % the manhattan distance between features
+spatialSamplingRadius = 10; % the manhattan distance between features
 medianFilterSize = 3; % this is the size of the median filter kernel
 structureTensorRadius = 3; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
@@ -181,7 +181,6 @@ for gridRow = (1:gridSize)
     end
 end
 
-%imagesc(thresholdedGrads)
 
 end
 

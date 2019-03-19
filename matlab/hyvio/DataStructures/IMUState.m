@@ -7,6 +7,8 @@ classdef IMUState < handle
     % exponential map.
     
     properties
+        dim; % the dimensions fo this variable block
+        
         p % position in world.
         R % attitude in world. (SO(3), 3x3)
         v % velocity in world.
@@ -18,6 +20,7 @@ classdef IMUState < handle
         function obj = IMUState()
             % default constructor.
             % \
+            obj.dim = 15;
             obj.p = zeros(3, 1); % position of imu (inertial frame)
             obj.R = eye(3); % Rot of imu (inertial frame)
             obj.v = zeros(3, 1); % velocity of imu (inertial frame)
@@ -37,6 +40,10 @@ classdef IMUState < handle
         % applies a small minimal form update to the state. The order is
         % listed above. [dp, dphi, dv, dba, dbg]
         function [] = update(obj, dx)
+            
+            if length(dx) ~= 15
+                error('update vector is the wrong dimension for imustate')
+            end
             
             if ~isreal(dx)
                 error('trying to update state with non real tangent vector.')

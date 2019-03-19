@@ -9,15 +9,17 @@ hFig = figure(1);
 
 clf
 
+dim = ceil(sqrt(n+2));
+
 % draw keyframes
 kfCount = 1;
 for idx = (1:length(graph.FrameContainer))
     if graph.FrameContainer{idx}.isKeyframe
-        subplot(1, n+2, kfCount);
+        subplot(dim, dim, kfCount);
         
         drawKeyframe(graph.FrameContainer{idx});
         
-        kfCount = kfCount + 1;
+        kfCount = kfCount + 1
     end
     
     if kfCount > n
@@ -26,12 +28,12 @@ for idx = (1:length(graph.FrameContainer))
 end
 
 % draw currentFrame
-subplot(1, n+2, n+1);
+subplot(dim, dim, n+1);
 drawFrame(graph.FrameContainer{end}, graph)
 
 % draw the graph
-subplot(1, n+2, n+2);
-drawGraph(graph)
+subplot(dim, dim, n+2);
+drawGraph(graph, length(graph.FrameContainer))
 
 end
 

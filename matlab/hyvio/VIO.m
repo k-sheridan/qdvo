@@ -75,7 +75,7 @@ classdef VIO < handle
             % add this inerital error term to the graph as an edge between the frame.
             obj.graph.addInertialConstrain(obj.interimPreintegrationTerm);
             
-            % compute correspondence models for the landmarks visible in
+            % compute correspondence models for the active landmarks visible in
             % this frame.
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
             fprintf('Found %i correspondence models\n', length(landmarkObservations));
@@ -95,13 +95,13 @@ classdef VIO < handle
             
             % Check if this frame is a keyframe
             if isKeyframe(obj.graph.FrameContainer{end}, obj.graph)
+                % optimize the previous landmarks and current frame.
+                obj.runVisualBundleAdjustment();
                 % create new landmarks
                 obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
                 obj.graph.FrameContainer{end}.isKeyframe = true;
                 fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
                 
-                % optimize the previous landmarks and current frame.
-                obj.runVisualBundleAdjustment();
             end
             
         end
