@@ -6,8 +6,8 @@ classdef SlidingWindowEstimator < handle
     properties
         windowSize; % integer list how many frames into the past are optimized.
         optimizer; % the core of this estimator.
-        frameIdsToOptimize = [];
         
+        activeFrameIDs; % the list of frame IDs which are optimized in the SWE
     end
     
     methods
@@ -18,15 +18,21 @@ classdef SlidingWindowEstimator < handle
         
         % adds the visual error terms.
         function initializeVisualErrorTerms(obj, graph)
+            
+            obj.activeFrameIDs = [];
+            
             % get the frame ids to be optimized
-            obj.frameIdsToOptimize = [];
-            for idx = ((length(graph.FrameContainer)-obj.windowSize+1):length(graph.FrameContainer))
+            for idx = (1:length(graph.FrameContainer))
                 
-                if idx <= 0
+                if graph.FrameContainer{idx}.status ~= FrameStatus.ACTIVE
                     continue;
                 end
                 
-                obj.frameIdsToOptimize = [obj.frameIdsToOptimize, graph.FrameContainer{idx}.ID];
+                if ~graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
+                    error('non keyframe is marked active!')
+                end
+                
+                obj.activeFrameIDs = [obj.activeFrameIDs, graph.FrameContainer{idx}.ID];
                 
                 % while in this loop add the visual constraints for these
                 % frames
@@ -40,6 +46,13 @@ classdef SlidingWindowEstimator < handle
                         error('landmark observation not associated to the correct frame');
                     end
                     
+                    if graph.FrameContainer{idx}.landmarks{graph.FrameContainer{idx}.getLandmarkIndex(vc{1}.landmarkID)}.status...
+                            ~= LandmarkStatus.ACTIVE
+                        error('correspondence refers to an inactive landmark!');
+                    end
+                    
+                    
+                    % construct and add the error term.
                     et = QuasiDirectErrorTerm_obsFrame(vc{1});
                     obj.optimizer.addErrorTerm(et);
                 end
@@ -56,33 +69,7 @@ classdef SlidingWindowEstimator < handle
             
         end
         
-        % initialize the estimator with all error terms involving the
-        % latest n states and any inertial constraints between them.
-        function [] = initializeGyroOnly(obj, graph)
-            % empty the error term container.
-            obj.optimizer.clearErrorTerms();
-            
-            obj.initializeVisualErrorTerms(graph);
-            
-            % add the inertial constraints between only the frames to be
-            % optimized. This excludes the inertial constrain between the
-            % oldest frme and the one before it.
-            % we expect this will add windowSize-1 inertial constraints
-            for idx = ((length(graph.InertialConstraintContainer)-obj.windowSize+2):length(graph.InertialConstraintContainer))
-                
-                if idx <= 0
-                    continue;
-                end
-                
-                if ~any(graph.InertialConstraintContainer{idx}.parentFrameID == obj.frameIdsToOptimize) ||...
-                        ~any(graph.InertialConstraintContainer{idx}.childFrameID == obj.frameIdsToOptimize)
-                    error('inertial error term is out of the window!');
-                end
-                
-                et = InertialErrorTerm_gyroOnly(graph.InertialConstraintContainer{idx});
-                obj.optimizer.addErrorTerm(et);
-            end
-        end
+        
         
         % optimize the graph
         function [graph] = optimize(obj, graph)
@@ -94,8 +81,12 @@ classdef SlidingWindowEstimator < handle
         
         % removes the oldest frame from the window and approximates its
         % information with a quadratic error (prior)
-        function [] = marginalizeOldestFrame(obj)
-            fid = min(obj.frameIdsToOptimize);
+        function [] = marginalizeFrame(obj, frameID)
+            
+            % this will check that the frame id is even in the state.
+            indices = obj.optimizer.getPrior().indexHandler.getImustateIndices(frameID);
+            
+            
             obj.optimizer.marginalizeImustate(fid);
         end
         

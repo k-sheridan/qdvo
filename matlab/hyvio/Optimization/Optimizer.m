@@ -309,6 +309,15 @@ classdef Optimizer < handle
             obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
+        
+        % This function will marginalize a batch of landmarks
+        % simultaneosly. The landmarkIDArray is structured as follows:
+        % {{parentID, landmarkID}, {parentID, landmarkID}, ...}
+        % The function will fail if the landmark is not in the variable
+        % list of the optimizer right now.
+        function [] = marginalizeLandmarkBatch(obj, landmarkIDArray)
+            error('not ready though');
+        end
     end
 end
 

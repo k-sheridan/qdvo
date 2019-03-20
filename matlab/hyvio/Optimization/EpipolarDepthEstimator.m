@@ -11,6 +11,8 @@ classdef EpipolarDepthEstimator < handle
     methods
         function obj = EpipolarDepthEstimator()
         end
+        
+        
     end
 end
 
