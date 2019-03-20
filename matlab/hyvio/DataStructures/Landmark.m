@@ -14,6 +14,8 @@ classdef Landmark < handle
         
         status = LandmarkStatus.INACTIVE; % If the point is active it will be used in the SWE.
         
+        epipolarDepthEstimator = EpipolarDepthEstimator();
+        
         frameID % Id of the observation keyframe.
         ID % Id of this point. Only unique inside the keyframe which it lies.
     end

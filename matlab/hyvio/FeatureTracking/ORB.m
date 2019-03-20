@@ -13,7 +13,7 @@ classdef ORB
             rng(1);
             %obj.pattern = obj.bit_pattern_31();
             obj.patchRadius = 7;
-            obj.pattern = obj.randomPattern(obj.patchRadius, 64, 10);
+            obj.pattern = obj.randomPattern(obj.patchRadius, 128, 10);
             
         end
         
@@ -30,8 +30,8 @@ classdef ORB
                     angle = rand*2*pi;
                     r1 = rand*radius;
                     r2 = -rand*radius;
-                    p1 = max(min(center + [cos(angle); sin(angle)]*r1, radius), -radius);
-                    p2 = max(min(center + [cos(angle); sin(angle)]*r2, radius), -radius);
+                    p1 = max(min(round(center + [cos(angle); sin(angle)]*r1), radius), -radius);
+                    p2 = max(min(round(center + [cos(angle); sin(angle)]*r2), radius), -radius);
                     pattern(1:4, idx) = [p1;p2];
                     dist = norm(pattern(3:4, idx) -  pattern(1:2, idx));
                     

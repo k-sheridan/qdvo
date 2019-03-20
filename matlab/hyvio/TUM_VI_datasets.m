@@ -1,10 +1,13 @@
 % This is meant to test and evaluate my visual inertial slam method on all
 % TUM VI datasets
 clear all
+%% DATASET
 datasetPath = 'datasets/dataset-room1_512_16/mav0/';
 
 vignette = imread('datasets/dataset-room1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
+
+%% CALIBRATION
 % Precalibrated extrinsic and intrinsics. These will be refined / estimated
 % in the pipeline, but are used as good initial guesses.
 focalLength = [190.97847715128717, 190.9733070521226];
@@ -32,9 +35,9 @@ T_camera0FromImu = [[-0.99954072 0.02910045 -0.00845616 0.04812531];
 [-0.02938199 -0.99894356 0.03533356 -0.06808129];
 [ 0. 0. 0. 1. ]];
 
-
+%% SETUP
 % Create a camera model instance 
-cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [1024;1024], 10000, vignette);
+cameraModel = EquidistantCameraModel(distortionCoefficients, 1.44*2, focalLength, principalPoint, [512;512], 10000, vignette);
 
 maxIntensity = 2^16;
 
@@ -48,6 +51,8 @@ settings.initial_gyroScale = gyroScale;
 
 % Create an instance of a VIO
 vio = VIO(settings);
+
+%% RUN
 
 % Load csv files for imu, camera
 cam0 = readtable(sprintf('%scam0/data.csv', datasetPath));

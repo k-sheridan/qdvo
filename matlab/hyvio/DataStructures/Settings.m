@@ -2,17 +2,18 @@ classdef Settings < handle
     %SETTINGS A structure for holding all the settings for this VIO impl.
     
     properties
-        nFeaturesDesired = 200; % the number of features which are desired for a given keyframe.
+  
         patchHalfSize = 5; % the patch radius used for comparing.
         searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
+        
+        nFeaturesDesired = 200; % the number of features which are extracted for each keyframe.
         
         minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
-        trans2DepthRatio = 0.02; % the ratio of translation from last keyframe to avg scene depth when a keyframe is made.
-        minimumFeatures = 40; % th minimum feature number in a frame.
-        
-        windowSize = 7; % the SWE window size.
+        nActiveLandmarks = 100; % the number of landmarks which are to be active.
+        minimumActiveLandmarks = 40; % the minimum feature number in a frame.
+        windowSize = 7; % the SWE window size (number of keyframes in the window).
         
         patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
         

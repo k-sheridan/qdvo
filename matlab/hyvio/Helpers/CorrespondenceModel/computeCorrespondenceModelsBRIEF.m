@@ -28,6 +28,11 @@ for idx = (1:length(visibleLandmarkIDs))
     [frameIdx] = graph.getFrameIndex(visibleLandmarkIDs{idx}{1});
     [landmarkIdx] = graph.FrameContainer{frameIdx}.getLandmarkIndex(visibleLandmarkIDs{idx}{2});
     
+    % skip this landmark if it is not active.
+    if graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.status ~= LandmarkStatus.ACTIVE
+        continue;
+    end
+    
     % warp source patch to the given frame for evaluation.
     try
         [warpedPatch] = warpPatchToTargetFrame(graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}, ...

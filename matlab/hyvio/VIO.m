@@ -20,7 +20,7 @@ classdef VIO < handle
             obj.graph.extrinsics.addIMU2CameraExtrinsic(1, obj.settings.initial_T_camFromImu(1:3, 1:3), obj.settings.initial_T_camFromImu(1:3, 4));
             
             % create a sliding window estimator.
-            obj.swe = SlidingWindowEstimator(2);
+            obj.swe = SlidingWindowEstimator(obj.settings.windowSize);
         end
         
         function [] = addFrame(obj, frame)
@@ -78,7 +78,7 @@ classdef VIO < handle
             % compute correspondence models for the active landmarks visible in
             % this frame.
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
-            fprintf('Found %i correspondence models\n', length(landmarkObservations));
+            fprintf('Found %i correspondence models for active features\n', length(landmarkObservations));
             
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
@@ -94,15 +94,15 @@ classdef VIO < handle
             obj.runSlidingWindowEstimator();
             
             % Check if this frame is a keyframe
-            if isKeyframe(obj.graph.FrameContainer{end}, obj.graph)
-                % optimize the previous landmarks and current frame.
-                obj.runVisualBundleAdjustment();
-                % create new landmarks
-                obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
-                obj.graph.FrameContainer{end}.isKeyframe = true;
-                fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
-                
-            end
+%             if isKeyframe(obj.graph.FrameContainer{end}, obj.graph)
+%                 % optimize the previous landmarks and current frame.
+%                 obj.runVisualBundleAdjustment();
+%                 % create new landmarks
+%                 obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
+%                 obj.graph.FrameContainer{end}.isKeyframe = true;
+%                 fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
+%                 
+%             end
             
         end
         
@@ -121,13 +121,7 @@ classdef VIO < handle
         % current state of the system. It will also marginalize out old
         % states locally.
         function [] = runSlidingWindowEstimator(obj)
-            obj.swe.initializeGyroOnly(obj.graph);
-            obj.graph = obj.swe.optimize(obj.graph);
             
-            % marginalize the last imustate if the estimator is full.
-            if length(obj.swe.frameIdsToOptimize) >= obj.swe.windowSize
-                obj.swe.marginalizeOldestFrame();
-            end
         end
         
         function [] = runVisualBundleAdjustment(obj)
