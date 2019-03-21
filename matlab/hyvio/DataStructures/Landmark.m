@@ -4,6 +4,8 @@ classdef Landmark < handle
     %graph optimization, only the inverse depth is solved for.
     
     properties
+        dim = 1; % dimension of this variable 
+        
         bearing % [u;v] (m)
         px % [x; y] This is used for patch matching.
         dinv % Inverse depth of the landmark in the observation keyframe (1/m).

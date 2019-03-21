@@ -35,6 +35,9 @@ classdef VIO < handle
                 % since this is the first frame, it is a keyframe
                 frame.isKeyframe = true;
                 
+                % The newest keyframe is always active.
+                frame.status = FrameStatus.ACTIVE;
+                
                 % create new landmarks
                 frame = createNewLandmarks(frame, obj.graph, obj.settings.nFeaturesDesired);
                 
@@ -43,6 +46,9 @@ classdef VIO < handle
                 
                 % Add the frame to the graph
                 obj.graph.addFrame(frame);
+                
+                % activate landmarks
+                obj.graph = activateNewLandmarks(obj.graph);
                 
                 % add empty frame observations
                 fo = FrameObservationContainer();
@@ -80,6 +86,12 @@ classdef VIO < handle
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
             fprintf('Found %i correspondence models for active features\n', length(landmarkObservations));
             
+            % check if we need to activate new landmarks.
+            if length(landmarkObservations) < obj.settings.minimumActiveLandmarks
+                fprintf('Activating new landmarks\n');
+                obj.graph = activateNewLandmarks(obj.graph);
+            end
+            
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
             frameObs.frameID = frame.ID;
@@ -89,20 +101,8 @@ classdef VIO < handle
             % reset the interim inertial constraint.
             obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
             
-            % Run the relevant optimization step for the current state of
-            % the system.
-            obj.runSlidingWindowEstimator();
+            % front end visual odometry
             
-            % Check if this frame is a keyframe
-%             if isKeyframe(obj.graph.FrameContainer{end}, obj.graph)
-%                 % optimize the previous landmarks and current frame.
-%                 obj.runVisualBundleAdjustment();
-%                 % create new landmarks
-%                 obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
-%                 obj.graph.FrameContainer{end}.isKeyframe = true;
-%                 fprintf('Created %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
-%                 
-%             end
             
         end
         
@@ -117,6 +117,7 @@ classdef VIO < handle
             end
         end
         
+        
         % This will set up and run the sliding window estimator given the
         % current state of the system. It will also marginalize out old
         % states locally.
@@ -128,6 +129,24 @@ classdef VIO < handle
             vba = VisualBA();
             vba.initialize(obj.graph);
             obj.graph = vba.optimize(obj.graph);
+        end
+        
+        
+        % This function will attempt to find the, roughly, the camera
+        % pose at the current frame using the active set of landmarks.
+        function [] = runFrontEndVisualOdometry(obj, frameID)
+            o = Optimizer();
+            
+            idx = obj.graph.getFrameObservationsIndex(frameID);
+            
+            for lo = graph.FrameObservationContainer{idx}.landmarkObservations
+                et = QuasiDirectErrorTerm_obsFrame(lo{1});
+                o.addErrorTerm(et);
+            end
+            
+            o.initialize(obj.graph);
+            
+            obj.graph = o.optimize(obj.graph);
         end
         
     end

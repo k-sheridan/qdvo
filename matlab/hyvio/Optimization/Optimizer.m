@@ -264,6 +264,7 @@ classdef Optimizer < handle
             
         end
         
+        
         % marginalizes an imustate out of the problem by approximating all
         % error terms associated to the marginalized state with a single
         % quadratic error term.
@@ -310,13 +311,65 @@ classdef Optimizer < handle
             obj.prior.indexHandler.checkVariables();
         end
         
+        
         % This function will marginalize a batch of landmarks
         % simultaneosly. The landmarkIDArray is structured as follows:
         % {{parentID, landmarkID}, {parentID, landmarkID}, ...}
         % The function will fail if the landmark is not in the variable
         % list of the optimizer right now.
         function [] = marginalizeLandmarkBatch(obj, landmarkIDArray)
-            error('not ready though');
+            for pair = landmarkIDArray
+                pid = pair{1}{1};
+                lid = pair{1}{2};
+                obj.marginalizeLandmark(pid, lid);
+            end
+        end
+        
+        
+        % marginalizes a landmark out of the problem by approximating all
+        % error terms associated to the marginalized state with a single
+        % quadratic error term.
+        function [] = marginalizeLandmark(obj, parentFrameID, landmarkID)
+            % move this variable set to the top of the problem.
+            % VERY IMPORTANT: the prior must also be shifted with the
+            % variables.
+            key = obj.prior.indexHandler.landmarkKey(parentFrameID, landmarkID);
+            [obj.prior.A, obj.prior.b] = obj.prior.indexHandler.moveVariableToTop(key, obj.prior.A, obj.prior.b);
+            
+            
+            Am = zeros(obj.prior.indexHandler.dimensions());
+            bm = zeros(obj.prior.indexHandler.dimensions(), 1);
+            for c = obj.constraintBuffer
+                for jc = c{1}.jacobians.landmarkJacobians
+                    if jc{1}{1} == parentFrameID && jc{1}{2} == landmarkID
+                        try
+                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                        catch
+                            continue;
+                        end
+                        
+                        Am = Am + J'*c{1}.information*J;
+                        bm = bm - J'*c{1}.information*c{1}.residual;
+                    end
+                end
+            end
+            
+            Am = Am + obj.prior.A;
+            bm = bm - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
+            
+            % use the schur complement to compute the conditional variance.
+            mInd = obj.prior.indexHandler.getLandmarkIndices(parentFrameID, landmarkID);
+            rInd = ((mInd(end)+1):obj.prior.indexHandler.dimensions());
+            
+            bp = bm(rInd, 1) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * bm(mInd, 1);
+            Ap = Am(rInd, rInd) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * Am(mInd, rInd);
+            
+            % remove the variables
+            obj.prior.indexHandler.removeVariable(key);
+            obj.prior.A = Ap;
+            obj.prior.b = bp;
+            obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
+            obj.prior.indexHandler.checkVariables();
         end
     end
 end

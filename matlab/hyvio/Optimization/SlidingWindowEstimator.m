@@ -53,10 +53,17 @@ classdef SlidingWindowEstimator < handle
                     
                     
                     % construct and add the error term.
-                    et = QuasiDirectErrorTerm_obsFrame(vc{1});
+                    et = QuasiDirectErrorTerm_obsFrame_landmarkDinv_sourceFrame(vc{1});
                     obj.optimizer.addErrorTerm(et);
                 end
             end
+            
+            obj.activeFrameIDs
+            
+            if length(obj.activeFrameIDs) > obj.windowSize
+                fprintf('Too many active frames in the window: %i \n', length(obj.activeFrameIDs));
+            end
+            
         end
         
         % initialize the estimator with all error terms involving the
@@ -79,16 +86,32 @@ classdef SlidingWindowEstimator < handle
             %TODO determine if the optimization failed and revert it.
         end
         
-        % removes the oldest frame from the window and approximates its
+        % removes the oldest frame & its landmarks from the window and approximates its
         % information with a quadratic error (prior)
-        function [] = marginalizeFrame(obj, frameID)
+        function [graph] = marginalizeFrame(obj, graph, frameID)
             
             % this will check that the frame id is even in the state.
             indices = obj.optimizer.getPrior().indexHandler.getImustateIndices(frameID);
             
+            % marginalize the landmarks in this keyframe.
+            landmarkIDArray = {};
+            fidx = graph.getFrameIndex(frameID);
+            for l = graph.FrameContainer{fidx}.landmarks
+                if l{1}.status == LandmarkStatus.ACTIVE
+                    landmarkIDArray{end+1} = {frameID, l{1}.ID};
+                end
+                
+                graph.FrameContainer{fidx}.landmarks.status = LandmarkStatus.MARGINALIZED;
+            end
             
+            obj.optimizer.marginalizeLandmarkBatch(landmarkIDArray);
+            
+            % marginalize the keyframe
             obj.optimizer.marginalizeImustate(fid);
+            
+            graph.FrameContainer{fidx}.status = FrameStatus.INACTIVE;
         end
+        
         
     end
 end
