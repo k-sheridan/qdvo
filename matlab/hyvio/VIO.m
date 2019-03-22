@@ -102,7 +102,7 @@ classdef VIO < handle
             obj.interimPreintegrationTerm = PreintegratedIMUMeasurement();
             
             % front end visual odometry
-            
+            obj.runFrontEndVisualOdometry(obj.graph.FrameContainer{end}.ID);
             
         end
         
@@ -139,7 +139,7 @@ classdef VIO < handle
             
             idx = obj.graph.getFrameObservationsIndex(frameID);
             
-            for lo = graph.FrameObservationContainer{idx}.landmarkObservations
+            for lo = obj.graph.FrameObservationContainer{idx}.landmarkObservations
                 et = QuasiDirectErrorTerm_obsFrame(lo{1});
                 o.addErrorTerm(et);
             end
