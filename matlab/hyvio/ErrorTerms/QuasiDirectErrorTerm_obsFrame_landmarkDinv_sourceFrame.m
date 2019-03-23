@@ -1,4 +1,4 @@
-classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
+classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv_sourceFrame
     % error term which seeks to minimize the negative log likelihood of the
     % correspondence distribution by optimizing the imustate of the observing
     % frame and the inverse depth of the landmark in its parent frame.
@@ -16,7 +16,7 @@ classdef QuasiDirectErrorTerm_obsFrame_landmarkDinv
     end
     
     methods
-        function obj = QuasiDirectErrorTerm_obsFrame_landmarkDinv(landmarkObservation)
+        function obj = QuasiDirectErrorTerm_obsFrame_landmarkDinv_sourceFrame(landmarkObservation)
             obj.landmarkObservation = landmarkObservation;
             obj.Pinv = inv(obj.landmarkObservation.computeGMMCovariance());
         end

@@ -104,6 +104,17 @@ classdef VIO < handle
             % front end visual odometry
             obj.runFrontEndVisualOdometry(obj.graph.FrameContainer{end}.ID);
             
+            % check if the current frame is a keyframe
+            if isKeyframe(obj.graph, obj.graph.FrameContainer{end}.ID)
+                fprintf('Creating new landmarks in new keyframe.\n');
+                obj.graph.FrameContainer{end} = createNewLandmarks(obj.graph.FrameContainer{end}, obj.graph, obj.settings.nFeaturesDesired);
+                obj.graph.FrameContainer{end}.status = FrameStatus.ACTIVE;
+                fprintf('Found %i new landmarks\n', length(obj.graph.FrameContainer{end}.landmarks));
+                
+                % run the sliding window estimator
+                obj.runSlidingWindowEstimator();
+            end
+            
         end
         
         
@@ -122,7 +133,8 @@ classdef VIO < handle
         % current state of the system. It will also marginalize out old
         % states locally.
         function [] = runSlidingWindowEstimator(obj)
-            
+            obj.swe.initializeVisionOnly(obj.graph);
+            obj.graph = obj.swe.optimize(obj.graph);
         end
         
         function [] = runVisualBundleAdjustment(obj)

@@ -46,7 +46,9 @@ classdef SlidingWindowEstimator < handle
                         error('landmark observation not associated to the correct frame');
                     end
                     
-                    if graph.FrameContainer{idx}.landmarks{graph.FrameContainer{idx}.getLandmarkIndex(vc{1}.landmarkID)}.status...
+                    lidx = graph.getFrameIndex(vc{1}.landmarkParentFrameID);
+                    
+                    if graph.FrameContainer{lidx}.landmarks{graph.FrameContainer{lidx}.getLandmarkIndex(vc{1}.landmarkID)}.status...
                             ~= LandmarkStatus.ACTIVE
                         error('correspondence refers to an inactive landmark!');
                     end
