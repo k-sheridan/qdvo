@@ -23,7 +23,7 @@ visibleLandmarkPixelPositions = {};
 
 T_i_c = graph.extrinsics.getImu2CameraTransform(frame.camID);
 
-for frameIdx = (length(graph.FrameContainer):-1:1)
+for frameIdx = (1:length(graph.FrameContainer))
     if graph.FrameContainer{frameIdx}.isKeyframe
         
         

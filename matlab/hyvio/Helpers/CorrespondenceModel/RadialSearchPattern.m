@@ -10,7 +10,7 @@ classdef RadialSearchPattern
         function obj = RadialSearchPattern(rMax)
             obj.rMax = rMax;
             rMax = round(rMax);
-            res = round(rMax*2*pi*2);
+            res = round(rMax*2*pi*4);
             thetas = linspace(0,2*pi,res);
             mask = zeros(rMax*2+1);
             %mask(rMax+1,rMax+1) = 1;

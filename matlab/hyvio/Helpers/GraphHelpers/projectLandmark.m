@@ -7,7 +7,7 @@ tf = graph.getFrame(targetFrameID);
 sf = graph.getFrame(parentFrameID);
 lidx = sf.getLandmarkIndex(landmarkID);
 
-T_i_c = grap.extrinsics.getImu2CameraTransform(tf.camID);
+T_i_c = graph.extrinsics.getImu2CameraTransform(tf.camID);
 T_w_obsi = tf.imustate.poseTransform();
 T_w_sourcei = sf.imustate.poseTransform();
 

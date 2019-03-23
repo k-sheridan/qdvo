@@ -9,6 +9,10 @@ classdef Settings < handle
         nFeaturesDesired = 200; % the number of features which are extracted for each keyframe.
         featureSeparation = 20; % the distance between landmarks desired (used for spatial sampling).
         
+        % from the DSO keyframe selection criteria.
+        weightAvgPixelFlow = 0.04;
+        weightAvgTranslationalFlow = 0.12;
+        
         minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
