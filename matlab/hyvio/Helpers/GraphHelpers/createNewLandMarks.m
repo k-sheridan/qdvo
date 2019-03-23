@@ -47,6 +47,10 @@ for index = (1:numFeatures)
     l.frameID = frame.ID;
     l.ID = length(frame.landmarks) + 1; % create a unique landmark ID.
     
+    l.epipolarDepthEstimator = EpipolarDepthEstimator(l.frameID, l.ID);
+    
+    l.status = LandmarkStatus.INACTIVE;
+    
     l.bearing = u(1:2);
     l.px = newFeatures(1:2, index);
     

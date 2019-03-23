@@ -13,6 +13,12 @@ classdef Settings < handle
         weightAvgPixelFlow = 0.04;
         weightAvgTranslationalFlow = 0.12;
         
+        % the minimum depth, maximum depth, and resolution use din the
+        % epipolar depth estimator.
+        minimumDepth = 0.1;
+        maximumDepth = 20;
+        resolution = 50;
+        
         minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
