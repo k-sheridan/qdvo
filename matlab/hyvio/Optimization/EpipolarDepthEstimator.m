@@ -33,7 +33,7 @@ classdef EpipolarDepthEstimator < handle
             
             % update the landmark depth.
             [maximum, index] = max(dinvScoreArray(2, :));
-            dinvMax = dinvScoreArray(2, index);
+            dinvMax = dinvScoreArray(1, index);
             graph.FrameContainer{fidx}.landmarks{lidx}.dinv = dinvMax;
             
             % compute the variance

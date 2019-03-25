@@ -15,11 +15,11 @@ classdef Settings < handle
         
         % the minimum depth, maximum depth, and resolution use din the
         % epipolar depth estimator.
-        minimumDepth = 0.1;
+        minimumDepth = 0.5;
         maximumDepth = 20;
         resolution = 50;
         
-        minimumNormalizedMatchCorrelation = 0.9; % the threshold where a match is called good enough.
+        minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         nActiveLandmarks = 100; % the number of landmarks which are to be active.

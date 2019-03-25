@@ -121,6 +121,8 @@ classdef ZNCCPatchMatcher < handle
             score = sum(sum(((templatePatch.image-templatePatch.meanIntensity).*(targetPatch.image - targetPatch.meanIntensity))));
             
             score = score / sqrt(double(templatePatch.sumZeroMeanSquared * targetPatch.sumZeroMeanSquared));
+            
+            score = (score + 1)/2; % bound it between [0, 1];
         end
     end
 end
