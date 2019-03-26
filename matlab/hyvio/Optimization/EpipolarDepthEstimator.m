@@ -23,8 +23,13 @@ classdef EpipolarDepthEstimator < handle
         function [graph] = updateLandmark(obj, graph)
             s = Settings();
             
-            [dinvScoreArray] = obj.linearDepthSearch(graph, obj.parentFrameID, obj.landmarkID, graph.FrameContainer{end}.ID,...
-                s.minimumDepth, s.maximumDepth, s.resolution);
+            try
+                [dinvScoreArray] = obj.linearDepthSearch(graph, obj.parentFrameID, obj.landmarkID, graph.FrameContainer{end}.ID,...
+                    s.minimumDepth, s.maximumDepth, s.resolution);
+            catch e
+                fprintf('Failed to perform linear depth search: %s \n', e.message);
+                return;
+            end
             
             obj.updateHistory{end+1} = {graph.FrameContainer{end}.ID, dinvScoreArray};
             
@@ -45,8 +50,10 @@ classdef EpipolarDepthEstimator < handle
                     n = n + 1;
                 end
             end
-            variance = sumSquaredDiff / n;
-            graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = variance;
+            if n > 0
+                variance = sumSquaredDiff / n;
+                graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = variance;
+            end
             
             %TODO check if this is an outlier.
             
@@ -82,10 +89,21 @@ classdef EpipolarDepthEstimator < handle
                 
                 p_obs = T_target_source(1:3, 1:4) * [[landmark.bearing; 1] * (1/dinv); 1];
                 
-                px_obs = targetFrame.cameraModel.project(p_obs);
+                try
+                    px_obs = targetFrame.cameraModel.project(p_obs);
+                catch
+                    dinvScoreArray(2, idx) = 0;
+                    continue;
+                end
                 
                 % extract a patch to compare.
-                targetPatch = subPixelPatchFromImage(targetFrame.raw_image, px_obs, s.patchHalfSize);
+                try
+                    targetPatch = subPixelPatchFromImage(targetFrame.raw_image, px_obs, s.patchHalfSize);
+                catch
+                    %fprintf('Could not create patch\n');
+                    dinvScoreArray(2, idx) = 0;
+                    continue;
+                end
                 %imagesc(targetPatch.image, [0, 2^16]);
                 %drawnow;
                 

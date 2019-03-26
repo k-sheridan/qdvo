@@ -104,6 +104,8 @@ classdef VIO < handle
             % front end visual odometry
             obj.runFrontEndVisualOdometry(obj.graph.FrameContainer{end}.ID);
             
+            obj.runEpipolarDepthEstimators(10);
+            
             % check if the current frame is a keyframe
             if isKeyframe(obj.graph, obj.graph.FrameContainer{end}.ID)
                 fprintf('Creating new landmarks in new keyframe.\n');
@@ -159,6 +161,26 @@ classdef VIO < handle
             o.initialize(obj.graph);
             
             obj.graph = o.optimize(obj.graph);
+        end
+        
+        % This function runs the epipolar depth estimators for inactive
+        % landmarks hosted in active frames. updates the n landmarks which
+        % were updated longest ago;
+        function [] = runEpipolarDepthEstimators(obj, kfID)
+            
+            idx = obj.graph.getFrameIndex(kfID);
+            
+            if obj.graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
+                % sweep all landmarks
+                for lidx = (1:length(obj.graph.FrameContainer{idx}.landmarks))
+                    if obj.graph.FrameContainer{idx}.landmarks{lidx}.status == LandmarkStatus.INACTIVE
+                        
+                        % update the epipolar depth estimator
+                        obj.graph = obj.graph.FrameContainer{idx}.landmarks{lidx}.epipolarDepthEstimator.updateLandmark(obj.graph);
+                    end
+                end
+            end
+            
         end
         
     end

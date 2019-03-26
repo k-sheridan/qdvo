@@ -15,14 +15,18 @@ pxArr = [];
 colorArr = [];
 
 for idx = (1:length(frame.landmarks))
-    pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), circlerad];
-    
-    z = 1/frame.landmarks{idx}.dinv;
-    
-    row = max(min(round((zmax - z) / zmax * res + 1) , res), 1);
-    c = cmap(row, 1:3);
-    
-    colorArr(idx, 1:3) = c;
+    if frame.landmarks{idx}.status ~= LandmarkStatus.MARGINALIZED
+        pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), circlerad];
+        
+        z = 1/frame.landmarks{idx}.dinv;
+        
+        
+        row = max(min(round((zmax - z) / zmax * res + 1) , res), 1);
+        c = cmap(row, 1:3);
+        
+        
+        colorArr(idx, 1:3) = c;
+    end
     
 end
 
