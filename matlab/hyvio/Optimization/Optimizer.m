@@ -334,7 +334,13 @@ classdef Optimizer < handle
             % VERY IMPORTANT: the prior must also be shifted with the
             % variables.
             key = obj.prior.indexHandler.landmarkKey(parentFrameID, landmarkID);
-            [obj.prior.A, obj.prior.b] = obj.prior.indexHandler.moveVariableToTop(key, obj.prior.A, obj.prior.b);
+            
+            if obj.prior.indexHandler.hasKey(key)
+                [obj.prior.A, obj.prior.b] = obj.prior.indexHandler.moveVariableToTop(key, obj.prior.A, obj.prior.b);
+            else
+                fprintf('Tried to marginalize a landmark not in the variables\n');
+                return;
+            end
             
             
             Am = zeros(obj.prior.indexHandler.dimensions());

@@ -98,18 +98,20 @@ classdef SlidingWindowEstimator < handle
             % marginalize the landmarks in this keyframe.
             landmarkIDArray = {};
             fidx = graph.getFrameIndex(frameID);
+            idx = 1;
             for l = graph.FrameContainer{fidx}.landmarks
                 if l{1}.status == LandmarkStatus.ACTIVE
                     landmarkIDArray{end+1} = {frameID, l{1}.ID};
                 end
                 
-                graph.FrameContainer{fidx}.landmarks.status = LandmarkStatus.MARGINALIZED;
+                graph.FrameContainer{fidx}.landmarks{idx}.status = LandmarkStatus.MARGINALIZED;
+                idx=idx+1;
             end
             
             obj.optimizer.marginalizeLandmarkBatch(landmarkIDArray);
             
             % marginalize the keyframe
-            obj.optimizer.marginalizeImustate(fid);
+            obj.optimizer.marginalizeImustate(frameID);
             
             graph.FrameContainer{fidx}.status = FrameStatus.INACTIVE;
         end
