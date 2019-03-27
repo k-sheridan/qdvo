@@ -8,7 +8,7 @@ classdef PriorErrorTerm < handle
     properties
         A = []; % this can be thought of as an inverse covariance matrix. 
         b = []; % this can be thought of as a mean of a gaussian on manifold.
-        dx0 = []; % this term is constantly added to until the final iteration, where the prior is reconstructed.
+        %dx0 = []; % this term is constantly added to until the final iteration, where the prior is reconstructed.
         indexHandler; % this is used to describe the variable order in the prior. It is also used to correct the system and change its order.
     end
     
@@ -16,14 +16,17 @@ classdef PriorErrorTerm < handle
         function obj = PriorErrorTerm()
             obj.A = [];
             obj.b = [];
-            obj.dx0 = [];
+            %obj.dx0 = [];
             obj.indexHandler = IndexHandler();
             obj.indexHandler.reset();
         end
         
         % applies additive update to the quadratic prior error term.
         function [] = update(obj, dx)
-            obj.dx0 = obj.dx0 + dx;
+            %obj.dx0 = obj.dx0 + dx;
+            % A*dx + A*dx0 = b
+            % A*dx = b-A*dx0
+            obj.b = obj.b - obj.A*dx;
         end
         
         % This simply initializes the error term as a uniformly uncertain
@@ -53,7 +56,7 @@ classdef PriorErrorTerm < handle
             obj.indexHandler = indexHandler;
             obj.A = A;
             obj.b = b;
-            obj.dx0 = zeros(obj.indexHandler.dimensions(), 1);
+            %obj.dx0 = zeros(obj.indexHandler.dimensions(), 1);
         end
         
         %% add new variables to the prior error term.
@@ -80,7 +83,7 @@ classdef PriorErrorTerm < handle
                 obj.A(indices, indices) = informationMatrix;
                 
                 obj.b = [obj.b; zeros(m, 1)];
-                obj.dx0 = [obj.dx0; zeros(m, 1)];
+                %obj.dx0 = [obj.dx0; zeros(m, 1)];
             end
         end
         
@@ -111,7 +114,7 @@ classdef PriorErrorTerm < handle
                 obj.A(indices, indices) = informationMatrix;
                 
                 obj.b = [obj.b; zeros(m, 1)];
-                obj.dx0 = [obj.dx0; zeros(m, 1)];
+                %obj.dx0 = [obj.dx0; zeros(m, 1)];
             end
         end
         
@@ -132,7 +135,7 @@ classdef PriorErrorTerm < handle
                 obj.A(indices, indices) = informationMatrix;
                 
                 obj.b = [obj.b; zeros(m, 1)];
-                obj.dx0 = [obj.dx0; zeros(m, 1)];
+                %obj.dx0 = [obj.dx0; zeros(m, 1)];
             end
         end
         

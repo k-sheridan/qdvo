@@ -43,7 +43,7 @@ classdef Optimizer < handle
         % using the error terms currently in the optimizer, optimize the
         % graph.
         function [graph] = optimize(obj, graph)
-            assert(all(obj.prior.dx0 == 0));
+            %assert(all(obj.prior.dx0 == 0));
             
             % First, compute the residuals.
             obj.constraintBuffer = cell(1, length(obj.errorTermContainer));
@@ -82,7 +82,7 @@ classdef Optimizer < handle
                 
                 % add the prior constraint
                 obj.A = obj.A + obj.prior.A;
-                obj.b = obj.b + (obj.prior.b - obj.prior.A*obj.prior.dx0);
+                obj.b = obj.b + obj.prior.b;
                 
                 %A*(dx0+dx)=b => A*dx + A*dx0 = b => A*dx = b - A*dx0
                 
@@ -295,7 +295,7 @@ classdef Optimizer < handle
             end
             
             Am = Am + obj.prior.A;
-            bm = bm - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
+            bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getImustateIndices(id);
@@ -308,7 +308,7 @@ classdef Optimizer < handle
             obj.prior.indexHandler.removeVariable(key);
             obj.prior.A = Ap;
             obj.prior.b = bp;
-            obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
+            %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
         
@@ -362,7 +362,7 @@ classdef Optimizer < handle
             end
             
             Am = Am + obj.prior.A;
-            bm = bm - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
+            bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getLandmarkIndices(parentFrameID, landmarkID);
@@ -375,7 +375,7 @@ classdef Optimizer < handle
             obj.prior.indexHandler.removeVariable(key);
             obj.prior.A = Ap;
             obj.prior.b = bp;
-            obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
+            %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
     end
