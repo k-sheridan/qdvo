@@ -43,6 +43,8 @@ classdef Optimizer < handle
         % using the error terms currently in the optimizer, optimize the
         % graph.
         function [graph] = optimize(obj, graph)
+            assert(all(obj.prior.dx0 == 0));
+            
             % First, compute the residuals.
             obj.constraintBuffer = cell(1, length(obj.errorTermContainer));
             obj.computeResiduals(graph);
@@ -80,7 +82,9 @@ classdef Optimizer < handle
                 
                 % add the prior constraint
                 obj.A = obj.A + obj.prior.A;
-                obj.b = obj.b - (obj.prior.A*obj.prior.dx0 + obj.prior.b);
+                obj.b = obj.b + (obj.prior.b - obj.prior.A*obj.prior.dx0);
+                
+                %A*(dx0+dx)=b => A*dx + A*dx0 = b => A*dx = b - A*dx0
                 
                 % Compute the average weighted squared error.
                 avgWhiteSqError = whitenedSqError / length(obj.constraintBuffer);
@@ -101,12 +105,9 @@ classdef Optimizer < handle
                 end
                 
                 % LevenbergMarquardt
-                obj.A = obj.A + lambda*diag(diag(obj.A));
-                
-                
                 %opts.POSDEF = true;
                 opts.SYM = true;
-                dx = linsolve(obj.A, obj.b, opts);
+                dx = linsolve(obj.A + lambda*diag(diag(obj.A)), obj.b, opts);
                 
                 % append deltas
                 obj.deltaArray = [obj.deltaArray, dx];

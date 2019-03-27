@@ -5,7 +5,7 @@ function [] = drawKeyframe(frame)
 res = 1000;
 zmax = 10;
 
-circlerad = 3;
+
 
 cmap = hot(res);
 
@@ -16,7 +16,11 @@ colorArr = [];
 
 for idx = (1:length(frame.landmarks))
     if frame.landmarks{idx}.status ~= LandmarkStatus.MARGINALIZED
-        pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), circlerad];
+        if frame.landmarks{idx}.status == LandmarkStatus.ACTIVE
+            pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), 2];
+        else
+            pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), 1];
+        end
         
         z = 1/frame.landmarks{idx}.dinv;
         
@@ -27,6 +31,7 @@ for idx = (1:length(frame.landmarks))
         
         colorArr(idx, 1:3) = c;
     end
+    
     
 end
 

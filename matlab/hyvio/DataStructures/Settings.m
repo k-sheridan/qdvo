@@ -23,8 +23,8 @@ classdef Settings < handle
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         nActiveLandmarks = 100; % the number of landmarks which are to be active.
-        minimumActiveLandmarks = 50; % the minimum feature number in a frame.
-        windowSize = 7; % the SWE window size (number of keyframes in the window).
+        minimumActiveLandmarks = 90; % the minimum feature number in a frame.
+        windowSize = 10; % the SWE window size (number of keyframes in the window).
         
         patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
         

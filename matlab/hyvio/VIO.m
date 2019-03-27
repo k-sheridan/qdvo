@@ -55,6 +55,13 @@ classdef VIO < handle
                 fo.frameID = frame.ID;
                 obj.graph.FrameObservationContainer{end+1} = fo;
                 
+                % check if we need to activate new landmarks.
+                [idArr] = computeVisibleLandmarks(obj.graph.FrameContainer{end}, obj.graph, true, true);
+                if length(idArr) < obj.settings.minimumActiveLandmarks
+                    fprintf('Activating new landmarks\n');
+                    obj.graph = activateNewLandmarks(obj.graph);
+                end
+                
                 return
             end
             
@@ -81,16 +88,11 @@ classdef VIO < handle
             % add this inerital error term to the graph as an edge between the frame.
             obj.graph.addInertialConstrain(obj.interimPreintegrationTerm);
             
+            
             % compute correspondence models for the active landmarks visible in
             % this frame.
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
             fprintf('Found %i correspondence models for active features\n', length(landmarkObservations));
-            
-            % check if we need to activate new landmarks.
-            if length(landmarkObservations) < obj.settings.minimumActiveLandmarks
-                fprintf('Activating new landmarks\n');
-                obj.graph = activateNewLandmarks(obj.graph);
-            end
             
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
@@ -104,8 +106,6 @@ classdef VIO < handle
             % front end visual odometry
             obj.runFrontEndVisualOdometry(obj.graph.FrameContainer{end}.ID);
             
-            obj.runEpipolarDepthEstimators(10);
-            
             % check if the current frame is a keyframe
             if isKeyframe(obj.graph, obj.graph.FrameContainer{end}.ID)
                 fprintf('Creating new landmarks in new keyframe.\n');
@@ -115,6 +115,14 @@ classdef VIO < handle
                 
                 % run the sliding window estimator
                 obj.runSlidingWindowEstimator();
+                
+                % check if we need to activate new landmarks.
+%                 [idArr] = computeVisibleLandmarks(obj.graph.FrameContainer{end}, obj.graph, true, true);
+%                 if length(idArr) < obj.settings.minimumActiveLandmarks
+%                     fprintf('Activating new landmarks\n');
+%                     obj.graph = activateNewLandmarks(obj.graph);
+%                 end
+                
             end
             
         end
@@ -137,6 +145,8 @@ classdef VIO < handle
         function [] = runSlidingWindowEstimator(obj)
             obj.swe.initializeVisionOnly(obj.graph);
             obj.graph = obj.swe.optimize(obj.graph);
+            % marginalize if necessaary
+            obj.graph = obj.swe.runMarginalizationStrategy(obj.graph);
         end
         
         function [] = runVisualBundleAdjustment(obj)

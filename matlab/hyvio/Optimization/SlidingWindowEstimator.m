@@ -50,7 +50,9 @@ classdef SlidingWindowEstimator < handle
                     
                     if graph.FrameContainer{lidx}.landmarks{graph.FrameContainer{lidx}.getLandmarkIndex(vc{1}.landmarkID)}.status...
                             ~= LandmarkStatus.ACTIVE
-                        error('correspondence refers to an inactive landmark!');
+                        graph.FrameContainer{lidx}.landmarks{graph.FrameContainer{lidx}.getLandmarkIndex(vc{1}.landmarkID)}.status
+                        fprintf('correspondence refers to an inactive or marginalized landmark!\n');
+                        continue;
                     end
                     
                     
@@ -88,9 +90,59 @@ classdef SlidingWindowEstimator < handle
             %TODO determine if the optimization failed and revert it.
         end
         
+        % This will marginalize a keyframe and its landmarks if necessary
+        % according to a marginalization strategy based on number of
+        % criteria.
+        function [graph] = runMarginalizationStrategy(obj, graph)
+            s = Settings();
+            
+            obj.activeFrameIDs = sort(obj.activeFrameIDs); % ensure the ids are in ascending order
+            
+            if length(obj.activeFrameIDs) < obj.windowSize
+                % we are good, no need to marginalize any keyframes yet.
+                return;
+            end
+            
+            % Step 1 see if a keyframe has a low feature percentage.
+            minimumFeaturePercentage = 0.05;
+            keyframeFeatureCount = zeros(1, length(obj.activeFrameIDs));
+            assert(graph.FrameContainer{end}.isKeyframe && graph.FrameContainer{end}.status == FrameStatus.ACTIVE);
+            % look at the correspondence models to see what features are
+            % being used.
+            foidx = graph.getFrameObservationsIndex(graph.FrameContainer{end}.ID);
+            for lo = graph.FrameObservationContainer{foidx}.landmarkObservations
+                parentID = lo{1}.landmarkParentFrameID;
+                idx = find(parentID == obj.activeFrameIDs);
+                keyframeFeatureCount(idx) = keyframeFeatureCount(idx) + 1;
+            end
+            
+            featureRatios = keyframeFeatureCount/sum(keyframeFeatureCount)
+            
+            % marginalize the newest keyframe which has a low Feature
+            % count. and is not the two newest keyframes.
+            if any(featureRatios(1:end-2) < minimumFeaturePercentage)
+                
+                temp = find(featureRatios(1:end-2) < minimumFeaturePercentage);
+                idx = temp(end);
+                kfid = obj.activeFrameIDs(idx);
+                
+                % marginalize the frame
+                graph = obj.marginalizeFrame(graph, kfid);
+                return;
+            end
+            
+            
+            % TODO step 2. check the distance score of each keyframe and
+            % marginalize the maximum.
+            error('not ready')
+            
+        end
+        
         % removes the oldest frame & its landmarks from the window and approximates its
         % information with a quadratic error (prior)
         function [graph] = marginalizeFrame(obj, graph, frameID)
+            
+            fprintf('marginalizing frame: %i and its landmarks\n', frameID);
             
             % this will check that the frame id is even in the state.
             indices = obj.optimizer.getPrior().indexHandler.getImustateIndices(frameID);

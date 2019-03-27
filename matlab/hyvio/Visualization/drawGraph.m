@@ -16,7 +16,11 @@ for idx = (1:length(graph.FrameContainer))
     if idx == maxFrameID
         draw3DCamera(T_w_c, sz, 'r');
     elseif graph.FrameContainer{idx}.isKeyframe
-        draw3DCamera(T_w_c, sz, 'b');
+        if graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
+            draw3DCamera(T_w_c, sz, 'g');
+        else
+            draw3DCamera(T_w_c, sz, 'b');
+        end
     else
     end
     

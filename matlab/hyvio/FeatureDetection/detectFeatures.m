@@ -18,7 +18,7 @@ spatialSamplingRadius = 10; % the manhattan distance between features
 medianFilterSize = 3; % this is the size of the median filter kernel
 structureTensorRadius = 3; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
-edgeWeight = 0.5; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
+edgeWeight = 0; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
 
 % compute grid spacing.
 [m, n] = size(I);
@@ -158,7 +158,13 @@ for gridRow = (1:gridSize)
             % final step of spatial sampling these candidates
             for index = (1:candidateRow)
                 rc = candidateArray(index, 1:2)';
+                if candidateArray(index, 3) <= 0
+                    continue;
+                end
+                
                 if (~mask(rc(1), rc(2))) % if this area is not masked out
+                    
+                    
                     newFeatures = [newFeatures, [rc(2); rc(1)]]; % flip back to x, y
                     
                     featureDeficit = featureDeficit - 1; % decrement the feature deficit

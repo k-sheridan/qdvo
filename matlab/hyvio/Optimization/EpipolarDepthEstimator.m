@@ -55,7 +55,20 @@ classdef EpipolarDepthEstimator < handle
                 graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = variance;
             end
             
-            %TODO check if this is an outlier.
+            % check if this is an outlier.
+            if obj.outlierCheck()
+                % set the landmark to marginalized.
+                graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
+            end
+            
+        end
+        
+        % This function will perform a series of outlier checks using the
+        % update history.
+        function [outlier] = outlierCheck(obj)
+            outlier = false;
+            
+            % ensure the uniqueness of the solution
             
         end
         

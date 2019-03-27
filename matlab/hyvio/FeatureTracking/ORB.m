@@ -13,7 +13,7 @@ classdef ORB
             rng(1);
             %obj.pattern = obj.bit_pattern_31();
             obj.patchRadius = 7;
-            obj.pattern = obj.randomPattern(obj.patchRadius, 128, 10);
+            obj.pattern = obj.randomPattern(obj.patchRadius, 64, 10);
             
         end
         
