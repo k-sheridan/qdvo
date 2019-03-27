@@ -294,8 +294,8 @@ classdef Optimizer < handle
                 end
             end
             
-            Am = Am + obj.prior.A;
-            bm = bm + obj.prior.b;
+            %Am = Am + obj.prior.A;
+            %bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getImustateIndices(id);
@@ -304,10 +304,13 @@ classdef Optimizer < handle
             bp = bm(rInd, 1) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * bm(mInd, 1);
             Ap = Am(rInd, rInd) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * Am(mInd, rInd);
             
+            image(Ap);
+            drawnow;
+            
             % remove the variables
             obj.prior.indexHandler.removeVariable(key);
-            obj.prior.A = Ap;
-            obj.prior.b = bp;
+            obj.prior.A = Ap + obj.prior.A(rInd, rInd);
+            obj.prior.b = bp + obj.prior.b(rInd, 1);
             %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
@@ -361,8 +364,8 @@ classdef Optimizer < handle
                 end
             end
             
-            Am = Am + obj.prior.A;
-            bm = bm + obj.prior.b;
+            %Am = Am + obj.prior.A;
+            %bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getLandmarkIndices(parentFrameID, landmarkID);
@@ -373,8 +376,8 @@ classdef Optimizer < handle
             
             % remove the variables
             obj.prior.indexHandler.removeVariable(key);
-            obj.prior.A = Ap;
-            obj.prior.b = bp;
+            obj.prior.A = Ap + obj.prior.A(rInd, rInd);
+            obj.prior.b = bp + obj.prior.A(rInd, 1);
             %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
