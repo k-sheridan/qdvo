@@ -7,13 +7,15 @@ fprintf('computing correspondence models for frame: %i\n', frame.ID);
 % this function must be optimized. it is currently ~4s for 200 features.
 % This will be less in cpp, but still.
 
-landmarkObservationArray = {};
+
 
 %create a settings instance
 s = Settings();
 
 % first compute the potentially observable landmarks.
 [visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph, true, true);
+
+landmarkObservationArray = cell(1, length(visibleLandmarkPixelPositions));
 
 % iterate through all potentially visibl landmarks, and generate potential
 % correspondences.
@@ -101,10 +103,12 @@ for idx = (1:length(visibleLandmarkIDs))
         
         
         % add to the returned array
-        landmarkObservationArray{end+1} = lo;
+        landmarkObservationArray{idx} = lo;
     end
     
 end
+
+landmarkObservationArray = landmarkObservationArray(~cellfun('isempty',landmarkObservationArray)); % clear the empty cells
 
 end
 

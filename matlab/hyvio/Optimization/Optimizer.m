@@ -363,7 +363,7 @@ classdef Optimizer < handle
                 for jc = c{1}.jacobians.landmarkJacobians
                     if jc{1}{1} == parentFrameID && jc{1}{2} == landmarkID
                         try
-                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual), true);
+                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
                         catch
                             continue;
                         end
