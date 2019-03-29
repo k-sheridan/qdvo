@@ -95,7 +95,7 @@ classdef Optimizer < handle
                 % check if the error has increased
                 if it > 1
                     if obj.avgWhiteSqErrorArray(end) >= obj.avgWhiteSqErrorArray(end-1)
-                        % The avg error has increased. 
+                        % The avg error has increased.
                         disp('error has increased!')
                         %break;
                         lambda = lambda * v
@@ -151,26 +151,33 @@ classdef Optimizer < handle
             end
             
         end
-       
+        
         
         % creates a sparse matrix, J, such that J*dx ~ r
-        function [J] = createConstraintJacobian(obj, jacobianContainer, residualDim)
+        function [J] = createConstraintJacobian(obj, jacobianContainer, residualDim, ignoreLandmarkJacobians)
             if residualDim == 0
                 error('constraint cannot have a 0 dimension residual!');
+            end
+            
+            if nargin < 4
+                ignoreLandmarkJacobians = false;
             end
             
             % create an empty J first.
             J = zeros(residualDim, obj.prior.indexHandler.dimensions());
             
             % landmarks
-            for idx = (1:length(jacobianContainer.landmarkJacobians))
-                
-                pid = jacobianContainer.landmarkJacobians{idx}{1};
-                lid = jacobianContainer.landmarkJacobians{idx}{2};
-                jac = jacobianContainer.landmarkJacobians{idx}{3};
-                
-                J(1:residualDim, obj.prior.indexHandler.getLandmarkIndices(pid, lid)) = jac;
+            if ~ignoreLandmarkJacobians
+                for idx = (1:length(jacobianContainer.landmarkJacobians))
+                    
+                    pid = jacobianContainer.landmarkJacobians{idx}{1};
+                    lid = jacobianContainer.landmarkJacobians{idx}{2};
+                    jac = jacobianContainer.landmarkJacobians{idx}{3};
+                    
+                    J(1:residualDim, obj.prior.indexHandler.getLandmarkIndices(pid, lid)) = jac;
+                end
             end
+            
             
             % imustates
             for idx = (1:length(jacobianContainer.imustateJacobians))
@@ -283,19 +290,25 @@ classdef Optimizer < handle
                 for jc = c{1}.jacobians.imustateJacobians
                     if jc{1}{1} == id
                         try
-                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual), true);
                         catch
                             continue;
                         end
                         
                         Am = Am + J'*c{1}.information*J;
                         bm = bm - J'*c{1}.information*c{1}.residual;
+                        
+                        landmarkIndex = obj.prior.indexHandler.getLandmarkIndices(c{1}.jacobians.landmarkJacobians{1}{1}, c{1}.jacobians.landmarkJacobians{1}{2});
+                        jlittle = c{1}.jacobians.landmarkJacobians{1}{3};
+                        
+                        Am(landmarkIndex, landmarkIndex) = Am(landmarkIndex, landmarkIndex) + jlittle'*c{1}.information*jlittle;
+                        
                     end
                 end
             end
             
-            %Am = Am + obj.prior.A;
-            %bm = bm + obj.prior.b;
+            Am = Am + obj.prior.A;
+            bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getImustateIndices(id);
@@ -304,13 +317,10 @@ classdef Optimizer < handle
             bp = bm(rInd, 1) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * bm(mInd, 1);
             Ap = Am(rInd, rInd) - Am(rInd, mInd) * inv(Am(mInd, mInd)) * Am(mInd, rInd);
             
-            image(Ap);
-            drawnow;
-            
             % remove the variables
             obj.prior.indexHandler.removeVariable(key);
-            obj.prior.A = Ap + obj.prior.A(rInd, rInd);
-            obj.prior.b = bp + obj.prior.b(rInd, 1);
+            obj.prior.A = Ap;
+            obj.prior.b = bp;
             %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
@@ -353,7 +363,7 @@ classdef Optimizer < handle
                 for jc = c{1}.jacobians.landmarkJacobians
                     if jc{1}{1} == parentFrameID && jc{1}{2} == landmarkID
                         try
-                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
+                            J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual), true);
                         catch
                             continue;
                         end

@@ -16,7 +16,7 @@ orb = ORB();
 s = Settings();
 
 % first compute the potentially observable landmarks.
-[visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph);
+[visibleLandmarkIDs, visibleLandmarkPixelPositions] = computeVisibleLandmarks(frame, graph, true, true);
 
 % iterate through all potentially visibl landmarks, and generate potential
 % correspondences.

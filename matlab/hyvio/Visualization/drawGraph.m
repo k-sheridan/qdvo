@@ -19,7 +19,7 @@ for idx = (1:length(graph.FrameContainer))
         if graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
             draw3DCamera(T_w_c, sz, 'g');
         else
-            draw3DCamera(T_w_c, sz, 'b');
+            draw3DCamera(T_w_c, 0.1, 'b');
         end
     else
     end

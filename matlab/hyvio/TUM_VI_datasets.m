@@ -70,10 +70,10 @@ camEnd = 700;
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
         % skip every other frame
-        if mod(camIndex, 2)
-            camIndex = camIndex + 1;
-            continue;
-        end
+%         if mod(camIndex, 2)
+%             camIndex = camIndex + 1;
+%             continue;
+%         end
         
         % Add a frame to vio here
         rawImage = double(imread(sprintf('%scam0/data/%s', datasetPath, cam0(camIndex, 2).filename{1})));

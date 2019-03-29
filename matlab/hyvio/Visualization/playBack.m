@@ -3,7 +3,7 @@ figure();
 drawKeyframe(g.FrameContainer{1});
 
 v = VideoWriter('test.mp4', 'MPEG-4');
-v.FrameRate = 10;
+v.FrameRate = 20;
 open(v);
 
 f = figure();
@@ -18,7 +18,7 @@ for f = g.FrameContainer
     xlim([-10, 5])
     ylim([-2, 2])
     zlim([-2, 2])
-    view(-210, 17)
+    view(75, 20)
     idx = idx + 1;
     drawnow;
     

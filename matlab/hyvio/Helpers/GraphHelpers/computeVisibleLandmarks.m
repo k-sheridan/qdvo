@@ -15,7 +15,7 @@ end
 
 %TODO check these guys
 minimumDepth = 0.01;
-minimumCos = cosd(70);
+minimumCos = cosd(85);
 maximumRadiusRatio = 0.8;
 
 visibleLandmarkIDs = {};
