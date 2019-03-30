@@ -13,13 +13,17 @@ classdef Settings < handle
         weightAvgPixelFlow = 0.04;
         weightAvgTranslationalFlow = 0.12;
         
+        % EPIPOLAR DEPTH ESTIMATOR
         % the minimum depth, maximum depth, and resolution use din the
         % epipolar depth estimator.
         minimumDepth = 0.5;
         maximumDepth = 20;
-        resolution = 50;
+        resolution = 20;
         maximumHypotheses = 4; % the maximum number of matches for a epipolar depth estimator to be called initialized
-        finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
+        finalDepthSearchResolution = 20; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
+        epipolarVarianceScale = 36; % this is the number which scales the variance of the epipolar depth estimate.
+        maximumAttempts = 2; % this is the maximum number of times the epipolar depth estimator can be ran.
+        
         
         minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.

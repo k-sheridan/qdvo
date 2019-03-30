@@ -25,6 +25,19 @@ classdef EpipolarDepthEstimator < handle
         function [graph] = updateLandmark(obj, graph)
             s = Settings();
             
+            fidx = graph.getFrameIndex(obj.parentFrameID);
+            lidx = graph.FrameContainer{fidx}.getLandmarkIndex(obj.landmarkID);
+            
+            if obj.initialized
+                fprintf('Landmark Depth already initialized');
+                return;
+            end
+            
+            if length(obj.updateHistory) >= s.maximumAttempts
+                graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
+                return;
+            end
+            
             try
                 [dinvScoreArray] = obj.linearDepthSearch(graph, obj.parentFrameID, obj.landmarkID, graph.FrameContainer{end}.ID,...
                     s.minimumDepth, s.maximumDepth, s.resolution);
@@ -35,8 +48,6 @@ classdef EpipolarDepthEstimator < handle
             
             obj.updateHistory{end+1} = {graph.FrameContainer{end}.ID, dinvScoreArray};
             
-            fidx = graph.getFrameIndex(obj.parentFrameID);
-            lidx = graph.FrameContainer{fidx}.getLandmarkIndex(obj.landmarkID);
             
             % update the landmark depth.
             [maximum, index] = max(dinvScoreArray(2, :));
@@ -60,7 +71,7 @@ classdef EpipolarDepthEstimator < handle
                 lowVar = (dinvScoreArray(1, deltaIndex) - dinvScoreArray(1, index))^2; % the lowest possible variance
                 
                 variance = max(sumSquaredDiff / n, lowVar);
-                graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = variance;
+                graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = s.epipolarVarianceScale*variance;
             end
             % check if this is an outlier.
             
@@ -90,10 +101,24 @@ classdef EpipolarDepthEstimator < handle
                 % this landmark.
                 obj.initialized = true;
                 
+                fprintf('Successfully Found Depth: %f\n', graph.FrameContainer{fidx}.landmarks{lidx}.dinv);
+                
                 %TODO optional final search for a more accurate depth
                 %estimate.
                 if s.finalDepthSearchResolution
-                    error('not ready yet')
+                    firstIdx = find(hypotheses, 1, 'first');
+                    lastIdx = find(hypotheses, 1, 'last');
+                    lowDinv = dinvScoreArray(1, firstIdx);
+                    highDinv = dinvScoreArray(1, lastIdx);
+                    
+                    finalDinvScoreArray = obj.linearDepthSearch(graph, obj.parentFrameID, obj.landmarkID, graph.FrameContainer{end}.ID,...
+                    1/highDinv, 1/lowDinv, s.resolution);
+                
+                    [maximum, index] = max(finalDinvScoreArray(2, :));
+                    dinvMax = dinvScoreArray(1, index);
+                    graph.FrameContainer{fidx}.landmarks{lidx}.dinv = dinvMax;
+                    
+                    fprintf('High Resolution Depth: %f\n', graph.FrameContainer{fidx}.landmarks{lidx}.dinv);
                 end
                 
                 return;

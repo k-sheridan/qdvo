@@ -177,17 +177,19 @@ classdef VIO < handle
         % This function runs the epipolar depth estimators for inactive
         % landmarks hosted in active frames. updates the n landmarks which
         % were updated longest ago;
-        function [] = runEpipolarDepthEstimators(obj, kfID)
+        function [] = runEpipolarDepthEstimators(obj)
             
-            idx = obj.graph.getFrameIndex(kfID);
-            
-            if obj.graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
-                % sweep all landmarks
-                for lidx = (1:length(obj.graph.FrameContainer{idx}.landmarks))
-                    if obj.graph.FrameContainer{idx}.landmarks{lidx}.status == LandmarkStatus.INACTIVE
-                        
-                        % update the epipolar depth estimator
-                        obj.graph = obj.graph.FrameContainer{idx}.landmarks{lidx}.epipolarDepthEstimator.updateLandmark(obj.graph);
+            for idx = (1:length(obj.graph.FrameContainer))
+                if obj.graph.FrameContainer{idx}.status == FrameStatus.ACTIVE && idx ~= length(obj.graph.FrameContainer)
+                    assert(obj.graph.FrameContainer{idx}.isKeyframe);
+                    % sweep all landmarks
+                    for lidx = (1:length(obj.graph.FrameContainer{idx}.landmarks))
+                        if obj.graph.FrameContainer{idx}.landmarks{lidx}.status == LandmarkStatus.INACTIVE
+                            if ~obj.graph.FrameContainer{idx}.landmarks{lidx}.epipolarDepthEstimator.initialized
+                                % update the epipolar depth estimator
+                                obj.graph = obj.graph.FrameContainer{idx}.landmarks{lidx}.epipolarDepthEstimator.updateLandmark(obj.graph);
+                            end
+                        end
                     end
                 end
             end
