@@ -8,6 +8,7 @@ classdef EpipolarDepthEstimator < handle
         parentFrameID;
         landmarkID;
         updateHistory = {}; % {{updateFrameID, [dinvScoreArray]}, {updateFrameID, [dinvScoreArray]}, ....}
+        initialized = false;
     end
     
     methods
@@ -15,6 +16,7 @@ classdef EpipolarDepthEstimator < handle
             obj.parentFrameID = parentFrameID;
             obj.landmarkID = landmarkID;
             obj.updateHistory = {};
+            obj.initialized = false;
         end
         
         
@@ -51,33 +53,60 @@ classdef EpipolarDepthEstimator < handle
                 end
             end
             if n > 0
-                variance = sumSquaredDiff / n;
+                deltaIndex = index + 1;
+                if deltaIndex > length(dinvScoreArray(2, :))
+                    deltaIndex = index - 1;
+                end
+                lowVar = (dinvScoreArray(1, deltaIndex) - dinvScoreArray(1, index))^2; % the lowest possible variance
+                
+                variance = max(sumSquaredDiff / n, lowVar);
                 graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = variance;
             end
-            
             % check if this is an outlier.
-            if obj.outlierCheck()
-                % set the landmark to marginalized.
+            
+            if n == 0
                 graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
+                return;
             end
             
+            hypotheses = obj.updateHistory{end}{2}(2, :) >= s.minimumNormalizedMatchCorrelation;
+            lastBool = hypotheses(1);
+            numSwitches = 0;
+            for idx = (2:length(hypotheses))
+                if lastBool ~= hypotheses(idx)
+                    numSwitches = numSwitches + 1;
+                end
+                lastBool = hypotheses(idx);
+            end
+            
+            if numSwitches > 2
+                % this means that there are multiple clusters
+                graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
+                return;
+            end
+            
+            if n <= s.maximumHypotheses
+                % this means that we can call the depth initialized for
+                % this landmark.
+                obj.initialized = true;
+                
+                %TODO optional final search for a more accurate depth
+                %estimate.
+                if s.finalDepthSearchResolution
+                    error('not ready yet')
+                end
+                
+                return;
+            end
         end
         
-        % This function will perform a series of outlier checks using the
-        % update history.
-        function [outlier] = outlierCheck(obj)
-            outlier = false;
-            
-            % ensure the uniqueness of the solution
-            
-        end
         
         % Will do a linear search along the epipolar line for the landmark
         % by finding it's depth.
         % returns an array of [[dinv;score], [dinv;score], ...]
         % score \in [0,1]
         function [dinvScoreArray] = linearDepthSearch(obj, graph, parentFrameID, landmarkID, targetFrameID, minimumDepth, maximumDepth, resolution)
-            dinvScoreArray = [linspace(minimumDepth, maximumDepth, resolution).^(-1); zeros(1,resolution)];
+            dinvScoreArray = [linspace(1/maximumDepth, 1/minimumDepth, resolution); zeros(1,resolution)];
             
             s = Settings();
             

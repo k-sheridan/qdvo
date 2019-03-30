@@ -18,6 +18,8 @@ classdef Settings < handle
         minimumDepth = 0.5;
         maximumDepth = 20;
         resolution = 50;
+        maximumHypotheses = 4; % the maximum number of matches for a epipolar depth estimator to be called initialized
+        finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
         
         minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.

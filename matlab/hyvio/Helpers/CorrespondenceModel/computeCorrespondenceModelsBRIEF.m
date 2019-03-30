@@ -1,4 +1,4 @@
-function [landmarkObservationArray] = computeCorrespondenceModels(frame, graph)
+function [landmarkObservationArray] = computeCorrespondenceModelsBRIEF(frame, graph)
 %COMPUTECORRESPONDENCEMODELS generates the correspondence distributions for
 % the given frame.
 
