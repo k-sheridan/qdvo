@@ -138,7 +138,7 @@ classdef SlidingWindowEstimator < handle
             distanceScores = zeros(1, length(obj.activeFrameIDs));
             epsilon = 1e-16;
             scoreIdx = 1;
-            firstIdx = iidx = graph.getFrameIndex(obj.activeFrameIDs(end));
+            firstIdx = graph.getFrameIndex(obj.activeFrameIDs(end));
             for id = obj.activeFrameIDs
                 iidx = graph.getFrameIndex(id);
                 

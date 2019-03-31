@@ -30,7 +30,7 @@ end
 %TODO gaussian blur the spatial mask to get a 'distance' score function.
 
 
-% now sweep again, but activate landmarks which are in new areas.
+% now sweep again, but activate initialized landmarks which are in new areas.
 for idx =  (1:length(idArray))
     if nActiveVisible > s.nActiveLandmarks
         break;
@@ -48,7 +48,7 @@ for idx =  (1:length(idArray))
             occupied = 1;
         end
         
-        if ~occupied
+        if ~occupied && graph.FrameContainer{fidx}.landmarks{lidx}.epipolarDepthEstimator.initialized
             graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.ACTIVE;
             spatialMask(max(px(2)-rad, 1):min(px(2)+rad, m), max(px(1)-rad, 1):min(px(1)+rad, n)) = 1;
             nActiveVisible = nActiveVisible + 1;
@@ -57,4 +57,41 @@ for idx =  (1:length(idArray))
     
     
 end
+
+
+% if we still have too few active features, we need to activate
+% uninitialized landmarks
+
+if nActiveVisible < s.minimumActiveLandmarks
+    fprintf('NEED TO ACTIVE UNINITIALIZED LANDMARKS!');
+    
+    % now sweep again, but activate landmarks which are in new areas.
+    for idx =  (1:length(idArray))
+        if nActiveVisible > s.nActiveLandmarks
+            break;
+        end
+        
+        
+        fidx = graph.getFrameIndex(idArray{idx}{1});
+        lidx = graph.FrameContainer{fidx}.getLandmarkIndex(idArray{idx}{2});
+        
+        if graph.FrameContainer{fidx}.landmarks{lidx}.status == LandmarkStatus.INACTIVE
+            px = round(activeVisible{idx});
+            try
+                occupied = spatialMask(px(2), px(1));
+            catch
+                occupied = 1;
+            end
+            
+            if ~occupied
+                graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.ACTIVE;
+                spatialMask(max(px(2)-rad, 1):min(px(2)+rad, m), max(px(1)-rad, 1):min(px(1)+rad, n)) = 1;
+                nActiveVisible = nActiveVisible + 1;
+            end
+        end
+        
+        
+    end
+end
+
 end
