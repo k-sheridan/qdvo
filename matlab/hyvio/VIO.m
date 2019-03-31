@@ -117,6 +117,9 @@ classdef VIO < handle
                 % run the sliding window estimator
                 obj.runSlidingWindowEstimator();
                 
+                % run the epipolar depth estimator updates
+                obj.runEpipolarDepthEstimators();
+                
                 % check if we need to activate new landmarks.
 %                 [idArr] = computeVisibleLandmarks(obj.graph.FrameContainer{end}, obj.graph, true, true);
 %                 if length(idArr) < obj.settings.minimumActiveLandmarks

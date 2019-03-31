@@ -104,7 +104,7 @@ classdef SlidingWindowEstimator < handle
             end
             
             % Step 1 see if a keyframe has a low feature percentage.
-            minimumFeaturePercentage = 0.05;
+            minimumFeaturePercentage = 0.04;
             keyframeFeatureCount = zeros(1, length(obj.activeFrameIDs));
             assert(graph.FrameContainer{end}.isKeyframe && graph.FrameContainer{end}.status == FrameStatus.ACTIVE);
             % look at the correspondence models to see what features are
@@ -135,6 +135,39 @@ classdef SlidingWindowEstimator < handle
             % TODO step 2. check the distance score of each keyframe and
             % marginalize the maximum.
             error('not ready')
+            distanceScores = zeros(1, length(obj.activeFrameIDs));
+            epsilon = 1e-16;
+            scoreIdx = 1;
+            firstIdx = iidx = graph.getFrameIndex(obj.activeFrameIDs(end));
+            for id = obj.activeFrameIDs
+                iidx = graph.getFrameIndex(id);
+                
+                d_i_1 = norm(graph.FrameContainer{iidx}.imustate.p - graph.FrameContainer{firstIdx}.imustate.p);
+                
+                for innerId = obj.activeFrameIDs
+                    if id ~= innerId && id ~= obj.activeFrameIDs(end) && id ~= obj.activeFrameIDs(end-1)
+                        jidx = graph.getFrameIndex(id);
+                        
+                        d_i_j = norm(graph.FrameContainer{iidx}.imustate.p - graph.FrameContainer{jidx}.imustate.p);
+                        
+                        distanceScores(scoreIdx) = distanceScores(scoreIdx) + 1/(d_i_j + epsilon);
+                        
+                    end
+                end
+                
+                distanceScores(scoreIdx) = sqrt(d_i_1) * distanceScores(scoreIdx);
+                
+                scoreIdx = scoreIdx + 1;
+            end
+            
+            distanceScores
+            
+            [maximum, idx] = max(distanceScores);
+            
+            fprintf('Keyframe %i maximizes the distance score, marginilizing it.\n', obj.activeFrameIDs(idx));
+            
+            graph = obj.marginalizeFrame(graph, obj.activeFrameIDs(idx));
+            return;
             
         end
         

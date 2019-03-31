@@ -30,6 +30,9 @@ for idx = (1:length(frame.landmarks))
         
         
         colorArr(idx, 1:3) = c;
+    else
+        pxArr(idx, 1:3) = [frame.landmarks{idx}.px(1), frame.landmarks{idx}.px(2), 1];
+        colorArr(idx, 1:3) = [0.4, 0.4, 0.4];
     end
     
     

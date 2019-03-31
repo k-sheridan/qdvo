@@ -18,9 +18,9 @@ classdef Settings < handle
         % epipolar depth estimator.
         minimumDepth = 0.5;
         maximumDepth = 20;
-        resolution = 20;
-        maximumHypotheses = 4; % the maximum number of matches for a epipolar depth estimator to be called initialized
-        finalDepthSearchResolution = 20; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
+        resolution = 100;
+        maximumHypotheses = 10; % the maximum number of matches for a epipolar depth estimator to be called initialized
+        finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
         epipolarVarianceScale = 36; % this is the number which scales the variance of the epipolar depth estimate.
         maximumAttempts = 2; % this is the maximum number of times the epipolar depth estimator can be ran.
         

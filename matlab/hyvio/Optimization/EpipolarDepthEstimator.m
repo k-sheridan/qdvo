@@ -106,6 +106,7 @@ classdef EpipolarDepthEstimator < handle
                 %TODO optional final search for a more accurate depth
                 %estimate.
                 if s.finalDepthSearchResolution
+                    error('broken');
                     firstIdx = find(hypotheses, 1, 'first');
                     lastIdx = find(hypotheses, 1, 'last');
                     lowDinv = dinvScoreArray(1, firstIdx);
