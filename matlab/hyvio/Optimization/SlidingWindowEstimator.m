@@ -134,7 +134,7 @@ classdef SlidingWindowEstimator < handle
             
             % TODO step 2. check the distance score of each keyframe and
             % marginalize the maximum.
-            error('not ready')
+            %error('not ready')
             distanceScores = zeros(1, length(obj.activeFrameIDs));
             epsilon = 1e-16;
             scoreIdx = 1;

@@ -295,11 +295,16 @@ classdef Optimizer < handle
                             continue;
                         end
                         
+                        try
+                            landmarkIndex = obj.prior.indexHandler.getLandmarkIndices(c{1}.jacobians.landmarkJacobians{1}{1}, c{1}.jacobians.landmarkJacobians{1}{2});
+                        catch
+                            % the landmark was deleted
+                            continue;
+                        end
+                        jlittle = c{1}.jacobians.landmarkJacobians{1}{3};
+                        
                         Am = Am + J'*c{1}.information*J;
                         bm = bm - J'*c{1}.information*c{1}.residual;
-                        
-                        landmarkIndex = obj.prior.indexHandler.getLandmarkIndices(c{1}.jacobians.landmarkJacobians{1}{1}, c{1}.jacobians.landmarkJacobians{1}{2});
-                        jlittle = c{1}.jacobians.landmarkJacobians{1}{3};
                         
                         Am(landmarkIndex, landmarkIndex) = Am(landmarkIndex, landmarkIndex) + jlittle'*c{1}.information*jlittle;
                         
@@ -374,8 +379,8 @@ classdef Optimizer < handle
                 end
             end
             
-            %Am = Am + obj.prior.A;
-            %bm = bm + obj.prior.b;
+            Am = Am + obj.prior.A;
+            bm = bm + obj.prior.b;
             
             % use the schur complement to compute the conditional variance.
             mInd = obj.prior.indexHandler.getLandmarkIndices(parentFrameID, landmarkID);
@@ -386,8 +391,8 @@ classdef Optimizer < handle
             
             % remove the variables
             obj.prior.indexHandler.removeVariable(key);
-            obj.prior.A = Ap + obj.prior.A(rInd, rInd);
-            obj.prior.b = bp + obj.prior.A(rInd, 1);
+            obj.prior.A = Ap;
+            obj.prior.b = bp;
             %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
