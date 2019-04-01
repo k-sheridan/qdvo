@@ -3,7 +3,7 @@ function [graph] = activateNewLandmarks(graph)
 %and will cover more of the first frame in the graph.
 
 s = Settings();
-rad = s.featureSeparation;
+rad = s.activationFeatureSeparation;
 
 % first sweep the frame list for all active keyframes (oldest to newest)
 % and project the active landmarks in those keyframe into the newest frame,
@@ -52,6 +52,7 @@ for idx =  (1:length(idArray))
             graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.ACTIVE;
             spatialMask(max(px(2)-rad, 1):min(px(2)+rad, m), max(px(1)-rad, 1):min(px(1)+rad, n)) = 1;
             nActiveVisible = nActiveVisible + 1;
+            fprintf('Activated landmark\n');
         end
     end
     
@@ -87,6 +88,7 @@ if nActiveVisible < 20
                 graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.ACTIVE;
                 spatialMask(max(px(2)-rad, 1):min(px(2)+rad, m), max(px(1)-rad, 1):min(px(1)+rad, n)) = 1;
                 nActiveVisible = nActiveVisible + 1;
+                fprintf('Activated uninitialized landmark\n');
             end
         end
         

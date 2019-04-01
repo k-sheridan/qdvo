@@ -65,7 +65,7 @@ camIndex = 1; % this can be set to specify the start point.
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point
 
-camEnd = 700;
+%camEnd = 700;
 
 while (camIndex <= camEnd)
     if(cam0(camIndex, 1).x_timestamp_ns_ <=  imu0(imuIndex, 1).x_timestamp_ns_)
@@ -83,8 +83,8 @@ while (camIndex <= camEnd)
         camIndex = camIndex + 1;
         
         % draw
-        drawFrameGraph(vio.graph);
-        drawnow
+        %drawFrameGraph(vio.graph);
+        %drawnow
         
     else
         % Add the IMU measurement to vio here

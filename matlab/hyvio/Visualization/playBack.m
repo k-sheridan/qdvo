@@ -2,7 +2,7 @@ g = vio.graph;
 figure();
 drawKeyframe(g.FrameContainer{1});
 
-v = VideoWriter('test.mp4', 'MPEG-4');
+v = VideoWriter('test.avi');
 v.FrameRate = 20;
 open(v);
 
@@ -15,9 +15,9 @@ for f = g.FrameContainer
     drawFrame(f{1}, g);
     subplot(1, 2, 2)
     drawGraph(vio.graph, idx);
-    xlim([-10, 5])
-    ylim([-2, 2])
-    zlim([-2, 2])
+    %xlim([-10, 5])
+    %ylim([-2, 2])
+    %zlim([-2, 2])
     view(75, 20)
     idx = idx + 1;
     drawnow;

@@ -80,8 +80,8 @@ classdef VIO < handle
             frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p;
             frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v;
             % always use gyro to initialize the orientation.
-            %frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR
-            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R;
+            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR
+            %frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R;
             
             % add the frame to the graph
             obj.graph.addFrame(frame);
@@ -122,9 +122,11 @@ classdef VIO < handle
                 
                 % check if we need to activate new landmarks.
                 [idArr] = computeVisibleLandmarks(obj.graph.FrameContainer{end}, obj.graph, true, true);
-                if length(idArr) < obj.settings.minimumActiveLandmarks
+                if length(idArr) < obj.settings.nActiveLandmarks
                     fprintf('Activating new landmarks\n');
                     obj.graph = activateNewLandmarks(obj.graph);
+                    obj.swe.initializeVisionOnly(obj.graph);
+                    obj.graph = obj.swe.optimize(obj.graph);
                 end
                 
             end
