@@ -110,5 +110,8 @@ end
 
 landmarkObservationArray = landmarkObservationArray(~cellfun('isempty',landmarkObservationArray)); % clear the empty cells
 
+fprintf('Visible Landmarks: %i Correspondence Models: %i\n', length(visibleLandmarkIDs), length(landmarkObservationArray));
+
+
 end
 

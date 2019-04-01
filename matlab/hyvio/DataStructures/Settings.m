@@ -28,8 +28,8 @@ classdef Settings < handle
         minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
-        nActiveLandmarks = 120; % the number of landmarks which are to be active.
-        minimumActiveLandmarks = 90; % the minimum feature number in a frame.
+        nActiveLandmarks = 200; % the number of landmarks which are to be active.
+        minimumActiveLandmarks = 150; % the minimum feature number in a frame.
         windowSize = 7; % the SWE window size (number of keyframes in the window).
         
         patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
