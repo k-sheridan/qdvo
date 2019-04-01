@@ -125,8 +125,6 @@ classdef VIO < handle
                 if length(idArr) < obj.settings.nActiveLandmarks
                     fprintf('Activating new landmarks\n');
                     obj.graph = activateNewLandmarks(obj.graph);
-                    obj.swe.initializeVisionOnly(obj.graph);
-                    obj.graph = obj.swe.optimize(obj.graph);
                 end
                 
             end

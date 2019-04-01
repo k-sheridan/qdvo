@@ -60,7 +60,7 @@ classdef Optimizer < handle
             v = 10;
             
             % perform gauss newton optimization.
-            niter = 10;
+            niter = 15;
             for it = (1:niter)
                 % reset A, and b;
                 obj.A = zeros(obj.prior.indexHandler.dimensions());

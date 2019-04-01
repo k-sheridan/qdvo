@@ -4,7 +4,7 @@ classdef Settings < handle
     properties
   
         patchHalfSize = 5; % the patch radius used for comparing.
-        searchRadius = 20; % The radius which the pixel resolution patch matcher searches.
+        searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
         
         nFeaturesDesired = 200; % the number of features which are extracted for each keyframe.
         featureSeparation = 15; % the distance between feature desired (used for spatial sampling).
@@ -19,8 +19,8 @@ classdef Settings < handle
         % epipolar depth estimator.
         minimumDepth = 1;
         maximumDepth = 20;
-        resolution = 100;
-        maximumHypotheses = 5; % the maximum number of matches for a epipolar depth estimator to be called initialized
+        resolution = 200;
+        maximumHypotheses = 10; % the maximum number of matches for a epipolar depth estimator to be called initialized
         finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
         epipolarVarianceScale = 36; % this is the number which scales the variance of the epipolar depth estimate.
         maximumAttempts = 4; % this is the maximum number of times the epipolar depth estimator can be ran.
