@@ -39,7 +39,7 @@ classdef VIORenderer < handle
                 
                 if graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
                     
-                    %obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
+                    obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
                     
                     currentActiveKFID = [currentActiveKFID, graph.FrameContainer{idx}.ID];
                     
@@ -55,7 +55,7 @@ classdef VIORenderer < handle
             
             hold on;
             plot3(obj.posHist(1, :), obj.posHist(2, :), obj.posHist(3, :), 'b-');
-            %plot3(obj.kfPosHist(1, :), obj.kfPosHist(2, :), obj.kfPosHist(3, :), 'w-');
+            plot3(obj.kfPosHist(1, :), obj.kfPosHist(2, :), obj.kfPosHist(3, :), 'w-');
             
             % draw current camera
             T_w_cc = graph.FrameContainer{end}.imustate.poseTransform() * T_i_c;
@@ -71,7 +71,8 @@ classdef VIORenderer < handle
                     draw3DCamera(T_w_kfc, 0.2, 'w');
                 end
                 
-                
+                %[pts, colors] = obj.createKFPointCloud(graph, kfid);
+                %pcshow(pts, colors);
                 
             end
             
@@ -92,7 +93,29 @@ classdef VIORenderer < handle
             % render and save image
             drawnow;
             
+            frame = getframe(gcf);
+            writeVideo(obj.vw,frame);
+            
         end
+        
+        function [points, colors] = createKFPointCloud(obj, graph, kfid)
+            fidx = graph.getFrameIndex(kfid);
+            
+            T_i_c = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{fidx}.camID);
+            T_w_c = graph.FrameContainer{fidx}.imustate.poseTransform() * T_i_c;
+            
+            points = [];
+            colors = [];
+            
+            for l = graph.FrameContainer{fidx}.landmarks
+                pt = T_w_c(1:3, 1:3) * [l{1}.bearing; 1] / l{1}.dinv + T_w_c(1:3, 4);
+                intentisty = graph.FrameContainer{fidx}.raw_image(l{1}.px);
+                
+                points = [points; pt'];
+                colors = [colors; [intentisty, intentisty, intentisty]];
+            end
+        end
+        
     end
 end
 

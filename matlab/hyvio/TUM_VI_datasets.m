@@ -54,6 +54,7 @@ vio = VIO(settings);
 
 % create a renderer
 renderer = VIORenderer();
+open(renderer.vw);
 
 %% RUN
 
@@ -113,4 +114,6 @@ while (camIndex <= camEnd)
         imuIndex = imuIndex + 1;
     end
 end
+
+close(renderer.vw);
 
