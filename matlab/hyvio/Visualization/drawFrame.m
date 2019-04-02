@@ -104,8 +104,9 @@ if drawCorrespondencePriors
 end
 
 
-imshow(I);
+imagesc(I, [0, frame.maxIntensity]);
 
+daspect('auto');
 
 % plot gmm gaussian
 if drawErrorBars

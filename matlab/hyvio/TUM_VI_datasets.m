@@ -52,6 +52,9 @@ settings.initial_gyroScale = gyroScale;
 % Create an instance of a VIO
 vio = VIO(settings);
 
+% create a renderer
+renderer = VIORenderer();
+
 %% RUN
 
 % Load csv files for imu, camera
@@ -83,6 +86,9 @@ while (camIndex <= camEnd)
         camIndex = camIndex + 1;
         
         % draw
+        if vio.graph.FrameContainer{end}.isKeyframe || true
+            renderer.update(vio.graph);
+        end
         %drawFrameGraph(vio.graph);
         %drawnow
         

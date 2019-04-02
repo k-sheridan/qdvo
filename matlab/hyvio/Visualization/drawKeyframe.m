@@ -40,7 +40,8 @@ end
 
 I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr, 'Opacity', 1);
 
-imshow(I);
+imagesc(I, [0, frame.maxIntensity]);
+daspect('auto');
 
 title(sprintf('Keyframe %i', frame.ID));
 
