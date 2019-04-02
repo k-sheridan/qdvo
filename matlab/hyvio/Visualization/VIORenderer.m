@@ -4,14 +4,16 @@ classdef VIORenderer < handle
     
     properties
         posHist = []; % [pos, pos, pos, ...]
+        kfPosHist = []; % [pos, pos, pos, ...]
         marginalizedPoints = []; %MX3
         previousActiveKFID = []; % the active kfs at last update
         vw = VideoWriter('render.avi');
         
         
-        k = 5;
+        k = 0.01;
+        d = 5;
         cameraTarget = [0;0;0];
-        cameraPos = [-5;0;0];
+        cameraPos = [-1;0;0];
     end
     
     methods
@@ -21,13 +23,13 @@ classdef VIORenderer < handle
         
         function [] = update(obj, graph)
             currentActiveKFID = [];
-            
             s = Settings();
             % draw Keyframes
             AR = 16/9;
             height = 720;
             set(gcf, 'Position', [0,0,AR*height, height])
             set(gcf, 'Color', [0.4,0.4,0.4]);
+            clf;
             for idx = (length(graph.FrameContainer):-1:1)
                 if idx == length(graph.FrameContainer)
                     subplot('Position', [0.65, 0.3, 0.35, 0.7]);
@@ -37,21 +39,56 @@ classdef VIORenderer < handle
                 
                 if graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
                     
+                    %obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
+                    
                     currentActiveKFID = [currentActiveKFID, graph.FrameContainer{idx}.ID];
                     
-                    left = (length(currentActiveKFID)-1) * 1/s.windowSize;
-                    subplot('Position', [left, 0, 1/s.windowSize, 0.295]);
+                    left = (length(currentActiveKFID)-1) * 1/(s.windowSize-1);
+                    subplot('Position', [left, 0, 1/(s.windowSize-1), 0.3]);
                     drawKeyframe(graph.FrameContainer{idx});
                 end
             end
             
-            % draw Point cloud
+            % draw 3D stuff
+            T_i_c = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{end}.camID);
             subplot('Position', [0, 0.3, 0.65, 0.7]);
+            
             hold on;
             plot3(obj.posHist(1, :), obj.posHist(2, :), obj.posHist(3, :), 'b-');
+            %plot3(obj.kfPosHist(1, :), obj.kfPosHist(2, :), obj.kfPosHist(3, :), 'w-');
             
+            % draw current camera
+            T_w_cc = graph.FrameContainer{end}.imustate.poseTransform() * T_i_c;
+            draw3DCamera(T_w_cc, 0.3, 'g');
+            
+            
+            % draw keyframes
+            for kfid = currentActiveKFID
+                fidx = graph.getFrameIndex(kfid);
+                
+                if fidx ~= length(graph.FrameContainer)
+                    T_w_kfc = graph.FrameContainer{fidx}.imustate.poseTransform() * T_i_c;
+                    draw3DCamera(T_w_kfc, 0.2, 'w');
+                end
+                
+                
+                
+            end
+            
+            
+            
+            % Run follow cam controller
+            angle = pi/6;
+            distance = obj.d;
+            camPosSetPoint = T_w_cc(1:3, 1:3) * [0; -sin(angle); -cos(angle)]*distance + T_w_cc(1:3, 4);
+            % do feedback update to the target and pos
+            obj.cameraTarget = obj.cameraTarget + (T_w_cc(1:3, 4)-obj.cameraTarget)*obj.k;
+            obj.cameraPos = obj.cameraPos + (camPosSetPoint-obj.cameraPos)*obj.k;
+            
+            campos(obj.cameraPos);
+            camtarget(obj.cameraTarget);            
             axis off;
-            
+            daspect([1,1,1])
             % render and save image
             drawnow;
             
