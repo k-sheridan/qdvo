@@ -42,8 +42,9 @@ I = insertShape(I, 'FilledCircle', pxArr,'color',colorArr, 'Opacity', 1);
 
 imagesc(I, [0, frame.maxIntensity]);
 daspect('auto');
+axis off;
 
-title(sprintf('Keyframe %i', frame.ID));
+%title(sprintf('Keyframe %i', frame.ID));
 
 end
 

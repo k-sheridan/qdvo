@@ -105,6 +105,7 @@ end
 
 
 imagesc(I, [0, frame.maxIntensity]);
+axis off;
 
 daspect('auto');
 
@@ -128,7 +129,7 @@ end
 
 
 
-title(sprintf('Frame %i', frame.ID));
+%title(sprintf('Frame %i', frame.ID));
 
 end
 
