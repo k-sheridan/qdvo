@@ -63,7 +63,7 @@ end
 % if we still have too few active features, we need to activate
 % uninitialized landmarks
 
-if nActiveVisible < 20
+if nActiveVisible < s.minimumActiveLandmarks
     fprintf('NEED TO ACTIVE UNINITIALIZED LANDMARKS!');
     
     % now sweep again, but activate landmarks which are in new areas.

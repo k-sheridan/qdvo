@@ -8,7 +8,7 @@ classdef Settings < handle
         
         nFeaturesDesired = 200; % the number of features which are extracted for each keyframe.
         featureSeparation = 15; % the distance between feature desired (used for spatial sampling).
-        activationFeatureSeparation = 10; % the distance between features during activation
+        activationFeatureSeparation = 15; % the distance between features during activation
         
         % from the DSO keyframe selection criteria.
         weightAvgPixelFlow = 0.04;
@@ -19,7 +19,7 @@ classdef Settings < handle
         % epipolar depth estimator.
         minimumDepth = 1;
         maximumDepth = 20;
-        resolution = 200;
+        resolution = 100;
         maximumHypotheses = 10; % the maximum number of matches for a epipolar depth estimator to be called initialized
         finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
         epipolarVarianceScale = 36; % this is the number which scales the variance of the epipolar depth estimate.
@@ -30,7 +30,7 @@ classdef Settings < handle
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         nActiveLandmarks = 200; % the number of landmarks which are to be active.
-        minimumActiveLandmarks = 150; % the minimum feature number in a frame.
+        minimumActiveLandmarks = 100; % the minimum feature number in a frame.
         windowSize = 7; % the SWE window size (number of keyframes in the window).
         
         patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
