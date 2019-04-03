@@ -23,34 +23,27 @@ classdef VIORenderer < handle
         
         function [] = update(obj, graph)
             currentActiveKFID = [];
-            s = Settings();
+            setttings = Settings();
             % draw Keyframes
             AR = 16/9;
             height = 720;
             set(gcf, 'Position', [0,0,AR*height, height])
             set(gcf, 'Color', [0.4,0.4,0.4]);
             clf;
+            
+            
+            obj.posHist = [obj.posHist, graph.FrameContainer{end}.imustate.p];
+            if graph.FrameContainer{end}.isKeyframe
+                obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{end}.imustate.p];
+            end
+            
             for idx = (length(graph.FrameContainer):-1:1)
-                if idx == length(graph.FrameContainer)
-                    subplot('Position', [0.65, 0.3, 0.35, 0.7]);
-                    drawFrame(graph.FrameContainer{idx}, graph);
-                    obj.posHist = [obj.posHist, graph.FrameContainer{idx}.imustate.p];
-                    if graph.FrameContainer{idx}.isKeyframe
-                        obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
-                    end
-                end
                 
                 if graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
-                    
-                    
-                    
                     currentActiveKFID = [currentActiveKFID, graph.FrameContainer{idx}.ID];
-                    
-                    left = (length(currentActiveKFID)-1) * 1/(s.windowSize-1);
-                    subplot('Position', [left, 0, 1/(s.windowSize-1), 0.3]);
-                    drawKeyframe(graph.FrameContainer{idx});
                 end
             end
+            
             
             % draw 3D stuff
             T_i_c = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{end}.camID);
@@ -89,9 +82,8 @@ classdef VIORenderer < handle
             end
             
             
-            
             % Run follow cam controller
-            angle = pi/4;
+            angle = pi/18;
             distance = obj.d;
             camPosSetPoint = T_w_cc(1:3, 1:3) * [0; -sin(angle); -cos(angle)]*distance + T_w_cc(1:3, 4);
             % do feedback update to the target and pos
@@ -103,10 +95,30 @@ classdef VIORenderer < handle
             camtarget(obj.cameraTarget);
             ax = gca;
             ax.CameraViewAngle = 90;
-            
-            set(gcf, 'Color', [0.4,0.4,0.4]);
             axis off;
             daspect([1,1,1])
+            
+            
+            % draw 2d
+            shift = 0;
+            for idx = (length(graph.FrameContainer):-1:1)
+                if idx == length(graph.FrameContainer)
+                    subplot('Position', [0.65, 0.3, 0.35, 0.7]);
+                    drawFrame(graph.FrameContainer{idx}, graph);
+                end
+                
+                if graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
+                    
+                    left = (shift) * 1/(setttings.windowSize-1);
+                    subplot('Position', [left, 0, 1/(setttings.windowSize-1), 0.3]);
+                    drawKeyframe(graph.FrameContainer{idx});
+                    shift = shift + 1;
+                end
+            end
+            
+            
+            %render
+            set(gcf, 'Color', [0.4,0.4,0.4]);
             % render and save image
             set(gcf, 'Position', [0,0,AR*height, height])
             drawnow;
@@ -126,10 +138,10 @@ classdef VIORenderer < handle
             intensity = [];
             
             for l = graph.FrameContainer{fidx}.landmarks
-                if l{1}.status == LandmarkStatus.ACTIVE || true
+                if l{1}.status == LandmarkStatus.ACTIVE || l{1}.epipolarDepthEstimator.initialized
                     pt = T_w_c(1:3, 1:3) * [l{1}.bearing; 1] / l{1}.dinv + T_w_c(1:3, 4);
                     b = graph.FrameContainer{fidx}.raw_image(l{1}.px(2), l{1}.px(1));
-                
+                    
                     points = [points; pt'];
                     intensity = [intensity; b/graph.FrameContainer{fidx}.maxIntensity];
                 end
