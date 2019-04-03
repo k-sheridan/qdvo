@@ -35,11 +35,14 @@ classdef VIORenderer < handle
                     subplot('Position', [0.65, 0.3, 0.35, 0.7]);
                     drawFrame(graph.FrameContainer{idx}, graph);
                     obj.posHist = [obj.posHist, graph.FrameContainer{idx}.imustate.p];
+                    if graph.FrameContainer{idx}.isKeyframe
+                        obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
+                    end
                 end
                 
                 if graph.FrameContainer{idx}.isKeyframe && graph.FrameContainer{idx}.status == FrameStatus.ACTIVE
                     
-                    obj.kfPosHist = [obj.kfPosHist, graph.FrameContainer{idx}.imustate.p];
+                    
                     
                     currentActiveKFID = [currentActiveKFID, graph.FrameContainer{idx}.ID];
                     
@@ -57,10 +60,12 @@ classdef VIORenderer < handle
             plot3(obj.posHist(1, :), obj.posHist(2, :), obj.posHist(3, :), 'b-');
             plot3(obj.kfPosHist(1, :), obj.kfPosHist(2, :), obj.kfPosHist(3, :), 'w-');
             
+            lookatArr = [];
+            
             % draw current camera
             T_w_cc = graph.FrameContainer{end}.imustate.poseTransform() * T_i_c;
-            draw3DCamera(T_w_cc, 0.3, 'g');
-            
+            s = draw3DCamera(T_w_cc, 0.3, 'g');
+            lookatArr = [lookatArr, s];
             
             % draw keyframes
             for kfid = currentActiveKFID
@@ -68,29 +73,42 @@ classdef VIORenderer < handle
                 
                 if fidx ~= length(graph.FrameContainer)
                     T_w_kfc = graph.FrameContainer{fidx}.imustate.poseTransform() * T_i_c;
-                    draw3DCamera(T_w_kfc, 0.2, 'w');
+                    s = draw3DCamera(T_w_kfc, 0.2, 'w');
+                    lookatArr = [lookatArr, s];
                 end
-                
-                %[pts, colors] = obj.createKFPointCloud(graph, kfid);
-                %pcshow(pts, colors);
                 
             end
             
             
             
+            for kfid = currentActiveKFID
+                [pts, colors] = obj.createKFPointCloud(graph, kfid);
+                if length(colors)
+                    scatter3(pts(:, 1), pts(:, 2), pts(:, 3), 10, [colors, colors, colors], 'o', 'filled')
+                end
+            end
+            
+            
+            
             % Run follow cam controller
-            angle = pi/6;
+            angle = pi/4;
             distance = obj.d;
             camPosSetPoint = T_w_cc(1:3, 1:3) * [0; -sin(angle); -cos(angle)]*distance + T_w_cc(1:3, 4);
             % do feedback update to the target and pos
             obj.cameraTarget = obj.cameraTarget + (T_w_cc(1:3, 4)-obj.cameraTarget)*obj.k;
             obj.cameraPos = obj.cameraPos + (camPosSetPoint-obj.cameraPos)*obj.k;
             
+            
             campos(obj.cameraPos);
-            camtarget(obj.cameraTarget);            
+            camtarget(obj.cameraTarget);
+            ax = gca;
+            ax.CameraViewAngle = 90;
+            
+            set(gcf, 'Color', [0.4,0.4,0.4]);
             axis off;
             daspect([1,1,1])
             % render and save image
+            set(gcf, 'Position', [0,0,AR*height, height])
             drawnow;
             
             frame = getframe(gcf);
@@ -98,21 +116,23 @@ classdef VIORenderer < handle
             
         end
         
-        function [points, colors] = createKFPointCloud(obj, graph, kfid)
+        function [points, intensity] = createKFPointCloud(obj, graph, kfid)
             fidx = graph.getFrameIndex(kfid);
             
             T_i_c = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{fidx}.camID);
             T_w_c = graph.FrameContainer{fidx}.imustate.poseTransform() * T_i_c;
             
             points = [];
-            colors = [];
+            intensity = [];
             
             for l = graph.FrameContainer{fidx}.landmarks
-                pt = T_w_c(1:3, 1:3) * [l{1}.bearing; 1] / l{1}.dinv + T_w_c(1:3, 4);
-                intentisty = graph.FrameContainer{fidx}.raw_image(l{1}.px);
+                if l{1}.status == LandmarkStatus.ACTIVE || true
+                    pt = T_w_c(1:3, 1:3) * [l{1}.bearing; 1] / l{1}.dinv + T_w_c(1:3, 4);
+                    b = graph.FrameContainer{fidx}.raw_image(l{1}.px(2), l{1}.px(1));
                 
-                points = [points; pt'];
-                colors = [colors; [intentisty, intentisty, intentisty]];
+                    points = [points; pt'];
+                    intensity = [intensity; b/graph.FrameContainer{fidx}.maxIntensity];
+                end
             end
         end
         
