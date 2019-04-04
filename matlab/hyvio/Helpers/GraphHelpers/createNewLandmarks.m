@@ -22,13 +22,15 @@ function [frame] = createNewLandmarks(frame, graph, maxFeatures)
 %     idx = idx + 1;
 % end
 
+s = Settings();
+
 currentFeatures = [];
 numCurrentFeatures = 0;
 
 %fprintf('Current Feature Count: %i\n', numCurrentFeatures);
 
 % Run feature detection
-newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), 50);
+newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), 50, frame.maxIntensity);
 
 fprintf('Found %i new features\n', length(newFeatures));
 
@@ -56,7 +58,7 @@ for index = (1:numFeatures)
     
     % add unproject jacobian?
     
-    l.dinv = 1/5; % initial z inverse
+    l.dinv = 1/s.initialDepth; % initial z inverse
     l.dinvPriorUncertainty = 1e12; % initially unknown
     
     l.patchNormal = [0;0;-1]; % best guess is that it is facing the camera.

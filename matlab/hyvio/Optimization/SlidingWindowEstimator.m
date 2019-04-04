@@ -90,6 +90,33 @@ classdef SlidingWindowEstimator < handle
             %TODO determine if the optimization failed and revert it.
         end
         
+        % removes outlier landmarks
+        function [graph] = removeOutliers(obj, graph)
+            s = Settings();
+            % iterate through the constraint buffer and find the outliers
+            for c = obj.optimizer.constraintBuffer
+                if ~isempty(c{1}.jacobians.landmarkJacobians)
+                    assert(length(c{1}.jacobians.landmarkJacobians) == 1);
+                    
+                    if norm(c{1}.residual) > s.pixelOutlierThreshold
+                        
+                        pid = c{1}.jacobians.landmarkJacobians{1}{1};
+                        lid = c{1}.jacobians.landmarkJacobians{1}{2};
+                        
+                        fprintf('Marginalizing outlier landmark %i with parent frame: %i with a residual of %f\n', lid, pid, norm(c{1}.residual));
+                        
+                        obj.optimizer.marginalizeLandmark(pid, lid);
+                        
+                        fidx = graph.getFrameIndex(pid);
+                        lidx = graph.FrameContainer{fidx}.getLandmarkIndex(lid);
+                        
+                        graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
+                        
+                    end
+                end
+            end
+        end
+        
         % This will marginalize a keyframe and its landmarks if necessary
         % according to a marginalization strategy based on number of
         % criteria.

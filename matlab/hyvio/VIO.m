@@ -117,6 +117,9 @@ classdef VIO < handle
                 % run the sliding window estimator
                 obj.runSlidingWindowEstimator();
                 
+                % remove outlier landmarks after the full optimization
+                obj.graph = obj.swe.removeOutliers(obj.graph);
+                
                 % run the epipolar depth estimator updates
                 obj.runEpipolarDepthEstimators();
                 

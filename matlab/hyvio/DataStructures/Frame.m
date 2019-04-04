@@ -8,6 +8,10 @@ classdef Frame < handle
         cameraModel % an instance of the camera model. 
         imustate %IMUSTATE Stores the state of this keyframe.
         
+        % image statistics
+        imageMean;
+        imageStandardDeviation;
+        
         camID = 1;
         
         ID = -1 %INT unique keyframe id. This id is used to associate landmarks and measurements with keyframe.
@@ -28,6 +32,9 @@ classdef Frame < handle
             obj.t = t;
             obj.cameraModel = cameraModel;
             obj.maxIntensity = maxIntensity;
+            
+            obj.imageMean = mean(mean(obj.raw_image));
+            obj.imageStandardDeviation = sqrt((obj.raw_image - obj.imageMean).^2);
             
             if (nargin > 4)
                 obj.imustate = imuState;

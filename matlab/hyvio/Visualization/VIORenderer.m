@@ -10,9 +10,9 @@ classdef VIORenderer < handle
         vw = VideoWriter('render.avi');
         
         
-        kPos = 0.01;
+        kPos = 0.09;
         kTarget = 0.1;
-        d = 5;
+        d = 10;
         cameraTarget = [0;0;0];
         cameraPos = [-1;0;0];
     end
@@ -84,7 +84,7 @@ classdef VIORenderer < handle
             
             
             % Run follow cam controller
-            angle = pi/18;
+            angle = pi/4;
             distance = obj.d;
             camPosSetPoint = T_w_cc(1:3, 1:3) * [0; -sin(angle); -cos(angle)]*distance + T_w_cc(1:3, 4);
             % do feedback update to the target and pos

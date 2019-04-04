@@ -1,4 +1,4 @@
-function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, numFeaturesDesired, gridSize)
+function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, numFeaturesDesired, gridSize, maxIntensity)
 %select new features from a given image. Attempt to find new
 %features in areas with no tracked features. Do not extract features where
 %the mask is ~0 (from vignette). Spatially sample features.
@@ -12,10 +12,12 @@ function [newFeatures] = detectFeatures(I, cameraModel, currentFeatures, numFeat
 
 fprintf('Looking for %i new features\n', numFeaturesDesired);
 
+s = Settings();
+
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
-absoluteMinGrad = 4000000; % the absolute minumum gradient magnitude 
+absoluteMinGrad = s.minimumNormalizedGradientMagnitude * maxIntensity; % the absolute minumum gradient magnitude 
 spatialSamplingRadius = 10; % the manhattan distance between features
-medianFilterSize = 3; % this is the size of the median filter kernel
+medianFilterSize = s.medianFilterSize; % this is the size of the median filter kernel
 structureTensorRadius = 3; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
 edgeWeight = 0; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
@@ -52,7 +54,7 @@ end
 % compute the image gradients
 [gradX, gradY] = gradient(K);
 
-magGrad = sqrt((gradX.^2).*(gradY.^2));
+magGrad = sqrt((gradX.^2) + (gradY.^2));
 
 % adaptive threshold with grid
 gradMeanGrid = zeros(gridSize);

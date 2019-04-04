@@ -7,7 +7,8 @@ classdef EpipolarDepthEstimator < handle
     properties 
         parentFrameID;
         landmarkID;
-        updateHistory = {}; % {{updateFrameID, [dinvScoreArray]}, {updateFrameID, [dinvScoreArray]}, ....}
+        bestUpdateHypothesesCount;
+        attempts;
         initialized = false;
     end
     
@@ -15,8 +16,9 @@ classdef EpipolarDepthEstimator < handle
         function obj = EpipolarDepthEstimator(parentFrameID, landmarkID)
             obj.parentFrameID = parentFrameID;
             obj.landmarkID = landmarkID;
-            obj.updateHistory = {};
+            obj.bestUpdateHypothesesCount = realmax;
             obj.initialized = false;
+            obj.attempts = 0;
         end
         
         
@@ -24,6 +26,8 @@ classdef EpipolarDepthEstimator < handle
         % variance.
         function [graph] = updateLandmark(obj, graph)
             s = Settings();
+            
+            obj.attempts = obj.attempts + 1;
             
             fidx = graph.getFrameIndex(obj.parentFrameID);
             lidx = graph.FrameContainer{fidx}.getLandmarkIndex(obj.landmarkID);
@@ -33,7 +37,7 @@ classdef EpipolarDepthEstimator < handle
                 return;
             end
             
-            if length(obj.updateHistory) >= s.maximumAttempts
+            if obj.attempts > s.maximumAttempts
                 graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
                 return;
             end
@@ -45,8 +49,6 @@ classdef EpipolarDepthEstimator < handle
                 fprintf('Failed to perform linear depth search: %s \n', e.message);
                 return;
             end
-            
-            obj.updateHistory{end+1} = {graph.FrameContainer{end}.ID, dinvScoreArray};
             
             
             % update the landmark depth.
@@ -63,7 +65,11 @@ classdef EpipolarDepthEstimator < handle
                     n = n + 1;
                 end
             end
-            if n > 0
+            
+            
+            
+            % If this update is better than the last update the landmark.
+            if n > 0 && n < obj.bestUpdateHypothesesCount
                 deltaIndex = index + 1;
                 if deltaIndex > length(dinvScoreArray(2, :))
                     deltaIndex = index - 1;
@@ -72,15 +78,17 @@ classdef EpipolarDepthEstimator < handle
                 
                 variance = max(sumSquaredDiff / n, lowVar);
                 graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = s.epipolarVarianceScale*variance;
+                obj.bestUpdateHypothesesCount = n;
             end
-            % check if this is an outlier.
             
+            
+            % check if this is an outlier.
             if n == 0
                 graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
                 return;
             end
             
-            hypotheses = obj.updateHistory{end}{2}(2, :) >= s.minimumNormalizedMatchCorrelation;
+            hypotheses = dinvScoreArray(2, :) >= s.minimumNormalizedMatchCorrelation;
             lastBool = hypotheses(1);
             numSwitches = 0;
             for idx = (2:length(hypotheses))
@@ -132,7 +140,7 @@ classdef EpipolarDepthEstimator < handle
         % returns an array of [[dinv;score], [dinv;score], ...]
         % score \in [0,1]
         function [dinvScoreArray] = linearDepthSearch(obj, graph, parentFrameID, landmarkID, targetFrameID, minimumDepth, maximumDepth, resolution)
-            dinvScoreArray = [linspace(1/maximumDepth, 1/minimumDepth, resolution); zeros(1,resolution)];
+            dinvScoreArray = [linspace(minimumDepth, maximumDepth, resolution).^(-1); zeros(1,resolution)];
             
             s = Settings();
             
