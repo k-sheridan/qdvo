@@ -51,6 +51,10 @@ classdef LandmarkObservation < handle
         % assumes the cov of each potential correspondence is 1 px^2
         function [residual] = computeResidual(obj, px)
             n = length(obj.potentialCorrespondenceSet);
+            if n == 0
+                error('No correspondence hypotheses.');
+            end
+            
             errorArray = zeros(2, n); % an array of column vectors for each PC.
             scoreArray = zeros(1, n);
             idx = 1;

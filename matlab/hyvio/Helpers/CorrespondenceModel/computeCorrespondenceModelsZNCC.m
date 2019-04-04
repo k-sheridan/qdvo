@@ -52,14 +52,14 @@ for idx = (1:length(visibleLandmarkIDs))
     pm = ZNCCPatchMatcher(s);
     
     %TODO compute mean and sd over whole search area.
-%     lowerBound = centerPx - s.patchHalfSize - s.searchRadius;
-%     upperBound = centerPx + s.patchHalfSize + s.searchRadius;
-%     lowerBound = max(lowerBound, 1);
-%     upperBound = min(upperBound, frame.cameraModel.size);
-%     
-%     % This will compute the mean and sd over the whole window.
-%     patch = Patch(frame.raw_image(lowerBound(2):upperBound(2), lowerBound(1):upperBound(1)));
-%     regionMean = patch.meanIntensity;
+    %     lowerBound = centerPx - s.patchHalfSize - s.searchRadius;
+    %     upperBound = centerPx + s.patchHalfSize + s.searchRadius;
+    %     lowerBound = max(lowerBound, 1);
+    %     upperBound = min(upperBound, frame.cameraModel.size);
+    %
+    %     % This will compute the mean and sd over the whole window.
+    %     patch = Patch(frame.raw_image(lowerBound(2):upperBound(2), lowerBound(1):upperBound(1)));
+    %     regionMean = patch.meanIntensity;
     
     for dx = (-s.searchRadius:s.searchRadius)
         for dy = (-s.searchRadius:s.searchRadius)
@@ -90,30 +90,24 @@ for idx = (1:length(visibleLandmarkIDs))
     end
     
     % create a landmark observation for this landmark and frame
-    if ~isempty(potentialCorrespondences)
-        lo = LandmarkObservation();
-        lo.potentialCorrespondenceSet = potentialCorrespondences;
-        lo.landmarkParentFrameID = visibleLandmarkIDs{idx}{1};
-        lo.landmarkID = visibleLandmarkIDs{idx}{2};
-        lo.observationFrameID = frame.ID;
-        lo.theta = s.minimumNormalizedMatchCorrelation;
-        
-        % debug
-        lo.searchPatch = warpedPatch;
-        
-        
-        % add to the returned array
-        landmarkObservationArray{idx} = lo;
-    end
+    lo = LandmarkObservation();
+    lo.potentialCorrespondenceSet = potentialCorrespondences;
+    lo.landmarkParentFrameID = visibleLandmarkIDs{idx}{1};
+    lo.landmarkID = visibleLandmarkIDs{idx}{2};
+    lo.observationFrameID = frame.ID;
+    lo.theta = s.minimumNormalizedMatchCorrelation;
+    
+    % debug
+    lo.searchPatch = warpedPatch;
+    
+    
+    % add to the returned array
+    landmarkObservationArray{idx} = lo;
     
 end
 
 landmarkObservationArray = landmarkObservationArray(~cellfun('isempty',landmarkObservationArray)); % clear the empty cells
 
-fprintf('Visible Landmarks: %i Correspondence Models: %i\n', length(visibleLandmarkIDs), length(landmarkObservationArray));
-if (length(visibleLandmarkIDs) - length(landmarkObservationArray)) > 100
-    fprintf('Large Disparity\n');
-end
 
 end
 

@@ -20,6 +20,8 @@ classdef Landmark < handle
         
         frameID % Id of the observation keyframe.
         ID % Id of this point. Only unique inside the keyframe which it lies.
+        
+        failedCorrespondenceCounter = 0;
     end
     
     methods

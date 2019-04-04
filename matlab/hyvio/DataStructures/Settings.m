@@ -31,7 +31,8 @@ classdef Settings < handle
         minimumNormalizedMatchCorrelation = 0.93; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
-        pixelOutlierThreshold = 2; % if after running the SWE any landmark observation error is above this threshold, marginalize it.
+        pixelOutlierThreshold = 5; % if after running the SWE any landmark observation error is above this threshold, marginalize it.
+        nFailedCorrespondences = 5;
         
         nActiveLandmarks = 300; % the number of landmarks which are to be active.
         minimumActiveLandmarks = 100; % the minimum feature number in a frame.
@@ -40,7 +41,7 @@ classdef Settings < handle
         patchComparison = 'ZNCC'; % types: 'ZNCC', 'BRIEF'
         
         % Feature Detection
-        minimumNormalizedGradientMagnitude = 0.0153;
+        minimumNormalizedGradientMagnitude = 0.0153*4;
         medianFilterSize = 3;
         
         
