@@ -21,7 +21,7 @@ classdef Landmark < handle
         frameID % Id of the observation keyframe.
         ID % Id of this point. Only unique inside the keyframe which it lies.
         
-        failedCorrespondenceCounter = 0;
+        failedCorrespondenceCounter = 0; % if a correspondence model cant be found for this feature increment this counter. Otherwise set it to 0.
     end
     
     methods

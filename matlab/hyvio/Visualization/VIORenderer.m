@@ -12,7 +12,7 @@ classdef VIORenderer < handle
         
         kPos = 0.09;
         kTarget = 0.1;
-        d = 10;
+        d = 5;
         cameraTarget = [0;0;0];
         cameraPos = [-1;0;0];
     end

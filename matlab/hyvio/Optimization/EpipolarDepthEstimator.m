@@ -77,7 +77,7 @@ classdef EpipolarDepthEstimator < handle
                 lowVar = (dinvScoreArray(1, deltaIndex) - dinvScoreArray(1, index))^2; % the lowest possible variance
                 
                 variance = max(sumSquaredDiff / n, lowVar);
-                graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = s.epipolarVarianceScale*variance;
+                %graph.FrameContainer{fidx}.landmarks{lidx}.dinvPriorUncertainty = s.epipolarVarianceScale*variance;
                 obj.bestUpdateHypothesesCount = n;
             end
             
