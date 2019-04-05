@@ -85,6 +85,18 @@ if nActiveVisible < s.minimumActiveLandmarks
             end
             
             if ~occupied
+                
+                % try to initialize this landmark's depth one last time.
+                if fidx ~= length(graph.FrameContainer)
+                    graph = graph.FrameContainer{fidx}.landmarks{lidx}.epipolarDepthEstimator.updateLandmark(graph);
+                    
+                    if graph.FrameContainer{fidx}.landmarks{lidx}.status == LandmarkStatus.MARGINALIZED
+                        % skip this landmark because it was called an
+                        % outlier
+                        continue;
+                    end
+                end
+                
                 graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.ACTIVE;
                 spatialMask(max(px(2)-rad, 1):min(px(2)+rad, m), max(px(1)-rad, 1):min(px(1)+rad, n)) = 1;
                 nActiveVisible = nActiveVisible + 1;

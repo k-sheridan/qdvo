@@ -94,10 +94,6 @@ classdef VIO < handle
             % this frame.
             [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
             
-            % Check for failed correspondences and potentially marginalized
-            % based on that
-            obj.removeOutlierLandmarksDueToFailedCorrespondences(landmarkObservations);
-            
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
             frameObs.frameID = frame.ID;
@@ -135,6 +131,10 @@ classdef VIO < handle
                 
             end
             
+            
+            % clean up the mess.
+            obj.cleanUp();
+            
         end
         
         
@@ -148,29 +148,19 @@ classdef VIO < handle
             end
         end
         
-        function [] = removeOutlierLandmarksDueToFailedCorrespondences(obj, landmarkObservations)
+        % delete old unused memory, and general housekeeping.
+        function [] = cleanUp(obj)
             s = Settings();
-            for lo = landmarkObservations
-                
-                pid = lo{1}.landmarkParentFrameID;
-                lid = lo{1}.landmarkID;
-                fidx = obj.graph.getFrameIndex(pid);
-                lidx = obj.graph.FrameContainer{fidx}.getLandmarkIndex(lid);
-                
-                if isempty(lo{1}.potentialCorrespondenceSet)
-                    obj.graph.FrameContainer{fidx}.landmarks{lidx}.failedCorrespondenceCounter =...
-                        obj.graph.FrameContainer{fidx}.landmarks{lidx}.failedCorrespondenceCounter + 1;
-                    
-                    % if there are too many failures in a row marginalize
-                    % the landmark.
-                    if obj.graph.FrameContainer{fidx}.landmarks{lidx}.failedCorrespondenceCounter > s.maxFailedCorrespondences
-                        fprintf('Marginalizing a Landmark because of too many consecutive failed correspondences.\n');
-                        obj.swe.optimizer.marginalizeLandmark(pid, lid);
-                        obj.graph.FrameContainer{fidx}.landmarks{lidx}.status = LandmarkStatus.MARGINALIZED;
-                    end
-                 
+            
+            % remove old frames
+            if length(obj.graph.FrameContainer) > s.maximumFramesStored
+                if obj.graph.FrameContainer{1}.status ~= FrameStatus.ACTIVE
+                    % remove this frame!
+                    obj.graph.FrameContainer = obj.graph.FrameContainer{2:end};
+                    obj.graph.InertialConstraintContainer = obj.graph.InertialConstraintContainer{2:end};
+                    obj.graph.FrameObservationContainer = obj.graph.FrameObservationContainer{2:end};
                 else
-                    obj.graph.FrameContainer{fidx}.landmarks{lidx}.failedCorrespondenceCounter = 0; % reset
+                    fprintf('Tried to delete an active Keyframe');
                 end
             end
         end
