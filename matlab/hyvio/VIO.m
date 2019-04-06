@@ -154,11 +154,9 @@ classdef VIO < handle
             
             % remove old frames
             if length(obj.graph.FrameContainer) > s.maximumFramesStored
-                if obj.graph.FrameContainer{1}.status ~= FrameStatus.ACTIVE
+                if obj.graph.FrameContainer{end - s.maximumFramesStored}.status ~= FrameStatus.ACTIVE
                     % remove this frame!
-                    obj.graph.FrameContainer = obj.graph.FrameContainer{2:end};
-                    obj.graph.InertialConstraintContainer = obj.graph.InertialConstraintContainer{2:end};
-                    obj.graph.FrameObservationContainer = obj.graph.FrameObservationContainer{2:end};
+                    obj.graph.FrameContainer{end - s.maximumFramesStored}.raw_image = [];
                 else
                     fprintf('Tried to delete an active Keyframe');
                 end

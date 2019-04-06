@@ -40,10 +40,21 @@ classdef Optimizer < handle
             prior = obj.prior;
         end
         
+        function [weight] = huberWeight(obj, residual, huberWidth)
+            e = norm(residual);
+            if e < huberWidth
+                weight = 1;
+            else
+                weight = huberWidth/e;
+            end
+        end
+        
         % using the error terms currently in the optimizer, optimize the
         % graph.
         function [graph] = optimize(obj, graph)
             %assert(all(obj.prior.dx0 == 0));
+            s = Settings();
+            huberWidth = s.huberWidth;
             
             % First, compute the residuals.
             obj.constraintBuffer = cell(1, length(obj.errorTermContainer));
@@ -73,9 +84,12 @@ classdef Optimizer < handle
                     catch
                         continue;
                     end
+                    
+                    huber = obj.huberWeight(c{1}.residual, huberWidth);
+                    
                     sW = sparse(c{1}.information);
-                    obj.A = obj.A + J'*sW*J;
-                    obj.b = obj.b - J'*sW*c{1}.residual;
+                    obj.A = obj.A + J'*sW*J * huber;
+                    obj.b = obj.b - J'*sW*c{1}.residual * huber;
                     
                     whitenedSqError = whitenedSqError + c{1}.residual'*sW*c{1}.residual;
                 end
@@ -92,17 +106,21 @@ classdef Optimizer < handle
                 % append the errors
                 obj.avgWhiteSqErrorArray = [obj.avgWhiteSqErrorArray, avgWhiteSqError];
                 
+                norm(obj.prior.b'*obj.prior.b)
+                
                 % check if the error has increased
                 if it > 1
                     if obj.avgWhiteSqErrorArray(end) >= obj.avgWhiteSqErrorArray(end-1)
                         % The avg error has increased.
+                        
                         disp('error has increased!')
-                        %break;
-                        lambda = lambda * v
+                        break;
+                        %lambda = lambda * v
                     else
                         lambda = lambda / v
                     end
                 end
+                
                 
                 % LevenbergMarquardt
                 %opts.POSDEF = true;
@@ -361,6 +379,7 @@ classdef Optimizer < handle
                 return;
             end
             
+            s = Settings();
             
             Am = zeros(obj.prior.indexHandler.dimensions());
             bm = zeros(obj.prior.indexHandler.dimensions(), 1);
@@ -370,6 +389,11 @@ classdef Optimizer < handle
                         try
                             J = obj.createConstraintJacobian(c{1}.jacobians, length(c{1}.residual));
                         catch
+                            continue;
+                        end
+                        
+                        % If this is a bad constraint, ignore it.
+                        if norm(c{1}.residual) > s.pixelOutlierThreshold
                             continue;
                         end
                         
@@ -396,6 +420,24 @@ classdef Optimizer < handle
             %obj.prior.dx0 = zeros(obj.prior.indexHandler.dimensions(), 1);
             obj.prior.indexHandler.checkVariables();
         end
+        
+        function [] = marginalizeLandmarkHARD(obj, parentFrameID, landmarkID)
+            % move this variable set to the top of the problem.
+            % VERY IMPORTANT: the prior must also be shifted with the
+            % variables.
+            key = obj.prior.indexHandler.landmarkKey(parentFrameID, landmarkID);
+            
+            if obj.prior.indexHandler.hasKey(key)
+                [obj.prior.A, obj.prior.b] = obj.prior.indexHandler.moveVariableToTop(key, obj.prior.A, obj.prior.b);
+            else
+                fprintf('Tried to marginalize a landmark not in the variables\n');
+                return;
+            end
+        end
+        
     end
+    
+    
+    
 end
 

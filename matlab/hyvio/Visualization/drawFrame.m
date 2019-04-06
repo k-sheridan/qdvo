@@ -63,7 +63,11 @@ if drawCorrespondencePriors
     for lo = fo.landmarkObservations
         
         obsIdx = graph.getFrameIndex(lo{1}.observationFrameID);
-        parentIdx = graph.getFrameIndex(lo{1}.landmarkParentFrameID);
+        try
+            parentIdx = graph.getFrameIndex(lo{1}.landmarkParentFrameID);
+        catch
+            continue;
+        end
         landmarkIdx = graph.FrameContainer{parentIdx}.getLandmarkIndex(lo{1}.landmarkID);
         
         T_w_pi = graph.FrameContainer{parentIdx}.imustate.poseTransform();

@@ -105,6 +105,7 @@ classdef SlidingWindowEstimator < handle
                         
                         fprintf('Marginalizing outlier landmark %i with parent frame: %i with a residual of %f\n', lid, pid, norm(c{1}.residual));
                         
+                        % since this was an outlier
                         obj.optimizer.marginalizeLandmark(pid, lid);
                         
                         fidx = graph.getFrameIndex(pid);
