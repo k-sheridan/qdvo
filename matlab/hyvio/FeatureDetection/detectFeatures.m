@@ -16,11 +16,11 @@ s = Settings();
 
 invariantThreshold = 0.1; % the magnitude must be > 50% between the mean and max
 absoluteMinGrad = s.minimumNormalizedGradientMagnitude * maxIntensity; % the absolute minumum gradient magnitude 
-spatialSamplingRadius = 10; % the manhattan distance between features
+spatialSamplingRadius = s.featureSeparation; % the manhattan distance between features
 medianFilterSize = s.medianFilterSize; % this is the size of the median filter kernel
 structureTensorRadius = 3; % the radius used to compute the structure tensor at a pixel.
 harrisK = 0.05; % the constant inside the harris score.
-edgeWeight = 0; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
+edgeWeight = 0.5; % value from [0, 1] determines how much we want edges extracted. if 0 only corners are detected. if 1 edges and corners are equially good.
 
 % compute grid spacing.
 [m, n] = size(I);

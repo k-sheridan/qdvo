@@ -74,6 +74,10 @@ classdef RadTanCameraModel
             
             pixel = [obj.f(1)*uvd(1) + obj.c(1); obj.f(2)*uvd(2) + obj.c(2)];
             
+            if ~obj.isPixelOnImage(pixel)
+                error('pixel not on image');
+            end
+            
             % if the projection jacobian is desired compute it.
             if (nargout == 2)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
@@ -157,8 +161,8 @@ classdef RadTanCameraModel
         
         
         function [onImage] = isPixelOnImage(obj, px)
-            persistent buffer;
-            persistent attenuationMinimum; 
+            %persistent buffer;
+            %persistent attenuationMinimum; 
             attenuationMinimum = 0;
             buffer = 2;
             if px(1) <= buffer || px(1) >= (obj.size(1) - buffer)

@@ -82,6 +82,10 @@ classdef EquidistantCameraModel
             
             pixel = [bearingDistorted(1) * obj.f(1) + obj.c(1); bearingDistorted(2) * obj.f(2) + obj.c(2)];
             
+            if ~obj.isPixelOnImage(pixel)
+                error('pixel not on image');
+            end
+            
             % if the projection jacobian is desired compute it.
             if (nargout == 2)
                 % [dx; dy] = J * [du; dv] <= (unit plane)
