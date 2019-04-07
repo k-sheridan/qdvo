@@ -6,7 +6,7 @@ classdef Settings < handle
         maximumFramesStored = 200;
         
         patchHalfSize = 5; % the patch radius used for comparing.
-        searchRadius = 15; % The radius which the pixel resolution patch matcher searches.
+        searchRadius = 20; % The radius which the pixel resolution patch matcher searches.
         
         initialDepth = 2.5; % the depth every landmark is initialized at.
         
@@ -30,7 +30,7 @@ classdef Settings < handle
         maximumAttempts = 6; % this is the maximum number of times the epipolar depth estimator can be ran.
         
         
-        minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
+        minimumNormalizedMatchCorrelation = 0.925; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         pixelOutlierThreshold = 3; % if after running the SWE any landmark observation error is above this threshold, marginalize it.

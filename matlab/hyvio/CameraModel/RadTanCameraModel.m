@@ -16,6 +16,7 @@ classdef RadTanCameraModel
             %EQUIDISTANTCAMERAMODEL Creates an instance of the camera
             %model. n is optional and determines the resolution of the
             %lookup table.
+            % order follows opencv order: [k1, k2, p1, p2]
             % This adds a 1 to the front of the distortion coeff vec.
             if (nargin <= 6)
                 attenuation = ones(size);
@@ -170,10 +171,10 @@ classdef RadTanCameraModel
                 return
             end
             
-            if obj.attenuation(round(px(2)), round(px(1))) <= attenuationMinimum
-                onImage = false;
-                return
-            end
+%             if obj.attenuation(round(px(2)), round(px(1))) <= attenuationMinimum
+%                 onImage = false;
+%                 return
+%             end
             
             onImage = true;
         end
