@@ -4,6 +4,8 @@ clear all
 %% DATASET
 datasetPath = 'datasets/fountain/';
 
+% CALIBRATION LEFT: width: 752, height: 480, fx: 364.61223237047539669, fy: 364.70254209576665971, cx: 385.60887400782206669, cy: 232.65626547906052224, model: 0, coeffs: [-0.31116718665000576, 0.08962547701688039, -0.00005212461326460, 0.00009844260968483, 0.00000000000000000
+
 %vignette = imread('datasets/dataset-room1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
 
