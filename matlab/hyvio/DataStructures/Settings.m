@@ -10,8 +10,8 @@ classdef Settings < handle
         
         initialDepth = 2.5; % the depth every landmark is initialized at.
         
-        nFeaturesDesired = 1000; % the number of features which are extracted for each keyframe.
-        featureSeparation = 20; % the distance between feature desired (used for spatial sampling).
+        nFeaturesDesired = 500; % the number of features which are extracted for each keyframe.
+        featureSeparation = 40; % the distance between feature desired (used for spatial sampling).
         activationFeatureSeparation = 20; % the distance between features during activation
         
         % from the DSO keyframe selection criteria.
