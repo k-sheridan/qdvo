@@ -34,7 +34,7 @@ classdef Frame < handle
             obj.maxIntensity = maxIntensity;
             
             obj.imageMean = mean(mean(obj.raw_image));
-            obj.imageStandardDeviation = sqrt((obj.raw_image - obj.imageMean).^2);
+            obj.imageStandardDeviation = sqrt(sum(sum((obj.raw_image - obj.imageMean).^2)));
             
             if (nargin > 4)
                 obj.imustate = imuState;

@@ -30,7 +30,7 @@ numCurrentFeatures = 0;
 %fprintf('Current Feature Count: %i\n', numCurrentFeatures);
 
 % Run feature detection
-newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), 50, frame.maxIntensity);
+newFeatures = detectFeatures(frame.raw_image, frame.cameraModel, currentFeatures, max(maxFeatures-numCurrentFeatures, 0), floor(sqrt(maxFeatures)), frame.maxIntensity);
 
 fprintf('Found %i new features\n', length(newFeatures));
 
