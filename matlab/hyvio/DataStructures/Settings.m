@@ -11,7 +11,8 @@ classdef Settings < handle
         initialDepth = 2.5; % the depth every landmark is initialized at.
         
         nFeaturesDesired = 500; % the number of features which are extracted for each keyframe.
-        featureSeparation = 30; % the distance between feature desired (used for spatial sampling).
+
+        featureSeparation = 5 % the distance between feature desired (used for spatial sampling).
         activationFeatureSeparation = 20; % the distance between features during activation
         
         % from the DSO keyframe selection criteria.
@@ -37,7 +38,7 @@ classdef Settings < handle
         maxFailedCorrespondences = 10; % maximum number of correspondence failures in a row before a landmark is marginalized
         huberWidth = 1;
         
-        nActiveLandmarks = 200; % the number of landmarks which are to be active.
+        nActiveLandmarks = 300; % the number of landmarks which are to be active.
         minimumActiveLandmarks = 100; % the minimum feature number in a frame.
         windowSize = 7; % the SWE window size (number of keyframes in the window).
         
@@ -45,6 +46,7 @@ classdef Settings < handle
         
         % Feature Detection
         minimumNormalizedGradientMagnitude = 0.0153*2;
+
         medianFilterSize = 3;
         
         

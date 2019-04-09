@@ -132,7 +132,7 @@ classdef SlidingWindowEstimator < handle
             end
             
             % Step 1 see if a keyframe has a low feature percentage.
-            minimumFeaturePercentage = 0.05;
+            minimumFeaturePercentage = 0.02;
             keyframeFeatureCount = zeros(1, length(obj.activeFrameIDs));
             assert(graph.FrameContainer{end}.isKeyframe && graph.FrameContainer{end}.status == FrameStatus.ACTIVE);
             % look at the correspondence models to see what features are

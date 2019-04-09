@@ -4,7 +4,7 @@ clear all
 %% DATASET
 datasetPath = 'datasets/vicon_easy1/mav0/';
 
-vignette = imread('datasets/dataset-room1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
+vignette = ones(480, 752); % used as mask for feature tracking and selection
 
 
 %% CALIBRATION
