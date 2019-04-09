@@ -1,12 +1,16 @@
 vignette = imread('vignette.png', 'PNG');
 
-cm = RadTanCameraModel([-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05],...
-    pi/1.3, [458.654, 457.296], [367.215, 248.375], [752, 480], 10000, vignette)
+cm = RadTanCameraModel([-0.297439888, 0.081949, -0.00005212461326460, 0.00009844260968483],...
+    pi/1.1, [441.998, 441.668], [385.60887400782206669, 232.65626547906052224], [752, 480], 10000, vignette)
 
 points = [];
 for x = (-10:0.2:10)
     for y = (-10:0.2:10)
-        pixel = cm.project([x;y;2]);
+        try
+            pixel = cm.project([x;y;2]);
+        catch
+            continue;
+        end
         if (pixel(1) >= 0 && pixel(1) <= 752 && pixel(2) >= 0 && pixel(2) <= 480)
             points = [points, pixel];
         end
