@@ -56,16 +56,16 @@ for frameIdx = (1:length(graph.FrameContainer))
             end
             
             
-            % perform normal check
-            patchNormInCurrentFrame = T_target_source(1:3, 1:3) * graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.patchNormal;
-            
-            % Assume patchNorm is unit vec
-            assert(abs(norm(patchNormInCurrentFrame) - 1) < 1e-6);
-            
-            if -1 * patchNormInCurrentFrame(3) < minimumCos
-                disp('potential landmark norm not facing cam');
-                continue;
-            end
+%             % perform normal check
+%             patchNormInCurrentFrame = T_target_source(1:3, 1:3) * graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.patchNormal;
+%             
+%             % Assume patchNorm is unit vec
+%             assert(abs(norm(patchNormInCurrentFrame) - 1) < 1e-6);
+%             
+%             if -1 * patchNormInCurrentFrame(3) < minimumCos
+%                 disp('potential landmark norm not facing cam');
+%                 continue;
+%             end
             
             % at this point we can call this landmark 'visible'
             try

@@ -6,14 +6,14 @@ classdef Settings < handle
         maximumFramesStored = 200;
         
         patchHalfSize = 5; % the patch radius used for comparing.
-        searchRadius = 20; % The radius which the pixel resolution patch matcher searches.
+        searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
         
         initialDepth = 2.5; % the depth every landmark is initialized at.
         
-        nFeaturesDesired = 500; % the number of features which are extracted for each keyframe.
+        nFeaturesDesired = 400; % the number of features which are extracted for each keyframe.
 
         featureSeparation = 5 % the distance between feature desired (used for spatial sampling).
-        activationFeatureSeparation = 20; % the distance between features during activation
+        activationFeatureSeparation = 10; % the distance between features during activation
         
         % from the DSO keyframe selection criteria.
         weightAvgPixelFlow = 0.04;
@@ -31,7 +31,7 @@ classdef Settings < handle
         maximumAttempts = 6; % this is the maximum number of times the epipolar depth estimator can be ran.
         
         
-        minimumNormalizedMatchCorrelation = 0.925; % the threshold where a match is called good enough.
+        minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         pixelOutlierThreshold = 3; % if after running the SWE any landmark observation error is above this threshold, marginalize it.

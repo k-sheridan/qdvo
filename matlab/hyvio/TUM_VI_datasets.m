@@ -2,9 +2,9 @@
 % TUM VI datasets
 clear all
 %% DATASET
-datasetPath = 'datasets/dataset-corridor3_512_16/mav0/';
+datasetPath = 'datasets/dataset-room1_512_16/mav0/';
 
-vignette = imread('datasets/dataset-corridor3_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
+vignette = imread('datasets/dataset-room1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
 
 %% CALIBRATION
@@ -64,7 +64,7 @@ imu0 = readtable(sprintf('%simu0/data.csv', datasetPath));
 
 % these indices are the current 
 imuIndex = 1;
-camIndex = 1; % this can be set to specify the start point.
+camIndex = 100; % this can be set to specify the start point.
 
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point

@@ -12,8 +12,16 @@ T_sourceCam_targetCam = (T_w_sourceImu * T_i_c) \ (T_w_targetImu * T_i_c);
 T_targetCam_sourceCam = [T_sourceCam_targetCam(1:3, 1:3)', -T_sourceCam_targetCam(1:3, 1:3)' * T_sourceCam_targetCam(1:3, 4);
                          zeros(1, 3), 1];
                      
+% find the average normal vector.
+pt_source = [landmark.bearing;1] * (1/landmark.dinv);
+r_pt_target = T_sourceCam_targetCam(1:3, 4) - pt_source;
+
+normal = (r_pt_target/norm(r_pt_target) + -pt_source/norm(pt_source));
+normal = normal / norm(normal);
+                     
 % compute normal vector in the target frame.
-n = T_targetCam_sourceCam(1:3, 1:3) * landmark.patchNormal;
+%n = T_targetCam_sourceCam(1:3, 1:3) * landmark.patchNormal;
+n = T_targetCam_sourceCam(1:3, 1:3) * normal;
 % compute the landmark position in the target frame.
 p0 = T_targetCam_sourceCam(1:3, 1:3) * [landmark.bearing;1] * (1/landmark.dinv) + T_targetCam_sourceCam(1:3, 4);
 % compute the homogenous bearing to the landmark in the target frame.
