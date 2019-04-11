@@ -91,7 +91,7 @@ classdef FOVCameraModel
             psi = atan2(uvd(2), uvd(1)); % used to reproduce the unit vector robustly
             
             
-            bearing = tan(norm(uvd) * obj.w) / (2 * tan(obj.w / 2));
+            bearing = [cos(psi); sin(psi)] * tan(norm(uvd) * obj.w) / (2 * tan(obj.w / 2));
             
             
             % if the unproject jacobian is desired use the new bearing to
