@@ -97,7 +97,11 @@ if drawCorrespondencePriors
         row = max(min(round((zmax - z) / zmax * res + 1) , res), 1);
         c = cmap(row, 1:3);
         
-        colorArr(idx, 1:3) = c;
+        if isempty(lo{1}.potentialCorrespondenceSet)
+            colorArr(idx, 1:3) = [0.5, 0, 1]; % failed correspondence color
+        else
+            colorArr(idx, 1:3) = c;
+        end
         
         idx = idx + 1;
         
