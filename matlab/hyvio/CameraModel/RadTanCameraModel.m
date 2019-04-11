@@ -1,8 +1,9 @@
-classdef FOVCameraModel
+classdef RadTanCameraModel
     %Simple Radial Tangential distortion model.
     
     properties
-        w;
+        radiusLookupTable; % nx2 array of [theta, radius], lookup is O(log(n)) with binary search
+        coeffs;
         f;
         c;
         fov;
@@ -11,7 +12,7 @@ classdef FOVCameraModel
     end
     
     methods
-        function obj = RadTanCameraModel(w, fov, focal, principal, size, n, attenuation)
+        function obj = RadTanCameraModel(distortionCoeffs, fov, focal, principal, size, n, attenuation)
             %EQUIDISTANTCAMERAMODEL Creates an instance of the camera
             %model. n is optional and determines the resolution of the
             %lookup table.
@@ -36,7 +37,19 @@ classdef FOVCameraModel
             end
             
             
-            obj.w = w;
+            obj.radiusLookupTable = zeros(n, 2);
+            
+            obj.radiusLookupTable(:, 1) = linspace(0, tan(obj.fov/2), n);
+            
+            assert(length(distortionCoeffs) == 4);
+            
+            obj.coeffs = [distortionCoeffs]; % add a 1 on the lowest order.
+            % generate the radius part of the table
+            for tableIndex = (1:n)
+                multiplier = obj.radiusLookupTable(tableIndex, 1)*(1 + obj.coeffs(1)*obj.radiusLookupTable(tableIndex, 1)^2 +  obj.coeffs(2)*obj.radiusLookupTable(tableIndex, 1)^4);
+                
+                obj.radiusLookupTable(tableIndex, 2) = multiplier;
+            end
         end
         
         function [pixel, projectJacobian] = project(obj, pointInCameraFrame)
@@ -52,11 +65,12 @@ classdef FOVCameraModel
             
             pointInCameraFrame = pointInCameraFrame / pointInCameraFrame(3); % make point homogenous.
             
-            r_u = norm(pointInCameraFrame(1:2, 1));
+            r = norm(pointInCameraFrame(1:2, 1));
             
-            psi = atan2(pointInCameraFrame(2), pointInCameraFrame(1));
+            uvd = pointInCameraFrame(1:2)*(1 + obj.coeffs(1)*r^2 +  obj.coeffs(2)*r^4);
+            uvd = uvd + [2*obj.coeffs(3)*pointInCameraFrame(1)*pointInCameraFrame(2) + obj.coeffs(4)*(r^2 + 2*pointInCameraFrame(1)^2); 
+                2*obj.coeffs(4)*pointInCameraFrame(1)*pointInCameraFrame(2) + obj.coeffs(3)*(r^2 + 2*pointInCameraFrame(2)^2)];
             
-            uvd = [cos(psi);sin(psi)] * 1/obj.w * atan(2*r_u*tan(obj.w/2));
             
             pixel = [obj.f(1)*uvd(1) + obj.c(1); obj.f(2)*uvd(2) + obj.c(2)];
             
@@ -170,4 +184,3 @@ classdef FOVCameraModel
         end
     end
 end
-
