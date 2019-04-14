@@ -64,7 +64,7 @@ imu0 = readtable(sprintf('%simu0/data.csv', datasetPath));
 
 % these indices are the current 
 imuIndex = 1;
-camIndex = 100; % this can be set to specify the start point.
+camIndex = 130; % this can be set to specify the start point.
 
 imuEnd = height(imu0);
 camEnd = height(cam0); % this can be manually set to specify the end point

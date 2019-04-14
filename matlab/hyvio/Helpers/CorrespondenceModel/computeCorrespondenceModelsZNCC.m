@@ -1,4 +1,4 @@
-function [landmarkObservationArray] = computeCorrespondenceModelsZNCC(frame, graph)
+function [landmarkObservationArray, graph] = computeCorrespondenceModelsZNCC(frame, graph)
 %COMPUTECORRESPONDENCEMODELS generates the correspondence distributions for
 % the given frame.
 
@@ -88,6 +88,16 @@ for idx = (1:length(visibleLandmarkIDs))
             
         end
     end
+    
+    
+    % check if this landmark had a failed correspondence
+    if isempty(potentialCorrespondences)
+        graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.failedCorrespondenceCounter = graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.failedCorrespondenceCounter + 1;
+    else
+        % reset the counter if the feature was reobserved.
+        graph.FrameContainer{frameIdx}.landmarks{landmarkIdx}.failedCorrespondenceCounter = 0;
+    end
+    
     
     % create a landmark observation for this landmark and frame
     lo = LandmarkObservation();

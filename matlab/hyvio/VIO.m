@@ -91,8 +91,9 @@ classdef VIO < handle
             
             
             % compute correspondence models for the active landmarks visible in
-            % this frame.
-            [landmarkObservations] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
+            % this frame. This should also increment the failed
+            % correspondence counter.
+            [landmarkObservations, obj.graph] = computeCorrespondenceModels(obj.graph.FrameContainer{end}, obj.graph);
             
             % Add the observations to the graph
             frameObs = FrameObservationContainer();
