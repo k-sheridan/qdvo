@@ -174,7 +174,7 @@ classdef SlidingWindowEstimator < handle
                 
                 for innerId = obj.activeFrameIDs
                     if id ~= innerId && id ~= obj.activeFrameIDs(end) && id ~= obj.activeFrameIDs(end-1)
-                        jidx = graph.getFrameIndex(id);
+                        jidx = graph.getFrameIndex(innerId);
                         
                         d_i_j = norm(graph.FrameContainer{iidx}.imustate.p - graph.FrameContainer{jidx}.imustate.p);
                         

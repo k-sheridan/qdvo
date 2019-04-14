@@ -6,7 +6,7 @@ classdef Settings < handle
         maximumFramesStored = 200;
         
         patchHalfSize = 5; % the patch radius used for comparing.
-        searchRadius = 10; % The radius which the pixel resolution patch matcher searches.
+        searchRadius = 20; % The radius which the pixel resolution patch matcher searches.
         
         initialDepth = 2.5; % the depth every landmark is initialized at.
         
@@ -23,9 +23,9 @@ classdef Settings < handle
         % the minimum depth, maximum depth, and resolution use din the
         % epipolar depth estimator.
         minimumDepth = 0.1;
-        maximumDepth = 10;
+        maximumDepth = 20;
         resolution = 200;
-        maximumHypotheses = 10; % the maximum number of matches for a epipolar depth estimator to be called initialized
+        maximumHypotheses = 5; % the maximum number of matches for a epipolar depth estimator to be called initialized
         finalDepthSearchResolution = 0; % after the epipolar depth estimator is initialized, search within its stdev with this resolution for a more accurate estimate.
         epipolarVarianceScale = 100; % this is the number which scales the variance of the epipolar depth estimate.
         maximumAttempts = 6; % this is the maximum number of times the epipolar depth estimator can be ran.
