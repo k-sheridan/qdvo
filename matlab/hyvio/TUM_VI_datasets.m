@@ -2,9 +2,9 @@
 % TUM VI datasets
 clear all
 %% DATASET
-datasetPath = 'datasets/dataset-corridor3_512_16/mav0/';
+datasetPath = 'datasets/dataset-room1_512_16/mav0/';
 
-vignette = imread('datasets/dataset-corridor3_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
+vignette = imread('datasets/dataset-room1_512_16/dso/cam0/vignette.png', 'PNG'); % used as mask for feature tracking and selection
 
 
 %% CALIBRATION

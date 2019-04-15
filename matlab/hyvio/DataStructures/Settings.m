@@ -31,7 +31,7 @@ classdef Settings < handle
         maximumAttempts = 6; % this is the maximum number of times the epipolar depth estimator can be ran.
         
         
-        minimumNormalizedMatchCorrelation = 0.95; % the threshold where a match is called good enough.
+        minimumNormalizedMatchCorrelation = 0.925; % the threshold where a match is called good enough.
         correlationUniquenessThreshold = 0; % the minimum absolute difference between correlations. Set to 0 to skip this step.
         
         pixelOutlierThreshold = 3; % if after running the SWE any landmark observation error is above this threshold, marginalize it.

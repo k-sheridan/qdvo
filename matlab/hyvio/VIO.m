@@ -80,7 +80,7 @@ classdef VIO < handle
             frame.imustate.p = obj.graph.FrameContainer{end}.imustate.p;
             frame.imustate.v = obj.graph.FrameContainer{end}.imustate.v;
             % always use gyro to initialize the orientation.
-            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR
+            frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R * obj.interimPreintegrationTerm.deltaR;
             %frame.imustate.R = obj.graph.FrameContainer{end}.imustate.R;
             
             % add the frame to the graph
