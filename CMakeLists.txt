@@ -14,6 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/CameraModels/)
 
 set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/CameraModels/CameraModel.cpp
+  ${PROJECT_SOURCE_DIR}/src/CameraModels/FOVCameraModel.cpp
 )
 
 

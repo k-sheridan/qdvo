@@ -29,7 +29,7 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> CameraModel::project(Eigen::Matrix<SCALAR_TYPE,
 
 Eigen::Matrix<SCALAR_TYPE, 3, 1> CameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
 {
-    // optionally compute the projection jacobian
+    // optionally compute the unprojection jacobian
     if (unprojectionJacobian != nullptr)
     {
         (*unprojectionJacobian)(0, 0) = 1/this->fx;
