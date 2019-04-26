@@ -9,3 +9,13 @@ find_package (Sophus REQUIRED)
 
 include_directories(${CERES_INCLUDE_DIRS})
 include_directories(${SOPHUS_INCLUDE_DIRS})
+
+include_directories(${PROJECT_SOURCE_DIR}/include/CameraModels/)
+
+set(QDVO_SOURCE_FILES
+  ${PROJECT_SOURCE_DIR}/src/CameraModels/CameraModel.cpp
+)
+
+
+# add the library
+add_library(qdvo ${QDVO_SOURCE_FILES})
