@@ -2,9 +2,7 @@
 #define CAMERAMODEL_HPP
 
 #include <Eigen/Core>
-
-#define SCALAR_TYPE double
-#define SMALL_NUMBER 1e-12
+#include <GlobalDefinitions.h>
 
 /*
  * Base Class for a generic camera model. This base class is implemented as a pinhole camera.
