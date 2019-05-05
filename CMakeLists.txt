@@ -27,8 +27,10 @@ set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/FeatureDetection/FeatureDetector.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Landmark.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Frame.cpp
+  ${PROJECT_SOURCE_DIR}/src/DataStructures/Feature.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
+  ${PROJECT_SOURCE_DIR}/src/QDVO.cpp
 )
 
 
