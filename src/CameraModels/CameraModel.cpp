@@ -1,11 +1,11 @@
 #include "CameraModel.hpp"
 
-CameraModel::CameraModel()
+QDVO::CameraModel::CameraModel()
 {
 
 }
 
-Eigen::Matrix<SCALAR_TYPE, 2, 1> CameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian)
+Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian)
 {
     if (pointInCamera(2) < SMALL_NUMBER)
     {
@@ -27,7 +27,7 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> CameraModel::project(Eigen::Matrix<SCALAR_TYPE,
     return Eigen::Matrix<SCALAR_TYPE, 2, 1>(u*this->fx + this->cx, v*this->fy + this->cy);
 }
 
-Eigen::Matrix<SCALAR_TYPE, 3, 1> CameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
+Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::CameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
 {
     // optionally compute the unprojection jacobian
     if (unprojectionJacobian != nullptr)

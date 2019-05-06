@@ -13,6 +13,7 @@
  * The constructor can be used to both preallocate and compute mapping used to speed up the project/unproject functions.
  */
 
+namespace  QDVO {
 class CameraModel
 {
 public:
@@ -26,5 +27,6 @@ public:
     Eigen::Matrix<SCALAR_TYPE, 3, 1> unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian);
 
 };
+}
 
 #endif // CAMERAMODEL_HPP

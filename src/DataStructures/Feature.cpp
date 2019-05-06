@@ -1,6 +1,6 @@
 #include "Feature.h"
 
-Feature::Feature()
+QDVO::Feature::Feature()
 {
 
 }

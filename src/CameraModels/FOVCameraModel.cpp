@@ -1,6 +1,6 @@
 #include "FOVCameraModel.hpp"
 
-FOVCameraModel::FOVCameraModel()
+QDVO::FOVCameraModel::FOVCameraModel()
 {
 
 }

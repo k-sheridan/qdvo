@@ -1,6 +1,6 @@
 #include "Landmark.h"
 
-Landmark::Landmark()
+QDVO::Landmark::Landmark()
 {
 
 }

@@ -3,6 +3,7 @@
 #include <GlobalDefinitions.h>
 #include <Eigen/Core>
 
+namespace  QDVO {
 class Landmark
 {
 public:
@@ -12,7 +13,7 @@ public:
     Eigen::Matrix<SCALAR_TYPE, 2, 1> px;
     SCALAR_TYPE dinv;
 
-    uint64_t landmarkID; // unique id for this landmark.
+    ID_TYPE landmarkID, parentFrameID; // unique id for this landmark. unique id for the parent frame of this landmark.
 
     enum LandmarkStatus{
         INACTIVE,
@@ -20,4 +21,5 @@ public:
         MARGINALIZED
     } status;
 };
+}
 

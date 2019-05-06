@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project (qdvo)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Ceres REQUIRED)
@@ -30,7 +30,7 @@ set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Feature.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
-  ${PROJECT_SOURCE_DIR}/src/QDVO.cpp
+  ${PROJECT_SOURCE_DIR}/src/VO.cpp
 )
 
 

@@ -1,6 +1,6 @@
 #include "FeatureDetector.h"
 
-FeatureDetector::FeatureDetector()
+QDVO::FeatureDetector::FeatureDetector()
 {
 
 }

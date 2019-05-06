@@ -4,6 +4,7 @@
 #include <Feature.h>
 #include <Frame.h>
 
+namespace  QDVO {
 class FeatureDetector
 {
 public:
@@ -11,4 +12,5 @@ public:
 
     std::vector<Feature> detectFeatures(const Frame& frame);
 };
+}
 

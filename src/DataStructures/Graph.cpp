@@ -1,6 +1,6 @@
 #include "Graph.h"
 
-Graph::Graph()
+QDVO::Graph::Graph()
 {
 
 }

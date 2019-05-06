@@ -1,6 +1,6 @@
 #include "Frame.h"
 
-Frame::Frame()
+QDVO::Frame::Frame()
 {
 
 }

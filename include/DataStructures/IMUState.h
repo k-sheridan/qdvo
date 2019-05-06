@@ -5,6 +5,7 @@
 #include <sophus/se3.hpp>
 #include <GlobalDefinitions.h>
 
+namespace  QDVO {
 class IMUState
 {
 public:
@@ -23,4 +24,5 @@ public:
      */
     void update(const Eigen::Matrix<SCALAR_TYPE, IMUSTATE_DIMENSIONS, 1>& dx);
 };
+}
 
