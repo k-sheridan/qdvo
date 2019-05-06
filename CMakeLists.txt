@@ -30,6 +30,7 @@ set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Feature.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
+  ${PROJECT_SOURCE_DIR}/src/DataStructures/ImagePyramid.cpp
   ${PROJECT_SOURCE_DIR}/src/VO.cpp
   ${PROJECT_SOURCE_DIR}/src/Settings.cpp
 )
@@ -38,3 +39,7 @@ set(QDVO_SOURCE_FILES
 # add the library
 add_library(qdvo ${QDVO_SOURCE_FILES})
 target_link_libraries(qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})
+
+# execs
+add_executable(runEurocDatasets ${PROJECT_SOURCE_DIR}/src/eurocdatasetplayer.cpp)
+target_link_libraries(runEurocDatasets qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})

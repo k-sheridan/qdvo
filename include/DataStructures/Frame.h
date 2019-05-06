@@ -19,7 +19,7 @@ public:
 
     CameraModel* cm = nullptr; // pointer to the global camera model for this frame.
 
-    std::vector<Landmark> landmarks; // array of landmarks hosted in this frame.
+    std::vector<Landmark> landmarks; // array of landmarks hosted in this frame. ID's should be ordered and landmarks should never be deleted.
 };
 
 }
