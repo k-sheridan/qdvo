@@ -31,6 +31,7 @@ set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
   ${PROJECT_SOURCE_DIR}/src/VO.cpp
+  ${PROJECT_SOURCE_DIR}/src/Settings.cpp
 )
 
 
