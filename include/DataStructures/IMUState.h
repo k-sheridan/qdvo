@@ -13,7 +13,8 @@ public:
 
     const int dimensions = IMUSTATE_DIMENSIONS;
 
-    Sophus::SE3<SCALAR_TYPE> pose;
+    Sophus::SO3<SCALAR_TYPE> attitude;
+    Sophus::Vector3<SCALAR_TYPE> pos;
     Sophus::Vector3<SCALAR_TYPE> vel;
     // Optionally, I may need angular velocity for the tightly coupled quadrotor integration.
 

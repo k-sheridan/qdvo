@@ -23,7 +23,6 @@ include_directories(
 set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/CameraModels/CameraModel.cpp
   ${PROJECT_SOURCE_DIR}/src/CameraModels/FOVCameraModel.cpp
-  ${PROJECT_SOURCE_DIR}/src/ErrorTerms/QuasiDirectErrorTerm_obsFrame.cpp
   ${PROJECT_SOURCE_DIR}/src/FeatureDetection/FeatureDetector.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Landmark.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Frame.cpp
@@ -31,6 +30,7 @@ set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
   ${PROJECT_SOURCE_DIR}/src/DataStructures/ImagePyramid.cpp
+  ${PROJECT_SOURCE_DIR}/src/ErrorTerms/QuasiDirectErrorTerm_obsFrame.cpp
   ${PROJECT_SOURCE_DIR}/src/VO.cpp
   ${PROJECT_SOURCE_DIR}/src/Settings.cpp
 )
@@ -42,4 +42,4 @@ target_link_libraries(qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES}
 
 # execs
 add_executable(runEurocDatasets ${PROJECT_SOURCE_DIR}/src/eurocdatasetplayer.cpp)
-target_link_libraries(runEurocDatasets qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})
+target_link_libraries(runEurocDatasets qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES} ${GFLAGS_LIBRARIES})

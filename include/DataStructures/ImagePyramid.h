@@ -11,9 +11,11 @@ public:
     /**
      * creates a new image pyramid from a base image.
      */
-    ImagePyramid(const cv::Mat& baseImage, int levels);
+    ImagePyramid(int levels);
 
     cv::Mat& getImage(const int level = 0);
+
+    void generate(const cv::Mat& baseImage);
 
 protected:
     std::vector<cv::Mat> imageLevels; // level 0 is full resolution.
