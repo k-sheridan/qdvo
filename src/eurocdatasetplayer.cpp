@@ -17,8 +17,6 @@ int main(int argc, char** argv)
     // start to parse the euroc dataset.
 
 
-
-
     gflags::ShutDownCommandLineFlags();
     return 0;
 }

@@ -4,6 +4,7 @@
 #include <opencv4/opencv2/core.hpp>
 #include <map>
 #include <GlobalDefinitions.h>
+#include <GlobalSettingsDefinition.h>
 #include <Settings.h>
 
 namespace QDVO {

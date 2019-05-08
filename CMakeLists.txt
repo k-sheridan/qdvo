@@ -20,6 +20,10 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/DataStructures/
     )
 
+set(QDVO_HEADER_FILES
+   ${PROJECT_SOURCE_DIR}/include/ErrorTerms/HackyLocalParameterizationSO3.h
+)
+
 set(QDVO_SOURCE_FILES
   ${PROJECT_SOURCE_DIR}/src/CameraModels/CameraModel.cpp
   ${PROJECT_SOURCE_DIR}/src/CameraModels/FOVCameraModel.cpp
@@ -37,7 +41,7 @@ set(QDVO_SOURCE_FILES
 
 
 # add the library
-add_library(qdvo ${QDVO_SOURCE_FILES})
+add_library(qdvo ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
 target_link_libraries(qdvo ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})
 
 # execs

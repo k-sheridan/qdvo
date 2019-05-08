@@ -11,7 +11,7 @@ class IMUState
 public:
     IMUState();
 
-    const int dimensions = IMUSTATE_DIMENSIONS;
+    const int dimensions = 9;
 
     Sophus::SO3<SCALAR_TYPE> attitude;
     Sophus::Vector3<SCALAR_TYPE> pos;
@@ -23,7 +23,15 @@ public:
      * @brief update the imustate (imu pose and velocity) with a generalized addition operator.
      * Order: [dp, dphi, dv];
      */
-    void update(const Eigen::Matrix<SCALAR_TYPE, IMUSTATE_DIMENSIONS, 1>& dx);
+    void update(const Eigen::Matrix<SCALAR_TYPE, 9, 1>& dx);
+    /**
+     * @brief order: [dp, dphi]
+     */
+    void updatePose(const Eigen::Matrix<double, 6, 1> &dx);
+    /**
+     * @brief order: [dv]
+     */
+    void updateVelocity(const Eigen::Matrix<double, 3, 1> &dx);
 };
 }
 
