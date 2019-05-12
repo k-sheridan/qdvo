@@ -1,6 +1,7 @@
 #include "CameraModel.hpp"
 
-QDVO::CameraModel::CameraModel()
+QDVO::CameraModel::CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy) :
+    cx(cx), cy(cy), fx(fx), fy(fy)
 {
 
 }

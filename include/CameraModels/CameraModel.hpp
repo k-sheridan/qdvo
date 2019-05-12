@@ -20,11 +20,11 @@ public:
 
     SCALAR_TYPE fx, fy, cx, cy; // intrinsic parameters.
 
-    CameraModel();
+    CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy);
 
-    Eigen::Matrix<SCALAR_TYPE, 2, 1> project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian = nullptr);
+    virtual Eigen::Matrix<SCALAR_TYPE, 2, 1> project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian = nullptr);
 
-    Eigen::Matrix<SCALAR_TYPE, 3, 1> unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian = nullptr);
+    virtual Eigen::Matrix<SCALAR_TYPE, 3, 1> unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian = nullptr);
 
 };
 }

@@ -3,11 +3,7 @@
 
 TEST(CameraModel, Basic)
 {
-    QDVO::CameraModel cm = QDVO::CameraModel();
-    cm.cx = 256;
-    cm.cy = 256;
-    cm.fx = 300;
-    cm.fy = 300;
+    QDVO::CameraModel cm = QDVO::CameraModel(300, 301, 255, 256);
 
     Eigen::Vector3d p = Eigen::Vector3d(0, 0, 10);
     Eigen::Matrix2d projJac;
