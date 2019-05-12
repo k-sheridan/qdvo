@@ -10,7 +10,7 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CameraModel::project(Eigen::Matrix<SCALAR
 {
     if (pointInCamera(2) < SMALL_NUMBER)
     {
-        throw "point behind camera";
+        throw std::runtime_error("point behind camera");
     }
 
     SCALAR_TYPE u = pointInCamera(0)/pointInCamera(2);
