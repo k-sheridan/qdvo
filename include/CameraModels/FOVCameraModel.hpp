@@ -7,7 +7,7 @@ namespace  QDVO {
 class FOVCameraModel : CameraModel
 {
 public:
-    FOVCameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy);
+    FOVCameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov);
 };
 }
 
