@@ -1,7 +1,12 @@
-set(QDVO_TEST_FILES
-    ${PROJECT_SOURCE_DIR}/tests/MainTest.cpp
-    ${PROJECT_SOURCE_DIR}/tests/TestQDVOHelpers.cpp
-    ${PROJECT_SOURCE_DIR}/tests/TestCameraModel.cpp
+#set(QDVO_TEST_FILES
+#    ${PROJECT_SOURCE_DIR}/tests/MainTest.cpp
+#    ${PROJECT_SOURCE_DIR}/tests/TestQDVOHelpers.cpp
+#    ${PROJECT_SOURCE_DIR}/tests/TestCameraModel.cpp
+#)
+
+file(GLOB QDVO_TEST_FILES
+    "${PROJECT_SOURCE_DIR}/tests/*.h"
+    "${PROJECT_SOURCE_DIR}/tests/*.cpp"
 )
 
 enable_testing()
