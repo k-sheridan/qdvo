@@ -24,25 +24,20 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/DataStructures/
     )
 
-set(QDVO_HEADER_FILES
-   ${PROJECT_SOURCE_DIR}/include/ErrorTerms/HackyLocalParameterizationSO3.h
-   ${PROJECT_SOURCE_DIR}/include/VO.h
+
+file(GLOB QDVO_HEADER_FILES
+    "${PROJECT_SOURCE_DIR}/include/*/*.h"
+    "${PROJECT_SOURCE_DIR}/include/*/*.hpp"
+    "${PROJECT_SOURCE_DIR}/include/*.h"
+    "${PROJECT_SOURCE_DIR}/include/*.hpp"
 )
 
-set(QDVO_SOURCE_FILES
-  ${PROJECT_SOURCE_DIR}/src/CameraModels/CameraModel.cpp
-  ${PROJECT_SOURCE_DIR}/src/CameraModels/FOVCameraModel.cpp
-  ${PROJECT_SOURCE_DIR}/src/FeatureDetection/FeatureDetector.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/Landmark.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/Frame.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/Feature.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/Graph.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/IMUState.cpp
-  ${PROJECT_SOURCE_DIR}/src/DataStructures/ImagePyramid.cpp
-  ${PROJECT_SOURCE_DIR}/src/ErrorTerms/QuasiDirectErrorTerm_obsFrame.cpp
-  ${PROJECT_SOURCE_DIR}/src/VO.cpp
-  ${PROJECT_SOURCE_DIR}/src/Settings.cpp
+file(GLOB QDVO_SOURCE_FILES
+    "${PROJECT_SOURCE_DIR}/src/*/*.cpp"
+    "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
+
+
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
