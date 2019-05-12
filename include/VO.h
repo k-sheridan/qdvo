@@ -23,8 +23,7 @@ public:
 
     std::unique_ptr<Frame> currentFrame; // A preallocated frame for the current frame to reside in.
 
-    template<class CameraModelType>
-    void setCameraModel(const CameraModelType& cameraModel, const ID_TYPE cameraID); // Sets the camera model for the given cam ID. NOTE: QDVO creates its own local copy.
+    void setCameraModel(std::unique_ptr<QDVO::CameraModel>& cameraModelPtr, const ID_TYPE cameraID); // Sets the camera model for the given cam ID. NOTE: QDVO creates its own local copy.
 };
 }
 

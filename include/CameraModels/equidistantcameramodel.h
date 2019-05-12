@@ -2,6 +2,7 @@
 #define EQUIDISTANTCAMERAMODEL_H
 
 #include "CameraModel.hpp"
+#include "GlobalDefinitions.h"
 #include <vector>
 
 namespace QDVO {
@@ -20,7 +21,7 @@ private:
 
     struct UniformRadiusLookUpTable {
         std::vector<double> umap; // r = f(\theta) = umap(\theta / resolution)
-        double resolution; // theta = index*resolution
+        double resolution = EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION; // theta = index*resolution
     } radiusLookUpTable;
 
 };

@@ -5,8 +5,10 @@ QDVO::VO::VO()
 
 }
 
-template<class CameraModelType>
-void QDVO::VO::setCameraModel(const CameraModelType& cameraModel, const ID_TYPE cameraID)
+void QDVO::VO::setCameraModel(std::unique_ptr<QDVO::CameraModel>& cameraModelPtr, const ID_TYPE cameraID)
 {
-    this->cameraModelMap.insert(std::pair<ID_TYPE, std::unique_ptr<CameraModel> >(cameraID, std::unique_ptr<CameraModel>(cameraModel)));
+    this->cameraModelMap.insert(std::pair<ID_TYPE, std::unique_ptr<CameraModel> >(cameraID, std::unique_ptr<QDVO::CameraModel>()));
+
+    // give ownership to the unique pointer in the table.
+    this->cameraModelMap.at(cameraID).swap(cameraModelPtr);
 }
