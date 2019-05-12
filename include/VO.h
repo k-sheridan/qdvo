@@ -6,6 +6,7 @@
 #include <GlobalDefinitions.h>
 #include <GlobalSettingsDefinition.h>
 #include <Settings.h>
+#include <CameraModel.hpp>
 
 namespace QDVO {
 class VO
@@ -20,7 +21,10 @@ public:
 
     std::map<ID_TYPE, std::unique_ptr<Frame>> keyframeSet; // gives mapping from keyframe ids to keyframes. bounds the memory consumption.
 
-    std::unique_ptr<Frame> currentFrame; // A preallocated frame for the current frame to reside in. This
+    std::unique_ptr<Frame> currentFrame; // A preallocated frame for the current frame to reside in.
+
+    template<class CameraModelType>
+    void setCameraModel(const CameraModelType& cameraModel, const ID_TYPE cameraID); // Sets the camera model for the given cam ID. NOTE: QDVO creates its own local copy.
 };
 }
 

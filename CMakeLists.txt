@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project (QDVO VERSION 0.0.1 LANGUAGES CXX)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -10,7 +10,9 @@ find_package(Ceres REQUIRED)
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
+find_package(GTest REQUIRED)
 
+include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${CERES_INCLUDE_DIRS})
 include_directories(${SOPHUS_INCLUDE_DIRS})
 
@@ -49,6 +51,19 @@ include(CMakePackageConfigHelpers)
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
 target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})
 
+
+option(PACKAGE_TESTS "Build the tests" ON)
+if(PACKAGE_TESTS)
+    enable_testing()
+    #add_subdirectory(tests)
+endif()
+
+
+# unit tests
+add_subdirectory(tests)
+
+
+# install
 message("installing into ${CMAKE_INSTALL_PREFIX} with version ${CMAKE_PROJECT_VERSION}")
 
 include(GNUInstallDirs)
