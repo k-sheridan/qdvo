@@ -15,7 +15,7 @@ public:
 
     IMUState imustate;
 
-    std::unique_ptr<cv::Mat> image; // pointer to an opencv image.
+    cv::Mat image; // image.
 
     CameraModel* cm = nullptr; // pointer to the global camera model for this frame.
 
