@@ -4,6 +4,16 @@
 #include <opencv4/opencv2/imgproc.hpp>
 #include <Feature.h>
 #include <Frame.h>
+#include <GlobalDefinitions.h>
+
+
+// Feature Detector Settings
+#define N_FEATURES_DESIRED 400
+#define N_SECTIONS 100
+#define HARRIS_K  0.05
+#define EDGE_WEIGHT 0.1
+#define INVARIANT_THRESHOLD  0.1
+#define MINIMUM_NORMALIZED_GRADIENT_MAG 0.0306
 
 namespace  QDVO {
 class FeatureDetector
@@ -17,8 +27,20 @@ public:
      */
     std::vector<QDVO::Feature> detectFeatures(const Frame& frame);
 
+    struct FeatureCandidate{
+        u_int x, y; // pixel position
+        SCALAR_TYPE dxdx, dxdy, dydy; // structure tensor information
+        SCALAR_TYPE det, trace; // determinant and trace of the structure tensor.
+        SCALAR_TYPE gradientNorm;
+        SCALAR_TYPE harris;
+        SCALAR_TYPE score = 0; // stores the feature score which I have described in my paper.
+    };
+
 private:
     cv::Mat dx, dy; // preallocated containers for the image gradients.
+    cv::Mat dxdx, dydy, dxdy; // preallocated containers for structure tensors.
+
+    cv::Mat spatialMask; // used to ensure no two features are too close to each other.
 };
 }
 

@@ -26,6 +26,18 @@ public:
        ACTIVE,
        MARGINALIZED
     } status;
+
+    uint16_t maxIntensity() const {
+        switch (image.type())
+        {
+        case CV_8U: return 255;
+
+        case CV_16U: return 65535;
+
+        default: throw std::runtime_error("image type not supported.");
+
+        }
+    }
 };
 
 }

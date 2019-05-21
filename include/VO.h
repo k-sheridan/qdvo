@@ -4,7 +4,6 @@
 #include <opencv4/opencv2/core.hpp>
 #include <map>
 #include <GlobalDefinitions.h>
-#include <GlobalSettingsDefinition.h>
 #include <Settings.h>
 #include <CameraModel.hpp>
 #include <FeatureDetector.h>
@@ -19,8 +18,6 @@ public:
 
 
     //MEMBERS
-    // this class will host the global definitions
-    Settings settings;
 
     std::unique_ptr<QDVO::FeatureDetector> featureDetector; // pointer to a feature detector implementation
 
