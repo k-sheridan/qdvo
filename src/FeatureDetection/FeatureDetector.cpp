@@ -15,6 +15,8 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
     // split up the detection into a grid process.
     const int dim = std::floor(sqrt(N_SECTIONS));
     const int maxCandidatesPerSection = ((frame.image.rows * frame.image.cols) / N_SECTIONS) + 1;
+    const int nFeaturesPerSection = N_FEATURES_DESIRED / N_SECTIONS;
+
 
     const double rowsPerSection = double(frame.image.rows) / dim;
     const double colsPerSection = double(frame.image.cols) / dim;
@@ -34,7 +36,7 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
     std::vector<FeatureCandidate> localCandidates;
     localCandidates.reserve(maxCandidatesPerSection);
 
-    const SCALAR_TYPE maxSqGradientMag = std::pow(MINIMUM_NORMALIZED_GRADIENT_MAG * frame.maxIntensity(), 2);
+    const SCALAR_TYPE gradientMagThreshold = (MINIMUM_NORMALIZED_GRADIENT_MAG * frame.maxIntensity());
 
 
     // look for the pixels which have a sufficiently high gradient magnitude
@@ -49,6 +51,8 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
             const int cl = *(upperColBoundIt-1);
             const int ru = *(upperColBoundIt);
             const int cu = *(upperColBoundIt);
+
+            std::cout << rl << " " << ru << " " << cl << " " << cu << std::endl;
 
 
             // find all local feature candidates.
@@ -82,13 +86,16 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
                 }
             }
 
-            if (localCandidates.empty()){throw std::runtime_error("grid too fine.");}
+            std::cout << localCandidates.size() << std::endl;
+            if (localCandidates.empty()){continue;}
 
             // compute the mean gradient norm
             double sum = 0;
+            SCALAR_TYPE maxGradientNorm = 0;
             for (auto e : localCandidates)
             {
                 sum += e.gradientNorm;
+                if (e.gradientNorm > maxGradientNorm){maxGradientNorm = e.gradientNorm;}
             }
 
             SCALAR_TYPE meanGradientNorm = sum / localCandidates.size();
@@ -96,8 +103,23 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
             // filter candidates
             for (auto& e : localCandidates)
             {
+                if (e.gradientNorm < gradientMagThreshold)
+                {
+                    e.score = 0;
+                }
+
+                if ((e.gradientNorm - meanGradientNorm) / (maxGradientNorm - meanGradientNorm) < INVARIANT_THRESHOLD)
+                {
+                    e.score = 0;
+                }
 
             }
+
+            // find the top n features.
+            std::partial_sort(localCandidates.begin(), localCandidates.begin() + nFeaturesPerSection, localCandidates.end(), [](const FeatureCandidate &a, const FeatureCandidate &b)
+                              {
+                                  return a.score > b.score;
+                              });
 
         }
     }

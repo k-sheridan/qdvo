@@ -28,7 +28,7 @@ public:
     std::vector<QDVO::Feature> detectFeatures(const Frame& frame);
 
     struct FeatureCandidate{
-        u_int x, y; // pixel position
+        int x, y; // pixel position
         SCALAR_TYPE dxdx, dxdy, dydy; // structure tensor information
         SCALAR_TYPE det, trace; // determinant and trace of the structure tensor.
         SCALAR_TYPE gradientNorm;
