@@ -12,8 +12,11 @@
 #define N_SECTIONS 100
 #define HARRIS_K  0.05
 #define EDGE_WEIGHT 0.1
-#define INVARIANT_THRESHOLD  0.1
-#define MINIMUM_NORMALIZED_GRADIENT_MAG 0.0306
+#define INVARIANT_THRESHOLD  0.5
+#define MINIMUM_NORMALIZED_GRADIENT_MAG 0.120
+
+#define USE_SPATIAL_MASK true
+#define SPATIAL_MASK_RADIUS 6
 
 namespace  QDVO {
 class FeatureDetector
@@ -36,7 +39,7 @@ public:
         SCALAR_TYPE score = 0; // stores the feature score which I have described in my paper.
     };
 
-private:
+//private:
     cv::Mat dx, dy; // preallocated containers for the image gradients.
     cv::Mat dxdx, dydy, dxdy; // preallocated containers for structure tensors.
 

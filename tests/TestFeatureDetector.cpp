@@ -16,7 +16,20 @@ TEST(FeatureDetector, Basic)
 
     QDVO::FeatureDetector detector = QDVO::FeatureDetector();
 
-    detector.detectFeatures(f);
+    std::vector<QDVO::Feature> features = detector.detectFeatures(f);
+
+    // draw for debug
+    cv::Mat render;
+    cv::cvtColor(f.image, render, cv::COLOR_GRAY2BGR);
+
+    for (auto& e : features)
+    {
+        cv::drawMarker(render, e.px, cv::Scalar(255, 0, 0));
+    }
+
+    cv::imshow("feature detection", render);
+    cv::imshow("mask", detector.spatialMask);
+    cv::waitKey(10000);
 }
 
 
