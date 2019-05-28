@@ -92,7 +92,7 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
                 {
                     FeatureCandidate fc;
 
-                    fc.gradientNorm = sqrt(this->dxdx.at<float>(col, row) + this->dydy.at<float>(col, row));
+                    fc.gradientNorm = sqrt(this->dxdx.at<float>(row, col) + this->dydy.at<float>(row, col));
 
                     // If the gradient norm is too low this can never be a feature.
                     if (fc.gradientNorm < gradientMagThreshold)
