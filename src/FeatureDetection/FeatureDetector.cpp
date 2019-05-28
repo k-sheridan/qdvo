@@ -12,6 +12,28 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
     cv::Sobel( frame.image, this->dx, CV_16S, 1, 0, 3, 1, 0, cv::BORDER_DEFAULT );
     cv::Sobel( frame.image, this->dy, CV_16S, 0, 1, 3, 1, 0, cv::BORDER_DEFAULT );
 
+    this->dxdx.create(frame.image.rows, frame.image.cols, CV_32F);
+    this->dxdy.create(frame.image.rows, frame.image.cols, CV_32F);
+    this->dydy.create(frame.image.rows, frame.image.cols, CV_32F);
+
+    // second precompute the individual structure tensors
+    for (int row = 0; row < frame.image.rows; ++row)
+    {
+        const int16_t *rowPtr_dx = this->dx.ptr<short>(row);
+        const int16_t *rowPtr_dy = this->dy.ptr<short>(row);
+
+        float *rowPtr_dxdx = this->dxdx.ptr<float>(row);
+        float *rowPtr_dxdy = this->dxdy.ptr<float>(row);
+        float *rowPtr_dydy = this->dydy.ptr<float>(row);
+
+        for (int col = 0; col < frame.image.cols; ++col)
+        {
+            rowPtr_dxdx[col] = rowPtr_dx[col]*rowPtr_dx[col];
+            rowPtr_dydy[col] = rowPtr_dy[col]*rowPtr_dy[col];
+            rowPtr_dxdy[col] = rowPtr_dx[col]*rowPtr_dy[col];
+        }
+     }
+
     // split up the detection into a grid process.
     const int dim = std::floor(sqrt(N_SECTIONS));
     const int maxCandidatesPerSection = ((frame.image.rows * frame.image.cols) / N_SECTIONS) + 1;
@@ -23,15 +45,17 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
     const double rowsPerSection = double(frame.image.rows) / dim;
     const double colsPerSection = double(frame.image.cols) / dim;
 
+    double pad = std::ceil((HARRIS_WIDTH - 1)/2);
+
     std::vector<int> rowBounds, colBounds;
     for(int i = 0; i < dim; ++i)
     {
-        rowBounds.push_back(std::round(i * rowsPerSection));
-        colBounds.push_back(std::round(i * colsPerSection));
+        rowBounds.push_back(std::max(std::round(i * rowsPerSection), pad));
+        colBounds.push_back(std::max(std::round(i * colsPerSection), pad));
     }
 
-    rowBounds.push_back(frame.image.rows);
-    colBounds.push_back(frame.image.cols);
+    rowBounds.push_back(frame.image.rows - pad - 2);
+    colBounds.push_back(frame.image.cols - pad - 2);
 
 
     // reset/create the feature candidate vectors.
@@ -64,25 +88,24 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
             // find all local feature candidates.
             for (int row = rl; row < ru; ++row)
             {
-                const int16_t *rowPtr_dx = this->dx.ptr<short>(row);
-                const int16_t *rowPtr_dy = this->dy.ptr<short>(row);
-
                 for (int col = cl; col < cu; ++col)
                 {
                     FeatureCandidate fc;
-                    fc.dxdx = rowPtr_dx[col]*rowPtr_dx[col];
-                    fc.dydy = rowPtr_dy[col]*rowPtr_dy[col];
-                    fc.dxdy = rowPtr_dx[col]*rowPtr_dy[col];
 
-                    fc.trace = fc.dxdx + fc.dydy;
-
-                    fc.gradientNorm = sqrt(fc.trace);
+                    fc.gradientNorm = sqrt(this->dxdx.at<float>(col, row) + this->dydy.at<float>(col, row));
 
                     // If the gradient norm is too low this can never be a feature.
                     if (fc.gradientNorm < gradientMagThreshold)
                     {
                         continue;
                     }
+
+                    cv::Rect roi(col, row, HARRIS_WIDTH, HARRIS_WIDTH);
+                    fc.dxdx = cv::sum(this->dxdx(roi))[0];
+                    fc.dxdy = cv::sum(this->dxdy(roi))[0];
+                    fc.dydy = cv::sum(this->dydy(roi))[0];
+
+                    fc.trace = fc.dxdx + fc.dydy;
 
                     fc.det = fc.dxdx*fc.dydy + fc.dxdy*fc.dxdy;
 

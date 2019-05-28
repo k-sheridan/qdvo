@@ -5,12 +5,14 @@
 #include <Feature.h>
 #include <Frame.h>
 #include <GlobalDefinitions.h>
+#include <algorithm>
 
 
 // Feature Detector Settings
 #define N_FEATURES_DESIRED 400
 #define N_SECTIONS 100
 #define HARRIS_K  0.05
+#define HARRIS_WIDTH 5
 #define EDGE_WEIGHT 0.1
 #define INVARIANT_THRESHOLD  0.5
 #define MINIMUM_NORMALIZED_GRADIENT_MAG 0.120
