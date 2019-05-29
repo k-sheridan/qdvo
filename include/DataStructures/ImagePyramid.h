@@ -17,6 +17,8 @@ public:
 
     void generate(const cv::Mat& baseImage);
 
+    size_t levels(){return this->imageLevels.size();}
+
 protected:
     std::vector<cv::Mat> imageLevels; // level 0 is full resolution.
 
