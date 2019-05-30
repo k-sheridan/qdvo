@@ -12,6 +12,7 @@ find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
 find_package(GTest REQUIRED)
+find_package(Boost REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${CERES_INCLUDE_DIRS})
@@ -45,7 +46,7 @@ include(CMakePackageConfigHelpers)
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
-target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES})
+target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES} ${Boost_LIBRARIES})
 
 
 option(PACKAGE_TESTS "Build the tests" ON)
