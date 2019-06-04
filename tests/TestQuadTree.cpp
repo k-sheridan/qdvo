@@ -46,3 +46,28 @@ TEST(QuadTree, Insert)
     std::cout << tree.root->getQuad(Eigen::Vector2i(20, 21))->data.at(0)->bar << std::endl;
 
 }
+
+TEST(QuadTree, Delete)
+{
+    struct Foo {
+        double bar;
+        double bing;
+    };
+
+    QDVO::GenericQuadTree<Foo> tree(512, 512);
+
+    Foo garbage;
+    garbage.bar = 1090;
+    garbage.bing = 111;
+
+    Foo moreGarbage;
+    moreGarbage.bar = 69;
+
+    tree.insert(Eigen::Vector2i(21, 21), &garbage);
+    tree.insert(Eigen::Vector2i(20, 21), &moreGarbage);
+
+    tree.clear();
+
+    ASSERT_EQ(tree.root->getQuad(Eigen::Vector2i(21, 21))->level, 0);
+
+}

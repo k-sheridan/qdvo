@@ -167,6 +167,12 @@ public:
      */
     void insert(const Eigen::Vector2i& pos, T* data);
 
+    /*
+     * deletes the whole quadtree.
+     */
+    void clear();
+
+
 
     std::unique_ptr<Quad> root;
 
@@ -227,6 +233,13 @@ template <typename T> void GenericQuadTree<T>::insert(const Eigen::Vector2i& pos
         currentQuad->nChildren++;
 
     }
+}
+
+template <typename T> void GenericQuadTree<T>::clear()
+{
+    this->root->nChildren = 0;
+    this->root->quadrants.clear(); // should delete/free the subquads.
+    this->root->quadrants.resize(4);
 }
 
 }
