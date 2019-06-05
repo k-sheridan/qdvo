@@ -5,6 +5,8 @@
 #include <GlobalDefinitions.h>
 #include <boost/geometry.hpp>
 #include <GenericQuadTree.h>
+#include <algorithm>
+#include <RadialSearchPattern.h>
 
 #define OCCUPANCY_BIN_SIZE 5
 
@@ -17,18 +19,12 @@ namespace QDVO {
 class CorrespondenceDistribution
 {
 public:
-    CorrespondenceDistribution(unsigned width, unsigned height);
+    CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<RadialSearchPattern> patternPtr = nullptr);
 
     struct PotentialCorrespondence{
         SCALAR_TYPE score; // match score.
         Eigen::Vector2i pixel;
     };
-
-    // serves as a method for finding nearest neighbors.
-    GenericQuadTree<PotentialCorrespondence*> correspondenceMap;
-
-
-    std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
 
     /*
      * Inserts a potential correspondence in to the distribution. This will be used for the computation of the residual as described in my paper.
@@ -40,7 +36,21 @@ public:
      */
     Eigen::Matrix<SCALAR_TYPE, 2, 1> computeResidual(const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
 
+    // VARIABLES
+
+    // serves as a method for finding nearest neighbors.
+    GenericQuadTree<PotentialCorrespondence*> correspondenceMap;
+
+
+    std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
+
+    // pre-allocated quantities.
+    std::vector<SCALAR_TYPE> errorArray, errorSqArray, scoreArray, expScoreArray, weightArray;
+
+    std::shared_ptr<RadialSearchPattern> radialSearchPattern; // shared among all correspondence distributions. NOT TO BE MODIFIED!
 };
+
+
 
 }
 
