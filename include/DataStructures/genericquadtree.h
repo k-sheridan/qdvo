@@ -24,7 +24,7 @@ public:
 
         unsigned level = 0; // the level of this quad.
 
-        std::vector<T*> data; // stores pointers to data within this quad.
+        std::vector<T> data; // stores pointers to data within this quad.
 
         Eigen::Vector2i center, dimensions; // center point of quad, and dimensions of the quad.
 
@@ -165,7 +165,7 @@ public:
     /*
      * adds data at the level determined based on the desired resolution.
      */
-    void insert(const Eigen::Vector2i& pos, T* data);
+    void insert(const Eigen::Vector2i& pos, T& data);
 
     /*
      * deletes the whole quadtree.
@@ -201,7 +201,7 @@ template <typename T> GenericQuadTree<T>::GenericQuadTree(unsigned width, unsign
     this->root->level = 0;
 }
 
-template <typename T> void GenericQuadTree<T>::insert(const Eigen::Vector2i& pos, T* data)
+template <typename T> void GenericQuadTree<T>::insert(const Eigen::Vector2i& pos, T& data)
 {
     // start inserting the data into the quadtree
     bool finishedInsertion = false;

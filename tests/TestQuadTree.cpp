@@ -29,21 +29,24 @@ TEST(QuadTree, Insert)
         double bing;
     };
 
-    QDVO::GenericQuadTree<Foo> tree(512, 512);
+    QDVO::GenericQuadTree<Foo*> tree(512, 512);
 
-    Foo garbage;
-    garbage.bar = 1090;
-    garbage.bing = 111;
+    Foo* garbage = new Foo();
+    garbage->bar = 1090;
+    garbage->bing = 111;
 
-    Foo moreGarbage;
-    moreGarbage.bar = 69;
+    Foo* moreGarbage = new Foo();
+    moreGarbage->bar = 109;
 
-    tree.insert(Eigen::Vector2i(21, 21), &garbage);
-    tree.insert(Eigen::Vector2i(20, 21), &moreGarbage);
+    tree.insert(Eigen::Vector2i(21, 21), garbage);
+    tree.insert(Eigen::Vector2i(20, 21), moreGarbage);
 
     std::cout << tree.root->nChildren << std::endl;
 
     std::cout << tree.root->getQuad(Eigen::Vector2i(20, 21))->data.at(0)->bar << std::endl;
+
+    delete garbage;
+    delete moreGarbage;
 
 }
 
@@ -54,20 +57,23 @@ TEST(QuadTree, Delete)
         double bing;
     };
 
-    QDVO::GenericQuadTree<Foo> tree(512, 512);
+    QDVO::GenericQuadTree<Foo*> tree(512, 512);
 
-    Foo garbage;
-    garbage.bar = 1090;
-    garbage.bing = 111;
+    Foo* garbage = new Foo();
+    garbage->bar = 1090;
+    garbage->bing = 111;
 
-    Foo moreGarbage;
-    moreGarbage.bar = 69;
+    Foo* moreGarbage = new Foo();
+    moreGarbage->bar = 109;
 
-    tree.insert(Eigen::Vector2i(21, 21), &garbage);
-    tree.insert(Eigen::Vector2i(20, 21), &moreGarbage);
+    tree.insert(Eigen::Vector2i(21, 21), garbage);
+    tree.insert(Eigen::Vector2i(20, 21), moreGarbage);
 
     tree.clear();
 
     ASSERT_EQ(tree.root->getQuad(Eigen::Vector2i(21, 21))->level, 0);
+
+    delete garbage;
+    delete moreGarbage;
 
 }
