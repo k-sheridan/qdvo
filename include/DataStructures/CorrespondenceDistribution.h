@@ -7,6 +7,7 @@
 #include <GenericQuadTree.h>
 #include <algorithm>
 #include <RadialSearchPattern.h>
+#include <DequeArray.h>
 
 #define OCCUPANCY_BIN_SIZE 5
 
@@ -39,7 +40,7 @@ public:
     // VARIABLES
 
     // serves as a method for finding nearest neighbors.
-    GenericQuadTree<PotentialCorrespondence*> correspondenceMap;
+    DequeArray<PotentialCorrespondence*> correspondenceMap;
 
 
     std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
