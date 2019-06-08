@@ -43,7 +43,7 @@ TEST(QuadTree, Insert)
 
     std::cout << tree.root->nChildren << std::endl;
 
-    std::cout << tree.root->getQuad(Eigen::Vector2i(20, 21))->data.at(0)->bar << std::endl;
+    std::cout << tree.root->getQuad(Eigen::Vector2i(20, 21))->data->bar << std::endl;
 
     delete garbage;
     delete moreGarbage;

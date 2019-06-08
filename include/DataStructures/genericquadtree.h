@@ -4,8 +4,9 @@
 #include <vector>
 #include <Eigen/Core>
 #include <iostream>
+#include <boost/multi_array.hpp>
 
-#define DEFAULT_BIN_WIDTH 5
+#define DEFAULT_BIN_WIDTH 1
 
 namespace QDVO {
 
@@ -24,7 +25,7 @@ public:
 
         unsigned level = 0; // the level of this quad.
 
-        std::vector<T> data; // stores pointers to data within this quad.
+        T data;
 
         Eigen::Vector2i center, dimensions; // center point of quad, and dimensions of the quad.
 
@@ -216,7 +217,7 @@ template <typename T> void GenericQuadTree<T>::insert(const Eigen::Vector2i& pos
         if (currentQuad->level == this->bottomLevel)
         {
             // finished
-            currentQuad->data.push_back(data);
+            currentQuad->data = (data);
 
             finishedInsertion = true; // not necessary
 

@@ -7,7 +7,8 @@
 #include <GenericQuadTree.h>
 #include <algorithm>
 #include <RadialSearchPattern.h>
-#include <DequeArray.h>
+#include <SpatialMap.h>
+
 
 #define OCCUPANCY_BIN_SIZE 5
 
@@ -27,6 +28,11 @@ public:
         Eigen::Vector2i pixel;
     };
 
+    struct SpatialMapType{
+        PotentialCorrespondence* pc = nullptr;
+        bool searched = false;
+    };
+
     /*
      * Inserts a potential correspondence in to the distribution. This will be used for the computation of the residual as described in my paper.
      */
@@ -40,7 +46,7 @@ public:
     // VARIABLES
 
     // serves as a method for finding nearest neighbors.
-    DequeArray<PotentialCorrespondence*> correspondenceMap;
+    SpatialMap<PotentialCorrespondence*> correspondenceMap;
 
 
     std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
