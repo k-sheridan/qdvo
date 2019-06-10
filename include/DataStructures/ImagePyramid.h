@@ -13,7 +13,7 @@ public:
      */
     ImagePyramid(int levels = 1);
 
-    cv::Mat& getImage(const int level = 0);
+    cv::Mat& getImage(const size_t level = 0);
 
     void generate(const cv::Mat& baseImage);
 

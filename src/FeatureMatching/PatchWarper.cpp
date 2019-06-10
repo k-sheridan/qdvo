@@ -1,6 +1,6 @@
 #include "PatchWarper.h"
 
-PatchWarper::PatchWarper()
+QDVO::PatchWarper::PatchWarper()
 {
 
 }

@@ -32,7 +32,7 @@ void QDVO::ImagePyramid::generate(const cv::Mat& baseImage)
     }
 }
 
-cv::Mat& QDVO::ImagePyramid::getImage(const int level)
+cv::Mat& QDVO::ImagePyramid::getImage(const size_t level)
 {
-    return this->imageLevels.at(level-1);
+    return this->imageLevels.at(level);
 }
