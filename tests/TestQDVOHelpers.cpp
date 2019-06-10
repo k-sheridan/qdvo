@@ -9,7 +9,7 @@ TEST(CameraModelAdd, Basic)
 
     vo.setCameraModel(ptr, 1);
 
-    ASSERT_EQ(vo.cameraModelMap.at(1).get()->cx, 255);
+    ASSERT_EQ(vo.graph.cameraModelMap.at(1).get()->cx, 255);
     ASSERT_EQ(ptr, nullptr);
 }
 

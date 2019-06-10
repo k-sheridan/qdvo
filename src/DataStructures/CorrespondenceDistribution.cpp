@@ -2,15 +2,8 @@
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<RadialSearchPattern> patternPtr)
 {
-    this->correspondenceMap = QDVO::SpatialMap<PotentialCorrespondence*>(std::max(width, height));
+    this->correspondenceMap = QDVO::SpatialMap<SpatialMapType>(std::max(width, height));
     this->radialSearchPattern = std::shared_ptr<RadialSearchPattern>(patternPtr);
-}
-
-void QDVO::CorrespondenceDistribution::addPotentialCorrespondence(const PotentialCorrespondence& pc)
-{
-    this->potentialCorrespondences.push_back(pc);
-    PotentialCorrespondence* pcPtr = &(this->potentialCorrespondences.back());
-    //this->correspondenceMap.insert(pc.pixel, pcPtr);
 }
 
 Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CorrespondenceDistribution::computeResidual(const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0)

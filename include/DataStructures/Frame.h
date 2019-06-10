@@ -38,6 +38,12 @@ public:
 
         }
     }
+
+    /*
+     * resets all members of this frame while leaving the memory used by them allocated.
+     */
+    void reset();
+
 };
 
 }

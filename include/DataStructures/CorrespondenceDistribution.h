@@ -28,15 +28,9 @@ public:
         Eigen::Vector2i pixel;
     };
 
-    struct SpatialMapType{
+    struct SpatialMapType {
         PotentialCorrespondence* pc = nullptr;
-        bool searched = false;
     };
-
-    /*
-     * Inserts a potential correspondence in to the distribution. This will be used for the computation of the residual as described in my paper.
-     */
-    void addPotentialCorrespondence(const PotentialCorrespondence& pc);
 
     /*
      * Efficiently evaluates the gradient of the negative log likelihood of the gaussian mixture model described by this class.
@@ -46,8 +40,7 @@ public:
     // VARIABLES
 
     // serves as a method for finding nearest neighbors.
-    SpatialMap<PotentialCorrespondence*> correspondenceMap;
-
+    SpatialMap<SpatialMapType> correspondenceMap;
 
     std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
 

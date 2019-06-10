@@ -33,10 +33,8 @@ public:
 
     T& get(const Eigen::Vector2i& pixel)
     {
-
-        this->temp = pixel + this->pixelShift;
-        this->index1 = this->topHash(this->temp(0), this->temp(1));
-        this->index2 = this->bottomHash(this->temp(0), this->temp(1));
+        this->index1 = this->topHash(pixel(0), pixel(1));
+        this->index2 = this->bottomHash(pixel(0), pixel(1));
 
 
         std::unique_ptr<std::vector<T> >& bottomHashTableRef = this->mapOfMaps.at(this->index1);
@@ -78,7 +76,7 @@ public:
     std::vector<std::unique_ptr<std::vector<T> > > mapOfMaps;
 
     unsigned maximumIndexBitCount;
-    Eigen::Vector2i pixelShift; // used to shift the pixel to a top left zero index.
+    //Eigen::Vector2i pixelShift; // used to shift the pixel to a top left zero index.
     unsigned topHashBitCount = TOP_HASH_BIT_COUNT; // ideally 4 bits
     unsigned bottomHashBitCount; // ideally n - 4 bits
     size_t bottomHashTableSize;
@@ -88,7 +86,7 @@ public:
     unsigned bottomHashMask;
 
     // preallocated temporary variables
-    Eigen::Vector2i temp;
+    //Eigen::Vector2i temp;
     size_t index1, index2;
 
 };
@@ -101,8 +99,8 @@ template <typename T> SpatialMap<T>::SpatialMap()
 template <typename T> SpatialMap<T>::SpatialMap(unsigned width)
 {
     this->maximumIndexBitCount = std::ceil(std::log2(width));
-    const int shift = (0x01 << this->maximumIndexBitCount) / 2 - 1;
-    this->pixelShift = Eigen::Vector2i(shift, shift);
+    //const int shift = (0x01 << this->maximumIndexBitCount) / 2 - 1;
+    //this->pixelShift = Eigen::Vector2i(shift, shift);
 
     this->topHashBitCount = TOP_HASH_BIT_COUNT;
     this->bottomHashBitCount = this->maximumIndexBitCount - this->topHashBitCount;

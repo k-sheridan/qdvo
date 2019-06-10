@@ -11,7 +11,7 @@ public:
     /**
      * creates a new image pyramid from a base image.
      */
-    ImagePyramid(int levels);
+    ImagePyramid(int levels = 1);
 
     cv::Mat& getImage(const int level = 0);
 

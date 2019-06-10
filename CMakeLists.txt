@@ -25,6 +25,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/ErrorTerms/
     ${PROJECT_SOURCE_DIR}/include/FeatureDetection/
     ${PROJECT_SOURCE_DIR}/include/DataStructures/
+    ${PROJECT_SOURCE_DIR}/include/FeatureMatching/
     )
 
 

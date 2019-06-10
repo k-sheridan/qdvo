@@ -6,25 +6,24 @@
 
 TEST(SpatialMap, Basic)
 {
-    QDVO::SpatialMap<double> map(512);
+    struct RandomType {
+        double* data = nullptr;
+    };
+
+    QDVO::SpatialMap<RandomType> map(512);
 
     std::cout << map.mapOfMaps.size() << std::endl;
     //std::cout << map.get(Eigen::Vector2i(-255, 0)) << std::endl;
 
 
-    for (int i = 0; i < 1000000; ++i)
+    for (int i = 0; i < 1; ++i)
     {
-        map.get(Eigen::Vector2i(10, 0));
-        map.get(Eigen::Vector2i(250, 0));
-        map.get(Eigen::Vector2i(10, 250));
-
-        map.get(Eigen::Vector2i(-40, 0));
-        map.get(Eigen::Vector2i(-250, 0));
-        map.get(Eigen::Vector2i(10, -250));
-
-        map.get(Eigen::Vector2i(-40, -40));
-        map.get(Eigen::Vector2i(-250, -250));
-        map.get(Eigen::Vector2i(250, 250));
-        map.get(Eigen::Vector2i(-250, 250));
+        for (int x = 0; x < 512; ++x)
+        {
+            for (int y = 0; y < 512; ++y)
+            {
+                map.get(Eigen::Vector2i(x, y));
+            }
+        }
     }
 }
