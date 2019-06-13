@@ -4,6 +4,7 @@
 #include <IMUState.h>
 #include <CameraModel.hpp>
 #include <Landmark.h>
+#include <ImagePyramid.h>
 
 namespace  QDVO {
 class Frame
@@ -15,7 +16,7 @@ public:
 
     IMUState imustate;
 
-    cv::Mat image; // image.
+    ImagePyramid imagePyr; // image.
 
     CameraModel* cm = nullptr; // pointer to the global camera model for this frame.
 
@@ -27,8 +28,8 @@ public:
        MARGINALIZED
     } status;
 
-    uint16_t maxIntensity() const {
-        switch (image.type())
+    uint16_t maxIntensity() {
+        switch (imagePyr.getImage().type())
         {
         case CV_8U: return 255;
 

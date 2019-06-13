@@ -6,18 +6,20 @@ QDVO::FeatureDetector::FeatureDetector()
 }
 
 
-std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& frame)
+std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(Frame& frame, const int level)
 {
-    // First, compute the image gradients.
-    cv::Sobel( frame.image, this->dx, CV_16S, 1, 0, 3, 1, 0, cv::BORDER_DEFAULT );
-    cv::Sobel( frame.image, this->dy, CV_16S, 0, 1, 3, 1, 0, cv::BORDER_DEFAULT );
+    cv::Mat& image = frame.imagePyr.getImage(level);
 
-    this->dxdx.create(frame.image.rows, frame.image.cols, CV_32F);
-    this->dxdy.create(frame.image.rows, frame.image.cols, CV_32F);
-    this->dydy.create(frame.image.rows, frame.image.cols, CV_32F);
+    // First, compute the image gradients.
+    cv::Sobel( image, this->dx, CV_16S, 1, 0, 3, 1, 0, cv::BORDER_DEFAULT );
+    cv::Sobel( image, this->dy, CV_16S, 0, 1, 3, 1, 0, cv::BORDER_DEFAULT );
+
+    this->dxdx.create(image.rows, image.cols, CV_32F);
+    this->dxdy.create(image.rows, image.cols, CV_32F);
+    this->dydy.create(image.rows, image.cols, CV_32F);
 
     // second precompute the individual structure tensors
-    for (int row = 0; row < frame.image.rows; ++row)
+    for (int row = 0; row < image.rows; ++row)
     {
         const int16_t *rowPtr_dx = this->dx.ptr<short>(row);
         const int16_t *rowPtr_dy = this->dy.ptr<short>(row);
@@ -26,7 +28,7 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
         float *rowPtr_dxdy = this->dxdy.ptr<float>(row);
         float *rowPtr_dydy = this->dydy.ptr<float>(row);
 
-        for (int col = 0; col < frame.image.cols; ++col)
+        for (int col = 0; col < image.cols; ++col)
         {
             rowPtr_dxdx[col] = rowPtr_dx[col]*rowPtr_dx[col];
             rowPtr_dydy[col] = rowPtr_dy[col]*rowPtr_dy[col];
@@ -36,14 +38,14 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
 
     // split up the detection into a grid process.
     const int dim = std::floor(sqrt(N_SECTIONS));
-    const int maxCandidatesPerSection = ((frame.image.rows * frame.image.cols) / N_SECTIONS) + 1;
+    const int maxCandidatesPerSection = ((image.rows * image.cols) / N_SECTIONS) + 1;
     const int nFeaturesPerSection = N_FEATURES_DESIRED / N_SECTIONS;
     std::vector<QDVO::Feature> features;
     features.reserve(N_FEATURES_DESIRED);
 
 
-    const double rowsPerSection = double(frame.image.rows) / dim;
-    const double colsPerSection = double(frame.image.cols) / dim;
+    const double rowsPerSection = double(image.rows) / dim;
+    const double colsPerSection = double(image.cols) / dim;
 
     double pad = std::ceil((HARRIS_WIDTH - 1)/2);
 
@@ -54,8 +56,8 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
         colBounds.push_back(std::max(std::round(i * colsPerSection), pad));
     }
 
-    rowBounds.push_back(frame.image.rows - pad - 2);
-    colBounds.push_back(frame.image.cols - pad - 2);
+    rowBounds.push_back(image.rows - pad - 2);
+    colBounds.push_back(image.cols - pad - 2);
 
 
     // reset/create the feature candidate vectors.
@@ -66,7 +68,7 @@ std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(const Frame& fr
 
 #if USE_SPATIAL_MASK
     // reset the spatial mask.
-    this->spatialMask = cv::Mat::zeros(frame.image.rows, frame.image.cols, CV_8U);
+    this->spatialMask = cv::Mat::zeros(image.rows, image.cols, CV_8U);
 #endif
 
     // look for the pixels which have a sufficiently high gradient magnitude

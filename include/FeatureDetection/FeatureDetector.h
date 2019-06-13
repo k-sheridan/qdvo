@@ -29,7 +29,7 @@ public:
      * Seeks to find a set of "trackable" features such that the set of features is well distributed spatially.
      * Both edges and corners will be called features.
      */
-    std::vector<QDVO::Feature> detectFeatures(const Frame& frame);
+    std::vector<QDVO::Feature> detectFeatures(Frame& frame, const int level = 0);
 
     struct FeatureCandidate{
         int x, y; // pixel position

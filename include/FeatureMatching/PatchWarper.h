@@ -16,7 +16,10 @@ class PatchWarper
 public:
     PatchWarper();
 
-    SCALAR_TYPE compare(const Patch& patch, const Frame& targetFrame);
+    /*
+     * computes a warped patch in the target frame assuming the feature lies on a flat surface.
+     */
+    void warpPatchToTargetFrame(Patch& warpedPatch, const Landmark& landmark, const Frame& sourceFrame, const Frame& targetFrame, const int patchWidth = PATCH_WIDTH);
 };
 }
 

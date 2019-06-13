@@ -9,8 +9,7 @@ TEST(ImagePyr, Basic)
 {
     cv::Mat img;
     img = cv::imread("/Users/kevinsheridan/Documents/Mac Library/RnD/qdvo/tests/images/1.png", cv::IMREAD_GRAYSCALE);
-    QDVO::Frame f;
-    f.image = img;
+
 
     QDVO::ImagePyramid pyr(3);
 

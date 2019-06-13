@@ -51,6 +51,8 @@ public:
         return bottomHashTableRef->at(this->index2);
     }
 
+private:
+
     /*
      * computes the n bit index for the top hash table.
      * ASSUMES positive values

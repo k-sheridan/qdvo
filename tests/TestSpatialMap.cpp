@@ -12,7 +12,7 @@ TEST(SpatialMap, Basic)
 
     QDVO::SpatialMap<RandomType> map(512);
 
-    std::cout << map.mapOfMaps.size() << std::endl;
+    //std::cout << map.mapOfMaps.size() << std::endl;
     //std::cout << map.get(Eigen::Vector2i(-255, 0)) << std::endl;
 
     for (int i = 0; i < 10; ++i)

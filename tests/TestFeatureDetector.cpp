@@ -10,9 +10,9 @@ TEST(FeatureDetector, Basic)
     cv::Mat img;
     img = cv::imread("/Users/kevinsheridan/Documents/Mac Library/RnD/qdvo/tests/images/1.png", cv::IMREAD_GRAYSCALE);
     QDVO::Frame f;
-    f.image = img;
+    f.imagePyr.generate(img);
 
-    std::cout << img.rows << " " << f.image.rows << std::endl;
+    std::cout << img.rows << " " << f.imagePyr.getImage().rows << std::endl;
 
     QDVO::FeatureDetector detector = QDVO::FeatureDetector();
 
