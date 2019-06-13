@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Frame.h>
-#include <opencv4/opencv2/core.hpp>
+#include <opencv2/core.hpp>
 #include <map>
 #include <GlobalDefinitions.h>
 #include <Settings.h>
