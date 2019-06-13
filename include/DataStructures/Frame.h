@@ -6,6 +6,7 @@
 #include <Landmark.h>
 #include <ImagePyramid.h>
 #include <ImageStatisticsLUT.h>
+#include <CorrespondenceDistribution.h>
 
 namespace  QDVO {
 class Frame
@@ -16,15 +17,19 @@ public:
 
     ID_TYPE camID, frameID; // camid: the id of the camera this frame is asociated to. frameID: the unique sequential id of this frame.
 
-    IMUState imustate;
+    IMUState imustate; // stores the state of the frame.
 
-    ImagePyramid imagePyr; // image.
-
-    ImageStatisticsLUT imageStatistics; // stores the precomputed approximate stddev and mean table.
+    ImagePyramid imagePyr; // holds the actual image for this frame.
 
     CameraModel* cm = nullptr; // pointer to the global camera model for this frame.
 
     std::vector<Landmark> landmarks; // array of landmarks hosted in this frame. ID's should be ordered and landmarks should never be deleted.
+
+    /*
+     * a preallocated array of correspondence distributions for this frame.
+     * This array should never be shrunk. the correspondence distributions can be uninitialized though.
+     */
+    std::vector<CorrespondenceDistribution> correspondenceDistributions;
 
 
     enum FrameStatus {

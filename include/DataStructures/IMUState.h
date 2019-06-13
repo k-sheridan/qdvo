@@ -13,6 +13,8 @@ public:
 
     const int dimensions = 9;
 
+    double time; // the time of this state.
+
     Sophus::SO3<SCALAR_TYPE> attitude;
     Sophus::Vector3<SCALAR_TYPE> pos;
     Sophus::Vector3<SCALAR_TYPE> vel;

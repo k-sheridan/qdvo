@@ -10,8 +10,6 @@
 #include <SpatialMap.h>
 
 
-#define OCCUPANCY_BIN_SIZE 5
-
 namespace QDVO {
 
 /*

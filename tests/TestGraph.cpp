@@ -1,15 +1,15 @@
 #include "gtest/gtest.h"
-#include "VO.h"
+#include "Graph.h"
 
 TEST(CameraModelAdd, Basic)
 {
-    QDVO::VO vo;
+    QDVO::Graph g;
 
     std::unique_ptr<QDVO::CameraModel> ptr(new QDVO::CameraModel(300, 301, 255, 256, PI/2.1));
 
-    vo.setCameraModel(ptr, 1);
+    g.setCameraModel(ptr, 1);
 
-    ASSERT_EQ(vo.graph.cameraModelMap.at(1).get()->cx, 255);
+    ASSERT_EQ(g.cameraModelMap.at(1).get()->cx, 255);
     ASSERT_EQ(ptr, nullptr);
 }
 
