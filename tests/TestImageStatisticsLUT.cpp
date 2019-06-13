@@ -5,7 +5,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-TEST(CompleteImagePyr, Basic)
+TEST(StatisticsLUT, Basic)
 {
     cv::Mat img;
     img = cv::imread("/Users/kevinsheridan/Documents/Mac Library/RnD/qdvo/tests/images/1.png", cv::IMREAD_GRAYSCALE);

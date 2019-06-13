@@ -25,12 +25,18 @@
 // the width of the image patch used. must be an odd number.
 #define PATCH_WIDTH 11
 
+// which patch comparison will be used.
+#define ZNCC_PATCH_COMPARISON
+
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 400
+
+// define how many image pyramid levels are used during optiizations
+#define IMAGE_PYRAMID_LEVELS 1
 
 
 // not for configuration
 
 // used in the precomputation of the standard deviation / mean lookup table
 // this is used to compute the size of the table which will be upscaled to the full image size.
-#define IMAGE_STDDEV_RESOLUTION PATCH_WIDTH
+#define IMAGE_STDDEV_RESOLUTION (PATCH_WIDTH - 1)*2 + 1

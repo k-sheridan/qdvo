@@ -40,7 +40,7 @@ public:
         SCALAR_TYPE score = 0; // stores the feature score which I have described in my paper.
     };
 
-//private:
+private:
     cv::Mat dx, dy; // preallocated containers for the image gradients.
     cv::Mat dxdx, dydy, dxdy; // preallocated containers for structure tensors.
 

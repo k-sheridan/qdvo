@@ -1,6 +1,5 @@
 #include "PatchComparer.h"
 
-QDVO::PatchComparer::PatchComparer()
-{
+QDVO::PatchComparer::PatchComparer(){
 
 }

@@ -6,8 +6,10 @@
 #include <opencv2/imgproc.hpp>
 #include <Frame.h>
 #include <Patch.h>
+#include <Eigen/Core>
 
 namespace QDVO {
+
 /*
  * base class used to compare two image patches.
  * For speed, this is implemented in a way which will compare a patch with a pixel, image combinination.
@@ -24,10 +26,7 @@ public:
      *
      * no out of bounds checks are performed at this level.
      */
-    SCALAR_TYPE compare(const Patch& patch, const Frame& targetFrame, const Eigen::Vector2i& pixel)
-    {
-
-    }
+    SCALAR_TYPE compare(const Patch& patch, const Frame& targetFrame, const Eigen::Vector2i& pixel);
 };
 }
 
