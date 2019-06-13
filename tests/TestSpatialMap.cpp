@@ -15,9 +15,9 @@ TEST(SpatialMap, Basic)
     std::cout << map.mapOfMaps.size() << std::endl;
     //std::cout << map.get(Eigen::Vector2i(-255, 0)) << std::endl;
 
-
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < 10; ++i)
     {
+        TIK
         for (int x = 0; x < 512; ++x)
         {
             for (int y = 0; y < 512; ++y)
@@ -25,5 +25,6 @@ TEST(SpatialMap, Basic)
                 map.get(Eigen::Vector2i(x, y));
             }
         }
+        TOK
     }
 }

@@ -1,9 +1,7 @@
 #include "CompleteImagePyramid.h"
 
-QDVO::CompleteImagePyramid::CompleteImagePyramid(const int levels, const int standardDeviationTableResolution) : image(levels)
+QDVO::CompleteImagePyramid::CompleteImagePyramid(const int levels) : image(levels)
 {
-
-    this->standardDeviationTable = cv::Mat(standardDeviationTableResolution, standardDeviationTableResolution, CV_32F);
 
 }
 
@@ -18,32 +16,53 @@ void QDVO::CompleteImagePyramid::generate(const cv::Mat& baseImage)
     cv::Sobel(baseImage, this->dy.getImage(), CV_16S, 0, 1, 3, 1, 0, cv::BORDER_DEFAULT );
     this->dy.generate(this->dy.getImage());*/
 
-    //// compute the standard deviation table
-
-    // compute the boundaries of the sections.
-    const int dim = this->standardDeviationTable.rows;
-    const double rowsPerSection = double(baseImage.rows) / dim;
-    const double colsPerSection = double(baseImage.cols) / dim;
-
-    std::vector<int> rowBounds, colBounds;
-    for(int i = 0; i < dim; ++i)
+    // compute the standard deviation table
+    double rowStride, colStride;
+    double colSize, rowSize;
+    if (baseImage.rows >= baseImage.cols)
     {
-        rowBounds.push_back(std::max(std::round(i * rowsPerSection), 0.0));
-        colBounds.push_back(std::max(std::round(i * colsPerSection), 0.0));
+        rowStride = baseImage.rows / double(IMAGE_STDDEV_RESOLUTION);
+        colSize = std::round(baseImage.cols / rowStride);
+        colStride = baseImage.cols / colSize;
+        rowSize = IMAGE_STDDEV_RESOLUTION;
     }
-    rowBounds.push_back(baseImage.rows - 2);
-    colBounds.push_back(baseImage.cols - 2);
-
-    assert(rowBounds.size() == standardDeviationTable.rows + 1);
-
-    // for each std dev compute it using opencv arithmetic functions.
-
-    for (int i = 0; i < standardDeviationTable.rows; ++i)
+    else
     {
-        for (int j = 0; j < standardDeviationTable.cols; ++j)
+        colStride = baseImage.cols / double(IMAGE_STDDEV_RESOLUTION);
+        rowSize = std::round(baseImage.rows / colStride);
+        rowStride = baseImage.rows / rowSize;
+        colSize = IMAGE_STDDEV_RESOLUTION;
+    }
+
+    // allocate and iterate through the LUTs.
+    cv::Mat tempLocalStandardDeviationLUT = cv::Mat(rowSize, colSize, CV_32F);
+    cv::Mat tempLocalMeanLUT = cv::Mat(rowSize, colSize, CV_32F);
+
+    for (int i = 0; i < rowSize; ++i)
+    {
+        for (int j = 0; j < colSize; ++j)
         {
-            cv::Mat roi = baseImage(cv::Rect(cv::Point2i(colBounds.at(j), rowBounds.at(i)), cv::Point2i(colBounds.at(j+1), rowBounds.at(i+1))));
+            int rl, ru, cl, cu;
+
+            rl = std::floor(i*rowStride);
+            cl = std::floor(j*colStride);
+            ru = std::min(std::floor((i+1)*rowStride), double(baseImage.rows-1));
+            cu = std::min(std::floor((j+1)*colStride), double(baseImage.cols-1));
+
+            cv::Mat roi = baseImage(cv::Rect(cv::Point2i(cl, rl), cv::Point2i(cu, ru)));
+            cv::Scalar mean, stddev;
+            cv::meanStdDev(roi, mean, stddev);
+
+            tempLocalStandardDeviationLUT.at<float>(cv::Point2i(j, i)) = stddev.val[0];
+            tempLocalMeanLUT.at<float>(cv::Point2i(j, i)) = mean.val[0];
+
         }
     }
+
+    cv::resize(tempLocalStandardDeviationLUT, this->localStandardDeviationLUT, cv::Size(baseImage.cols, baseImage.rows));
+
+
+
+
 
 }

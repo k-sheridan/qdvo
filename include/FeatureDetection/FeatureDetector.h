@@ -1,15 +1,14 @@
 #pragma once
 
+#include <GlobalDefinitions.h>
 #include <opencv4/opencv2/core.hpp>
 #include <opencv4/opencv2/imgproc.hpp>
 #include <Feature.h>
 #include <Frame.h>
-#include <GlobalDefinitions.h>
 #include <algorithm>
 
 
 // Feature Detector Settings
-#define N_FEATURES_DESIRED 400
 #define N_SECTIONS 100
 #define HARRIS_K  0.05
 #define HARRIS_WIDTH 3

@@ -17,10 +17,8 @@ class CompleteImagePyramid
 public:
     /*
      * normal image pyramid constructor except now the local standard deviations are now computed.
-     *
-     * If the level count is -1, the image pyramid will be built as high as it can go until the image dimensions are no longer divisible by 2.
      */
-    CompleteImagePyramid(const int levels = -1, const int standardDeviationTableResolution = 16);
+    CompleteImagePyramid(const int levels = 1);
 
     void generate(const cv::Mat& baseImage);
 
@@ -37,8 +35,8 @@ public:
     QDVO::ImagePyramid image;
 
     // these tables are generated from the top down through upsampling.
-    QDVO::ImagePyramid standardDeviationTables; // used to speed up the patch comparison metrics.
-    QDVO::ImagePyramid meanTables;
+    cv::Mat localStandardDeviationLUT; // used to speed up the patch comparison metrics.
+    cv::Mat localMeanLUT;
 };
 }
 

@@ -12,9 +12,11 @@ TEST(CompleteImagePyr, Basic)
     QDVO::Frame f;
     f.image = img;
 
+    TIK
     QDVO::CompleteImagePyramid pyr(3);
 
     pyr.generate(img);
+    TOK
 
     // draw for debug
     //cv::imshow("testPyr", pyr.dx.getImage(2));
