@@ -2,8 +2,8 @@
 #include "VO.h"
 #include <Frame.h>
 #include <FeatureDetector.h>
-#include <opencv4/opencv2/core.hpp>
-#include <opencv4/opencv2/highgui.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 
 TEST(FeatureDetector, Basic)
 {

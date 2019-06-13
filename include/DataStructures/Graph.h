@@ -3,6 +3,7 @@
 #include <Frame.h>
 #include <opencv2/core.hpp>
 #include <map>
+#include <memory>
 #include <GlobalDefinitions.h>
 #include <Settings.h>
 #include <CameraModel.hpp>
