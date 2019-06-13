@@ -18,8 +18,12 @@ TEST(CompleteImagePyr, Basic)
     pyr.generate(img);
     TOK
 
+    RETIK
+    std::cout << pyr.getMean(cv::Point2f(1, 1)) << std::endl;
+    RETOK
+
     // draw for debug
-    //cv::imshow("testPyr", pyr.dx.getImage(2));
+    //cv::imshow("testPyr", pyr.localMeanLUT);
     //cv::waitKey(10000);
 }
 

@@ -9,6 +9,10 @@
 
 #define TIK auto startT = std::chrono::high_resolution_clock::now();
 #define TOK auto endT = std::chrono::high_resolution_clock::now(); std::chrono::duration<double> diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
+
+#define RETIK startT = std::chrono::high_resolution_clock::now();
+#define RETOK endT = std::chrono::high_resolution_clock::now(); diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
+
 #define ID_TYPE uint64_t
 #define EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION 0.01
 
