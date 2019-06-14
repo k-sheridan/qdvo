@@ -1,10 +1,10 @@
 #ifndef PATCHWARPER_H
 #define PATCHWARPER_H
 
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
-#include <Frame.h>
-#include <Patch.h>
+#include "Frame.h"
+#include "Patch.h"
 
 namespace QDVO {
 /*

@@ -1,6 +1,6 @@
-#include "Estimation/SlidingWindowEstimator.h"
+#include "SlidingWindowEstimator.h"
 
-SlidingWIndowEstimator::SlidingWIndowEstimator()
+SlidingWindowEstimator::SlidingWindowEstimator()
 {
 
 }

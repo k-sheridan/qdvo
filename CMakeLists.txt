@@ -18,6 +18,7 @@ find_package(Boost REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${CERES_INCLUDE_DIRS})
 include_directories(${SOPHUS_INCLUDE_DIRS})
+include_directories(${Eigen_INCLUDE_DIRS})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include/
@@ -26,6 +27,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/FeatureDetection/
     ${PROJECT_SOURCE_DIR}/include/DataStructures/
     ${PROJECT_SOURCE_DIR}/include/FeatureMatching/
+    ${PROJECT_SOURCE_DIR}/include/Estimation/
+    ${PROJECT_SOURCE_DIR}/include/Algorithm/
     )
 
 
@@ -42,15 +45,11 @@ file(GLOB QDVO_SOURCE_FILES
 )
 
 
-
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
 target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES} ${Boost_LIBRARIES})
 
-
+#Testing
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
     enable_testing()
@@ -62,45 +61,64 @@ endif()
 add_subdirectory(tests)
 
 
-# install
-message("installing into ${CMAKE_INSTALL_PREFIX} with version ${CMAKE_PROJECT_VERSION}")
+
+
+# Installation
 
 include(GNUInstallDirs)
-set(QDVO_CMAKE_EXPORT_DIR ${CMAKE_INSTALL_DATADIR}/QDVO/cmake)
-set_target_properties(QDVO PROPERTIES EXPORT_NAME QDVO)
+include(CMakePackageConfigHelpers)
 
-if(NOT DEFINED LIB_INSTALL_DIR)
-        set(LIB_INSTALL_DIR lib)
-endif()
-install(TARGETS QDVO EXPORT QDVOTargets DESTINATION ${LIB_INSTALL_DIR})
+
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/QDVO)
+
+install(TARGETS
+            QDVO
+        EXPORT
+            QDVOTargets
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 install(EXPORT QDVOTargets
-  NAMESPACE QDVO::
-  DESTINATION ${QDVO_CMAKE_EXPORT_DIR}
-)
-export(TARGETS QDVO NAMESPACE QDVO:: FILE QDVOTargets.cmake)
-export(PACKAGE QDVO)
-
-
-
-# Write version to file
-write_basic_package_version_file (
-  QDVOConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY SameMajorVersion
+        FILE QDVOTargets.cmake
+        NAMESPACE QDVO::
+        DESTINATION ${INSTALL_CONFIGDIR}
 )
 
-# Install cmake targets
+
+install(FILES ${QDVO_HEADER_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QDVO)
+
+
+# config file
+
+#####################
+# ConfigVersion file
+##
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_LIST_DIR}/CMake/QDVOConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfig.cmake
+    INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+)
+
+## Install all the helper files
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfig.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfigVersion.cmake
-  DESTINATION ${QDVO_CMAKE_EXPORT_DIR}
+    FILES
+      ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfig.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfigVersion.cmake
+    DESTINATION ${INSTALL_CONFIGDIR}
 )
 
-# Install header files
-install(
-  FILES ${QDVO_HEADER_FILES}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QDVO
-  )
 
+target_include_directories(QDVO
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
+add_library(QDVO::QDVO ALIAS QDVO)

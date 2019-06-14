@@ -2,10 +2,10 @@
 #define SLIDINGWINDOWESTIMATOR_H
 
 
-class SlidingWIndowEstimator
+class SlidingWindowEstimator
 {
 public:
-    SlidingWIndowEstimator();
+    SlidingWindowEstimator();
 };
 
 #endif // SLIDINGWINDOWESTIMATOR_H

@@ -2,7 +2,7 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 
 namespace QDVO {
 class ImagePyramid
@@ -17,7 +17,7 @@ public:
 
     void generate(const cv::Mat& baseImage);
 
-    size_t levels(){return this->imageLevels.size();}
+    size_t levels() const {return this->imageLevels.size();}
 
 protected:
     std::vector<cv::Mat> imageLevels; // level 0 is full resolution.

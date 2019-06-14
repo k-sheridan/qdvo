@@ -2,7 +2,7 @@
 #define HACKYLOCALPARAMETERIZATIONSO3_H
 
 #include <sophus/so3.hpp>
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 #include <algorithm>
 #include <iterator>
 #include <ceres/local_parameterization.h>

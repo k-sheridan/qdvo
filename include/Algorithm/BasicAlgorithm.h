@@ -1,10 +1,12 @@
 #ifndef BASICALGORITHM_H
 #define BASICALGORITHM_H
 
-#include <GlobalDefinitions.h>
-#include <Graph.h>
-#include <Estimation/FrontFndVisualOdometry.h>
-#include <Estimation/SlidingWindowEstimator.h>
+#include "GlobalDefinitions.h"
+#include "Graph.h"
+#include "FrontFndVisualOdometry.h"
+#include "SlidingWindowEstimator.h"
+#include "ImageStatisticsLUT.h"
+#include "PatchComparer.h"
 #include <opencv2/core.hpp>
 
 namespace QDVO {
@@ -23,6 +25,10 @@ public:
 
     Graph graph; // main datastructure for all possible QDVO algorithms.
 
+    FrontEndVisualOdometry frontEndVisualOdometry; // used to initialize the current frame pose.
+
+    SlidingWindowEstimator swe; // main estimator for the whole algorithm
+
     /*
      * Preallocates keyframes and current frame.
      */
@@ -36,17 +42,34 @@ public:
     /*
      * adds a new camera for the visual odometry algorithm.
      */
-    ID_TYPE addCamera(std::unique_ptr<QDVO::CameraModel>& cameraModel);
+    void addCamera(std::unique_ptr<QDVO::CameraModel>& cameraModel, const ID_TYPE cameraID = 1);
 
     /*
      * detects features and adds new landmarks to the frame.
      */
     void createNewLandmarks(QDVO::Frame& keyframe);
 
+    /*
+     * Activates new landmarks from the set of keyframes such that the current features are well distributed.
+     */
+    void activateNewLandmarks();
+
+    /*
+     * Does an initial search for potential correspondences between active landmarks and the current frame.
+     */
+    void initializeCurrentFrameCorrespondenceDistributions();
+
+    /*
+     * Checks if the current frame has met the criteria for a keyframe.
+     */
+    bool isCurrentFrameAKeyframe();
+
 
 
     // -=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // ZNCC IMPLEMENTATION
+
+    std::unordered_map<ID_TYPE, std::unique_ptr<PatchComparer> > patchComparers; // used to speed up the patch comparisons.
 
 };
 

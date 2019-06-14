@@ -2,7 +2,7 @@
 #define RADIALSEARCHPATTERN_H
 
 #include <opencv2/core.hpp>
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 #include <Eigen/Core>
 #include <iostream>
 

@@ -3,7 +3,7 @@
 #include <sophus/common.hpp>
 #include <sophus/types.hpp>
 #include <sophus/se3.hpp>
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 
 namespace  QDVO {
 class IMUState

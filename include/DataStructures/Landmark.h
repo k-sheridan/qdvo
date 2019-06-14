@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 #include <Eigen/Core>
 
 namespace  QDVO {

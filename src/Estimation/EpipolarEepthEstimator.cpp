@@ -1,4 +1,4 @@
-#include "Estimation/EpipolarDepthEstimator.h"
+#include "EpipolarDepthEstimator.h"
 
 EpipolarDepthEstimator::EpipolarDepthEstimator()
 {

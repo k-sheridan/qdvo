@@ -1,12 +1,12 @@
 #pragma once
 
 #include <opencv2/core.hpp>
-#include <IMUState.h>
-#include <CameraModel.hpp>
-#include <Landmark.h>
-#include <ImagePyramid.h>
-#include <ImageStatisticsLUT.h>
-#include <CorrespondenceDistribution.h>
+#include "IMUState.h"
+#include "CameraModel.hpp"
+#include "Landmark.h"
+#include "ImagePyramid.h"
+#include "ImageStatisticsLUT.h"
+#include "CorrespondenceDistribution.h"
 
 namespace  QDVO {
 class Frame
@@ -38,17 +38,7 @@ public:
        MARGINALIZED
     } status;
 
-    uint16_t maxIntensity() {
-        switch (imagePyr.getImage().type())
-        {
-        case CV_8U: return 255;
-
-        //case CV_16U: return 65535;
-
-        default: throw std::runtime_error("image type not supported.");
-
-        }
-    }
+    int maxIntensity();
 
     void updateImage(cv::Mat& baseImage);
 

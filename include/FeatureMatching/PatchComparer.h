@@ -1,11 +1,12 @@
 #ifndef PATCHCOMPARER_H
 #define PATCHCOMPARER_H
 
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <Frame.h>
-#include <Patch.h>
+#include "Frame.h"
+#include "Patch.h"
+#include "ImageStatisticsLUT.h"
 #include <Eigen/Core>
 
 namespace QDVO {
@@ -18,6 +19,10 @@ namespace QDVO {
 class PatchComparer
 {
 public:
+
+    std::unique_ptr<ImageStatisticsLUT> meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
+
+
     PatchComparer();
 
     /*

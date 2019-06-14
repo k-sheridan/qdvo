@@ -1,15 +1,19 @@
 #pragma once
 
-#include <Frame.h>
+#include "Frame.h"
 #include <opencv2/core.hpp>
 #include <unordered_map>
 #include <memory>
-#include <GlobalDefinitions.h>
-#include <Settings.h>
-#include <CameraModel.hpp>
-#include <FeatureDetector.h>
+#include "GlobalDefinitions.h"
+#include "Settings.h"
+#include "CameraModel.hpp"
+#include "FeatureDetector.h"
 
 namespace  QDVO {
+
+typedef std::unordered_map<ID_TYPE, std::unique_ptr<Frame> > KeyframeSetType;
+typedef std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> > CameraModelMapType;
+
 class Graph
 {
 public:
@@ -23,13 +27,29 @@ public:
         this->cameraModelMap.at(cameraID).swap(cameraModelPtr);
     }
 
+    Frame& getCurrentFrame();
+
+    KeyframeSetType& getKeyframeSet(){return this->keyframeSet;}
+
+    /*
+     * Looks across the keyframe set and current frame for the highest frame ID and returns one id higher
+     */
+    ID_TYPE getNewFrameID();
+
+    /*
+     * This function will swap the current frame and the marginalized keyframe and update the hash table key to reflect the new keyframe id.
+     * The current frame is now equal to the marginalized keyframe. For safety, you should always check that a frame is not marginalized when using it.
+     */
+    void moveCurrentFrameIntoMarginalizedKeyframePosition(const ID_TYPE marginalizedKeyframeID);
+
+private:
     // Members, nodes, and edges of the graph.
 
-    std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel>> cameraModelMap; // camID to camera model mapping. Done this way for memory/compute efficiency.
+    CameraModelMapType cameraModelMap; // camID to camera model mapping. Done this way for memory/compute efficiency.
 
-    std::unordered_map<ID_TYPE, std::unique_ptr<Frame>> keyframeSet; // gives mapping from keyframe ids to keyframes. bounds the memory consumption.
+    KeyframeSetType keyframeSet; // gives mapping from keyframe ids to keyframes. bounds the memory consumption.
 
-    std::unique_ptr<Frame> currentFrame; // A preallocated frame for the current frame to reside in.
+    std::unique_ptr<Frame> currentFrame;
 };
 }
 
