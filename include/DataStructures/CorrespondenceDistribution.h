@@ -8,9 +8,12 @@
 #include <algorithm>
 #include <RadialSearchPattern.h>
 #include <SpatialMap.h>
+#include <Patch.h>
 
 
 namespace QDVO {
+
+class Frame;
 
 /*
  * The correspondence distribution is modeled as a gaussian mixture model. The means are of pixel resolution and have associated scores.
@@ -36,6 +39,8 @@ public:
     Eigen::Matrix<SCALAR_TYPE, 2, 1> computeResidual(const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
 
     // VARIABLES
+
+    Patch warpedPatch; // the warped template patch to be used for the creation of the correspondence distribution.
 
     // serves as a method for finding nearest neighbors.
     SpatialMap<SpatialMapType> correspondenceMap;

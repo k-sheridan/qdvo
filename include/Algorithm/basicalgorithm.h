@@ -3,6 +3,8 @@
 
 #include <GlobalDefinitions.h>
 #include <Graph.h>
+#include <Estimation/FrontFndVisualOdometry.h>
+#include <Estimation/SlidingWindowEstimator.h>
 #include <opencv2/core.hpp>
 
 namespace QDVO {
@@ -17,7 +19,7 @@ namespace QDVO {
 class BasicAlgorithm
 {
 public:
-    BasicAlgorithm(){}
+    BasicAlgorithm();
 
     Graph graph; // main datastructure for all possible QDVO algorithms.
 
@@ -35,6 +37,11 @@ public:
      * adds a new camera for the visual odometry algorithm.
      */
     ID_TYPE addCamera(std::unique_ptr<QDVO::CameraModel>& cameraModel);
+
+    /*
+     * detects features and adds new landmarks to the frame.
+     */
+    void createNewLandmarks(QDVO::Frame& keyframe);
 
 
 
