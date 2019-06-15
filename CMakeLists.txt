@@ -101,7 +101,7 @@ write_basic_package_version_file(
 )
 
 configure_package_config_file(
-    ${CMAKE_CURRENT_LIST_DIR}/CMake/QDVOConfig.cmake.in
+    ${CMAKE_CURRENT_LIST_DIR}/cmake/QDVOConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/QDVOConfig.cmake
     INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
 )
