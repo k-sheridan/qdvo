@@ -51,6 +51,14 @@ public:
         return bottomHashTableRef->at(this->index2);
     }
 
+    void reset()
+    {
+        for (auto& e : this->mapOfMaps)
+        {
+            e.reset();
+        }
+    }
+
 private:
 
     /*

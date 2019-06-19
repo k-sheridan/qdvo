@@ -28,13 +28,16 @@
 #define ZNCC_PATCH_COMPARISON
 
 // the number of features the feature detector will find on every keyframe.
-#define N_FEATURES_DESIRED 400
+#define N_FEATURES_DESIRED 200
 
 // define the maximum radius for the correspondence search.
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 20
 
 // define how many image pyramid levels are used during optiizations
 #define IMAGE_PYRAMID_LEVELS 1
+
+// define the default landmark inverse depth. This is the depth all landmarks are initialized with and for a monocular use case, will influence the scene scale.
+#define DEFAULT_LANDMARK_DINV 0.5
 
 
 

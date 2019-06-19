@@ -1,16 +1,19 @@
 #include "gtest/gtest.h"
-#include <CorrespondenceDistribution.h>
+#include "CorrespondenceDistribution.h"
+#include "GlobalDefinitions.h"
+#include "PatchComparer.h"
 
 TEST(CorrespondenceDistribution, Basic)
 {
-    QDVO::CorrespondenceDistribution dist(512, 512);
+    std::shared_ptr<QDVO::RadialSearchPattern> rsp(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
+    std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
+    QDVO::CorrespondenceDistribution dist(512, 512, rsp);
 
     QDVO::CorrespondenceDistribution::PotentialCorrespondence pc;
     pc.pixel = Eigen::Vector2i(400, 200);
+    pc.score = 0.9;
+
+    dist.initializeDistribution(pc.pixel, 20, patchComp);
 
 
-
-    //QDVO::GenericQuadTree<QDVO::CorrespondenceDistribution::PotentialCorrespondence*>::Quad* quad = dist.correspondenceMap.root->getQuad(pc.pixel);
-
-    //ASSERT_EQ(quad->data.size(), 1);
 }

@@ -61,6 +61,8 @@ void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame>& keyf
     // Detect new features in the keyframe
     std::vector<QDVO::Feature> newFeatures = featureDetector->detectFeatures(*(keyframe.get()));
 
+    std::cout << "Found " << newFeatures.size() << " new landmarks" << std::endl;
+
     // add the landmarks to the keyframe's landmark vector
     std::unique_ptr<QDVO::CameraModel>& cm = this->graph.getCameraModel(keyframe->camID);
 
@@ -70,7 +72,7 @@ void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame>& keyf
         lm.px = Eigen::Matrix<SCALAR_TYPE, 2, 1>(f.px.x, f.px.y);
         lm.landmarkID = keyframe->landmarks.empty() ? 1 : keyframe->landmarks.size() + 1;
         lm.parentFrameID = keyframe->frameID;
-        lm.dinv = 1.0;
+        lm.dinv = DEFAULT_LANDMARK_DINV;
 
         keyframe->landmarks.push_back(lm);
     }
