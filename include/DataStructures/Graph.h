@@ -12,6 +12,7 @@
 namespace  QDVO {
 
 typedef std::unordered_map<ID_TYPE, std::unique_ptr<Frame> > KeyframeSetType;
+typedef std::unordered_map<ID_TYPE, Sophus::SE3<SCALAR_TYPE> > ExtrinsicSetType;
 typedef std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> > CameraModelMapType;
 
 class Graph
@@ -27,7 +28,11 @@ public:
         this->cameraModelMap.at(cameraID).swap(cameraModelPtr);
     }
 
-    Frame& getCurrentFrame();
+    std::unique_ptr<Frame>& getCurrentFrame();
+
+    std::unique_ptr<CameraModel>& getCameraModel(const ID_TYPE cameraID = 1);
+
+    std::unique_ptr<Frame>& getKeyframe(const ID_TYPE keyframeID);
 
     KeyframeSetType& getKeyframeSet(){return this->keyframeSet;}
 
@@ -39,8 +44,12 @@ public:
     /*
      * This function will swap the current frame and the marginalized keyframe and update the hash table key to reflect the new keyframe id.
      * The current frame is now equal to the marginalized keyframe. For safety, you should always check that a frame is not marginalized when using it.
+     *
      */
     void moveCurrentFrameIntoMarginalizedKeyframePosition(const ID_TYPE marginalizedKeyframeID);
+
+    // assuming there is enough room in the keyframe set, the current frame is moved to a new spot in the keyframe set.
+    void moveCurrentFrameIntoNewKeyframePosition();
 
 private:
     // Members, nodes, and edges of the graph.
@@ -48,6 +57,8 @@ private:
     CameraModelMapType cameraModelMap; // camID to camera model mapping. Done this way for memory/compute efficiency.
 
     KeyframeSetType keyframeSet; // gives mapping from keyframe ids to keyframes. bounds the memory consumption.
+
+    ExtrinsicSetType extrinsicSet; // maps camera id to an imu2camera transform.
 
     std::unique_ptr<Frame> currentFrame;
 };

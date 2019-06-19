@@ -38,7 +38,7 @@ public:
     /*
      * Gives the algorithm a new image
      */
-    void addImage(cv::Mat& image, const double& time, const ID_TYPE cameraID = 1);
+    void addFrame(cv::Mat& image, const double& time, const ID_TYPE cameraID = 1);
 
     /*
      * adds a new camera for the visual odometry algorithm.
@@ -48,7 +48,7 @@ public:
     /*
      * detects features and adds new landmarks to the frame.
      */
-    void createNewLandmarks(QDVO::Frame& keyframe);
+    void createNewLandmarks(std::unique_ptr<QDVO::Frame>& keyframe, std::unique_ptr<QDVO::FeatureDetector>& featureDetector);
 
     /*
      * Activates new landmarks from the set of keyframes such that the current features are well distributed.
@@ -58,7 +58,7 @@ public:
     /*
      * Does an initial search for potential correspondences between active landmarks and the current frame.
      */
-    void initializeCurrentFrameCorrespondenceDistributions();
+    void initializeCorrespondenceDistributionsForCurrentFrame();
 
     /*
      * Checks if the current frame has met the criteria for a keyframe.
@@ -68,7 +68,9 @@ public:
 
 
     // -=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    // ZNCC IMPLEMENTATION
+    // ZNCC IMPLEMENTATION SPECIFIC and PREALLOCATED / PRECOMPUTED DATA
+
+    std::unique_ptr<QDVO::FeatureDetector> featureDetector; // global feature detector. NOT MEANT TO BE USED IN MULTIPLE THREADS WITHOUT LOCKING!
 
     std::unordered_map<ID_TYPE, std::unique_ptr<PatchComparer> > patchComparers; // used to speed up the patch comparisons.
 

@@ -2,7 +2,7 @@
 #define CAMERAMODEL_HPP
 
 #include <Eigen/Core>
-#include <GlobalDefinitions.h>
+#include "GlobalDefinitions.h"
 
 /*
  * Base Class for a generic camera model. This base class is implemented as a pinhole camera.

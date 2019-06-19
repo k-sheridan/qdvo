@@ -4,7 +4,6 @@
 #include <unordered_set>
 #include "GlobalDefinitions.h"
 #include <boost/geometry.hpp>
-#include <GenericQuadTree.h>
 #include <algorithm>
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"

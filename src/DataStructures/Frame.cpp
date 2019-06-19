@@ -3,6 +3,9 @@
 QDVO::Frame::Frame()
 {
     this->status = FrameStatus::INACTIVE;
+    this->imagePyr = QDVO::ImagePyramid(IMAGE_PYRAMID_LEVELS);
+    this->frameID = 0;
+    this->camID = 0;
 }
 
 void QDVO::Frame::updateImage(cv::Mat& baseImage)
@@ -20,4 +23,10 @@ int QDVO::Frame::maxIntensity() {
     default: throw std::runtime_error("image type not supported.");
 
     }
+}
+
+void QDVO::Frame::reset()
+{
+    // remove the landmarks
+    this->landmarks.clear();
 }

@@ -14,7 +14,6 @@
 #define RETOK endT = std::chrono::high_resolution_clock::now(); diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
 
 #define ID_TYPE uint64_t
-#define EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION 0.01
 
 
 // configurable
@@ -31,8 +30,12 @@
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 400
 
+// define the maximum radius for the correspondence search.
+#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 20
+
 // define how many image pyramid levels are used during optiizations
 #define IMAGE_PYRAMID_LEVELS 1
+
 
 
 // not for configuration
@@ -40,3 +43,5 @@
 // used in the precomputation of the standard deviation / mean lookup table
 // this is used to compute the size of the table which will be upscaled to the full image size.
 #define IMAGE_STDDEV_RESOLUTION (PATCH_WIDTH - 1)*2 + 1
+
+#define EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION 0.01
