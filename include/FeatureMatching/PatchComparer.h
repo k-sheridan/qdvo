@@ -20,7 +20,7 @@ class PatchComparer
 {
 public:
 
-    std::unique_ptr<ImageStatisticsLUT> meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
+    ImageStatisticsLUT meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
 
 
     PatchComparer();

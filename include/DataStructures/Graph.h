@@ -4,6 +4,9 @@
 #include <opencv2/core.hpp>
 #include <unordered_map>
 #include <memory>
+#include <mutex>
+#include <algorithm>
+#include <thread>
 #include "GlobalDefinitions.h"
 #include "Settings.h"
 #include "CameraModel.hpp"
@@ -50,6 +53,10 @@ public:
 
     // assuming there is enough room in the keyframe set, the current frame is moved to a new spot in the keyframe set.
     void moveCurrentFrameIntoNewKeyframePosition();
+
+    // Projects all landmarks in all keyframes into the current frame to determin if they are visible
+    std::vector<Landmark*> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly);
+
 
 private:
     // Members, nodes, and edges of the graph.

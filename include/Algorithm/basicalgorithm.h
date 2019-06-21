@@ -65,6 +65,11 @@ public:
      */
     bool isCurrentFrameAKeyframe();
 
+    /*
+     * This function is ran after the current frame is setup and before the correspondence distributions are initialized. It will insert a new patch comparer
+     * into the unordered_map of patch comparers while removing any old/redundant patch comparers.
+     */
+    void updatePatchComparers();
 
 
     // -=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -72,7 +77,7 @@ public:
 
     std::unique_ptr<QDVO::FeatureDetector> featureDetector; // global feature detector. NOT MEANT TO BE USED IN MULTIPLE THREADS WITHOUT LOCKING!
 
-    std::unordered_map<ID_TYPE, std::unique_ptr<PatchComparer> > patchComparers; // used to speed up the patch comparisons.
+    std::unordered_map<ID_TYPE, std::shared_ptr<PatchComparer> > patchComparers; // used to speed up the patch comparisons.
 
     std::shared_ptr<RadialSearchPattern> radialSearchPatternPtr; // used globally to generate the correspondence distributions.
 };

@@ -5,7 +5,7 @@ TEST(CameraModelAdd, Basic)
 {
     QDVO::Graph g;
 
-    std::unique_ptr<QDVO::CameraModel> ptr(new QDVO::CameraModel(300, 301, 255, 256, PI/2.1));
+    std::unique_ptr<QDVO::CameraModel> ptr(new QDVO::CameraModel(300, 301, 255, 256, PI/2.1, 512, 400));
 
     g.setCameraModel(ptr, 1);
 

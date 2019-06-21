@@ -86,6 +86,20 @@ void QDVO::BasicAlgorithm::activateNewLandmarks()
 
 void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame()
 {
+    // first update the patch comparers before initializing all the correspondence distributions
+    this->updatePatchComparers();
+
+    std::unique_ptr<QDVO::Frame>& cf = this->graph.getCurrentFrame();
+    std::shared_ptr<QDVO::PatchComparer> patchCompPtr = this->patchComparers.at(cf->frameID);
+
+    // find the set of active landmarks visible in the current frame.
+    // create and initialize the correspondence distribution for each of these landmarks
+    std::vector<QDVO::Landmark*> visibleActiveLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(true);
+
+    for (auto& l : visibleActiveLandmarks)
+    {
+
+    }
 
 }
 
@@ -99,4 +113,69 @@ bool QDVO::BasicAlgorithm::isCurrentFrameAKeyframe()
 
 
     return false;
+}
+
+void QDVO::BasicAlgorithm::updatePatchComparers()
+{
+
+    std::unique_ptr<QDVO::Frame>& cf = this->graph.getCurrentFrame();
+
+    // ensure that a patch comparer is in the table for the current frame id
+    if (!this->patchComparers.count(cf->frameID))
+    {
+        // patch comparer does not exist for the current frame
+        this->patchComparers.insert({cf->frameID, std::shared_ptr<QDVO::PatchComparer>()});
+    }
+
+
+
+    // determine if there is a patch comparer in the table which is not associated to a non existent kf or the current frame
+    bool patchComparerHasNoMatchingFrame = false;
+    ID_TYPE idToRemove = 0;
+    for (auto& pair : this->patchComparers)
+    {
+        bool hasMatchingFrame = false;
+        for (auto& kfPair : this->graph.getKeyframeSet())
+        {
+            if (pair.first == kfPair.first)
+            {
+                hasMatchingFrame = true;
+                break;
+            }
+        }
+
+        if (cf->frameID == pair.first)
+        {
+            hasMatchingFrame = true;
+        }
+
+        if (!hasMatchingFrame)
+        {
+            patchComparerHasNoMatchingFrame = true;
+            idToRemove = pair.first;
+            break;
+        }
+    }
+
+
+
+    if(patchComparerHasNoMatchingFrame)
+    {
+        // swap the memory from this frame to the current patchComparer
+        this->patchComparers.at(cf->frameID).swap(this->patchComparers.at(idToRemove));
+
+        // remove the old/obsolete patch comparer
+        this->patchComparers.erase(idToRemove);
+
+    }
+
+    // setup the current patch comparer
+    if (this->patchComparers.at(cf->frameID) == nullptr)
+    {
+        this->patchComparers.at(cf->frameID) = std::shared_ptr<QDVO::PatchComparer>(new QDVO::PatchComparer());
+    }
+
+    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage(0));
+
+    std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
 }

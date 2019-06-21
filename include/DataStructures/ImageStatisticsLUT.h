@@ -13,13 +13,15 @@ public:
 
     void setupTables(const cv::Mat& baseImage)
     {
+
         double colSize, rowSize;
         if (baseImage.rows >= baseImage.cols)
         {
-            rowStride = baseImage.rows / double(IMAGE_STDDEV_RESOLUTION);
-            colSize = std::round(baseImage.cols / rowStride);
-            colStride = baseImage.cols / colSize;
-            rowSize = IMAGE_STDDEV_RESOLUTION;
+            this->rowStride = baseImage.rows / double(IMAGE_STDDEV_RESOLUTION);
+            colSize = std::round(baseImage.cols / this->rowStride);
+            this->colStride = baseImage.cols / colSize;
+            rowSize = double(IMAGE_STDDEV_RESOLUTION);
+
         }
         else
         {
@@ -29,9 +31,12 @@ public:
             colSize = IMAGE_STDDEV_RESOLUTION;
         }
 
+        //std::cout << "this->rowStride << " " << this->colStride" << std::endl;
+
         // allocate and iterate through the LUTs.
         this->localStandardDeviationLUT = cv::Mat(rowSize, colSize, CV_32F);
         this->localMeanLUT = cv::Mat(rowSize, colSize, CV_32F);
+
 
         for (int i = 0; i < rowSize; ++i)
         {

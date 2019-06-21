@@ -67,3 +67,28 @@ ID_TYPE QDVO::Graph::getNewFrameID()
 
     return highestFrameID + 1;
 }
+
+
+std::vector<QDVO::Landmark*> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly)
+{
+    std::vector<QDVO::Landmark*> visibleLandmarkPtrs;
+
+    std::unique_ptr<QDVO::Frame>& currentFrame = this->getCurrentFrame();
+    std::unique_ptr<QDVO::CameraModel>& cm = this->getCameraModel(currentFrame->camID);
+
+
+    // iterate through all keyframes and project their landmarks into the current frame
+    for (auto& element : this->keyframeSet){
+        std::cout << "computing visible landmarks for kf " << element.first << std::endl;
+
+        for (auto& l : element.second->landmarks)
+        {
+            // project landmarks if necessary
+
+            // add to vector if necessary
+        }
+    }
+
+
+    return visibleLandmarkPtrs;
+}

@@ -1,7 +1,7 @@
 #include "CameraModel.hpp"
 
-QDVO::CameraModel::CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov) :
-    cx(cx), cy(cy), fx(fx), fy(fy), fov(fov)
+QDVO::CameraModel::CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov, int width, int height) :
+    cx(cx), cy(cy), fx(fx), fy(fy), fov(fov), width(width), height(height)
 {
 
 }
@@ -40,4 +40,26 @@ Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::CameraModel::unproject(Eigen::Matrix<SCAL
     }
 
     return Eigen::Matrix<SCALAR_TYPE, 3, 1>((pixel(0) - this->cx)/this->fx, (pixel(1) - this->cy)/this->fy, 1);
+}
+
+bool QDVO::CameraModel::isPointPotentiallyVisible(const Eigen::Matrix<SCALAR_TYPE, 3, 1>& pointInCamera)
+{
+    if (pointInCamera(2) < SMALL_NUMBER){
+        return false;
+    }
+
+    return true;
+}
+
+bool QDVO::CameraModel::isPixelOnImage(const Eigen::Matrix<double, 2, 1> &pixel)
+{
+    if (pixel(0) >= 0 && pixel(0) < this->width - 1 && pixel(1) >= 0 && pixel(1) < this->height - 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 }

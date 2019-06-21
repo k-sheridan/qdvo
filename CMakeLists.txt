@@ -49,6 +49,8 @@ file(GLOB QDVO_SOURCE_FILES
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
 target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES} ${Boost_LIBRARIES})
 
+set_property(TARGET QDVO PROPERTY CXX_STANDARD 17)
+
 #Testing
 option(PACKAGE_TESTS "Build the tests" ON)
 if(PACKAGE_TESTS)
