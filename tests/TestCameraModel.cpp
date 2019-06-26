@@ -65,6 +65,8 @@ TEST(EQUIDISTANTCameraModel, Basic)
 
     Eigen::Vector3d point = cm.unproject(px, &projJac);
 
+    std::cout << point << projJac;
+
     //ASSERT_NEAR(projJac(0, 0), 1/cm.fx, SMALL_NUMBER);
     //ASSERT_EQ(point.isApprox(Eigen::Vector3d(0, 0, 1)), true);
 

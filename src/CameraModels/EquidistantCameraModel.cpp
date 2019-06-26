@@ -67,6 +67,66 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::EquidistantCameraModel::project(Eigen::Ma
 
 Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::EquidistantCameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
 {
+    Eigen::Matrix<SCALAR_TYPE, 2, 1> distortedBearing((pixel(0) - this->cx) / this->fx, (pixel(1) - this->cy) / this->fy);
 
+    SCALAR_TYPE psi = atan2(distortedBearing(1), distortedBearing(0));
+
+    SCALAR_TYPE desiredRadius = (distortedBearing).norm();
+
+    size_t highIdx = this->radiusLookUpTable.umap.size()-1;
+    size_t lowIdx = 0;
+    size_t midIdx = highIdx / 2;
+
+    while(true)
+    {
+        SCALAR_TYPE rEval = this->radiusLookUpTable.umap.at(midIdx);
+
+        if (highIdx-1 <= lowIdx){break;} // converged
+
+        if (desiredRadius > rEval)
+        {
+            lowIdx = midIdx;
+            midIdx = lowIdx + (highIdx - lowIdx) / 2;
+        }
+        else if (desiredRadius < rEval)
+        {
+            highIdx = midIdx;
+            midIdx = lowIdx + (highIdx - lowIdx) / 2;
+        }
+        else {break;}
+    }
+
+    SCALAR_TYPE theta0 = midIdx * this->radiusLookUpTable.resolution;
+
+    if (std::abs(theta0) > this->fov / 2.0)
+    {
+        throw std::runtime_error("unproject in unstable region!");
+    }
+
+    SCALAR_TYPE theta = theta0;
+    for (int i = 0; i < 20; ++i) // should converge way before 20 iters depending on table resolution
+    {
+        SCALAR_TYPE der = this->distortionFnDerivative(theta);
+
+        if (std::abs(der) <= 1e-8)
+        {
+            break;
+        }
+
+        theta = theta + (desiredRadius - this->distortionFn(theta)) / der;
+    }
+
+    // now the undistorted radius has been determined.
+    SCALAR_TYPE tTh = tan(theta);
+    Eigen::Matrix<SCALAR_TYPE, 3, 1> bearing(tTh * cos(psi), tTh * sin(psi), 1);
+
+    if (unprojectionJacobian != nullptr)
+    {
+        Eigen::Matrix<SCALAR_TYPE, 2, 2> projJac;
+        this->project(bearing, &projJac);
+        *(unprojectionJacobian) = projJac.inverse();
+    }
+
+    return bearing;
 }
 

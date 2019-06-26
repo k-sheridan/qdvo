@@ -4,6 +4,7 @@
 #include "CameraModel.hpp"
 #include "GlobalDefinitions.h"
 #include <vector>
+#include <Eigen/LU>
 
 namespace QDVO {
 class EquidistantCameraModel : public CameraModel
@@ -65,7 +66,7 @@ private:
     Eigen::Vector4d distortionCoeffs; // the 3rd, 5th, 7th, and 9th order coefficients of a polynomial function of the landmark angle. Same as used in Kalibr.
 
     struct UniformRadiusLookUpTable {
-        std::vector<double> umap; // r = f(\theta) = umap(\theta / resolution)
+        std::vector<SCALAR_TYPE> umap; // r = f(\theta) = umap(\theta / resolution)
         double resolution = EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION; // theta = index*resolution
     } radiusLookUpTable;
 
