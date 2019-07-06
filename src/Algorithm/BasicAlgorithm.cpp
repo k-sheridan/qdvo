@@ -5,7 +5,7 @@ QDVO::BasicAlgorithm::BasicAlgorithm()
 
 }
 
-void QDVO::BasicAlgorithm::initialize()
+void QDVO::BasicAlgorithm::initialize(unsigned maximumImageWidth, unsigned maximumImageHeight)
 {
     // precompute the radial search pattern LUT
     this->radialSearchPatternPtr = std::shared_ptr<RadialSearchPattern>(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
@@ -92,12 +92,27 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
     std::unique_ptr<QDVO::Frame>& cf = this->graph.getCurrentFrame();
     std::shared_ptr<QDVO::PatchComparer> patchCompPtr = this->patchComparers.at(cf->frameID);
 
+    // second reset correspondence distributions
+    cf->resetCorrespondenceDistributions();
+    size_t cdIdx = 0;
+
     // find the set of active landmarks visible in the current frame.
     // create and initialize the correspondence distribution for each of these landmarks
     std::vector<QDVO::Landmark*> visibleActiveLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(true);
 
     for (auto& l : visibleActiveLandmarks)
     {
+        if (cdIdx >= cf->correspondenceDistributions.size())
+        {
+            // create another correspondence distribution
+            cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cf->cm->width, cf->cm->height, this->radialSearchPatternPtr));
+        }
+
+        assert(cf->correspondenceDistributions.at(cdIdx).dormant == true);
+
+        // TODO initialize the correspondence distribution
+        QDVO::CorrespondenceDistribution& cdRef = cf->correspondenceDistributions.at(cdIdx);
+
 
     }
 

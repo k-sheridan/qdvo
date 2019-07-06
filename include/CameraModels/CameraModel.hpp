@@ -3,6 +3,7 @@
 
 #include <Eigen/Core>
 #include "GlobalDefinitions.h"
+#include "Types.h"
 
 /*
  * Base Class for a generic camera model. This base class is implemented as a pinhole camera.
@@ -20,13 +21,13 @@ public:
 
     CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov, int width, int height);
 
-    virtual Eigen::Matrix<SCALAR_TYPE, 2, 1> project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian = nullptr);
+    virtual QDVO::Vector2 project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian = nullptr);
 
-    virtual Eigen::Matrix<SCALAR_TYPE, 3, 1> unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian = nullptr);
+    virtual QDVO::Vector3 unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian = nullptr);
 
-    virtual bool isPointPotentiallyVisible(const Eigen::Matrix<SCALAR_TYPE, 3, 1>& pointInCamera);
+    virtual bool isPointPotentiallyVisible(const QDVO::Vector3& pointInCamera);
 
-    virtual bool isPixelOnImage(const Eigen::Matrix<SCALAR_TYPE, 2, 1>& pixel);
+    virtual bool isPixelOnImage(const QDVO::Vector2& pixel);
 
     SCALAR_TYPE fx, fy, cx, cy, fov; // intrinsic parameters.
     int width, height;

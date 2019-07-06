@@ -30,6 +30,8 @@ public:
 
     struct SpatialMapType {
         PotentialCorrespondence* pc = nullptr;
+
+        void reset(){pc = nullptr;}
     };
 
     Patch warpedPatch; // the warped template patch to be used for the creation of the correspondence distribution.

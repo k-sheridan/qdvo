@@ -15,7 +15,6 @@
 
 #define ID_TYPE uint64_t
 
-
 // configurable
 
 // the number of keyframes used in the sliding window estimator

@@ -55,7 +55,14 @@ public:
     {
         for (auto& e : this->mapOfMaps)
         {
-            e.reset();
+            // if there is data here, reset it.
+            if (e != nullptr)
+            {
+                for (auto& pc : *(e))
+                {
+                    pc.reset();
+                }
+            }
         }
     }
 

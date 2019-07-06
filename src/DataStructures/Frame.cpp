@@ -6,6 +6,7 @@ QDVO::Frame::Frame()
     this->imagePyr = QDVO::ImagePyramid(IMAGE_PYRAMID_LEVELS);
     this->frameID = 0;
     this->camID = 0;
+
 }
 
 void QDVO::Frame::updateImage(cv::Mat& baseImage)
@@ -29,4 +30,7 @@ void QDVO::Frame::reset()
 {
     // remove the landmarks
     this->landmarks.clear();
+
+    // reset all correspondence distributions
+    this->resetCorrespondenceDistributions();
 }

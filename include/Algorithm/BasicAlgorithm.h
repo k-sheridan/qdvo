@@ -33,7 +33,7 @@ public:
     /*
      * Preallocates keyframes and current frame.
      */
-    void initialize();
+    void initialize(unsigned maximumImageWidth, unsigned maximumImageHeight);
 
     /*
      * Gives the algorithm a new image

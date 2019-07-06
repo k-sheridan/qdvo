@@ -4,6 +4,7 @@
 #include <sophus/types.hpp>
 #include <sophus/se3.hpp>
 #include "GlobalDefinitions.h"
+#include "Types.h"
 
 namespace  QDVO {
 class IMUState
@@ -15,9 +16,9 @@ public:
 
     double time; // the time of this state.
 
-    Sophus::SO3<SCALAR_TYPE> attitude;
-    Sophus::Vector3<SCALAR_TYPE> pos;
-    Sophus::Vector3<SCALAR_TYPE> vel;
+    QDVO::SO3 attitude;
+    QDVO::Vector3 pos;
+    QDVO::Vector3 vel;
     // Optionally, I may need angular velocity for the tightly coupled quadrotor integration.
 
 
@@ -29,11 +30,16 @@ public:
     /**
      * @brief order: [dp, dphi]
      */
-    void updatePose(const Eigen::Matrix<double, 6, 1> &dx);
+    void updatePose(const Eigen::Matrix<SCALAR_TYPE, 6, 1> &dx);
     /**
      * @brief order: [dv]
      */
-    void updateVelocity(const Eigen::Matrix<double, 3, 1> &dx);
+    void updateVelocity(const Eigen::Matrix<SCALAR_TYPE, 3, 1> &dx);
+
+    /**
+     * creates a sophus se3 type representing the imu pose
+     */
+    QDVO::SE3 getSE3();
 };
 }
 

@@ -11,11 +11,12 @@
 #include "Settings.h"
 #include "CameraModel.hpp"
 #include "FeatureDetector.h"
+#include "Types.h"
 
 namespace  QDVO {
 
 typedef std::unordered_map<ID_TYPE, std::unique_ptr<Frame> > KeyframeSetType;
-typedef std::unordered_map<ID_TYPE, Sophus::SE3<SCALAR_TYPE> > ExtrinsicSetType;
+typedef std::unordered_map<ID_TYPE, QDVO::SE3 > ExtrinsicSetType;
 typedef std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> > CameraModelMapType;
 
 class Graph
@@ -31,11 +32,22 @@ public:
         this->cameraModelMap.at(cameraID).swap(cameraModelPtr);
     }
 
+    // sets the transformation from the imu to camera for the given cam id
+    void setExtrinsic(QDVO::SE3& T_imu_cam, const ID_TYPE cameraID)
+    {
+        this->extrinsicSet.insert_or_assign(cameraID, T_imu_cam);
+    }
+
     std::unique_ptr<Frame>& getCurrentFrame();
 
     std::unique_ptr<CameraModel>& getCameraModel(const ID_TYPE cameraID = 1);
 
+    QDVO::SE3 getExtrinsic(const ID_TYPE cameraID = 1);
+
     std::unique_ptr<Frame>& getKeyframe(const ID_TYPE keyframeID);
+
+    // generalized version of the getKeyframe function
+    std::unique_ptr<Frame>& getFrame(const ID_TYPE frameID);
 
     KeyframeSetType& getKeyframeSet(){return this->keyframeSet;}
 
@@ -56,6 +68,9 @@ public:
 
     // Projects all landmarks in all keyframes into the current frame to determin if they are visible
     std::vector<Landmark*> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly);
+
+    // transforms the landmark into a euclidean point in the target frame.
+    QDVO::Vector3 projectLandmarkToCameraFrame(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
 
 
 private:
