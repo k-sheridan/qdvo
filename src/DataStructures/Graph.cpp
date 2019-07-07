@@ -17,6 +17,7 @@ std::unique_ptr<QDVO::CameraModel>& QDVO::Graph::getCameraModel(const ID_TYPE ca
 
 QDVO::SE3 QDVO::Graph::getExtrinsic(const ID_TYPE cameraID)
 {
+    assert(this->extrinsicSet.count(cameraID));
     return this->extrinsicSet.at(cameraID);
 }
 
@@ -42,10 +43,18 @@ void QDVO::Graph::moveCurrentFrameIntoNewKeyframePosition()
     assert(this->keyframeSet.size() <= N_KEYFRAMES);
 
     // make room for another keyframe
-    this->keyframeSet.insert({this->currentFrame->frameID, std::unique_ptr<QDVO::Frame>()});
+    this->keyframeSet.insert({this->currentFrame->frameID, std::unique_ptr<QDVO::Frame>(new QDVO::Frame())});
+
+    // copy over vital information
+    QDVO::Frame& tmpFrame = *(this->keyframeSet.at(this->currentFrame->frameID));
+    tmpFrame.imustate = this->currentFrame->imustate;
+    tmpFrame.camID = this->currentFrame->camID;
+    tmpFrame.frameID = 0;
 
     // swap the current frame into its new spot.
     this->keyframeSet.at(this->currentFrame->frameID).swap(this->currentFrame);
+
+    std::cout << "hmmmm got here" << std::endl;
 
 }
 
@@ -60,6 +69,20 @@ void QDVO::Graph::moveCurrentFrameIntoMarginalizedKeyframePosition(const ID_TYPE
     nh.mapped().swap(this->currentFrame);
 
     this->keyframeSet.insert(std::move(nh)); // insert the updated key-value pair
+}
+
+void QDVO::Graph::moveCurrentFrameIntoKeyframePosition()
+{
+    if (this->keyframeSet.size() > N_KEYFRAMES)
+    {
+        // find a marginalized keyframe to swap the current frame with.
+        assert(false);
+    }
+    else
+    {
+        // there is enough room to make a new keyframe.
+        this->moveCurrentFrameIntoNewKeyframePosition();
+    }
 }
 
 ID_TYPE QDVO::Graph::getNewFrameID()
@@ -85,9 +108,9 @@ ID_TYPE QDVO::Graph::getNewFrameID()
 }
 
 
-std::vector<QDVO::Landmark*> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly)
+std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly)
 {
-    std::vector<QDVO::Landmark*> visibleLandmarkPtrs;
+    std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> visibleLandmarkPtrs;
 
     std::unique_ptr<QDVO::Frame>& currentFrame = this->getCurrentFrame();
     std::unique_ptr<QDVO::CameraModel>& cm = this->getCameraModel(currentFrame->camID);
@@ -109,13 +132,16 @@ std::vector<QDVO::Landmark*> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool
             if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE || !activeLandmarksOnly)
             {
                 // project landmarks
+                QDVO::Vector2 px;
                 try {
-                    QDVO::Vector2 px = cm->project(T_cf_kf * l.getEuclideanPoint());
+                    px = cm->project(T_cf_kf * l.getEuclideanPoint());
                 } catch (const std::runtime_error& e) {
+                    std::cout << "failed to project: " << l.getEuclideanPoint() << " -> " << T_cf_kf * l.getEuclideanPoint() << std::endl;
                     continue;
                 }
                 // add to vector
-                visibleLandmarkPtrs.push_back(&l);
+
+                visibleLandmarkPtrs.push_back(std::make_tuple(&l, px));
             }
 
         }
@@ -140,4 +166,13 @@ QDVO::Vector3 QDVO::Graph::projectLandmarkToCameraFrame(ID_TYPE targetFrameID, I
     QDVO::SE3 T_tf_sf = (targetFrame->imustate.getSE3() * T_tfimu_tfcam).inverse() * (sourceFrame->imustate.getSE3() * T_sfimu_sfcam);
 
     return T_tf_sf * l.getEuclideanPoint();
+}
+
+QDVO::Vector2 QDVO::Graph::projectLandmarkToPixel(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID)
+{
+    QDVO::Vector3 pt = this->projectLandmarkToCameraFrame(targetFrameID, sourceFrameID, landmarkID);
+
+    std::unique_ptr<QDVO::CameraModel>& cm = this->getCameraModel(targetFrameID);
+
+    return cm->project(pt);
 }

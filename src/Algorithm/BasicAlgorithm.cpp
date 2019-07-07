@@ -5,7 +5,7 @@ QDVO::BasicAlgorithm::BasicAlgorithm()
 
 }
 
-void QDVO::BasicAlgorithm::initialize(unsigned maximumImageWidth, unsigned maximumImageHeight)
+void QDVO::BasicAlgorithm::initialize()
 {
     // precompute the radial search pattern LUT
     this->radialSearchPatternPtr = std::shared_ptr<RadialSearchPattern>(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
@@ -27,18 +27,32 @@ void QDVO::BasicAlgorithm::addCamera(std::unique_ptr<QDVO::CameraModel>& cameraM
     this->graph.setCameraModel(cameraModel, cameraID);
 
     std::cout << "Camera Model Initialized" << std::endl;
+
+    QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0,0,0), Eigen::Matrix<QDVO::SE3::Scalar, 3, 1>(0,0,0));
+    this->graph.setExtrinsic(unit, cameraID);
+
+    std::cout << "Added default unit extrinsic" << std::endl;
 }
 
 void QDVO::BasicAlgorithm::addFrame(cv::Mat& image, const double& time, const ID_TYPE cameraID)
 {
+    std::cout << "here" << std::endl;
+    TIK
+    // save the last imu state
+    QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
     // Reset current frame
     this->graph.getCurrentFrame()->reset();
     // Setup the current frame.
     this->graph.getCurrentFrame()->updateImage(image);
     this->graph.getCurrentFrame()->camID = cameraID;
+    // for the monocular case, we can assume no motion between frames initially
+    this->graph.getCurrentFrame()->imustate = lastImuState;
     this->graph.getCurrentFrame()->imustate.time = time;
     this->graph.getCurrentFrame()->cm = this->graph.getCameraModel(cameraID).get();
     this->graph.getCurrentFrame()->frameID = this->graph.getNewFrameID();
+    this->graph.getCurrentFrame()->initialized = true;
+
+    std::cout << "here2" << std::endl;
 
     // Initialize correspondence distributions
     this->initializeCorrespondenceDistributionsForCurrentFrame();
@@ -51,7 +65,35 @@ void QDVO::BasicAlgorithm::addFrame(cv::Mat& image, const double& time, const ID
     {
         // Create new landmarks for the new keyframe
         this->createNewLandmarks(this->graph.getCurrentFrame(), this->featureDetector);
+
+        // set the current frame to active
+        this->graph.getCurrentFrame()->status = QDVO::Frame::ACTIVE;
+
+        // run the sliding window estimator with the current keyframe set
+        this->swe.run(this->graph);
+
+        // marginalize excess keyframe
+        this->runMarginalizationStrategy();
+
+        // remove outliers found during sliding window estimation
+        this->swe.removeOutliers(this->graph);
+
+        // attempt to estimate the landmark depths using the new motion estimates
+        this->runEpipolarDepthEstimators();
+
+        // activate new landmarks if necessary
+        this->activateNewLandmarks();
+
+        // finally move the current frame into the keyframe set
+        this->graph.moveCurrentFrameIntoKeyframePosition();
     }
+
+    TOK
+}
+
+void QDVO::BasicAlgorithm::runMarginalizationStrategy()
+{
+    this->swe.runMarginalizationStrategy(this->graph);
 }
 
 void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame>& keyframe, std::unique_ptr<QDVO::FeatureDetector>& featureDetector)
@@ -73,6 +115,13 @@ void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame>& keyf
         lm.landmarkID = keyframe->landmarks.empty() ? 1 : keyframe->landmarks.size() + 1;
         lm.parentFrameID = keyframe->frameID;
         lm.dinv = DEFAULT_LANDMARK_DINV;
+
+        try {
+            lm.bearing = cm->unproject(lm.px);
+        } catch (std::runtime_error& e) {
+            std::cout << "failed to unproject pixel." << std::endl;
+            continue;
+        }
 
         keyframe->landmarks.push_back(lm);
     }
@@ -98,10 +147,14 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
 
     // find the set of active landmarks visible in the current frame.
     // create and initialize the correspondence distribution for each of these landmarks
-    std::vector<QDVO::Landmark*> visibleActiveLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(true);
+    std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> visibleActiveLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(true);
 
-    for (auto& l : visibleActiveLandmarks)
+    std::cout << "found " << visibleActiveLandmarks.size() << " visible and active landmarks for the current frame" << std::endl;
+
+    for (auto& tup : visibleActiveLandmarks)
     {
+        QDVO::Landmark* l = std::get<0>(tup);
+
         if (cdIdx >= cf->correspondenceDistributions.size())
         {
             // create another correspondence distribution
@@ -112,7 +165,9 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
 
         // TODO initialize the correspondence distribution
         QDVO::CorrespondenceDistribution& cdRef = cf->correspondenceDistributions.at(cdIdx);
+        QDVO::Vector2 px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
 
+        cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr);
 
     }
 
@@ -193,4 +248,9 @@ void QDVO::BasicAlgorithm::updatePatchComparers()
     this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage(0));
 
     std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
+}
+
+void QDVO::BasicAlgorithm::runEpipolarDepthEstimators()
+{
+
 }

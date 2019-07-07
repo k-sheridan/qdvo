@@ -12,7 +12,7 @@ class IMUState
 public:
     IMUState();
 
-    const int dimensions = 9;
+    int dimensions = 9;
 
     double time; // the time of this state.
 

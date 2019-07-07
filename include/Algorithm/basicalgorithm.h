@@ -33,7 +33,7 @@ public:
     /*
      * Preallocates keyframes and current frame.
      */
-    void initialize(unsigned maximumImageWidth, unsigned maximumImageHeight);
+    void initialize();
 
     /*
      * Gives the algorithm a new image
@@ -59,6 +59,16 @@ public:
      * Does an initial search for potential correspondences between active landmarks and the current frame.
      */
     void initializeCorrespondenceDistributionsForCurrentFrame();
+
+    /*
+     * Attempts to initialize inactive landmarks using an epipolar search
+     */
+    void runEpipolarDepthEstimators();
+
+    /*
+     * marginalizes keyframes. This function can be changed in a modular fashion
+     */
+    void runMarginalizationStrategy();
 
     /*
      * Checks if the current frame has met the criteria for a keyframe.

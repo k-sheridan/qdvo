@@ -15,8 +15,9 @@ TEST(FeatureDetector, Basic)
     std::cout << img.rows << " " << f.imagePyr.getImage().rows << std::endl;
 
     QDVO::FeatureDetector detector = QDVO::FeatureDetector();
-
+    TIK
     std::vector<QDVO::Feature> features = detector.detectFeatures(f);
+    TOK
 
     // draw for debug
     /*cv::Mat render;

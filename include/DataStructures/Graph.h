@@ -12,6 +12,7 @@
 #include "CameraModel.hpp"
 #include "FeatureDetector.h"
 #include "Types.h"
+#include <tuple>
 
 namespace  QDVO {
 
@@ -66,11 +67,16 @@ public:
     // assuming there is enough room in the keyframe set, the current frame is moved to a new spot in the keyframe set.
     void moveCurrentFrameIntoNewKeyframePosition();
 
+    // generalized version of the two above functions
+    void moveCurrentFrameIntoKeyframePosition();
+
     // Projects all landmarks in all keyframes into the current frame to determin if they are visible
-    std::vector<Landmark*> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly);
+    std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly);
 
     // transforms the landmark into a euclidean point in the target frame.
     QDVO::Vector3 projectLandmarkToCameraFrame(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
+
+    QDVO::Vector2 projectLandmarkToPixel(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
 
 
 private:

@@ -24,6 +24,7 @@ public:
 
     std::vector<Landmark> landmarks; // array of landmarks hosted in this frame. ID's should be ordered and landmarks should never be deleted.
 
+    bool initialized = false;
 
     enum FrameStatus {
        INACTIVE,
