@@ -39,7 +39,7 @@ public:
     // serves as a method for finding nearest neighbors.
     SpatialMap<SpatialMapType> correspondenceMap;
     std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
-    bool dormant; // is this correspondence distribution currently not being used.
+    bool dormant = true; // is this correspondence distribution currently not being used.
 
 
 

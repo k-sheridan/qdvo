@@ -29,6 +29,9 @@
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 200
 
+// the minimum number of active landmarks allowed before uninitialized landmarks are made active.
+#define MINUMUM_ACTIVE_LANDMARKS 100
+
 // define the maximum radius for the correspondence search.
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 20
 

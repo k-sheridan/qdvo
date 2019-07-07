@@ -70,8 +70,8 @@ public:
     // generalized version of the two above functions
     void moveCurrentFrameIntoKeyframePosition();
 
-    // Projects all landmarks in all keyframes into the current frame to determin if they are visible
-    std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly);
+    // Projects all landmarks in all keyframes into the current frame to determin if they are visible. will NOT project marginalized landmarks.
+    std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly, bool includeCurrentFrameLandmarks = false);
 
     // transforms the landmark into a euclidean point in the target frame.
     QDVO::Vector3 projectLandmarkToCameraFrame(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);

@@ -54,8 +54,6 @@ void QDVO::Graph::moveCurrentFrameIntoNewKeyframePosition()
     // swap the current frame into its new spot.
     this->keyframeSet.at(this->currentFrame->frameID).swap(this->currentFrame);
 
-    std::cout << "hmmmm got here" << std::endl;
-
 }
 
 void QDVO::Graph::moveCurrentFrameIntoMarginalizedKeyframePosition(const ID_TYPE marginalizedKeyframeID)
@@ -75,7 +73,7 @@ void QDVO::Graph::moveCurrentFrameIntoKeyframePosition()
 {
     if (this->keyframeSet.size() > N_KEYFRAMES)
     {
-        // find a marginalized keyframe to swap the current frame with.
+        //TODO find a marginalized keyframe to swap the current frame with.
         assert(false);
     }
     else
@@ -108,7 +106,7 @@ ID_TYPE QDVO::Graph::getNewFrameID()
 }
 
 
-std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly)
+std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly, bool includeCurrentFrameLandmarks)
 {
     std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> visibleLandmarkPtrs;
 
@@ -129,7 +127,7 @@ std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> QDVO::Graph::getVisibleL
         for (auto& l : element.second->landmarks)
         {
 
-            if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE || !activeLandmarksOnly)
+            if ((l.status == QDVO::Landmark::LandmarkStatus::ACTIVE || !activeLandmarksOnly) && l.status != QDVO::Landmark::LandmarkStatus::MARGINALIZED)
             {
                 // project landmarks
                 QDVO::Vector2 px;
@@ -144,6 +142,17 @@ std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> QDVO::Graph::getVisibleL
                 visibleLandmarkPtrs.push_back(std::make_tuple(&l, px));
             }
 
+        }
+    }
+
+    if (includeCurrentFrameLandmarks)
+    {
+        for (auto& l : currentFrame->landmarks)
+        {
+            if ((l.status == QDVO::Landmark::LandmarkStatus::ACTIVE || !activeLandmarksOnly) && l.status != QDVO::Landmark::LandmarkStatus::MARGINALIZED)
+            {
+                visibleLandmarkPtrs.push_back(std::make_tuple(&l, l.px));
+            }
         }
     }
 
