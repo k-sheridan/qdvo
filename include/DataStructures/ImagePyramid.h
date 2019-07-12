@@ -21,7 +21,7 @@ public:
 
     float getColorSubpix(const cv::Mat& img, cv::Point2f pt)
     {
-
+            assert(img.type() == 0);
             int x0 = (int)pt.x;
             int y0 = (int)pt.y;
             int x1 = x0 + 1;
@@ -35,8 +35,8 @@ public:
             float a = pt.x - (float)x0;
             float c = pt.y - (float)y0;
 
-            return ((img.at<float>(y0, x0) * (1.f - a) + img.at<float>(y0, x1) * a) * (1.f - c)
-                                   + (img.at<float>(y1, x0) * (1.f - a) + img.at<float>(y1, x1) * a) * c);
+            return ((img.at<uint8_t>(y0, x0) * (1.f - a) + img.at<uint8_t>(y0, x1) * a) * (1.f - c)
+                                   + (img.at<uint8_t>(y1, x0) * (1.f - a) + img.at<uint8_t>(y1, x1) * a) * c);
     }
 
 protected:

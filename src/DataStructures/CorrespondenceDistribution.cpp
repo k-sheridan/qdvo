@@ -55,7 +55,7 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> QDVO::Co
         {
             Eigen::Vector2i testPoint = centerPixel + delta; // this is a point on a constant radius.
 
-            this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
+            //this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
         }
     }
 
