@@ -7,6 +7,7 @@
 #include "SlidingWindowEstimator.h"
 #include "ImageStatisticsLUT.h"
 #include "PatchComparer.h"
+#include "PatchWarper.h"
 #include "RadialSearchPattern.h"
 #include <opencv2/core.hpp>
 
@@ -90,6 +91,8 @@ public:
     std::unordered_map<ID_TYPE, std::shared_ptr<PatchComparer> > patchComparers; // used to speed up the patch comparisons.
 
     std::shared_ptr<RadialSearchPattern> radialSearchPatternPtr; // used globally to generate the correspondence distributions.
+
+    std::unique_ptr<QDVO::PatchWarper> patchWarper; // pointer to the patch warp implementation
 };
 
 }

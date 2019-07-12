@@ -10,6 +10,9 @@ void QDVO::BasicAlgorithm::initialize()
     // precompute the radial search pattern LUT
     this->radialSearchPatternPtr = std::shared_ptr<RadialSearchPattern>(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
 
+    // create the patch warper
+    this->patchWarper = std::unique_ptr<QDVO::PatchWarper>(new QDVO::PatchWarper());
+
     std::cout << "Computed radial search pattern" << std::endl;
 
     // create current frame
@@ -36,10 +39,10 @@ void QDVO::BasicAlgorithm::addCamera(std::unique_ptr<QDVO::CameraModel>& cameraM
 
 void QDVO::BasicAlgorithm::addFrame(cv::Mat& image, const double& time, const ID_TYPE cameraID)
 {
-    std::cout << "here" << std::endl;
+    //std::cout << "here" << std::endl;
     TIK
-            // save the last imu state
-            QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
+    // save the last imu state
+    QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
     // Reset current frame
     this->graph.getCurrentFrame()->reset();
     // Setup the current frame.
@@ -52,7 +55,7 @@ void QDVO::BasicAlgorithm::addFrame(cv::Mat& image, const double& time, const ID
     this->graph.getCurrentFrame()->frameID = this->graph.getNewFrameID();
     this->graph.getCurrentFrame()->initialized = true;
 
-    std::cout << "here2" << std::endl;
+    //std::cout << "here2" << std::endl;
 
     // Initialize correspondence distributions
     this->initializeCorrespondenceDistributionsForCurrentFrame();
@@ -153,17 +156,23 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
         if (cdIdx >= cf->correspondenceDistributions.size())
         {
             // create another correspondence distribution
-            cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cf->cm->width, cf->cm->height, this->radialSearchPatternPtr));
+            cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cf->cm->width, cf->cm->height, this->radialSearchPatternPtr, cf.get()));
         }
 
+        assert(cdIdx < cf->correspondenceDistributions.size());
         assert(cf->correspondenceDistributions.at(cdIdx).dormant == true);
 
-        // TODO initialize the correspondence distribution
+
+
+        // initialize the correspondence distribution
         QDVO::CorrespondenceDistribution& cdRef = cf->correspondenceDistributions.at(cdIdx);
         QDVO::Vector2 px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
+        QDVO::Patch warpedPatch;
+        this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(cf));
 
-        cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr);
+        cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch);
 
+        ++cdIdx;
     }
 
 }
@@ -256,156 +265,81 @@ void QDVO::BasicAlgorithm::activateNewLandmarks()
      * Warning: This is an absolute mess, but for now it will have to do.
      */
 
+
+    std::cout << "Activating landmarks." << std::endl;
+
     // find all visible active and inactive landmarks
     std::vector<std::tuple<QDVO::Landmark*, QDVO::Vector2>> visibleLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(false, true);
 
     std::cout << "there are currently " << visibleLandmarks.size() << " active and inactive landmarks visible in the current frame" << std::endl;
 
-    std::vector<double> distances2ClosestActiveLandmark;
-    distances2ClosestActiveLandmark.reserve(visibleLandmarks.size());
+    // janky way of getting a decent feature distribution.
+    cv::Mat mask = cv::Mat::zeros(this->graph.getCurrentFrame()->imagePyr.getImage().rows, this->graph.getCurrentFrame()->imagePyr.getImage().cols, CV_8U);
 
-    size_t distanceIdx = 0;
+    const int maskRadius = 5;
 
-    int numberOfActiveVisibleLandmarks = 0;
+    int nActiveLandmarks = 0;
 
-    // iterate and compute the distance scores
-    for (std::tuple<QDVO::Landmark*, QDVO::Vector2>& vl : visibleLandmarks)
+    // fill in the mask for all active landmarks.
+    for (auto& t : visibleLandmarks)
     {
-        assert(std::get<0>(vl) != nullptr);
-
-        distances2ClosestActiveLandmark.at(distanceIdx) = std::numeric_limits<double>::max();
-
-        if (std::get<0>(vl)->status == QDVO::Landmark::ACTIVE){++numberOfActiveVisibleLandmarks;}
-
-        if (std::get<0>(vl)->status == QDVO::Landmark::INACTIVE)
+        QDVO::Landmark* l = std::get<0>(t);
+        assert(l != nullptr);
+        if (l->status == QDVO::Landmark::ACTIVE)
         {
-            QDVO::Vector2 thisPixel = std::get<1>(vl);
-            for (std::tuple<QDVO::Landmark*, QDVO::Vector2>& innerVl : visibleLandmarks)
-            {
-                if (std::get<0>(vl)->status == QDVO::Landmark::ACTIVE && std::get<0>(vl) != std::get<0>(innerVl))
-                {
-
-                    double distance = (std::get<1>(vl) - std::get<1>(innerVl)).norm();
-
-                    if (distance < distances2ClosestActiveLandmark.at(distanceIdx)){distances2ClosestActiveLandmark.at(distanceIdx) = distance;}
-                }
-
-            }
-        }
-
-        ++distanceIdx;
-    }
-
-    // select initialized inactive landmarks by the lowest distance score, then update all the remaining distance scores.
-    bool stopFlag = false;
-    distanceIdx = 0;
-
-    while (!stopFlag)
-    {
-        size_t bestIdx = 0;
-        bool foundCandidate = false; // flag which tracks whether there is a candidate in the set.
-
-        for (std::tuple<QDVO::Landmark*, QDVO::Vector2>& vl : visibleLandmarks)
-        {
-            if (std::get<0>(vl)->status == QDVO::Landmark::INACTIVE && std::get<0>(vl)->depthEstimator.initialized)
-            {
-                if (distances2ClosestActiveLandmark.at(distanceIdx) > distances2ClosestActiveLandmark.at(bestIdx)){bestIdx = distanceIdx; foundCandidate = true;}
-            }
-
-            ++distanceIdx;
-        }
-
-        // if we ran out of candidates, stop.
-        if (!foundCandidate)
-        {
-            stopFlag = true;
-            break;
-        }
-
-        // now we know the best choice.
-        assert(std::get<0>(visibleLandmarks.at(bestIdx))->status == QDVO::Landmark::INACTIVE);
-
-        std::get<0>(visibleLandmarks.at(bestIdx))->status = QDVO::Landmark::ACTIVE;
-        ++numberOfActiveVisibleLandmarks;
-
-        if (numberOfActiveVisibleLandmarks >= N_FEATURES_DESIRED)
-        {
-            stopFlag = true;
-            break;
-        }
-
-        // update the distance scores
-        for (size_t i = 0; i < visibleLandmarks.size(); ++i)
-        {
-            if (std::get<0>(visibleLandmarks.at(i))->status == QDVO::Landmark::INACTIVE)
-            {
-                double distance = (std::get<1>(visibleLandmarks.at(i)) - std::get<1>(visibleLandmarks.at(bestIdx))).norm();
-
-                if (distance > distances2ClosestActiveLandmark.at(i))
-                {
-                    distances2ClosestActiveLandmark.at(i) = distance;
-                }
-            }
+            cv::circle(mask, cv::Point2f(l->px(0), l->px(1)), maskRadius, cv::Scalar(255), -1);
+            ++nActiveLandmarks;
         }
     }
 
-    // last resort
-    // select uninitialized inactive landmarks by the lowest distance score, then update all the remaining distance scores.
+    std::cout << nActiveLandmarks << " active visible landmarks before activation." << std::endl;
 
-    if (numberOfActiveVisibleLandmarks < MINUMUM_ACTIVE_LANDMARKS)
+    if (nActiveLandmarks >= N_FEATURES_DESIRED){return;}
+
+    // first activate initialized landmarks
+    for (auto& t : visibleLandmarks)
     {
-        stopFlag = false;
-        distanceIdx = 0;
-
-        while (!stopFlag)
+        QDVO::Landmark* l = std::get<0>(t);
+        assert(l != nullptr);
+        if (l->status == QDVO::Landmark::INACTIVE && l->depthEstimator.initialized)
         {
-            size_t bestIdx = 0;
-            bool foundCandidate = false; // flag which tracks whether there is a candidate in the set.
-
-            for (std::tuple<QDVO::Landmark*, QDVO::Vector2>& vl : visibleLandmarks)
+            if (!mask.at<uint8_t>(cv::Point2f(l->px(0), l->px(1))))
             {
-                if (std::get<0>(vl)->status == QDVO::Landmark::INACTIVE)
-                {
-                    if (distances2ClosestActiveLandmark.at(distanceIdx) > distances2ClosestActiveLandmark.at(bestIdx)){bestIdx = distanceIdx; foundCandidate = true;}
-                }
+                l->status = QDVO::Landmark::ACTIVE;
 
-                ++distanceIdx;
-            }
-
-            // if we ran out of candidates, stop.
-            if (!foundCandidate)
-            {
-                stopFlag = true;
-                break;
-            }
-
-            // now we know the best choice.
-            assert(std::get<0>(visibleLandmarks.at(bestIdx))->status == QDVO::Landmark::INACTIVE);
-
-            std::get<0>(visibleLandmarks.at(bestIdx))->status = QDVO::Landmark::ACTIVE;
-            ++numberOfActiveVisibleLandmarks;
-
-            if (numberOfActiveVisibleLandmarks >= MINUMUM_ACTIVE_LANDMARKS)
-            {
-                stopFlag = true;
-                break;
-            }
-
-            // update the distance scores
-            for (size_t i = 0; i < visibleLandmarks.size(); ++i)
-            {
-                if (std::get<0>(visibleLandmarks.at(i))->status == QDVO::Landmark::INACTIVE)
-                {
-                    double distance = (std::get<1>(visibleLandmarks.at(i)) - std::get<1>(visibleLandmarks.at(bestIdx))).norm();
-
-                    if (distance > distances2ClosestActiveLandmark.at(i))
-                    {
-                        distances2ClosestActiveLandmark.at(i) = distance;
-                    }
-                }
+                cv::circle(mask, cv::Point2f(l->px(0), l->px(1)), maskRadius, cv::Scalar(255), -1);
+                ++nActiveLandmarks;
             }
         }
+
+        if (nActiveLandmarks >= N_FEATURES_DESIRED){break;}
     }
+
+    std::cout << nActiveLandmarks << " active visible landmarks after activating initialized landmarks." << std::endl;
+
+    // if necessary activate uninitialized landmarks
+    if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS)
+    {
+        for (auto& t : visibleLandmarks)
+        {
+            QDVO::Landmark* l = std::get<0>(t);
+            assert(l != nullptr);
+            if (l->status == QDVO::Landmark::INACTIVE)
+            {
+                if (!mask.at<uint8_t>(cv::Point2f(l->px(0), l->px(1))))
+                {
+                    l->status = QDVO::Landmark::ACTIVE;
+
+                    cv::circle(mask, cv::Point2f(l->px(0), l->px(1)), maskRadius, cv::Scalar(255), -1);
+                    ++nActiveLandmarks;
+                }
+            }
+
+            if (nActiveLandmarks >= MINUMUM_ACTIVE_LANDMARKS){break;}
+        }
+        std::cout << nActiveLandmarks << " active visible landmarks after activating uninitialized landmarks." << std::endl;
+    }
+
 
 
 }

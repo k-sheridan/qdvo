@@ -165,7 +165,7 @@ QDVO::Vector3 QDVO::Graph::projectLandmarkToCameraFrame(ID_TYPE targetFrameID, I
     std::unique_ptr<QDVO::Frame>& targetFrame = this->getFrame(targetFrameID);
     std::unique_ptr<QDVO::Frame>& sourceFrame = this->getFrame(sourceFrameID);
 
-    QDVO::Landmark& l = sourceFrame->landmarks.at(landmarkID);
+    QDVO::Landmark& l = sourceFrame->landmarks.at(landmarkID - 1);
     assert(l.landmarkID == landmarkID);
     assert(l.parentFrameID == sourceFrameID);
 
@@ -181,7 +181,7 @@ QDVO::Vector2 QDVO::Graph::projectLandmarkToPixel(ID_TYPE targetFrameID, ID_TYPE
 {
     QDVO::Vector3 pt = this->projectLandmarkToCameraFrame(targetFrameID, sourceFrameID, landmarkID);
 
-    std::unique_ptr<QDVO::CameraModel>& cm = this->getCameraModel(targetFrameID);
+    std::unique_ptr<QDVO::CameraModel>& cm = this->getCameraModel(this->getFrame(targetFrameID)->camID);
 
     return cm->project(pt);
 }
