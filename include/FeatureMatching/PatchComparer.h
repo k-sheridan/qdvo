@@ -22,7 +22,6 @@ public:
 
     ImageStatisticsLUT meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
 
-
     PatchComparer();
 
     /*
@@ -31,7 +30,7 @@ public:
      *
      * no out of bounds checks are performed at this level.
      */
-    SCALAR_TYPE compare(const Patch& patch, const Frame& targetFrame, const Eigen::Vector2i& pixel);
+    SCALAR_TYPE compare(const QDVO::Patch& templatePatch, const Frame& targetFrame, const Eigen::Vector2i& pixel);
 
 
 };

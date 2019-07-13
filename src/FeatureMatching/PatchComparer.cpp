@@ -4,7 +4,8 @@ QDVO::PatchComparer::PatchComparer(){
 
 }
 
-SCALAR_TYPE QDVO::PatchComparer::compare(const Patch& patch, const Frame& targetFrame, const Eigen::Vector2i& pixel)
+SCALAR_TYPE QDVO::PatchComparer::compare(const Frame& targetFrame, const Eigen::Vector2i& pixel)
 {
-    assert(false && "not ready yet");
+    cv::Rect roi(cv::Point2i(pixel(0) - PATCH_RADIUS, pixel(1) - PATCH_RADIUS), cv::Point2i(pixel(0) + PATCH_RADIUS, pixel(1) + PATCH_RADIUS));
+
 }

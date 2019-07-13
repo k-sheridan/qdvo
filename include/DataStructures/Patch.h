@@ -2,6 +2,7 @@
 #define PATCH_H
 
 #include <opencv2/core.hpp>
+#include "GlobalDefinitions.h"
 
 namespace QDVO {
 /*
@@ -13,9 +14,18 @@ class Patch
 public:
     Patch();
 
-    int level; // the image level this patch was created at. (0 = full resolution).
+    Patch(cv::Mat& rawPatchData);
 
-    cv::Mat image; // the pixel data.
+
+
+private:
+
+    int level; // the image level this patch was created at. (0 = full resolution).
+    bool initialized = false;
+    cv::Mat data; // the pixel data.
+
+    cv::Mat zeroMeanData; // the mean shifted data, computed iff necessary
+    SCALAR_TYPE patchMean, patchStdDev;
 };
 }
 
