@@ -20,7 +20,7 @@ public:
     /*
      * computes a warped patch in the target frame assuming the feature lies on a flat surface.
      */
-    void warpPatchToTargetFrame(Patch& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchWidth = PATCH_WIDTH);
+    void warpPatchToTargetFrame(Patch& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchWidth = PATCH_RADIUS);
 };
 }
 

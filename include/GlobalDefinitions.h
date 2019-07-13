@@ -21,7 +21,7 @@
 #define N_KEYFRAMES 7
 
 // the width of the image patch used. must be an odd number.
-#define PATCH_WIDTH 11
+#define PATCH_RADIUS 5
 
 // which patch comparison will be used.
 #define ZNCC_PATCH_COMPARISON
@@ -47,6 +47,6 @@
 
 // used in the precomputation of the standard deviation / mean lookup table
 // this is used to compute the size of the table which will be upscaled to the full image size.
-#define IMAGE_STDDEV_RESOLUTION (PATCH_WIDTH - 1)*2 + 1
+#define IMAGE_STDDEV_RESOLUTION (PATCH_RADIUS)*4 + 1
 
 #define EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION 0.01

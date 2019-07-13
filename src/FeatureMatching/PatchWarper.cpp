@@ -5,7 +5,7 @@ QDVO::PatchWarper::PatchWarper()
 
 }
 
-void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchWidth)
+void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchRadius)
 {
     QDVO::SE3 T_w_sourceImu = sourceFrame.imustate.getSE3();
     QDVO::SE3 T_w_targetImu = targetFrame.imustate.getSE3();
@@ -25,6 +25,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& lan
     QDVO::Vector3 n = T_targetCam_sourceCam.so3() * normal;
     QDVO::Vector3 p0 = T_targetCam_sourceCam * landmark.getEuclideanPoint();
 
+
     if (p0(2) <= 1e-10)
     {
         throw std::runtime_error("failed to warp patch. point behind camera.");
@@ -34,26 +35,27 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& lan
     Eigen::Matrix<SCALAR_TYPE, 2, 2> projJac;
 
     QDVO::Vector2 px0 = targetFrame.cm->project(u0, &projJac);
+    QDVO::Vector2 px_source = sourceFrame.cm->project(pt_source, &projJac);
 
     Eigen::Matrix<SCALAR_TYPE, 2, 2> unprojJac = projJac.inverse();
 
-    int patchDim = 2*patchWidth + 1;
+    int patchDim = 2*patchRadius + 1;
     warpedPatch.image = cv::Mat(patchDim, patchDim, CV_8U);
     warpedPatch.level = 0;
 
     QDVO::Vector3 u, p;
     u(2) = 1;
-    for (int deltaX = -patchWidth; deltaX <= patchWidth; ++deltaX)
+    for (int deltaX = -patchRadius; deltaX <= patchRadius; ++deltaX)
     {
-        for (int deltaY = -patchWidth; deltaY <= patchWidth; ++deltaY)
+        for (int deltaY = -patchRadius; deltaY <= patchRadius; ++deltaY)
         {
             u.block(0, 0, 2, 1) = u0.block(0, 0, 2, 1) + unprojJac * QDVO::Vector2(deltaX, deltaY);
             p = T_sourceCam_targetCam * (((p0.dot(n)) / (u.dot(n))) * u);
 
-            QDVO::Vector2 px = sourceFrame.cm->project(p);
+            QDVO::Vector2 px = px_source + projJac * ((p.block(0, 0, 2, 1) / p(2)) - landmark.bearing.block(0, 0, 2, 1));
             float brightness = sourceFrame.imagePyr.getColorSubpix(sourceFrame.imagePyr.getImage(), cv::Point2f(px(0), px(1)));
 
-            warpedPatch.image.at<uint8_t>(deltaY + patchWidth, deltaX + patchWidth) = uint8_t(brightness);
+            warpedPatch.image.at<uint8_t>(deltaY + patchRadius, deltaX + patchRadius) = uint8_t(brightness);
         }
     }
 }

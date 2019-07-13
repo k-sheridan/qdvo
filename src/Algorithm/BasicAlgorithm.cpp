@@ -170,8 +170,6 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
         QDVO::Patch warpedPatch;
         this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(cf), this->graph);
 
-        std::cout << int(warpedPatch.image.at<uint8_t>(PATCH_WIDTH, PATCH_WIDTH)) << std::endl;
-
         cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch);
 
         ++cdIdx;
