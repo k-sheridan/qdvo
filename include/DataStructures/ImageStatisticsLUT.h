@@ -5,14 +5,19 @@
 
 namespace QDVO {
 
+class Frame;
+
 class ImageStatisticsLUT {
 
 public:
 
     ImageStatisticsLUT(){}
 
-    void setupTables(const cv::Mat& baseImage)
+    void setupTables(const cv::Mat& baseImage, Frame* framePtr)
     {
+
+        assert(framePtr != nullptr);
+        this->framePtr = framePtr;
 
         double colSize, rowSize;
         if (baseImage.rows >= baseImage.cols)
@@ -85,6 +90,7 @@ public:
     // these tables are generated from the top down through upsampling.
     cv::Mat localStandardDeviationLUT; // used to speed up the patch comparison metrics.
     cv::Mat localMeanLUT;
+    Frame* framePtr = nullptr;
     float rowStride, colStride;
 
 };

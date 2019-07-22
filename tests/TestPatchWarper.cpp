@@ -49,8 +49,8 @@ TEST(PatchWarp, Basic)
     }
     TOK
 
-    cv::imshow("patch", wp.image);
-    cv::waitKey(1000);
+    //cv::imshow("patch", wp.getImageData());
+    //cv::waitKey(1000);
 
 }
 

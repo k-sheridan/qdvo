@@ -10,9 +10,11 @@ TEST(StatisticsLUT, Basic)
     cv::Mat img;
     img = cv::imread("/Users/kevinsheridan/Documents/Mac Library/RnD/qdvo/tests/images/1.png", cv::IMREAD_GRAYSCALE);
 
+    QDVO::Frame f;
+
     TIK
     QDVO::ImageStatisticsLUT lut;
-    lut.setupTables(img);
+    lut.setupTables(img, &f);
     TOK
 
     // draw for debug

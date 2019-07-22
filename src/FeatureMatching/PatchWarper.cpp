@@ -40,8 +40,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& lan
     Eigen::Matrix<SCALAR_TYPE, 2, 2> unprojJac = projJac.inverse();
 
     int patchDim = 2*patchRadius + 1;
-    warpedPatch.image = cv::Mat(patchDim, patchDim, CV_8U);
-    warpedPatch.level = 0;
+    cv::Mat image = cv::Mat(patchDim, patchDim, CV_8U);
 
     QDVO::Vector3 u, p;
     u(2) = 1;
@@ -55,7 +54,9 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& lan
             QDVO::Vector2 px = px_source + projJac * ((p.block(0, 0, 2, 1) / p(2)) - landmark.bearing.block(0, 0, 2, 1));
             float brightness = sourceFrame.imagePyr.getColorSubpix(sourceFrame.imagePyr.getImage(), cv::Point2f(px(0), px(1)));
 
-            warpedPatch.image.at<uint8_t>(deltaY + patchRadius, deltaX + patchRadius) = uint8_t(brightness);
+            image.at<uint8_t>(deltaY + patchRadius, deltaX + patchRadius) = uint8_t(brightness);
         }
     }
+
+    warpedPatch = QDVO::Patch(image);
 }

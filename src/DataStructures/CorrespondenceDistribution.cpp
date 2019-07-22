@@ -54,8 +54,13 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> QDVO::Co
         for (auto& delta : this->radialSearchPattern->searchPattern.at(r))
         {
             Eigen::Vector2i testPoint = centerPixel + delta; // this is a point on a constant radius.
+            SCALAR_TYPE score;
 
-            //this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
+            // try to compare the patch at the testPoint.
+            if (this->patchComparer->compare(score, this->warpedPatch, *(this->framePtr), testPoint))
+            {
+
+            }
         }
     }
 

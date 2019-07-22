@@ -168,7 +168,16 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
         QDVO::CorrespondenceDistribution& cdRef = cf->correspondenceDistributions.at(cdIdx);
         QDVO::Vector2 px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
         QDVO::Patch warpedPatch;
-        this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(cf), this->graph);
+
+        // warp the patch.
+        try {
+            this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(cf), this->graph);
+        } catch (const std::runtime_error& e) {
+            std::cout << "failed to warp patch" << std::endl;
+            continue;
+        }
+
+        //std::cout << "patch mean: " << warpedPatch.getMean() << " patch stdev: " << warpedPatch.getStdDev() << std::endl;
 
         cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch);
 
@@ -249,7 +258,7 @@ void QDVO::BasicAlgorithm::updatePatchComparers()
         this->patchComparers.at(cf->frameID) = std::shared_ptr<QDVO::PatchComparer>(new QDVO::PatchComparer());
     }
 
-    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage(0));
+    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage(0), cf.get());
 
     std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
 }

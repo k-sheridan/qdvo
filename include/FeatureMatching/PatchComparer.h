@@ -30,7 +30,7 @@ public:
      *
      * no out of bounds checks are performed at this level.
      */
-    SCALAR_TYPE compare(const QDVO::Patch& templatePatch, const Frame& targetFrame, const Eigen::Vector2i& pixel);
+    bool compare(SCALAR_TYPE& resultingScore, const QDVO::Patch& templatePatch, const Frame& targetFrame, const Eigen::Vector2i& pixel);
 
 
 };

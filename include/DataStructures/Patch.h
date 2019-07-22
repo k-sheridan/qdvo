@@ -3,6 +3,7 @@
 
 #include <opencv2/core.hpp>
 #include "GlobalDefinitions.h"
+#include "Types.h"
 
 namespace QDVO {
 /*
@@ -14,9 +15,19 @@ class Patch
 public:
     Patch();
 
+    Patch(cv::Mat& rawPatchData, QDVO::Vector2 centerPixel, SCALAR_TYPE patchMean, SCALAR_TYPE patchStdDev);
+
     Patch(cv::Mat& rawPatchData);
 
+    cv::Mat& getImageData(){return data;}
 
+    cv::Mat& getZeroMeanImageData(){return zeroMeanData;}
+
+    SCALAR_TYPE& getStdDev(){return patchStdDev;}
+
+    SCALAR_TYPE& getMean(){return patchMean;}
+
+    int& getLevel(){return level;}
 
 private:
 
