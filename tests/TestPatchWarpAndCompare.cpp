@@ -3,11 +3,12 @@
 #include "Frame.h"
 #include "Graph.h"
 #include "PatchWarper.h"
+#include "PatchComparer.h"
 #include "EquidistantCameraModel.h"
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
-TEST(PatchWarp, Basic)
+TEST(PatchWarpAndCompare, Basic)
 {
     QDVO::EquidistantCameraModel cm = QDVO::EquidistantCameraModel(300, 301, 255, 256, PI/2.1, 512, 400, Eigen::Vector4d(0.0034823894022493434, 0.0007150348452162257, -0.0020532361418706202, 0.00020293673591811182));
     cv::Mat img;
@@ -20,10 +21,13 @@ TEST(PatchWarp, Basic)
     f1.status = QDVO::Frame::ACTIVE;
     f1.initialized = true;
 
+    QDVO::PatchComparer pc;
+    pc.meanStdDevTable.setupTables(f1.imagePyr.getImage(), &f1);
+
     QDVO::Landmark l;
     l.px = QDVO::Vector2(255, 255);
     l.dinv = 1;
-    l.bearing = QDVO::Vector3(0.1, 0.1, 1);
+    l.bearing = QDVO::Vector3(0, 0, 1);
     l.landmarkID = 1;
     f1.landmarks.push_back(l);
 
@@ -41,13 +45,26 @@ TEST(PatchWarp, Basic)
     QDVO::PatchWarper pw;
     QDVO::Patch wp;
     TIK
-    for (int i = 0; i < 200; ++i)
+    for (int i = 0; i < 1000; ++i)
     {
 
         pw.warpPatchToTargetFrame(wp, l, f1, f2, g);
 
+
     }
     TOK
+
+    SCALAR_TYPE score;
+    Eigen::Vector2i pxI(255, 256);
+
+    RETIK
+    for (int i = 0; i < 1000; ++i)
+    {
+        pc.compare(score, wp, f1, pxI);
+    }
+    RETOK
+    std::cout << score << std::endl;
+
 
     //cv::imshow("patch", wp.getImageData());
     //cv::waitKey(1000);
