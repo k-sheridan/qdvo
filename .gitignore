@@ -9,5 +9,7 @@
 *.avi
 
 datasets/
+build/
+.vscode/
 
 solveSudoku.m
