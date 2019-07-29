@@ -1,10 +1,10 @@
 #include "PatchComparer.h"
 
-QDVO::PatchComparer::PatchComparer(){
+QDVO::ZNCCPatchComparer::ZNCCPatchComparer(){
 
 }
 
-QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame& targetFrame, Eigen::Vector2i& pixel)
+QDVO::ResultType<SCALAR_TYPE> QDVO::ZNCCPatchComparer::compare(QDVO::Patch& patch, Frame& targetFrame, Eigen::Vector2i& pixel)
 {
     cv::Rect roi(cv::Point2i(pixel(0) - PATCH_RADIUS, pixel(1) - PATCH_RADIUS), patch.getImageData().size());
 

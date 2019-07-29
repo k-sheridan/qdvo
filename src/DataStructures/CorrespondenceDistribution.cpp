@@ -57,10 +57,7 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> QDVO::Co
             SCALAR_TYPE score;
 
             // try to compare the patch at the testPoint.
-            if (this->patchComparer->compare(score, this->warpedPatch, *(this->framePtr), testPoint))
-            {
-
-            }
+            QDVO::ResultType<SCALAR_TYPE> result = this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
         }
     }
 

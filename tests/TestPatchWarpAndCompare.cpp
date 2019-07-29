@@ -54,16 +54,16 @@ TEST(PatchWarpAndCompare, Basic)
     }
     TOK
 
-    SCALAR_TYPE score;
+    QDVO::ResultType<SCALAR_TYPE> score;
     Eigen::Vector2i pxI(255, 256);
 
     RETIK
     for (int i = 0; i < 1000; ++i)
     {
-        pc.compare(score, wp, f1, pxI);
+         score = pc.compare(wp, f1, pxI);
     }
     RETOK
-    std::cout << score << std::endl;
+    std::cout << score.getResult() << std::endl;
 
 
     //cv::imshow("patch", wp.getImageData());

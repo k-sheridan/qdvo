@@ -17,13 +17,13 @@ namespace QDVO {
  * For speed, this is implemented in a way which will compare a patch with a pixel, image combinination.
  * This base class is implemented as a ZNCC.
  */
-class PatchComparer
+class ZNCCPatchComparer
 {
 public:
 
     ImageStatisticsLUT meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
 
-    PatchComparer();
+    ZNCCPatchComparer();
 
     /*
      * uses the zero mean normalized cross correlation to determine how well a target frame pixel matches the patch.
@@ -31,7 +31,7 @@ public:
      *
      * no out of bounds checks are performed at this level.
      */
-    virtual QDVO::ResultType<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, Frame& targetFrame, Eigen::Vector2i& pixel);
+    QDVO::ResultType<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, Frame& targetFrame, Eigen::Vector2i& pixel);
 
 
 };
