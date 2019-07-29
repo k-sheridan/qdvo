@@ -6,11 +6,11 @@ QDVO::PatchComparer::PatchComparer(){
 
 QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame& targetFrame, Eigen::Vector2i& pixel)
 {
-    cv::Rect roi(cv::Point2i(pixel(0) - PATCH_RADIUS, pixel(1) - PATCH_RADIUS), patch.getImageData().size());
+    cv::Rect roi(cv::Point2i(pixel(0) - PATCH_RADIUS, pixel(1) - PATCH_RADIUS), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
 
-    assert(patch.getImageData().size().height == patch.getImageData().size().width && patch.getImageData().size().width == PATCH_RADIUS*2 + 1);
     assert(this->meanStdDevTable.framePtr == &targetFrame);
     assert(patch.getStdDev() > 1e-8);
+    assert(PATCH_WIDTH == 2*PATCH_RADIUS + 1);
 
     cv::Mat& targetImage = targetFrame.imagePyr.getImage();
 
@@ -20,24 +20,14 @@ QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, F
     }
 
     // Get the approximate mean and standard deviation of the test patch
-    //float approxMean = this->meanStdDevTable.getMean(cv::Point2i(pixel(0), pixel(1)));
-    //float approxStdDev = this->meanStdDevTable.getStdDev(cv::Point2i(pixel(0), pixel(1)));
-    cv::Mat rawData = targetImage(roi);
-    QDVO::Patch tp = QDVO::Patch(rawData);
+    float approxMean = this->meanStdDevTable.getMean(cv::Point2i(pixel(0), pixel(1)));
+    float approxStdDev = this->meanStdDevTable.getStdDev(cv::Point2i(pixel(0), pixel(1)));
 
-    if (tp.getStdDev() <= 1e-8)
-    {
-        return QDVO::ResultType<SCALAR_TYPE>();
-    }
-
-    // Compute the zero mean test patch
-    cv::Mat correlationMat;
-
-    cv::multiply(tp.getZeroMeanImageData(), patch.getZeroMeanImageData(), correlationMat);
-
-    cv::Scalar sumCorrelation = cv::sum(correlationMat);
-
-    SCALAR_TYPE resultingScore = sumCorrelation[0] / (tp.getStdDev() * patch.getStdDev() * patch.getImageData().size().width * patch.getImageData().size().width);
+    // get the test patch from the image and compute its zero mean self.
+    cv::Mat testData = targetImage(roi);
+    QDVO::Patch testPatch = QDVO::Patch(testData, approxMean, approxStdDev);
+   
+    SCALAR_TYPE resultingScore = testPatch.getZeroMeanImageMatrix()(5, 5);
 
     return QDVO::ResultType<SCALAR_TYPE>(resultingScore);
 }

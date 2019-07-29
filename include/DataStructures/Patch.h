@@ -2,6 +2,7 @@
 #define PATCH_H
 
 #include <opencv2/core.hpp>
+#include <Eigen/Core>
 #include "GlobalDefinitions.h"
 #include "Types.h"
 
@@ -15,17 +16,17 @@ class Patch
 public:
     Patch();
 
-    Patch(cv::Mat& rawPatchData, QDVO::Vector2 centerPixel, SCALAR_TYPE patchMean, SCALAR_TYPE patchStdDev);
+    Patch(cv::Mat& rawPatchData, float patchMean, float patchStdDev);
 
     Patch(cv::Mat& rawPatchData);
 
-    cv::Mat& getImageData(){return data;}
+    Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& getImageData(){return data;}
 
-    cv::Mat& getZeroMeanImageData(){return zeroMeanData;}
+    Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& getZeroMeanImageMatrix(){return zeroMeanMatrix;}
 
-    SCALAR_TYPE& getStdDev(){return patchStdDev;}
+    float& getStdDev(){return patchStdDev;}
 
-    SCALAR_TYPE& getMean(){return patchMean;}
+    float& getMean(){return patchMean;}
 
     int& getLevel(){return level;}
 
@@ -33,10 +34,10 @@ private:
 
     int level; // the image level this patch was created at. (0 = full resolution).
     bool initialized = false;
-    cv::Mat data; // the pixel data.
+    Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> data; // the pixel data.
 
-    cv::Mat zeroMeanData; // the mean shifted data, computed iff necessary
-    SCALAR_TYPE patchMean, patchStdDev;
+    Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> zeroMeanMatrix; // the mean shifted data, computed iff necessary
+    float patchMean, patchStdDev;
 };
 }
 
