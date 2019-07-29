@@ -27,7 +27,8 @@ QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, F
     cv::Mat testData = targetImage(roi);
     QDVO::Patch testPatch = QDVO::Patch(testData, approxMean, approxStdDev);
    
-    SCALAR_TYPE resultingScore = testPatch.getZeroMeanImageMatrix()(5, 5);
+    //SCALAR_TYPE resultingScore = ((patch.getZeroMeanImageMatrix() / patch.getStdDev()) - (testPatch.getZeroMeanImageMatrix() / testPatch.getStdDev())).sum();
+    SCALAR_TYPE resultingScore = (patch.getImageData() - testPatch.getImageData()).cwiseAbs().sum();
 
     return QDVO::ResultType<SCALAR_TYPE>(resultingScore);
 }

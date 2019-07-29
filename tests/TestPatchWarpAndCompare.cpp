@@ -20,6 +20,7 @@ TEST(PatchWarpAndCompare, Basic)
     f1.cm = &cm;
     f1.status = QDVO::Frame::ACTIVE;
     f1.initialized = true;
+    f1.imustate.pos << 0, 0, 0;
 
     QDVO::PatchComparer pc;
     pc.meanStdDevTable.setupTables(f1.imagePyr.getImage(), &f1);
@@ -33,9 +34,11 @@ TEST(PatchWarpAndCompare, Basic)
 
     QDVO::Frame f2;
     f2.camID = 1;
+    f2.imagePyr.generate(img);
     f2.status = QDVO::Frame::INACTIVE;
     f2.frameID = 2;
     f2.cm = &cm;
+    f2.imustate.pos << 0, 0, 0;
 
     QDVO::Graph g;
     QDVO::SE3 unitT(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0), Eigen::Matrix<QDVO::SE3::Scalar, 3, 1>(0, 0, 0));
@@ -55,7 +58,7 @@ TEST(PatchWarpAndCompare, Basic)
     TOK
 
     QDVO::ResultType<SCALAR_TYPE> score;
-    Eigen::Vector2i pxI(255, 256);
+    Eigen::Vector2i pxI(256, 255);
 
     RETIK
     for (int i = 0; i < 1000; ++i)
@@ -68,6 +71,8 @@ TEST(PatchWarpAndCompare, Basic)
 
     //cv::imshow("patch", wp.getImageData());
     //cv::waitKey(1000);
+
+    ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getColorSubpix(img, cv::Point2f(250, 260)), 1e-8);
 
 }
 
