@@ -21,9 +21,9 @@
 #define N_KEYFRAMES 7
 
 // the width of the image patch used. must be an odd number.
-#define PATCH_RADIUS 5
+#define PATCH_RADIUS 40
 // 2*patch radius + 1
-#define PATCH_WIDTH 11
+#define PATCH_WIDTH 81
 
 // which patch comparison will be used.
 #define ZNCC_PATCH_COMPARISON
