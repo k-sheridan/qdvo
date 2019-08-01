@@ -6,7 +6,7 @@ QDVO::PatchComparer::PatchComparer(){
 
 QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame& targetFrame, Eigen::Vector2i& pixel)
 {
-    cv::Rect roi(cv::Point2i(pixel(0) - PATCH_RADIUS, pixel(1) - PATCH_RADIUS), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
+    cv::Rect roi(cv::Point2i(pixel(0), pixel(1)), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
 
     assert(this->meanStdDevTable.framePtr == &targetFrame);
     assert(patch.getStdDev() > 1e-8);

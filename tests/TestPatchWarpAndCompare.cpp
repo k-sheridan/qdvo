@@ -63,17 +63,17 @@ TEST(PatchWarpAndCompare, Basic)
     RETIK
     for (int i = 0; i < 1000; ++i)
     {
-         //score = pc.compare(wp, f1, pxI);
+         score = pc.compare(wp, f1, pxI);
     }
     RETOK
-    //std::cout << score.getResult() << std::endl;
+    std::cout << score.getResult() << std::endl;
 
-    cv::Mat render;
+    /* cv::Mat render;
     cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, wp.getImageData().data()).convertTo(render, CV_8U);
     cv::imshow("patch", render);
     cv::Rect roi(cv::Point2i(256, 255), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
     cv::imshow("raw", img(roi));
-    cv::waitKey(100000);
+    cv::waitKey(100000);*/
 
     ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getColorSubpix(img, cv::Point2f(250, 260)), 1e-8);
 

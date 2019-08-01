@@ -9,6 +9,7 @@ SET(CMAKE_CXX_FLAGS -O3)
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmmx -msse -msse -msse2 -msse3 -mssse3")
 
 find_package(Ceres REQUIRED)
+find_package(GTSAM REQUIRED)
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
