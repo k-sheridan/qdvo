@@ -18,13 +18,19 @@ public:
 
     Patch(cv::Mat& rawPatchData, float patchMean, float patchStdDev);
 
+    Patch(cv::Mat& rawPatchData, float patchMean);
+
     Patch(cv::Mat& rawPatchData);
+
+    Patch(Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& rawPatchData);
 
     Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& getImageData(){return data;}
 
     Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& getZeroMeanImageMatrix(){return zeroMeanMatrix;}
 
     float& getStdDev(){return patchStdDev;}
+
+    float& getSumZeroMeanSquared(){return sumZeroMeanSquared;}
 
     float& getMean(){return patchMean;}
 
@@ -37,7 +43,7 @@ private:
     Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> data; // the pixel data.
 
     Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> zeroMeanMatrix; // the mean shifted data, computed iff necessary
-    float patchMean, patchStdDev;
+    float patchMean, patchStdDev, sumZeroMeanSquared;
 };
 }
 

@@ -58,7 +58,7 @@ TEST(PatchWarpAndCompare, Basic)
     TOK
 
     QDVO::ResultType<SCALAR_TYPE> score;
-    Eigen::Vector2i pxI(256, 255);
+    Eigen::Vector2i pxI(255, 256);
 
     RETIK
     for (int i = 0; i < 1000; ++i)
@@ -68,12 +68,17 @@ TEST(PatchWarpAndCompare, Basic)
     RETOK
     std::cout << score.getResult() << std::endl;
 
-    /* cv::Mat render;
+    cv::Mat render;
     cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, wp.getImageData().data()).convertTo(render, CV_8U);
-    cv::imshow("patch", render);
-    cv::Rect roi(cv::Point2i(256, 255), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
-    cv::imshow("raw", img(roi));
-    cv::waitKey(100000);*/
+    cv::imshow("patch", (render.t()));
+    cv::Rect roi(cv::Point2i(pxI(0), pxI(1)) - cv::Point2i(PATCH_RADIUS, PATCH_RADIUS), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
+    cv::Mat& targetImage = f1.imagePyr.getImage();
+    cv::Mat testData = targetImage(roi);
+    QDVO::Patch testPatch = QDVO::Patch(testData);
+    cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, testPatch.getImageData().data()).convertTo(render, CV_8U);
+    std::cout << roi.br() << " " << roi.tl() << std::endl;
+    cv::imshow("raw", render);
+    cv::waitKey(100000);
 
     ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getColorSubpix(img, cv::Point2f(250, 260)), 1e-8);
 
