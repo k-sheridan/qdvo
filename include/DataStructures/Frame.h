@@ -32,9 +32,9 @@ public:
        MARGINALIZED
     } status;
 
-    int maxIntensity();
-
     void updateImage(cv::Mat& baseImage);
+
+    int maxIntensity(){return this->maxImageIntensity;}
 
     /*
      * resets all members of this frame while leaving the memory used by them allocated.
@@ -56,6 +56,9 @@ public:
      */
     std::deque<CorrespondenceDistribution> correspondenceDistributions;
 
+    private:
+
+    int maxImageIntensity;
 };
 
 }

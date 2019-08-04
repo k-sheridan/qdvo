@@ -10,7 +10,7 @@ QDVO::ImagePyramid::ImagePyramid(int levels)
 
 }
 
-void QDVO::ImagePyramid::generate(const cv::Mat& baseImage)
+void QDVO::ImagePyramid::generate(cv::Mat& baseImage)
 {
     // make sure that we can create enough levels with the current image size.
     const int level0Rows = baseImage.rows;
@@ -23,16 +23,18 @@ void QDVO::ImagePyramid::generate(const cv::Mat& baseImage)
     }
 
 
-    this->imageLevels.at(0) = baseImage;
+    this->imageLevels.at(0) = QDVO::Image(baseImage);
 
-    for(size_t i = 1; i < this->imageLevels.size(); ++i)
+    assert(this->imageLevels.size() == 1); // not supported yet.
+
+    /*for(size_t i = 1; i < this->imageLevels.size(); ++i)
     {
         //TODO replace this with a custom version. (no need for the gaussian down sample.)
         cv::pyrDown(this->imageLevels.at(i-1), this->imageLevels.at(i), cv::Size(this->imageLevels.at(i-1).cols/2, this->imageLevels.at(i-1).rows/2));
-    }
+    }*/
 }
 
-cv::Mat& QDVO::ImagePyramid::getImage(const size_t level)
+QDVO::Image& QDVO::ImagePyramid::getImage(const size_t level)
 {
     return this->imageLevels.at(level);
 }

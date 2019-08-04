@@ -11,19 +11,18 @@ QDVO::Frame::Frame()
 
 void QDVO::Frame::updateImage(cv::Mat& baseImage)
 {
-    this->imagePyr.generate(baseImage);
-}
-
-int QDVO::Frame::maxIntensity() {
-    switch (imagePyr.getImage().type())
+    // set the max intensity
+    switch (baseImage.type())
     {
-    case CV_8U: return 255;
+    case CV_8U: this->maxImageIntensity = 255;
 
     //case CV_16U: return 65535;
 
     default: throw std::runtime_error("image type not supported.");
 
     }
+
+    this->imagePyr.generate(baseImage);
 }
 
 void QDVO::Frame::reset()

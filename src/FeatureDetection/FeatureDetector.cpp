@@ -8,7 +8,7 @@ QDVO::FeatureDetector::FeatureDetector()
 
 std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(Frame& frame, const int level)
 {
-    cv::Mat& image = frame.imagePyr.getImage(level);
+    cv::Mat image = frame.imagePyr.getImage(level).toOpenCVImage();
 
     // First, compute the image gradients.
     cv::Sobel( image, this->dx, CV_16S, 1, 0, 3, 1, 0, cv::BORDER_DEFAULT );

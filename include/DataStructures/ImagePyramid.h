@@ -1,8 +1,7 @@
 #pragma once
 
-#include <opencv2/core.hpp>
-#include <opencv2/imgproc.hpp>
 #include "GlobalDefinitions.h"
+#include "Image.h"
 
 namespace QDVO {
 class ImagePyramid
@@ -13,9 +12,9 @@ public:
      */
     ImagePyramid(int levels = 1);
 
-    cv::Mat& getImage(const size_t level = 0);
+    QDVO::Image& getImage(const size_t level = 0);
 
-    void generate(const cv::Mat& baseImage);
+    void generate(cv::Mat& baseImage);
 
     size_t levels() const {return this->imageLevels.size();}
 
@@ -40,7 +39,7 @@ public:
     }
 
 protected:
-    std::vector<cv::Mat> imageLevels; // level 0 is full resolution.
+    std::vector<QDVO::Image> imageLevels; // level 0 is full resolution.
 
 };
 }
