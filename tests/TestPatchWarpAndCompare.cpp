@@ -23,7 +23,7 @@ TEST(PatchWarpAndCompare, Basic)
     f1.imustate.pos << 0, 0, 0;
 
     QDVO::PatchComparer pc;
-    pc.meanStdDevTable.setupTables(f1.imagePyr.getImage(), &f1);
+    pc.meanStdDevTable.setupTables(f1.imagePyr.getImage().toOpenCVImage(), &f1);
 
     QDVO::Landmark l;
     l.px = QDVO::Vector2(255, 255);
@@ -68,19 +68,19 @@ TEST(PatchWarpAndCompare, Basic)
     RETOK
     std::cout << score.getResult() << std::endl;
 
-    cv::Mat render;
+    /* cv::Mat render;
     cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, wp.getImageData().data()).convertTo(render, CV_8U);
     cv::imshow("patch", (render.t()));
     cv::Rect roi(cv::Point2i(pxI(0), pxI(1)) - cv::Point2i(PATCH_RADIUS, PATCH_RADIUS), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
-    cv::Mat& targetImage = f1.imagePyr.getImage();
+    cv::Mat targetImage = f1.imagePyr.getImage().toOpenCVImage();
     cv::Mat testData = targetImage(roi);
     QDVO::Patch testPatch = QDVO::Patch(testData);
     cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, testPatch.getImageData().data()).convertTo(render, CV_8U);
     std::cout << roi.br() << " " << roi.tl() << std::endl;
     cv::imshow("raw", render);
-    cv::waitKey(100000);
+    cv::waitKey(100000);*/
 
-    ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getColorSubpix(img, cv::Point2f(250, 260)), 1e-8);
+    ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getImage().getSubPixelIntensity(QDVO::Vector2(250, 260)), 1e-8);
 
 }
 

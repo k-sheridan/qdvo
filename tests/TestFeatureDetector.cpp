@@ -12,7 +12,7 @@ TEST(FeatureDetector, Basic)
     QDVO::Frame f;
     f.imagePyr.generate(img);
 
-    std::cout << img.rows << " " << f.imagePyr.getImage().rows << std::endl;
+    std::cout << img.rows << " " << f.imagePyr.getImage().getImageData().rows() << std::endl;
 
     QDVO::FeatureDetector detector = QDVO::FeatureDetector();
     TIK

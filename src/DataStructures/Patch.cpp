@@ -1,5 +1,6 @@
 #include "Patch.h"
 #include <opencv2/core/eigen.hpp>
+#include "Image.h"
 
 QDVO::Patch::Patch()
 {

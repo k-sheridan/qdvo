@@ -8,13 +8,17 @@ QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, F
 {
     cv::Rect roi(cv::Point2i(pixel(0), pixel(1)) - cv::Point2i(PATCH_RADIUS, PATCH_RADIUS), cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
 
+    Eigen::Vector2i shift(PATCH_RADIUS, PATCH_RADIUS);
+    Eigen::Vector2i tl = pixel - shift;
+    Eigen::Vector2i br = pixel + shift;
+
     assert(this->meanStdDevTable.framePtr == &targetFrame);
     assert(patch.getStdDev() > 1e-8);
     assert(PATCH_WIDTH == 2*PATCH_RADIUS + 1);
 
-    cv::Mat& targetImage = targetFrame.imagePyr.getImage();
+    QDVO::ImageType& targetImage = targetFrame.imagePyr.getImage().getImageData();
 
-    if (roi.x < 0 || roi.y < 0 || roi.x + roi.width >= targetImage.cols || roi.y + roi.height >= targetImage.rows)
+    if (tl(0) < 0 || tl(1) < 0 || br(0) >= targetImage.cols() || br(1) >= targetImage.rows())
     {
         return QDVO::ResultType<SCALAR_TYPE>();
     }
@@ -23,8 +27,8 @@ QDVO::ResultType<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, F
     float approxMean = this->meanStdDevTable.getMean(cv::Point2i(pixel(0), pixel(1)));
 
     // get the test patch from the image and compute its zero mean self.
-    cv::Mat testData = targetImage(roi);
-    QDVO::Patch testPatch = QDVO::Patch(testData);
+    Eigen::Matrix<QDVO::ImageIntensityType, PATCH_WIDTH, PATCH_WIDTH> patchData = targetImage.block<PATCH_WIDTH, PATCH_WIDTH>(tl(1), tl(0));
+    QDVO::Patch testPatch = QDVO::Patch(patchData);
    
     SCALAR_TYPE resultingScore = (patch.getZeroMeanImageMatrix().array() * testPatch.getZeroMeanImageMatrix().array()).sum()
     / sqrt(patch.getSumZeroMeanSquared() * testPatch.getSumZeroMeanSquared());

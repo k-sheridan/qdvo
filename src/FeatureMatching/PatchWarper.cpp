@@ -52,7 +52,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& lan
 
             QDVO::Vector2 px = px_source + projJac * ((p.block(0, 0, 2, 1) / p(2)) - landmark.bearing.block(0, 0, 2, 1));
             
-            float brightness = sourceFrame.imagePyr.getColorSubpix(sourceFrame.imagePyr.getImage(), cv::Point2f(px(0), px(1)));
+            float brightness = sourceFrame.imagePyr.getImage().getSubPixelIntensity(px);
 
             imageData(deltaY + patchRadius, deltaX + patchRadius) = (brightness);
         }

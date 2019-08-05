@@ -11,7 +11,7 @@ TEST(ImagePyr, Basic)
     img = cv::imread("/Users/kevinsheridan/Documents/Mac Library/RnD/qdvo/tests/images/1.png", cv::IMREAD_GRAYSCALE);
 
 
-    QDVO::ImagePyramid pyr(3);
+    QDVO::ImagePyramid pyr(1);
 
     pyr.generate(img);
 

@@ -258,7 +258,7 @@ void QDVO::BasicAlgorithm::updatePatchComparers()
         this->patchComparers.at(cf->frameID) = std::shared_ptr<QDVO::PatchComparer>(new QDVO::PatchComparer());
     }
 
-    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage(0), cf.get());
+    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage().toOpenCVImage(), cf.get());
 
     std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
 }
@@ -283,7 +283,7 @@ void QDVO::BasicAlgorithm::activateNewLandmarks()
     std::cout << "there are currently " << visibleLandmarks.size() << " active and inactive landmarks visible in the current frame" << std::endl;
 
     // janky way of getting a decent feature distribution.
-    cv::Mat mask = cv::Mat::zeros(this->graph.getCurrentFrame()->imagePyr.getImage().rows, this->graph.getCurrentFrame()->imagePyr.getImage().cols, CV_8U);
+    cv::Mat mask = cv::Mat::zeros(this->graph.getCurrentFrame()->imagePyr.getImage().rows(), this->graph.getCurrentFrame()->imagePyr.getImage().cols(), CV_8U);
 
     const int maskRadius = 5;
 
