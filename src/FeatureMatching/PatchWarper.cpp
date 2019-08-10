@@ -5,7 +5,7 @@ QDVO::PatchWarper::PatchWarper()
 
 }
 
-void QDVO::PatchWarper::warpPatchToTargetFrame(Patch& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchRadius)
+void QDVO::PatchWarper::warpPatchToTargetFrame(QDVO::Result<Patch>& warpedPatch, Landmark& landmark, Frame& sourceFrame, Frame& targetFrame, QDVO::Graph& g, const int patchRadius)
 {
     QDVO::SE3 T_w_sourceImu = sourceFrame.imustate.getSE3();
     QDVO::SE3 T_w_targetImu = targetFrame.imustate.getSE3();

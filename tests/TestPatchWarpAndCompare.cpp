@@ -46,27 +46,26 @@ TEST(PatchWarpAndCompare, Basic)
 
 
     QDVO::PatchWarper pw;
-    QDVO::Patch wp;
+    QDVO::Result<QDVO::Patch> wp;
     TIK
     for (int i = 0; i < 1000; ++i)
     {
 
         pw.warpPatchToTargetFrame(wp, l, f1, f2, g);
 
-
     }
     TOK
 
-    QDVO::ResultType<SCALAR_TYPE> score;
+    QDVO::Result<SCALAR_TYPE> score;
     Eigen::Vector2i pxI(255, 256);
 
     RETIK
     for (int i = 0; i < 1000; ++i)
     {
-         score = pc.compare(wp, f1, pxI);
+         score = pc.compare(wp.value(), f1, pxI);
     }
     RETOK
-    std::cout << score.getResult() << std::endl;
+    std::cout << score.value() << std::endl;
 
     /* cv::Mat render;
     cv::Mat(PATCH_WIDTH, PATCH_WIDTH, CV_32F, wp.getImageData().data()).convertTo(render, CV_8U);
@@ -80,7 +79,7 @@ TEST(PatchWarpAndCompare, Basic)
     cv::imshow("raw", render);
     cv::waitKey(100000);*/
 
-    ASSERT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getImage().getSubPixelIntensity(QDVO::Vector2(250, 260)), 1e-8);
+    EXPECT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getImage().getSubPixelIntensity(QDVO::Vector2(250, 260)), 1e-8);
 
 }
 

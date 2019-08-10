@@ -7,7 +7,7 @@
 #include "Frame.h"
 #include "Patch.h"
 #include "ImageStatisticsLUT.h"
-#include "ResultType.h"
+#include "Types.h"
 #include <Eigen/Core>
 
 namespace QDVO {
@@ -31,7 +31,7 @@ public:
      *
      * no out of bounds checks are performed at this level.
      */
-    virtual QDVO::ResultType<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, Frame& targetFrame, Eigen::Vector2i& pixel);
+    virtual QDVO::Result<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, Frame& targetFrame, Eigen::Vector2i& pixel);
 
 
 };

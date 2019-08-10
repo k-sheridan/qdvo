@@ -2,12 +2,17 @@
 
 #include "GlobalDefinitions.h"
 #include <sophus/se3.hpp>
+#include <optional>
 
-namespace QDVO {
+namespace QDVO
+{
 
-typedef Sophus::SE3<SCALAR_TYPE> SE3;
-typedef Sophus::SO3<SCALAR_TYPE> SO3;
-typedef Eigen::Matrix<SCALAR_TYPE, 3, 1> Vector3;
-typedef Eigen::Matrix<SCALAR_TYPE, 2, 1> Vector2;
+using SE3 = Sophus::SE3<SCALAR_TYPE>;
+using SO3 = Sophus::SO3<SCALAR_TYPE>;
+using Vector3 = Eigen::Matrix<SCALAR_TYPE, 3, 1>;
+using Vector2 = Eigen::Matrix<SCALAR_TYPE, 2, 1>;
 
-}
+template<typename T>
+using Result = std::optional<T>;
+
+} // namespace QDVO
