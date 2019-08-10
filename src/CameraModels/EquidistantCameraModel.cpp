@@ -1,8 +1,6 @@
 #include "EquidistantCameraModel.h"
 
-
-QDVO::EquidistantCameraModel::EquidistantCameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov, int width, int height, const Eigen::Vector4d& distortionCoeffs) :
-    QDVO::CameraModel (fx, fy, cx, cy, fov, width, height), distortionCoeffs(distortionCoeffs)
+QDVO::EquidistantCameraModel::EquidistantCameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov, int width, int height, const Eigen::Vector4d &distortionCoeffs) : QDVO::CameraModel(fx, fy, cx, cy, fov, width, height), distortionCoeffs(distortionCoeffs)
 {
     // generate the LUT for the radius to angle relationship.
     this->radiusLookUpTable.umap.resize(std::ceil(this->fov / this->radiusLookUpTable.resolution));
@@ -16,23 +14,23 @@ QDVO::EquidistantCameraModel::EquidistantCameraModel(SCALAR_TYPE fx, SCALAR_TYPE
     }
 }
 
-
-
-Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::EquidistantCameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian)
+QDVO::Result<QDVO::Vector2> QDVO::EquidistantCameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2> *projectionJacobian)
 {
     if (!this->isPointPotentiallyVisible(pointInCamera))
     {
-        throw std::runtime_error("point not possibly visible.");
+        //throw std::runtime_error("point not possibly visible.");
+        return {};
     }
 
     Eigen::Matrix<SCALAR_TYPE, 3, 1> homogenousPoint = pointInCamera / pointInCamera(2);
 
-    SCALAR_TYPE normPointProjectedOntoImagePlane = sqrt(pointInCamera(0)*pointInCamera(0) + pointInCamera(1)*pointInCamera(1));
+    SCALAR_TYPE normPointProjectedOntoImagePlane = sqrt(pointInCamera(0) * pointInCamera(0) + pointInCamera(1) * pointInCamera(1));
     SCALAR_TYPE theta = atan2(normPointProjectedOntoImagePlane, abs(pointInCamera(2)));
 
     if (theta > this->fov / 2.0)
     {
-        throw std::runtime_error("point out of the field of view");
+        //throw std::runtime_error("point out of the field of view");
+        return {};
     }
 
     SCALAR_TYPE psi = atan2(pointInCamera(1), pointInCamera(0));
@@ -45,27 +43,34 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::EquidistantCameraModel::project(Eigen::Ma
 
     if (!this->isPixelOnImage(pixel))
     {
-        throw std::runtime_error("pixel not on image");
+        //throw std::runtime_error("pixel not on image");
+        return {};
     }
 
     // check if the projection jacobian should be computed
     if (projectionJacobian != nullptr)
     {
-        const SCALAR_TYPE delta = 1e-4;
+        try
+        {
+            const SCALAR_TYPE delta = 1e-4;
 
-        projectionJacobian->block(0, 0, 2, 1) = this->project(homogenousPoint.block(0, 0, 3, 1) + Eigen::Matrix<SCALAR_TYPE, 3, 1>(delta, 0, 0))
-                - this->project(homogenousPoint.block(0, 0, 3, 1) - Eigen::Matrix<SCALAR_TYPE, 3, 1>(delta, 0, 0));
+            projectionJacobian->block(0, 0, 2, 1) = this->project(homogenousPoint.block(0, 0, 3, 1) + Eigen::Matrix<SCALAR_TYPE, 3, 1>(delta, 0, 0)).value() - this->project(homogenousPoint.block(0, 0, 3, 1) - Eigen::Matrix<SCALAR_TYPE, 3, 1>(delta, 0, 0)).value();
 
-        projectionJacobian->block(0, 1, 2, 1) = this->project(homogenousPoint.block(0, 0, 3, 1) + Eigen::Matrix<SCALAR_TYPE, 3, 1>(0, delta, 0))
-                - this->project(homogenousPoint.block(0, 0, 3, 1) - Eigen::Matrix<SCALAR_TYPE, 3, 1>(0, delta, 0));
+            projectionJacobian->block(0, 1, 2, 1) = this->project(homogenousPoint.block(0, 0, 3, 1) + Eigen::Matrix<SCALAR_TYPE, 3, 1>(0, delta, 0)).value() - this->project(homogenousPoint.block(0, 0, 3, 1) - Eigen::Matrix<SCALAR_TYPE, 3, 1>(0, delta, 0)).value();
 
-        *(projectionJacobian) /= (2*delta);
+            *(projectionJacobian) /= (2 * delta);
+        }
+        catch (std::runtime_error &e)
+        {
+            std::cout << "failed to numerically evaluate the projection jacobian" << std::endl;
+            return {};
+        }
     }
 
     return pixel;
 }
 
-Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::EquidistantCameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
+QDVO::Result<QDVO::Vector3> QDVO::EquidistantCameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2> *unprojectionJacobian)
 {
     Eigen::Matrix<SCALAR_TYPE, 2, 1> distortedBearing((pixel(0) - this->cx) / this->fx, (pixel(1) - this->cy) / this->fy);
 
@@ -73,15 +78,18 @@ Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::EquidistantCameraModel::unproject(Eigen::
 
     SCALAR_TYPE desiredRadius = (distortedBearing).norm();
 
-    size_t highIdx = this->radiusLookUpTable.umap.size()-1;
+    size_t highIdx = this->radiusLookUpTable.umap.size() - 1;
     size_t lowIdx = 0;
     size_t midIdx = highIdx / 2;
 
-    while(true)
+    while (true)
     {
         SCALAR_TYPE rEval = this->radiusLookUpTable.umap.at(midIdx);
 
-        if (highIdx-1 <= lowIdx){break;} // converged
+        if (highIdx - 1 <= lowIdx)
+        {
+            break;
+        } // converged
 
         if (desiredRadius > rEval)
         {
@@ -93,14 +101,18 @@ Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::EquidistantCameraModel::unproject(Eigen::
             highIdx = midIdx;
             midIdx = lowIdx + (highIdx - lowIdx) / 2;
         }
-        else {break;}
+        else
+        {
+            break;
+        }
     }
 
     SCALAR_TYPE theta0 = midIdx * this->radiusLookUpTable.resolution;
 
     if (std::abs(theta0) > this->fov / 2.0)
     {
-        throw std::runtime_error("unproject in unstable region!");
+        //throw std::runtime_error("unproject in unstable region!");
+        return {};
     }
 
     SCALAR_TYPE theta = theta0;
@@ -129,4 +141,3 @@ Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::EquidistantCameraModel::unproject(Eigen::
 
     return bearing;
 }
-

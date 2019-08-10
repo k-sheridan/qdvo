@@ -6,11 +6,11 @@ QDVO::CameraModel::CameraModel(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, S
 
 }
 
-Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian)
+QDVO::Result<QDVO::Vector2> QDVO::CameraModel::project(Eigen::Matrix<SCALAR_TYPE, 3, 1> pointInCamera, Eigen::Matrix<SCALAR_TYPE, 2, 2>* projectionJacobian)
 {
     if (pointInCamera(2) < SMALL_NUMBER)
     {
-        throw std::runtime_error("point behind camera");
+        return {};
     }
 
     SCALAR_TYPE u = pointInCamera(0)/pointInCamera(2);
@@ -25,10 +25,10 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CameraModel::project(Eigen::Matrix<SCALAR
         (*projectionJacobian)(0, 1) = 0;
     }
 
-    return Eigen::Matrix<SCALAR_TYPE, 2, 1>(u*this->fx + this->cx, v*this->fy + this->cy);
+    return QDVO::Vector2(u*this->fx + this->cx, v*this->fy + this->cy);
 }
 
-Eigen::Matrix<SCALAR_TYPE, 3, 1> QDVO::CameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
+QDVO::Result<QDVO::Vector3> QDVO::CameraModel::unproject(Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel, Eigen::Matrix<SCALAR_TYPE, 2, 2>* unprojectionJacobian)
 {
     // optionally compute the unprojection jacobian
     if (unprojectionJacobian != nullptr)

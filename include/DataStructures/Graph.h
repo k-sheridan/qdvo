@@ -76,7 +76,7 @@ public:
     // transforms the landmark into a euclidean point in the target frame.
     QDVO::Vector3 projectLandmarkToCameraFrame(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
 
-    QDVO::Vector2 projectLandmarkToPixel(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
+    QDVO::Result<QDVO::Vector2> projectLandmarkToPixel(ID_TYPE targetFrameID, ID_TYPE sourceFrameID, ID_TYPE landmarkID);
 
 
 private:

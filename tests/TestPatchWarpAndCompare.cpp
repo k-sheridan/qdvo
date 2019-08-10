@@ -79,7 +79,7 @@ TEST(PatchWarpAndCompare, Basic)
     cv::imshow("raw", render);
     cv::waitKey(100000);*/
 
-    EXPECT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getImage().getSubPixelIntensity(QDVO::Vector2(250, 260)), 1e-8);
+    EXPECT_NEAR(float(img.at<uint8_t>(260, 250)), f1.imagePyr.getImage().getSubPixelIntensity(QDVO::Vector2(250, 260)).value(), 1e-8);
 
 }
 

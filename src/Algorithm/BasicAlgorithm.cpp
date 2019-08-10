@@ -117,15 +117,14 @@ void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame> &keyf
         lm.parentFrameID = keyframe->frameID;
         lm.dinv = DEFAULT_LANDMARK_DINV;
 
-        try
-        {
-            lm.bearing = cm->unproject(lm.px);
-        }
-        catch (std::runtime_error &e)
+        auto result = cm->unproject(lm.px);
+        if (!result.has_value())
         {
             std::cout << "failed to unproject pixel." << std::endl;
             continue;
         }
+
+        lm.bearing = result.value();
 
         keyframe->landmarks.push_back(lm);
     }
@@ -164,7 +163,12 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
 
         // initialize the correspondence distribution
         QDVO::CorrespondenceDistribution &cdRef = cf->correspondenceDistributions.at(cdIdx);
-        QDVO::Vector2 px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
+        auto px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
+        if (!px0.has_value())
+        {
+            std::cout << "landmark not visible in its parent frame!" << std::endl;
+            continue;
+        }
         QDVO::Result<QDVO::Patch> warpedPatch = {};
 
         // warp the patch.
@@ -175,7 +179,7 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
             continue;
         }
 
-        cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0(0)), std::round(px0(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch.value());
+        cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch.value());
 
         ++cdIdx;
     }

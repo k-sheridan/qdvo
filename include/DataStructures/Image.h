@@ -22,7 +22,7 @@ namespace QDVO {
         int rows(){return image.rows();}
         int cols(){return image.cols();}
 
-        ImageIntensityType getSubPixelIntensity(QDVO::Vector2 px);
+        QDVO::Result<ImageIntensityType> getSubPixelIntensity(QDVO::Vector2 px);
 
         private:
         ImageType image;

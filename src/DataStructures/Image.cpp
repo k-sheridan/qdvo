@@ -13,7 +13,7 @@ cv::Mat QDVO::Image::toOpenCVImage()
     return img;
 }
 
-QDVO::ImageIntensityType QDVO::Image::getSubPixelIntensity(QDVO::Vector2 px)
+QDVO::Result<QDVO::ImageIntensityType> QDVO::Image::getSubPixelIntensity(QDVO::Vector2 px)
 {
             int x0 = (int)px.x();
             int y0 = (int)px.y();
@@ -22,7 +22,8 @@ QDVO::ImageIntensityType QDVO::Image::getSubPixelIntensity(QDVO::Vector2 px)
 
             if ((x0 >= (this->cols() + 1) || x0 < 0) || (y0 >= (this->rows() + 1) || y0 < 0))
             {
-                throw std::runtime_error("pixel out of bounds");
+                //throw std::runtime_error("pixel out of bounds");
+                return {};
             }
 
             float a = px.x() - (float)x0;
