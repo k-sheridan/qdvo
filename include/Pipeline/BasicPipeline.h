@@ -1,5 +1,4 @@
-#ifndef BASICALGORITHM_H
-#define BASICALGORITHM_H
+#pragma once
 
 #include "GlobalDefinitions.h"
 #include "Graph.h"
@@ -23,10 +22,10 @@ namespace QDVO
  * The basic datastructures are held in the graph datastructure. They contain all necessary information, access, insert, and reset functions implemented in a protected way.
  *
  */
-class BasicAlgorithm
+class BasicPipeline
 {
 public:
-    BasicAlgorithm();
+    BasicPipeline();
 
     Graph graph; // main datastructure for all possible QDVO algorithms.
 
@@ -99,4 +98,3 @@ public:
 
 } // namespace QDVO
 
-#endif // BASICALGORITHM_H

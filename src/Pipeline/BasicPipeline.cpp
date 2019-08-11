@@ -1,10 +1,10 @@
-#include "BasicAlgorithm.h"
+#include "BasicPipeline.h"
 
-QDVO::BasicAlgorithm::BasicAlgorithm()
+QDVO::BasicPipeline::BasicPipeline()
 {
 }
 
-void QDVO::BasicAlgorithm::initialize()
+void QDVO::BasicPipeline::initialize()
 {
     // precompute the radial search pattern LUT
     this->radialSearchPatternPtr = std::shared_ptr<RadialSearchPattern>(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
@@ -23,7 +23,7 @@ void QDVO::BasicAlgorithm::initialize()
     std::cout << "Created a new feature detector" << std::endl;
 }
 
-void QDVO::BasicAlgorithm::addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel, const ID_TYPE cameraID)
+void QDVO::BasicPipeline::addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel, const ID_TYPE cameraID)
 {
     this->graph.setCameraModel(cameraModel, cameraID);
 
@@ -35,12 +35,11 @@ void QDVO::BasicAlgorithm::addCamera(std::unique_ptr<QDVO::CameraModel> &cameraM
     std::cout << "Added default unit extrinsic" << std::endl;
 }
 
-void QDVO::BasicAlgorithm::addFrame(cv::Mat &image, const double &time, const ID_TYPE cameraID)
+void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const ID_TYPE cameraID)
 {
     //std::cout << "here" << std::endl;
-    TIK
-        // save the last imu state
-        QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
+    // save the last imu state
+    QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
     // Reset current frame
     this->graph.getCurrentFrame()->reset();
     // Setup the current frame.
@@ -56,10 +55,13 @@ void QDVO::BasicAlgorithm::addFrame(cv::Mat &image, const double &time, const ID
     //std::cout << "here2" << std::endl;
 
     // Initialize correspondence distributions
-    this->initializeCorrespondenceDistributionsForCurrentFrame();
 
-    // Run front end visual odometry
-    this->frontEndVisualOdometry.run(this->graph);
+TIK
+    this->initializeCorrespondenceDistributionsForCurrentFrame();
+    TOK
+
+        // Run front end visual odometry
+        this->frontEndVisualOdometry.run(this->graph);
 
     // Check if the current frame meets the keyframe selection criteria
     if (this->isCurrentFrameAKeyframe())
@@ -88,16 +90,14 @@ void QDVO::BasicAlgorithm::addFrame(cv::Mat &image, const double &time, const ID
         // finally move the current frame into the keyframe set
         this->graph.moveCurrentFrameIntoKeyframePosition();
     }
-
-    TOK
 }
 
-void QDVO::BasicAlgorithm::runMarginalizationStrategy()
+void QDVO::BasicPipeline::runMarginalizationStrategy()
 {
     this->swe.runMarginalizationStrategy(this->graph);
 }
 
-void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame> &keyframe, std::unique_ptr<QDVO::FeatureDetector> &featureDetector)
+void QDVO::BasicPipeline::createNewLandmarks(std::unique_ptr<QDVO::Frame> &keyframe, std::unique_ptr<QDVO::FeatureDetector> &featureDetector)
 {
     std::cout << "Creating new landmarks for keyframe: " << keyframe->frameID << std::endl;
 
@@ -130,7 +130,7 @@ void QDVO::BasicAlgorithm::createNewLandmarks(std::unique_ptr<QDVO::Frame> &keyf
     }
 }
 
-void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame()
+void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
 {
     // first update the patch comparers before initializing all the correspondence distributions
     this->updatePatchComparers();
@@ -183,9 +183,11 @@ void QDVO::BasicAlgorithm::initializeCorrespondenceDistributionsForCurrentFrame(
 
         ++cdIdx;
     }
+
+    std::cout << "Initialized correspondence distributions for this frame." << std::endl;
 }
 
-bool QDVO::BasicAlgorithm::isCurrentFrameAKeyframe()
+bool QDVO::BasicPipeline::isCurrentFrameAKeyframe()
 {
     if (this->graph.getKeyframeSet().size() == 0)
     {
@@ -196,7 +198,7 @@ bool QDVO::BasicAlgorithm::isCurrentFrameAKeyframe()
     return false;
 }
 
-void QDVO::BasicAlgorithm::updatePatchComparers()
+void QDVO::BasicPipeline::updatePatchComparers()
 {
 
     std::unique_ptr<QDVO::Frame> &cf = this->graph.getCurrentFrame();
@@ -256,11 +258,11 @@ void QDVO::BasicAlgorithm::updatePatchComparers()
     std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
 }
 
-void QDVO::BasicAlgorithm::runEpipolarDepthEstimators()
+void QDVO::BasicPipeline::runEpipolarDepthEstimators()
 {
 }
 
-void QDVO::BasicAlgorithm::activateNewLandmarks()
+void QDVO::BasicPipeline::activateNewLandmarks()
 {
     /*
      * Warning: This is an absolute mess, but for now it will have to do.

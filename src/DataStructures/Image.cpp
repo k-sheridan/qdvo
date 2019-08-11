@@ -20,7 +20,7 @@ QDVO::Result<QDVO::ImageIntensityType> QDVO::Image::getSubPixelIntensity(QDVO::V
             int x1 = x0 + 1;
             int y1 = y0 + 1;
 
-            if ((x0 >= (this->cols() + 1) || x0 < 0) || (y0 >= (this->rows() + 1) || y0 < 0))
+            if ((x0 >= (this->cols() - 1) || x0 < 0) || (y0 >= (this->rows() - 1) || y0 < 0))
             {
                 //throw std::runtime_error("pixel out of bounds");
                 return {};
