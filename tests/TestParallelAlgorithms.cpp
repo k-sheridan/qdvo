@@ -14,7 +14,9 @@ TEST(ParallelAlgorithms, parallel_transform)
 
     const int wasteIter = 1000000;
 
-    auto fn = [](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i); } return a + 10; };
+    int imoutside = 66777;
+
+    auto fn = [imoutside](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + imoutside; } return a + 10; };
 
     TIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(),result.begin(), fn);
@@ -22,6 +24,37 @@ TEST(ParallelAlgorithms, parallel_transform)
     std::vector<int> result2(numbers.size());
     RETIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, numbers.begin(), numbers.end(),result2.begin(), fn);
+    RETOK
+    for (int i = 0; i < result.size(); ++i)
+    {
+        //std::cout << result.at(i) << std::endl;
+        EXPECT_EQ(result.at(i), result2.at(i));
+    }
+}
+
+TEST(ParallelAlgorithms, parallel_transform_binary)
+{
+    std::vector<int> numbers(500);
+     std::vector<int> numbers2(500);
+    //std::generate(numbers.begin(), numbers.end(), std::rand);
+    std::iota(numbers.begin(), numbers.end(), 1);
+    std::iota(numbers2.begin(), numbers2.end(), 1);
+    //std::fill(numbers.begin(), numbers.end(), 10);
+
+    std::vector<int> result(numbers.size());
+
+    const int wasteIter = 1000000;
+
+    int imoutside = 66777;
+
+    auto fn = [imoutside](int a, int b) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + b + imoutside; } return a + b + 10; };
+
+    TIK
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(), numbers2.begin(), result.begin(), fn);
+    TOK
+    std::vector<int> result2(numbers.size());
+    RETIK
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, numbers.begin(), numbers.end(), numbers2.begin(), result2.begin(), fn);
     RETOK
     for (int i = 0; i < result.size(); ++i)
     {
@@ -39,7 +72,9 @@ TEST(ParallelAlgorithms, parallel_for_each)
 
     const int wasteIter = 1000000;
 
-    auto fn = [](int& a) -> void {for (int i = 0; i < wasteIter; ++i){a = std::max(a, i); } };
+    int imoutside = 400;
+
+    auto fn = [imoutside](int& a) -> void {for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + imoutside; } };
 
     TIK
     QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(), fn);

@@ -42,6 +42,34 @@ void transform(ExecutionType execution, InputIterator first, InputIterator last,
     }
 }
 
+template <class InputIterator1, class InputIterator2,
+          class OutputIterator, class BinaryOperation>
+void transform(ExecutionType execution, InputIterator1 first1, InputIterator1 last1,
+                         InputIterator2 first2, OutputIterator result,
+                         BinaryOperation binary_op)
+{
+    if (execution == ExecutionType::SEQUENTIAL)
+    {
+        std::transform(first1, last1, first2, result, binary_op);
+    }
+    else if (execution == PARALLEL_CPU)
+    {
+        auto problemDividers = createListDividers(last1 - first1);
+        std::vector<std::thread> threads;
+        threads.reserve(problemDividers.size());
+
+        // Launch the threads.
+        for (auto &divider : problemDividers)
+            threads.emplace_back(std::transform<InputIterator1, InputIterator2, OutputIterator, BinaryOperation>, first1 + std::get<0>(divider), first1 + std::get<1>(divider), first2 + std::get<0>(divider), result + std::get<0>(divider), binary_op);
+
+        joinThreads(threads);
+    }
+    else if (execution == PARALLEL_CUDA)
+    {
+        assert(false);
+    }
+}
+
 template <class InputIterator, class UnaryFunction>
 void for_each(ExecutionType execution, InputIterator first, InputIterator last, UnaryFunction f)
 {

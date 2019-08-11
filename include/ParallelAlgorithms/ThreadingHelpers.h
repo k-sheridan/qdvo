@@ -9,7 +9,7 @@ namespace QDVO::ParallelAlgorithms
 {
 
 // Finds the number of threads on the user system or returns a default thread count.
-unsigned getSuggestedThreadCount()
+inline unsigned getSuggestedThreadCount()
 {
     auto nCores = std::thread::hardware_concurrency();
     if (nCores == 0)
@@ -23,7 +23,7 @@ unsigned getSuggestedThreadCount()
 }
 
 // Computes a set of uniformly spaced indices s.t. the first index is 0, the last index is (length), and the total number of indices is (nThreads+1).
-std::vector<int> splitProblem(unsigned nThreads, unsigned length)
+inline std::vector<int> splitProblem(unsigned nThreads, unsigned length)
 {
     assert(nThreads > 0);
     std::vector<int> indices(nThreads + 1);
@@ -40,7 +40,7 @@ std::vector<int> splitProblem(unsigned nThreads, unsigned length)
 }
 
 // Creates a set of upper and lower shifts for each thread to use. Tuple order: {lower, upper}
-std::vector<std::tuple<int, int>> createListDividers(unsigned length)
+inline std::vector<std::tuple<int, int>> createListDividers(unsigned length)
 {
     auto nThreads = getSuggestedThreadCount();
     auto splitIndices = splitProblem(nThreads, length);
@@ -53,7 +53,7 @@ std::vector<std::tuple<int, int>> createListDividers(unsigned length)
     return dividers;
 }
 
-void joinThreads(std::vector<std::thread> &threads)
+inline void joinThreads(std::vector<std::thread> &threads)
 {
     // Join all threads
     for (auto &th : threads)

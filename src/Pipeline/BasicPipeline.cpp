@@ -1,4 +1,5 @@
 #include "BasicPipeline.h"
+#include <algorithm>
 
 QDVO::BasicPipeline::BasicPipeline()
 {
@@ -56,8 +57,7 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const ID_
 
     // Initialize correspondence distributions
 
-TIK
-    this->initializeCorrespondenceDistributionsForCurrentFrame();
+    TIK this->initializeCorrespondenceDistributionsForCurrentFrame();
     TOK
 
         // Run front end visual odometry
@@ -140,51 +140,52 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
 
     // second reset correspondence distributions
     cf->resetCorrespondenceDistributions();
-    size_t cdIdx = 0;
 
     // find the set of active landmarks visible in the current frame.
     // create and initialize the correspondence distribution for each of these landmarks
     std::vector<std::tuple<QDVO::Landmark *, QDVO::Vector2>> visibleActiveLandmarks = this->graph.getVisibleLandmarksInCurrentFrame(true);
 
+    // Make sure that there are enough correspondence distributions
+    int deficit = std::max(int(visibleActiveLandmarks.size() - cf->correspondenceDistributions.size()), 0);
+    for (int i = 0; i < deficit; ++i)
+    {
+        // create another correspondence distribution
+        cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cf->cm->width, cf->cm->height, this->radialSearchPatternPtr, cf.get()));
+    }
+
     std::cout << "found " << visibleActiveLandmarks.size() << " visible and active landmarks for the current frame" << std::endl;
 
-    for (auto &tup : visibleActiveLandmarks)
-    {
+    auto initializationFn = [&, this, patchCompPtr](std::tuple<QDVO::Landmark *, QDVO::Vector2> &tup, QDVO::CorrespondenceDistribution &cdRef) -> int {
         QDVO::Landmark *l = std::get<0>(tup);
 
-        if (cdIdx >= cf->correspondenceDistributions.size())
-        {
-            // create another correspondence distribution
-            cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cf->cm->width, cf->cm->height, this->radialSearchPatternPtr, cf.get()));
-        }
-
-        assert(cdIdx < cf->correspondenceDistributions.size());
-        assert(cf->correspondenceDistributions.at(cdIdx).dormant == true);
+        assert(cdRef.dormant == true);
 
         // initialize the correspondence distribution
-        QDVO::CorrespondenceDistribution &cdRef = cf->correspondenceDistributions.at(cdIdx);
         auto px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
         if (!px0.has_value())
         {
             std::cout << "landmark not visible in its parent frame!" << std::endl;
-            continue;
+            return 1;
         }
         QDVO::Result<QDVO::Patch> warpedPatch = {};
 
         // warp the patch.
-        this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(cf), this->graph);
+        this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(this->graph.getCurrentFrame()), this->graph);
         if (!warpedPatch.has_value())
         {
             std::cout << "failed to warp patch" << std::endl;
-            continue;
+            return 1;
         }
 
         cdRef.initializeDistribution(Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchCompPtr, warpedPatch.value());
+        return 0;
+    };
 
-        ++cdIdx;
-    }
+    std::vector<int> result(visibleActiveLandmarks.size());
+    // Run the initialization function for all active and visible landmarks.
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(), cf->correspondenceDistributions.begin(), result.begin(), initializationFn);
 
-    std::cout << "Initialized correspondence distributions for this frame." << std::endl;
+    std::cout << "Initialized correspondence distributions for this frame. Could not initialize: " << std::accumulate(result.begin(), result.end(), 0) << " distributions." << std::endl;
 }
 
 bool QDVO::BasicPipeline::isCurrentFrameAKeyframe()
