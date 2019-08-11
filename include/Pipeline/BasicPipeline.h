@@ -11,7 +11,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include "Types.h"
-#include "STLAlgorithmAbstraction.h"
+#include "ParallelAlgorithms.h"
 
 namespace QDVO
 {

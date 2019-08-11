@@ -1,0 +1,55 @@
+#include "gtest/gtest.h"
+#include "ParallelAlgorithms.h"
+#include <random>
+#include "GlobalDefinitions.h"
+
+TEST(ParallelAlgorithms, parallel_transform)
+{
+    std::vector<int> numbers(500);
+    //std::generate(numbers.begin(), numbers.end(), std::rand);
+    std::iota(numbers.begin(), numbers.end(), 1);
+    //std::fill(numbers.begin(), numbers.end(), 10);
+
+    std::vector<int> result(numbers.size());
+
+    const int wasteIter = 1000000;
+
+    auto fn = [](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i); } return a + 10; };
+
+    TIK
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(),result.begin(), fn);
+    TOK
+    std::vector<int> result2(numbers.size());
+    RETIK
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, numbers.begin(), numbers.end(),result2.begin(), fn);
+    RETOK
+    for (int i = 0; i < result.size(); ++i)
+    {
+        //std::cout << result.at(i) << std::endl;
+        EXPECT_EQ(result.at(i), result2.at(i));
+    }
+}
+
+TEST(ParallelAlgorithms, parallel_for_each)
+{
+    std::vector<int> numbers(500);
+    std::iota(numbers.begin(), numbers.end(), 1);
+    std::vector<int> moreNumbers(500);
+    std::iota(moreNumbers.begin(), moreNumbers.end(), 1);
+
+    const int wasteIter = 1000000;
+
+    auto fn = [](int& a) -> void {for (int i = 0; i < wasteIter; ++i){a = std::max(a, i); } };
+
+    TIK
+    QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(), fn);
+    TOK
+    RETIK
+    QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, moreNumbers.begin(), moreNumbers.end(), fn);
+    RETOK
+    for (int i = 0; i < numbers.size(); ++i)
+    {
+        //std::cout << result.at(i) << std::endl;
+        EXPECT_EQ(numbers.at(i), moreNumbers.at(i));
+    }
+}

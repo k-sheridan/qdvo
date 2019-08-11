@@ -5,7 +5,7 @@
 
 #define DEFAULT_THREAD_COUNT 4
 
-namespace QDVO::STLAlgorithmAbstraction
+namespace QDVO::ParallelAlgorithms
 {
 
 // Finds the number of threads on the user system or returns a default thread count.

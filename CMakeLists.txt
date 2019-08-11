@@ -29,7 +29,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include/DataStructures/
     ${PROJECT_SOURCE_DIR}/include/FeatureMatching/
     ${PROJECT_SOURCE_DIR}/include/Estimation/
-    ${PROJECT_SOURCE_DIR}/include/Algorithm/
+    ${PROJECT_SOURCE_DIR}/include/ParallelAlgorithms/
     ${PROJECT_SOURCE_DIR}/include/Pipeline/
     )
 

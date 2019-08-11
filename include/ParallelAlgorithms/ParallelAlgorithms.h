@@ -8,7 +8,7 @@
 #include "ThreadingHelpers.h"
 //#include <thrust>
 
-namespace QDVO::STLAlgorithmAbstraction
+namespace QDVO::ParallelAlgorithms
 {
 enum ExecutionType
 {
@@ -33,7 +33,7 @@ void transform(ExecutionType execution, InputIterator first, InputIterator last,
         // Launch the threads.
         for (auto &divider : problemDividers)
             threads.emplace_back(std::transform<InputIterator, OutputIterator, UnaryOperation>, first + std::get<0>(divider), first + std::get<1>(divider), result + std::get<0>(divider), op);
-        
+
         joinThreads(threads);
     }
     else if (execution == PARALLEL_CUDA)
@@ -42,4 +42,29 @@ void transform(ExecutionType execution, InputIterator first, InputIterator last,
     }
 }
 
-} // namespace QDVO::STLAlgorithmAbstraction
+template <class InputIterator, class UnaryFunction>
+void for_each(ExecutionType execution, InputIterator first, InputIterator last, UnaryFunction f)
+{
+    if (execution == ExecutionType::SEQUENTIAL)
+    {
+        std::for_each(first, last, f);
+    }
+    else if (execution == PARALLEL_CPU)
+    {
+        auto problemDividers = createListDividers(last - first);
+        std::vector<std::thread> threads;
+        threads.reserve(problemDividers.size());
+
+        // Launch the threads.
+        for (auto &divider : problemDividers)
+            threads.emplace_back(std::for_each<InputIterator, UnaryFunction>, first + std::get<0>(divider), first + std::get<1>(divider), f);
+
+        joinThreads(threads);
+    }
+    else if (execution == PARALLEL_CUDA)
+    {
+        assert(false);
+    }
+}
+
+} // namespace QDVO::ParallelAlgorithms
