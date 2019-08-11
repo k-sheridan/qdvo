@@ -26,20 +26,16 @@ public:
     struct PotentialCorrespondence{
         SCALAR_TYPE score; // match score.
         Eigen::Vector2i pixel;
-    };
+        bool initialized = false;
 
-    struct SpatialMapType {
-        PotentialCorrespondence* pc = nullptr;
-
-        void reset(){pc = nullptr;}
+        void reset(){initialized = false;}
     };
 
     Patch warpedPatch; // the warped template patch to be used for the creation of the correspondence distribution.
     QDVO::Frame* framePtr = nullptr; // a pointer to the frame which the patch should be compared to.
 
     // serves as a method for finding nearest neighbors.
-    SpatialMap<SpatialMapType> correspondenceMap;
-    std::deque<PotentialCorrespondence> potentialCorrespondences; // stores the potential correspondences.
+    SpatialMap<PotentialCorrespondence> correspondenceMap;
     bool dormant = true; // is this correspondence distribution currently not being used.
 
 

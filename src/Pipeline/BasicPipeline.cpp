@@ -57,11 +57,10 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const ID_
 
     // Initialize correspondence distributions
 
-    TIK this->initializeCorrespondenceDistributionsForCurrentFrame();
-    TOK
+    this->initializeCorrespondenceDistributionsForCurrentFrame();
 
-        // Run front end visual odometry
-        this->frontEndVisualOdometry.run(this->graph);
+    // Run front end visual odometry
+    this->frontEndVisualOdometry.run(this->graph);
 
     // Check if the current frame meets the keyframe selection criteria
     if (this->isCurrentFrameAKeyframe())
@@ -164,7 +163,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         auto px0 = this->graph.projectLandmarkToPixel(cf->frameID, l->parentFrameID, l->landmarkID);
         if (!px0.has_value())
         {
-            std::cout << "landmark not visible in its parent frame!" << std::endl;
+            //std::cout << "landmark not visible in its parent frame!" << std::endl;
             return 1;
         }
         QDVO::Result<QDVO::Patch> warpedPatch = {};
@@ -173,7 +172,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         this->patchWarper->warpPatchToTargetFrame(warpedPatch, *(l), *(this->graph.getFrame(l->parentFrameID)), *(this->graph.getCurrentFrame()), this->graph);
         if (!warpedPatch.has_value())
         {
-            std::cout << "failed to warp patch" << std::endl;
+            //std::cout << "failed to warp patch" << std::endl;
             return 1;
         }
 

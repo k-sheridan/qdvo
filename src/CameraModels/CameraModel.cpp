@@ -51,15 +51,4 @@ bool QDVO::CameraModel::isPointPotentiallyVisible(const Eigen::Matrix<SCALAR_TYP
     return true;
 }
 
-bool QDVO::CameraModel::isPixelOnImage(const Eigen::Matrix<double, 2, 1> &pixel)
-{
-    if (pixel(0) >= 0 && pixel(0) < this->width - 1 && pixel(1) >= 0 && pixel(1) < this->height - 1)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 
-}

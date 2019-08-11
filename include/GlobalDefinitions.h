@@ -28,6 +28,9 @@
 // which patch comparison will be used.
 #define ZNCC_PATCH_COMPARISON
 
+// Potential correspondence threshold
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
+
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 200
 
@@ -35,7 +38,10 @@
 #define MINUMUM_ACTIVE_LANDMARKS 100
 
 // define the maximum radius for the correspondence search.
-#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 20
+#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 15
+
+// the number of extra radii that are searched after finding the first potential correspondence
+#define SEARCH_RADIUS_PADDING 2
 
 // define how many image pyramid levels are used during optiizations
 #define IMAGE_PYRAMID_LEVELS 1

@@ -3,7 +3,7 @@
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<RadialSearchPattern> patternPtr, QDVO::Frame *framePtr)
 {
-    this->correspondenceMap = QDVO::SpatialMap<SpatialMapType>(std::max(width, height));
+    this->correspondenceMap = QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
     this->radialSearchPattern = std::shared_ptr<RadialSearchPattern>(patternPtr);
     this->framePtr = framePtr;
 }
@@ -43,21 +43,59 @@ void QDVO::CorrespondenceDistribution::initializeDistribution(const Eigen::Vecto
 std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)
 {
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> influentialPotentialCorrespondences;
-
+    bool firstInfluentialPotentialCorrespondenceFound = false;
+    int radiusCounter = SEARCH_RADIUS_PADDING;
     assert(this->patchComparer != nullptr);
 
     // start the radial search
     for (unsigned r = 0; r <= searchRadius; ++r) // starting at radius 0 going to radius max.
     {
+        // Is this the last radius to search?
+        if (minimalSearch && firstInfluentialPotentialCorrespondenceFound)
+        {
+            if (radiusCounter-- <= 0)
+            {
+                break;
+            }
+        }
+
         for (auto &delta : this->radialSearchPattern->searchPattern.at(r))
         {
             Eigen::Vector2i testPoint = centerPixel + delta; // this is a point on a constant radius.
-            SCALAR_TYPE score;
 
-            // try to compare the patch at the testPoint.
-            auto result = this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
+            // Make sure that this testPoint Is On The Image.
+            if (!this->framePtr->cm->isPixelOnImage(testPoint))
+            {
+                continue;
+            }
+
+            auto &pc = this->correspondenceMap.get(testPoint);
+
+            // Only run the patch comparison on uninitialized potential correspondences.
+            if (!pc.initialized)
+            {
+                // try to compare the patch at the testPoint.
+                auto score = this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
+
+                // Add the score to the distribution
+                if (score.has_value())
+                {
+                    pc.initialized = true;
+                    pc.pixel = testPoint;
+                    pc.score = score.value();
+
+                    // If the potential correspondence is good enough, it is influential.
+                    if (pc.score >= POTENTIAL_CORRESPONDENCE_THRESHOLD)
+                    {
+                        firstInfluentialPotentialCorrespondenceFound = true;
+                        influentialPotentialCorrespondences.push_back(&pc);
+                    }
+                }
+            }
         }
     }
+
+    //std::cout << "found " << influentialPotentialCorrespondences.size() << std::endl;
 
     return influentialPotentialCorrespondences;
 }
