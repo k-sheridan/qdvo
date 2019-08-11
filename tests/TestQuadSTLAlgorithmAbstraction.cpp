@@ -12,9 +12,9 @@ TEST(STLAlgorithmAbstraction, parallel_transform)
 
     std::vector<int> result(numbers.size());
 
-    const int wasteIter = 100000;
+    const int wasteIter = 1000000;
 
-    auto fn = [](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i);} return a + 10; };
+    auto fn = [](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i); } return a + 10; };
 
     TIK
     QDVO::STLAlgorithmAbstraction::transform(QDVO::STLAlgorithmAbstraction::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(),result.begin(), fn);
