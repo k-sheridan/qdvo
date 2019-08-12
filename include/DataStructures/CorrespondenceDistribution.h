@@ -66,7 +66,8 @@ private:
     std::vector<PotentialCorrespondence*> search(const Eigen::Vector2i& centerPixel, const unsigned searchRadius, bool minimalSearch);
 
     // pre-allocated quantities.
-    std::vector<SCALAR_TYPE> errorArray, errorSqArray, scoreArray, expScoreArray, weightArray;
+    std::vector<SCALAR_TYPE> expScoreArray;
+    std::vector<QDVO::Vector2> errorArray, weightedErrorArray;
 
     std::shared_ptr<QDVO::RadialSearchPattern> radialSearchPattern; // shared among all correspondence distributions. NOT TO BE MODIFIED!
     std::shared_ptr<QDVO::PatchComparer> patchComparer;

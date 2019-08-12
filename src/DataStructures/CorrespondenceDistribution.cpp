@@ -1,5 +1,6 @@
 #include "CorrespondenceDistribution.h"
 #include "PatchComparer.h"
+#include <algorithm>
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<RadialSearchPattern> patternPtr, QDVO::Frame *framePtr)
 {
@@ -8,7 +9,7 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, uns
     this->framePtr = framePtr;
 }
 
-Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CorrespondenceDistribution::computeResidual(const Eigen::Matrix<SCALAR_TYPE, 2, 1> &px_0)
+QDVO::Vector2 QDVO::CorrespondenceDistribution::computeResidual(const QDVO::Vector2 &px_0)
 {
     assert(!this->dormant);
 
@@ -16,9 +17,31 @@ Eigen::Matrix<SCALAR_TYPE, 2, 1> QDVO::CorrespondenceDistribution::computeResidu
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(Eigen::Vector2i(px_0(0), px_0(1)), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, true);
 
     // compute the gaussian weights and residual finally
+    errorArray.resize(pcs.size());
+    std::transform(pcs.begin(), pcs.end(), errorArray.begin(), [px_0] (PotentialCorrespondence* pc) -> QDVO::Vector2 {
+        assert(pc != nullptr); 
+        return (px_0 - pc->pixel.cast<SCALAR_TYPE>());});
 
-    Eigen::Matrix<SCALAR_TYPE, 2, 1> result;
-    return result;
+    expScoreArray.resize(pcs.size());
+    std::transform(pcs.begin(), pcs.end(), errorArray.begin(), expScoreArray.begin(), [px_0] (PotentialCorrespondence* pc, QDVO::Vector2 error) -> SCALAR_TYPE {
+        return exp(-0.5 * error.squaredNorm()) * pc->score;
+    });
+
+    SCALAR_TYPE gmm = std::accumulate(expScoreArray.begin(), expScoreArray.begin() + pcs.size(), 0);
+
+    if (gmm < std::numeric_limits<SCALAR_TYPE>::min()){
+        // This should never happen, but it could.
+        throw std::runtime_error("gmm too small.");
+    }
+
+    weightedErrorArray.resize(pcs.size());
+
+    std::transform(errorArray.begin(), errorArray.begin() + pcs.size(), expScoreArray.begin(), weightedErrorArray.begin(), 
+    [gmm](QDVO::Vector2 error, SCALAR_TYPE expScore) -> QDVO::Vector2 {
+        return (expScore / gmm) * error;
+    });
+
+    return std::accumulate(weightedErrorArray.begin(), weightedErrorArray.begin() + pcs.size(), QDVO::Vector2(0,0));
 }
 
 void QDVO::CorrespondenceDistribution::reset()
@@ -69,26 +92,26 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::C
                 continue;
             }
 
-            auto &pc = this->correspondenceMap.get(testPoint);
+            QDVO::CorrespondenceDistribution::PotentialCorrespondence* pc = &(this->correspondenceMap.get(testPoint));
 
             // Only run the patch comparison on uninitialized potential correspondences.
-            if (!pc.initialized)
+            if (!pc->initialized)
             {
                 // try to compare the patch at the testPoint.
                 auto score = this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
 
                 // Add the score to the distribution
-                if (score.has_value())
+                if(score.has_value())
                 {
-                    pc.initialized = true;
-                    pc.pixel = testPoint;
-                    pc.score = score.value();
+                    pc->initialized = true;
+                    pc->pixel = testPoint;
+                    pc->score = score.value();
 
                     // If the potential correspondence is good enough, it is influential.
-                    if (pc.score >= POTENTIAL_CORRESPONDENCE_THRESHOLD)
+                    if (pc->score >= POTENTIAL_CORRESPONDENCE_THRESHOLD)
                     {
                         firstInfluentialPotentialCorrespondenceFound = true;
-                        influentialPotentialCorrespondences.push_back(&pc);
+                        influentialPotentialCorrespondences.push_back(pc);
                     }
                 }
             }
