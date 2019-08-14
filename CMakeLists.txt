@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_CXX_FLAGS -O3)
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmmx -msse -msse -msse2 -msse3 -mssse3")
 
-find_package(Ceres REQUIRED)
 find_package(GTSAM REQUIRED)
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
@@ -17,9 +16,8 @@ find_package(GTest REQUIRED)
 find_package(Boost REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
-include_directories(${CERES_INCLUDE_DIRS})
 include_directories(${SOPHUS_INCLUDE_DIRS})
-include_directories(${Eigen_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/include/
@@ -49,7 +47,7 @@ file(GLOB QDVO_SOURCE_FILES
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
-target_link_libraries(QDVO ${OpenCV_LIBS} ${Eigen_LIBRARIES} ${sophus_LIBRARIES} ${Ceres_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(QDVO ${OpenCV_LIBS} ${sophus_LIBRARIES} ${Boost_LIBRARIES} ${GTSAM_LIBRARIES})
 
 set_property(TARGET QDVO PROPERTY CXX_STANDARD 17)
 
