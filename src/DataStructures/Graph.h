@@ -16,9 +16,9 @@
 
 namespace  QDVO {
 
-typedef std::unordered_map<ID_TYPE, std::unique_ptr<Frame> > KeyframeSetType;
-typedef std::unordered_map<ID_TYPE, QDVO::SE3 > ExtrinsicSetType;
-typedef std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> > CameraModelMapType;
+using KeyframeSetType = std::unordered_map<ID_TYPE, std::unique_ptr<Frame> >;
+using ExtrinsicSetType = std::unordered_map<ID_TYPE, QDVO::SE3 >;
+using CameraModelMapType = std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> >;
 
 class Graph
 {

@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 project (QDVO VERSION 0.0.1 LANGUAGES CXX)
 
-#set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(CMAKE_CXX_FLAGS -O3)
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmmx -msse -msse -msse2 -msse3 -mssse3")
 
 find_package(GTSAM REQUIRED)
 find_package (OpenCV REQUIRED)
@@ -20,23 +18,23 @@ include_directories(${SOPHUS_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
 
 include_directories(
-    ${PROJECT_SOURCE_DIR}/include/
-    ${PROJECT_SOURCE_DIR}/include/CameraModels/
-    ${PROJECT_SOURCE_DIR}/include/ErrorTerms/
-    ${PROJECT_SOURCE_DIR}/include/FeatureDetection/
-    ${PROJECT_SOURCE_DIR}/include/DataStructures/
-    ${PROJECT_SOURCE_DIR}/include/FeatureMatching/
-    ${PROJECT_SOURCE_DIR}/include/Estimation/
-    ${PROJECT_SOURCE_DIR}/include/ParallelAlgorithms/
-    ${PROJECT_SOURCE_DIR}/include/Pipeline/
+    ${PROJECT_SOURCE_DIR}/src/
+    ${PROJECT_SOURCE_DIR}/src/CameraModels/
+    ${PROJECT_SOURCE_DIR}/src/Factors/
+    ${PROJECT_SOURCE_DIR}/src/FeatureDetection/
+    ${PROJECT_SOURCE_DIR}/src/DataStructures/
+    ${PROJECT_SOURCE_DIR}/src/FeatureMatching/
+    ${PROJECT_SOURCE_DIR}/src/Estimation/
+    ${PROJECT_SOURCE_DIR}/src/ParallelAlgorithms/
+    ${PROJECT_SOURCE_DIR}/src/Pipeline/
     )
 
 
 file(GLOB QDVO_HEADER_FILES
-    "${PROJECT_SOURCE_DIR}/include/*/*.h"
-    "${PROJECT_SOURCE_DIR}/include/*/*.hpp"
-    "${PROJECT_SOURCE_DIR}/include/*.h"
-    "${PROJECT_SOURCE_DIR}/include/*.hpp"
+    "${PROJECT_SOURCE_DIR}/src/*/*.h"
+    "${PROJECT_SOURCE_DIR}/src/*/*.hpp"
+    "${PROJECT_SOURCE_DIR}/src/*.h"
+    "${PROJECT_SOURCE_DIR}/src/*.hpp"
 )
 
 file(GLOB QDVO_SOURCE_FILES
@@ -61,9 +59,6 @@ endif()
 
 # unit tests
 add_subdirectory(tests)
-
-
-
 
 # Installation
 

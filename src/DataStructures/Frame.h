@@ -36,6 +36,8 @@ public:
 
     int maxIntensity(){return this->maxImageIntensity;}
 
+    Landmark& getLandmark(QDVO::ID landmarkID) {return landmarks.at(landmarkID - 1);}
+
     /*
      * resets all members of this frame while leaving the memory used by them allocated.
      */

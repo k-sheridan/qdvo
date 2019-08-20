@@ -12,4 +12,5 @@ file(GLOB QDVO_TEST_FILES
 enable_testing()
 add_executable(runTests ${QDVO_TEST_FILES})
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread QDVO)
-add_test(NAME qdvoTests COMMAND runTests)
+gtest_discover_tests(runTests)
+#add_test(NAME qdvoTests COMMAND runTests)

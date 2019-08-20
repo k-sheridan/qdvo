@@ -38,7 +38,7 @@ void QDVO::BasicPipeline::addCamera(std::unique_ptr<QDVO::CameraModel> &cameraMo
 
 void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const ID_TYPE cameraID)
 {
-    //std::cout << "here" << std::endl;
+   
     // save the last imu state
     QDVO::IMUState lastImuState = this->graph.getCurrentFrame()->imustate;
     // Reset current frame
@@ -52,8 +52,6 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const ID_
     this->graph.getCurrentFrame()->cm = this->graph.getCameraModel(cameraID).get();
     this->graph.getCurrentFrame()->frameID = this->graph.getNewFrameID();
     this->graph.getCurrentFrame()->initialized = true;
-
-    //std::cout << "here2" << std::endl;
 
     // Initialize correspondence distributions
 
