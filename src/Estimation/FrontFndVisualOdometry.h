@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graph.h"
+#include "Optimizer.h"
 
 class FrontEndVisualOdometry
 {
