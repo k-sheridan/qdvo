@@ -99,7 +99,7 @@ ID_TYPE QDVO::Graph::getNewFrameID()
         highestFrameID = this->currentFrame->frameID;
     }
 
-    //assert(highestFrameID > 0);
+    assert(highestFrameID + 1 > 0);
 
     return highestFrameID + 1;
 }

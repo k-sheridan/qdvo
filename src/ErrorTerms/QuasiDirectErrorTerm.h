@@ -1,13 +1,8 @@
 #pragma once
 
-#include <gtsam/nonlinear/NonlinearFactor.h>
-#include <gtsam/geometry/Pose3.h>
-#include "InverseDepth.h"
 #include "Types.h"
 #include "CorrespondenceDistribution.h"
 #include "CameraModel.h"
-#include <gtsam/base/Matrix.h>
-#include <gtsam/base/Vector.h>
 
 namespace QDVO
 {

@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(CMAKE_CXX_FLAGS -O3)
 
-find_package(GTSAM REQUIRED)
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
@@ -20,7 +19,8 @@ include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(
     ${PROJECT_SOURCE_DIR}/src/
     ${PROJECT_SOURCE_DIR}/src/CameraModels/
-    ${PROJECT_SOURCE_DIR}/src/Factors/
+    ${PROJECT_SOURCE_DIR}/src/Optimizer/
+    ${PROJECT_SOURCE_DIR}/src/ErrorTerms/
     ${PROJECT_SOURCE_DIR}/src/FeatureDetection/
     ${PROJECT_SOURCE_DIR}/src/DataStructures/
     ${PROJECT_SOURCE_DIR}/src/FeatureMatching/
