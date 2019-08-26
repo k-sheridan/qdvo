@@ -22,3 +22,12 @@ public:
 };
 
 } // namespace QDVO
+
+namespace LittleOptimizer {
+
+template <typename T>
+struct VariableKey {
+    size_t index;
+};
+
+} // namespace LittleOptimizer
