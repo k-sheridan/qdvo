@@ -49,14 +49,14 @@ namespace internal {
     }
 };
 
-template <typename... T>
+template<typename... T>
 class Row;
 
 template <typename Scalar_, int Rows_, typename... Variables>
 class Row<Scalar<Scalar_>, Dimension<Rows_>, VariableGroup<Variables...>> {
     typedef std::tuple<std::vector<std::unique_ptr<Eigen::Matrix<Scalar_, Rows_, Variables::dimension>>>...> columns_t;
     
-    static_assert(std::is_same<std::tuple_size<columns_t>, decltype(sizeof...(Variables))>::value);
+    //static_assert(std::is_same<std::tuple_size<columns_t>, decltype(sizeof...(Variables))>::value);
 
     columns_t columns;
 };
@@ -67,14 +67,11 @@ class SparseBlockMatrix;
 template <typename Scalar_, typename... Variables>
 class SparseBlockMatrix<Scalar<Scalar_>, VariableGroup<Variables...>> {
 
-    typedef std::tuple< std::vector<Row<Scalar_, decltype(Variables::dimension), VariableGroup<Variables...>> >...> matrix_t;
+    typedef std::tuple< std::vector<Row<Scalar<Scalar_>, Dimension<Variables::dimension>, VariableGroup<Variables...>> >...> matrix_t;
 
-    static_assert(std::is_same<std::tuple_size<matrix_t>, decltype(sizeof...(Variables))>::value);
-    static_assert(std::is_same<std::tuple_size<matrix_t>, std::tuple_size<decltype(matrix_t::columns)>>::value);
+    matrix_t matrix;
 
-   matrix_t matrix;
-
-    template <typename RowType, typename ColType>
+    /*template <typename RowType, typename ColType>
     std::unique_ptr<Eigen::Matrix<Scalar_, RowType::dimension, ColType::dimension>>& get(LittleOptimizer::VariableKey<RowType> row, LittleOptimizer::VariableKey<ColType> col) {
         return std::get<std::vector<Eigen::Matrix<Scalar_, RowType::dimension, ColType::dimension>>>(getRow(row).columns).at(col.index);
     }
@@ -87,7 +84,7 @@ class SparseBlockMatrix<Scalar<Scalar_>, VariableGroup<Variables...>> {
     SparseBlockMatrix<Scalar<Scalar_>, VariableGroup<Variables...>>& operator+=(const SparseBlockMatrix<Scalar<Scalar_>, VariableGroup<Variables...>>& rhs){
         internal::add_rhs_matrix_to_lhs_matrix(matrix, rhs.matrix, std::index_sequence_for<Variables...>{}, VariableGroup<Variables...>());
         return *this;
-    }
+    }*/
 
 };
 
