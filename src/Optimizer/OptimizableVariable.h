@@ -2,13 +2,14 @@
 
 #include "Types.h"
 
-namespace QDVO {
+namespace LittleOptimizer {
 
+template <size_t Dimension>
 class OptimizableVariable {
+    public:
 
-    OptimizableVariable() = default;
+    static const size_t dimension = Dimension;
 
-    virtual void update(Eigen::Matrix<QDVO::Scalar, Dimension, 1>& delta) = 0;
 };
 
 } // namespace QDVO
