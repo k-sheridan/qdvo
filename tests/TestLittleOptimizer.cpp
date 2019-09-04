@@ -8,10 +8,20 @@ TEST(SparseBlockMatrix, Basic){
     LittleOptimizer::SE3 pose;
     LittleOptimizer::InverseDepth zinv;
 
-    LittleOptimizer::SparseBlockMatrix::Scalar<double> ScalarType;
-    LittleOptimizer::SparseBlockMatrix::VariableGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth> VariableTypes;
+    using ScalarType = LittleOptimizer::SparseBlockMatrix::Scalar<double>;
+    using VariableTypes = LittleOptimizer::SparseBlockMatrix::VariableGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth>;
 
-    LittleOptimizer::SparseBlockMatrix::SparseBlockMatrix< LittleOptimizer::SparseBlockMatrix::Scalar<double>, LittleOptimizer::SparseBlockMatrix::VariableGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth> > matrix;
+    LittleOptimizer::SparseBlockMatrix::SparseBlockMatrix< ScalarType, VariableTypes > matrix;
+
+    using SE3Key = LittleOptimizer::VariableKey<LittleOptimizer::SE3>;
+    using DinvKey = LittleOptimizer::VariableKey<LittleOptimizer::InverseDepth>;
+
+    SE3Key k1;
+    k1.index = 0;
+    DinvKey k2;
+    k2.index = 0;
+
+    Eigen::Matrix<double, 6, 1> subMatrix = matrix.get(k1, k2);
 
 }
 
