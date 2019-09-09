@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "slot_map.h"
 
 namespace QDVO
 {
@@ -27,7 +28,7 @@ namespace LittleOptimizer {
 
 template <typename T>
 struct VariableKey {
-    size_t index;
+    std::pair<unsigned, unsigned> slotMapKey; // Slot Map key.
 };
 
 } // namespace LittleOptimizer
