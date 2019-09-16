@@ -28,7 +28,7 @@ namespace LittleOptimizer {
 
 template <typename T>
 struct VariableKey {
-    std::pair<unsigned, unsigned> slotMapKey; // Slot Map key.
+    std::pair<unsigned, unsigned> slotMapKey; // Slot Map key (index, generation).
 };
 
 } // namespace LittleOptimizer

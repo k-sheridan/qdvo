@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 #include "LittleOptimizer.h"
 #include "SparseBlockMatrix.h"
-#include "SparseBlockVector.h"
 #include "SE3.h"
 #include "InverseDepth.h"
 
@@ -27,25 +26,31 @@ TEST(SparseBlockMatrix, Basic){
 
     matrix.addRow<LittleOptimizer::SE3>();
     matrix.addRow<LittleOptimizer::InverseDepth>();
+    matrix.addColumn<LittleOptimizer::SE3>();
+    matrix.addColumn<LittleOptimizer::InverseDepth>();
+
 
     std::cout << matrix.rowsOfType<LittleOptimizer::SE3>() << ", " << matrix.columnsOfType<LittleOptimizer::SE3>() << std::endl;
 
-    LittleOptimizer::SubMatrix<double, 6, 1> subMatrix = matrix.get(k1, k2);
-    LittleOptimizer::SubMatrix<double, 6, 6> subMatrix2 = matrix.get(k1, k1);
+    LittleOptimizer::MatrixBlock<double, 6, 1> matrixBlock = matrix.get(k1, k2);
+    LittleOptimizer::MatrixBlock<double, 6, 6> matrixBlock2 = matrix.get(k1, k1);
+
+    matrix.removeColumn(k1);
+    matrix.removeColumn(k2);
 
     matrix.clear();
 
 }
 
-TEST(SparseBlockVector, Basic){
+TEST(SparseBlockRow, Basic){
     LittleOptimizer::SE3 pose;
     LittleOptimizer::InverseDepth zinv;
 
     using ScalarType = LittleOptimizer::Scalar<double>;
     using VariableTypes = LittleOptimizer::VariableGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth>;
 
-    LittleOptimizer::SparseBlockVector::SparseBlockVector< ScalarType, VariableTypes > matrix;
-    LittleOptimizer::SparseBlockVector::SparseBlockVector< ScalarType, VariableTypes > matrix2;
+    LittleOptimizer::SparseBlockMatrix::Row< ScalarType, LittleOptimizer::Dimension<1>, VariableTypes > vector;
+    LittleOptimizer::SparseBlockMatrix::Row< ScalarType, LittleOptimizer::Dimension<1>, VariableTypes > vector2;
 
     using SE3Key = LittleOptimizer::TypedIndex<LittleOptimizer::SE3>;
     using DinvKey = LittleOptimizer::TypedIndex<LittleOptimizer::InverseDepth>;
@@ -55,16 +60,21 @@ TEST(SparseBlockVector, Basic){
     DinvKey k2;
     k2.index = 0;
 
-    matrix.addRow<LittleOptimizer::SE3>();
-    matrix.addRow<LittleOptimizer::InverseDepth>();
+    vector.addColumn<LittleOptimizer::SE3>();
+    vector.addColumn<LittleOptimizer::InverseDepth>();
 
-    matrix2.addRow<LittleOptimizer::SE3>();
-    matrix2.addRow<LittleOptimizer::InverseDepth>();
+    vector2.addColumn<LittleOptimizer::SE3>();
+    vector2.addColumn<LittleOptimizer::InverseDepth>();
 
-    matrix += matrix2;
+    vector += vector2;
 
-    LittleOptimizer::SubMatrix<double, 6, 1> subMatrix = matrix.get(k1);
-    LittleOptimizer::SubMatrix<double, 1, 1> subMatrix2 = matrix.get(k2);
+    LittleOptimizer::MatrixBlock<double, 1, 6> matrixBlock = vector.getColumn(k1);
+    LittleOptimizer::MatrixBlock<double, 1, 1> matrixBlock2 = vector.getColumn(k2);
+
+    vector.removeColumn(k1);
+    vector.removeColumn(k2);
+
+    vector.clear();
 
 }
 

@@ -378,4 +378,4 @@ constexpr void swap(slot_map<T, Key, Container>& lhs, slot_map<T, Key, Container
     lhs.swap(rhs);
 }
 
-} // namespace stdext
+} // namespace LittleOptimizer
