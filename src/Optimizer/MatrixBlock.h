@@ -9,6 +9,43 @@ class MatrixBlock {
 
 typedef Eigen::Matrix<Scalar, rows, cols> matrix_t;
 
+bool isZero() const {
+    return zero;
+}
+
+void setZero() {
+    this->zero = true;
+}
+
+matrix_t& getMatrix() {
+    return matrix;
+}
+
+void setMatrix(matrix_t& m) {
+    this->zero = false;
+    this->matrix = m;
+}
+
+MatrixBlock<Scalar, rows, cols>& operator += (MatrixBlock<Scalar, rows, cols>& b) {
+    if (this->isZero()) {
+        return b;
+    } else {
+        if (b.isZero()) {
+            return *this;
+        } else {
+            this->matrix += b.getMatrix();
+            return *this;
+        }
+    }
+}
+
+MatrixBlock<Scalar, rows, cols> operator * (MatrixBlock<Scalar, rows, cols>& b) {
+    MatrixBlock<Scalar, rows, cols> result;
+    if (!this->isZero() && !b.isZero()) {
+        result.setMatrix(this->matrix * b.getMatrix());
+    }
+    return result;
+}
 
 
 private:

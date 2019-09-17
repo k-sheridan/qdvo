@@ -135,5 +135,25 @@ bool remove_column_from_matrix(T &tupleOfVectorOfRows, TypedIndex<ColType> idx, 
     return true;
 }
 
+template <size_t R1, size_t R2, typename Scalar, size_t C1, size_t C2>
+bool dot_row_with_other_row(std::vector<MatrixBlock<Scalar, R1, C1>>& lhsVec, std::vector<MatrixBlock<Scalar, R2, C2>>& rhsVec, MatrixBlock<Scalar, R1, R2>& result) {
+    assert(rhsVec.size() == lhsVec.size());
+
+    for (size_t idx = 0; idx < lhsVec.size(); ++idx) {
+        auto& lhm = lhsVec.at(idx);
+        auto& rhm = rhsVec.at(idx);
+        // result += lhm * rhm.transpose();
+    }
+}
+
+template <size_t R1, size_t R2, typename Scalar_, typename... Variables, size_t... Is>
+MatrixBlock<Scalar_, R1, R2> dot_row_with_other_row(Row<Scalar<Scalar_>, Dimension<R1>, VariableGroup<Variables...>>& lhs, Row<Scalar<Scalar_>, Dimension<R2>, VariableGroup<Variables...>>& rhs, std::integer_sequence<size_t, Is...>) {
+    
+    MatrixBlock<Scalar_, R1, R2> result;
+
+    auto l = {dot_row_with_other_row(std::get<Is>(lhs.column), std::get<Is>(rhs.column), result)...};
+    (void)l;
+}
+
 }; // namespace internal
 } // namespace LittleOptimizer::SparseBlockMatrix

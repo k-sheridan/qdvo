@@ -222,6 +222,14 @@ public:
     }
 
     /**
+     * Computes the block dot product or two rows.
+     */
+    template <size_t OtherRowDimension>
+    MatrixBlock<Scalar_, Rows_, OtherRowDimension> dot(Row<Scalar<Scalar_>, Dimension<OtherRowDimension>, VariableGroup<Variables...>>& rhsRow) {
+
+    }
+
+    /**
      * Adds together in the most efficient way two sparse block matrices.
      */
     Row<Scalar<Scalar_>, Dimension<Rows_>, VariableGroup<Variables...>> &operator+=(Row<Scalar<Scalar_>, Dimension<Rows_>, VariableGroup<Variables...>> &rhs)
