@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_frame" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::Frame</compoundname>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfa" prot="public" static="no" strong="no">
+        <type></type>
+        <name>FrameStatus</name>
+        <enumvalue id="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae7f6d42861885c9d0ddbe7f40575a399" prot="public">
+          <name>INACTIVE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaaba9b002c9a2068cb64d09689e7c62207" prot="public">
+          <name>ACTIVE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae2c3f7785df3790573e89212e5389966" prot="public">
+          <name>MARGINALIZED</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="29" column="21" bodyfile="src/DataStructures/Frame.h" bodystart="29" bodyend="33"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a797db60e2adc6d97a0b0e5e7de822516" prot="public" static="no" mutable="no">
+        <type>ID_TYPE</type>
+        <definition>ID_TYPE QDVO::Frame::camID</definition>
+        <argsstring></argsstring>
+        <name>camID</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="17" column="13" bodyfile="src/DataStructures/Frame.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a77646f3c2fe3e99208b39c00d8609bca" prot="public" static="no" mutable="no">
+        <type>ID_TYPE</type>
+        <definition>ID_TYPE QDVO::Frame::frameID</definition>
+        <argsstring></argsstring>
+        <name>frameID</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="17" column="19" bodyfile="src/DataStructures/Frame.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1afcf2f56cb1a7cd9b3d6042af1ac9fec4" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_i_m_u_state" kindref="compound">IMUState</ref></type>
+        <definition>IMUState QDVO::Frame::imustate</definition>
+        <argsstring></argsstring>
+        <name>imustate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="19" column="14" bodyfile="src/DataStructures/Frame.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1ac7fc79ff5f5d3dd38473d3985c28667a" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_image_pyramid" kindref="compound">ImagePyramid</ref></type>
+        <definition>ImagePyramid QDVO::Frame::imagePyr</definition>
+        <argsstring></argsstring>
+        <name>imagePyr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="21" column="18" bodyfile="src/DataStructures/Frame.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a1ac57507fe6cd62aec30cd48f6f1cf33" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_camera_model" kindref="compound">CameraModel</ref> *</type>
+        <definition>CameraModel* QDVO::Frame::cm</definition>
+        <argsstring></argsstring>
+        <name>cm</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="23" column="17" bodyfile="src/DataStructures/Frame.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a66e4b9fa4584c350742eb26fc002e619" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="class_q_d_v_o_1_1_landmark" kindref="compound">Landmark</ref> &gt;</type>
+        <definition>std::vector&lt;Landmark&gt; QDVO::Frame::landmarks</definition>
+        <argsstring></argsstring>
+        <name>landmarks</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="25" column="17" bodyfile="src/DataStructures/Frame.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a2a0390d0ebec309686ca55b9de3f59c5" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool QDVO::Frame::initialized</definition>
+        <argsstring></argsstring>
+        <name>initialized</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="27" column="10" bodyfile="src/DataStructures/Frame.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a84a1aff1da2edb1818164b4dde2e6164" prot="public" static="no" mutable="no">
+        <type>enum QDVO::Frame::FrameStatus</type>
+        <definition>enum QDVO::Frame::FrameStatus  QDVO::Frame::status</definition>
+        <argsstring></argsstring>
+        <name>status</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="33" column="12"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a94ccc6947e862b50a268125d1a983b05" prot="public" static="no" mutable="no">
+        <type>std::deque&lt; <ref refid="class_q_d_v_o_1_1_correspondence_distribution" kindref="compound">CorrespondenceDistribution</ref> &gt;</type>
+        <definition>std::deque&lt;CorrespondenceDistribution&gt; QDVO::Frame::correspondenceDistributions</definition>
+        <argsstring></argsstring>
+        <name>correspondenceDistributions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="59" column="16" bodyfile="src/DataStructures/Frame.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_frame_1a1a313307a8ab46acc8393c9e45178e8d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::Frame::maxImageIntensity</definition>
+        <argsstring></argsstring>
+        <name>maxImageIntensity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="63" column="9" bodyfile="src/DataStructures/Frame.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1af96f14f093cbe13b0fc4f41b0d48c92d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Frame::Frame</definition>
+        <argsstring>()</argsstring>
+        <name>Frame</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="15" column="5" bodyfile="src/DataStructures/Frame.cpp" bodystart="3" bodyend="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1a5a8a5947276fdb774bfc944c93edf3bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::Frame::updateImage</definition>
+        <argsstring>(cv::Mat &amp;baseImage)</argsstring>
+        <name>updateImage</name>
+        <param>
+          <type>cv::Mat &amp;</type>
+          <declname>baseImage</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="35" column="10" bodyfile="src/DataStructures/Frame.cpp" bodystart="11" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1af1a1567cdc7f6e4b083d341929b3e8e8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int QDVO::Frame::maxIntensity</definition>
+        <argsstring>()</argsstring>
+        <name>maxIntensity</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="37" column="9" bodyfile="src/DataStructures/Frame.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1ac0c0587377a29792b673f2d632cd2fc0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_q_d_v_o_1_1_landmark" kindref="compound">Landmark</ref> &amp;</type>
+        <definition>Landmark&amp; QDVO::Frame::getLandmark</definition>
+        <argsstring>(QDVO::ID landmarkID)</argsstring>
+        <name>getLandmark</name>
+        <param>
+          <type>QDVO::ID</type>
+          <declname>landmarkID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="39" column="14" bodyfile="src/DataStructures/Frame.h" bodystart="39" bodyend="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1a66f0ccbfa7f2305de08f6fb7e3a9a1cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::Frame::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="44" column="10" bodyfile="src/DataStructures/Frame.cpp" bodystart="33" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_frame_1a95ad8da1e4f65672d32e6a97cb41b514" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::Frame::resetCorrespondenceDistributions</definition>
+        <argsstring>()</argsstring>
+        <name>resetCorrespondenceDistributions</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Frame.h" line="46" column="10" bodyfile="src/DataStructures/Frame.h" bodystart="46" bodyend="53"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="4">
+        <label>QDVO::IMUState</label>
+        <link refid="class_q_d_v_o_1_1_i_m_u_state"/>
+      </node>
+      <node id="3">
+        <label>QDVO::CameraModel</label>
+        <link refid="class_q_d_v_o_1_1_camera_model"/>
+      </node>
+      <node id="2">
+        <label>QDVO::ImagePyramid</label>
+        <link refid="class_q_d_v_o_1_1_image_pyramid"/>
+      </node>
+      <node id="1">
+        <label>QDVO::Frame</label>
+        <link refid="class_q_d_v_o_1_1_frame"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>imagePyr</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>cm</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>imustate</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/DataStructures/Frame.h" line="13" column="1" bodyfile="src/DataStructures/Frame.h" bodystart="12" bodyend="64"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaaba9b002c9a2068cb64d09689e7c62207" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>ACTIVE</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a797db60e2adc6d97a0b0e5e7de822516" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>camID</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a1ac57507fe6cd62aec30cd48f6f1cf33" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>cm</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a94ccc6947e862b50a268125d1a983b05" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>correspondenceDistributions</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1af96f14f093cbe13b0fc4f41b0d48c92d" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>Frame</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a77646f3c2fe3e99208b39c00d8609bca" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>frameID</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfa" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>FrameStatus</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1ac0c0587377a29792b673f2d632cd2fc0" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>getLandmark</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1ac7fc79ff5f5d3dd38473d3985c28667a" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>imagePyr</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1afcf2f56cb1a7cd9b3d6042af1ac9fec4" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>imustate</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae7f6d42861885c9d0ddbe7f40575a399" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>INACTIVE</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a2a0390d0ebec309686ca55b9de3f59c5" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>initialized</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a66e4b9fa4584c350742eb26fc002e619" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>landmarks</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae2c3f7785df3790573e89212e5389966" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>MARGINALIZED</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a1a313307a8ab46acc8393c9e45178e8d" prot="private" virt="non-virtual"><scope>QDVO::Frame</scope><name>maxImageIntensity</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1af1a1567cdc7f6e4b083d341929b3e8e8" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>maxIntensity</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a66f0ccbfa7f2305de08f6fb7e3a9a1cd" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>reset</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a95ad8da1e4f65672d32e6a97cb41b514" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>resetCorrespondenceDistributions</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a84a1aff1da2edb1818164b4dde2e6164" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>status</name></member>
+      <member refid="class_q_d_v_o_1_1_frame_1a5a8a5947276fdb774bfc944c93edf3bc" prot="public" virt="non-virtual"><scope>QDVO::Frame</scope><name>updateImage</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

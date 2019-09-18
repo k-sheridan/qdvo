@@ -1,0 +1,492 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="slot__map_8h" kind="file" language="C++">
+    <compoundname>slot_map.h</compoundname>
+    <includes local="no">type_traits</includes>
+    <includes local="no">utility</includes>
+    <includes local="no">vector</includes>
+    <includes local="no">stdexcept</includes>
+    <includedby refid="_key_8h" local="yes">src/Optimizer/Key.h</includedby>
+    <includedby refid="_little_optimizer_8h" local="yes">src/Optimizer/LittleOptimizer.h</includedby>
+    <incdepgraph>
+      <node id="5">
+        <label>stdexcept</label>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/slot_map.h</label>
+        <link refid="slot__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+      <node id="3">
+        <label>utility</label>
+      </node>
+      <node id="2">
+        <label>type_traits</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="6">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/Optimizer/SparseBlockMatrix.h</label>
+        <link refid="_sparse_block_matrix_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/slot_map.h</label>
+        <link refid="slot__map_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/Optimizer/PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/Optimizer/Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>src/Optimizer/LittleOptimizer.h</label>
+        <link refid="_little_optimizer_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" prot="public">LittleOptimizer::slot_map_detail::priority_tag</innerclass>
+    <innerclass refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4" prot="public">LittleOptimizer::slot_map_detail::priority_tag&lt; 0 &gt;</innerclass>
+    <innerclass refid="class_little_optimizer_1_1slot__map" prot="public">LittleOptimizer::slot_map</innerclass>
+    <innernamespace refid="namespace_little_optimizer">LittleOptimizer</innernamespace>
+    <innernamespace refid="namespace_little_optimizer_1_1slot__map__detail">LittleOptimizer::slot_map_detail</innernamespace>
+      <sectiondef kind="define">
+      <memberdef kind="define" id="slot__map_8h_1affeb937caa845b3028904eff6ff617b7" prot="public" static="no">
+        <name>SLOT_MAP_THROW_EXCEPTION</name>
+        <param><defname>type</defname></param>
+        <param><defname>...</defname></param>
+        <initializer>throw type(__VA_ARGS__)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/slot_map.h" line="37" column="10" bodyfile="src/Optimizer/slot_map.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>Boost<sp/>Software<sp/>License<sp/>-<sp/>Version<sp/>1.0<sp/>-<sp/>August<sp/>17th,<sp/>2003</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>Permission<sp/>is<sp/>hereby<sp/>granted,<sp/>free<sp/>of<sp/>charge,<sp/>to<sp/>any<sp/>person<sp/>or<sp/>organization</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>obtaining<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>software<sp/>and<sp/>accompanying<sp/>documentation<sp/>covered<sp/>by</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>this<sp/>license<sp/>(the<sp/>&quot;Software&quot;)<sp/>to<sp/>use,<sp/>reproduce,<sp/>display,<sp/>distribute,</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>execute,<sp/>and<sp/>transmit<sp/>the<sp/>Software,<sp/>and<sp/>to<sp/>prepare<sp/>derivative<sp/>works<sp/>of<sp/>the</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Software,<sp/>and<sp/>to<sp/>permit<sp/>third-parties<sp/>to<sp/>whom<sp/>the<sp/>Software<sp/>is<sp/>furnished<sp/>to</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>do<sp/>so,<sp/>all<sp/>subject<sp/>to<sp/>the<sp/>following:</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>The<sp/>copyright<sp/>notices<sp/>in<sp/>the<sp/>Software<sp/>and<sp/>this<sp/>entire<sp/>statement,<sp/>including</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>the<sp/>above<sp/>license<sp/>grant,<sp/>this<sp/>restriction<sp/>and<sp/>the<sp/>following<sp/>disclaimer,</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>must<sp/>be<sp/>included<sp/>in<sp/>all<sp/>copies<sp/>of<sp/>the<sp/>Software,<sp/>in<sp/>whole<sp/>or<sp/>in<sp/>part,<sp/>and</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>all<sp/>derivative<sp/>works<sp/>of<sp/>the<sp/>Software,<sp/>unless<sp/>such<sp/>copies<sp/>or<sp/>derivative</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>works<sp/>are<sp/>solely<sp/>in<sp/>the<sp/>form<sp/>of<sp/>machine-executable<sp/>object<sp/>code<sp/>generated<sp/>by</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>a<sp/>source<sp/>language<sp/>processor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>THE<sp/>SOFTWARE<sp/>IS<sp/>PROVIDED<sp/>&quot;AS<sp/>IS&quot;,<sp/>WITHOUT<sp/>WARRANTY<sp/>OF<sp/>ANY<sp/>KIND,<sp/>EXPRESS<sp/>OR</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>IMPLIED,<sp/>INCLUDING<sp/>BUT<sp/>NOT<sp/>LIMITED<sp/>TO<sp/>THE<sp/>WARRANTIES<sp/>OF<sp/>MERCHANTABILITY,</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>FITNESS<sp/>FOR<sp/>A<sp/>PARTICULAR<sp/>PURPOSE,<sp/>TITLE<sp/>AND<sp/>NON-INFRINGEMENT.<sp/>IN<sp/>NO<sp/>EVENT</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>SHALL<sp/>THE<sp/>COPYRIGHT<sp/>HOLDERS<sp/>OR<sp/>ANYONE<sp/>DISTRIBUTING<sp/>THE<sp/>SOFTWARE<sp/>BE<sp/>LIABLE</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>FOR<sp/>ANY<sp/>DAMAGES<sp/>OR<sp/>OTHER<sp/>LIABILITY,<sp/>WHETHER<sp/>IN<sp/>CONTRACT,<sp/>TORT<sp/>OR<sp/>OTHERWISE,</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>ARISING<sp/>FROM,<sp/>OUT<sp/>OF<sp/>OR<sp/>IN<sp/>CONNECTION<sp/>WITH<sp/>THE<sp/>SOFTWARE<sp/>OR<sp/>THE<sp/>USE<sp/>OR<sp/>OTHER</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>DEALINGS<sp/>IN<sp/>THE<sp/>SOFTWARE.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Taken<sp/>from<sp/>the<sp/>SG14<sp/>github<sp/>repository.<sp/>Credit:<sp/>Allan<sp/>Deutsch</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>SLOT_MAP_THROW_EXCEPTION</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>SLOT_MAP_THROW_EXCEPTION(type,<sp/>...)<sp/>throw<sp/>type(__VA_ARGS__)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">LittleOptimizer<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">slot_map_detail<sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>I&gt;<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" kindref="compound">priority_tag</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" kindref="compound">priority_tag</ref>&lt;I-1&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="45" refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;&gt;<sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" kindref="compound">priority_tag</ref>&lt;0&gt;<sp/>{};</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Ctr,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>SizeType&gt;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>reserve_if_possible(Ctr&amp;,<sp/>SizeType,<sp/><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4" kindref="compound">priority_tag&lt;0&gt;</ref>)<sp/>-&gt;<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>{}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Ctr,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>SizeType&gt;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>reserve_if_possible(Ctr&amp;<sp/>ctr,<sp/>SizeType<sp/>n,<sp/>priority_tag&lt;1&gt;)<sp/>-&gt;<sp/>decltype(</highlight><highlight class="keywordtype">void</highlight><highlight class="normal">(ctr.reserve(n)))</highlight></codeline>
+<codeline lineno="52"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>ctr.reserve(n);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Ctr,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>SizeType&gt;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reserve_if_possible(Ctr&amp;<sp/>ctr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>SizeType&amp;<sp/>n)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>slot_map_detail::reserve_if_possible(ctr,<sp/>n,<sp/>priority_tag&lt;1&gt;{});</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>slot_map_detail</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">T,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Key<sp/>=<sp/>std::pair&lt;unsigned,<sp/>unsigned&gt;,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Container<sp/>=<sp/>std::vector</highlight></codeline>
+<codeline lineno="68"><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="69" refid="class_little_optimizer_1_1slot__map" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>__cplusplus<sp/>&gt;=<sp/>201703L</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>get_index(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>[idx,<sp/>gen]<sp/>=<sp/>k;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>idx;<sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>get_generation(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>[idx,<sp/>gen]<sp/>=<sp/>k;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>gen;<sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Integral&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_index(Key&amp;<sp/>k,<sp/>Integral<sp/>value)<sp/>{<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>[idx,<sp/>gen]<sp/>=<sp/>k;<sp/>idx<sp/>=<sp/>static_cast&lt;key_index_type&gt;(value);<sp/>}</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>increment_generation(Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>[idx,<sp/>gen]<sp/>=<sp/>k;<sp/>++gen;<sp/>}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>get_index(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::get;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>get&lt;0&gt;(k);<sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>get_generation(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::get;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>get&lt;1&gt;(k);<sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Integral&gt;<sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>set_index(Key&amp;<sp/>k,<sp/>Integral<sp/>value)<sp/>{<sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::get;<sp/>get&lt;0&gt;(k)<sp/>=<sp/>static_cast&lt;key_index_type&gt;(value);<sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>increment_generation(Key&amp;<sp/>k)<sp/>{<sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::get;<sp/>++get&lt;1&gt;(k);<sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>slot_iterator<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Container&lt;Key&gt;::iterator;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>key_type<sp/>=<sp/>Key;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>mapped_type<sp/>=<sp/>T;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>key_index_type<sp/>=<sp/>decltype(slot_map::get_index(std::declval&lt;Key&gt;()));</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>key_generation_type<sp/>=<sp/>decltype(slot_map::get_generation(std::declval&lt;Key&gt;()));</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>container_type<sp/>=<sp/>Container&lt;mapped_type&gt;;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>reference<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::reference;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>const_reference<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::const_reference;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>pointer<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::pointer;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>const_pointer<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::const_pointer;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>iterator<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::iterator;</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>const_iterator<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::const_iterator;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>reverse_iterator<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::reverse_iterator;</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>const_reverse_iterator<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::const_reverse_iterator;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>size_type<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::size_type;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>value_type<sp/>=<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>container_type::value_type;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/>static_assert(std::is_same&lt;value_type,<sp/>mapped_type&gt;::value,<sp/></highlight><highlight class="stringliteral">&quot;Container&lt;T&gt;::value_type<sp/>must<sp/>be<sp/>identical<sp/>to<sp/>T&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>(<ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;&amp;)<sp/>noexcept<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;<sp/>operator=(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;<sp/>operator=(<ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;&amp;)<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>~<ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>at()<sp/>functions<sp/>have<sp/>both<sp/>generation<sp/>counter<sp/>checking</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>bounds<sp/>checking,<sp/>and<sp/>throw<sp/>if<sp/>either<sp/>check<sp/>fails.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>reference<sp/>at(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)<sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>this-&gt;find(key);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(value_iter<sp/>==<sp/>this-&gt;end())<sp/>{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SLOT_MAP_THROW_EXCEPTION(std::out_of_range,<sp/></highlight><highlight class="stringliteral">&quot;at&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*value_iter;</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reference<sp/>at(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>this-&gt;find(key);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(value_iter<sp/>==<sp/>this-&gt;end())<sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SLOT_MAP_THROW_EXCEPTION(std::out_of_range,<sp/></highlight><highlight class="stringliteral">&quot;at&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*value_iter;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>bracket<sp/>operator[]<sp/>has<sp/>a<sp/>generation<sp/>counter<sp/>check.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>check<sp/>fails<sp/>it<sp/>is<sp/>undefined<sp/>behavior.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>reference<sp/>operator[](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*find_unchecked(key);<sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reference<sp/>operator[](</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)</highlight><highlight class="keyword"><sp/>const<sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>*find_unchecked(key);<sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>find()<sp/>functions<sp/>have<sp/>generation<sp/>counter<sp/>checking.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>If<sp/>the<sp/>check<sp/>fails,<sp/>the<sp/>result<sp/>of<sp/>end()<sp/>is<sp/>returned.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>find(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_index<sp/>=<sp/>get_index(key);</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(slot_index<sp/>&gt;=<sp/>slots_.size())<sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>end();</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>slot_index);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_generation(*slot_iter)<sp/>!=<sp/>get_generation(key))<sp/>{</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>end();</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>std::next(values_.begin(),<sp/>get_index(*slot_iter));</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value_iter;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>find(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_index<sp/>=<sp/>get_index(key);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(slot_index<sp/>&gt;=<sp/>slots_.size())<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>end();</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>slot_index);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(get_generation(*slot_iter)<sp/>!=<sp/>get_generation(key))<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>end();</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>std::next(values_.begin(),<sp/>get_index(*slot_iter));</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value_iter;</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>The<sp/>find_unchecked()<sp/>functions<sp/>perform<sp/>no<sp/>checks<sp/>of<sp/>any<sp/>kind.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>find_unchecked(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)<sp/>{</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>get_index(key));</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>std::next(values_.begin(),<sp/>get_index(*slot_iter));</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value_iter;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>find_unchecked(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>get_index(key));</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>std::next(values_.begin(),<sp/>get_index(*slot_iter));</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>value_iter;</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>All<sp/>begin()<sp/>and<sp/>end()<sp/>variations<sp/>have<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>begin()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.begin();<sp/>}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>end()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.end();<sp/>}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>begin()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.begin();<sp/>}</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>end()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.end();<sp/>}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>cbegin()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.begin();<sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_iterator<sp/>cend()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.end();<sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>reverse_iterator<sp/>rbegin()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rbegin();<sp/>}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>reverse_iterator<sp/>rend()<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rend();<sp/>}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reverse_iterator<sp/>rbegin()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rbegin();<sp/>}</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reverse_iterator<sp/>rend()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rend();<sp/>}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reverse_iterator<sp/>crbegin()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rbegin();<sp/>}</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>const_reverse_iterator<sp/>crend()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.rend();<sp/>}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Functions<sp/>for<sp/>checking<sp/>the<sp/>size<sp/>and<sp/>capacity<sp/>of<sp/>the<sp/>adapted<sp/>container</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>have<sp/>the<sp/>same<sp/>complexity<sp/>as<sp/>the<sp/>adapted<sp/>container.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>reserve(n)<sp/>has<sp/>the<sp/>complexity<sp/>of<sp/>the<sp/>adapted<sp/>container,<sp/>and<sp/>uses</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>additional<sp/>time<sp/>which<sp/>is<sp/>linear<sp/>on<sp/>the<sp/>increase<sp/>in<sp/>size.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>caused<sp/>by<sp/>adding<sp/>the<sp/>new<sp/>slots<sp/>to<sp/>the<sp/>free<sp/>list.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>empty()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.size()<sp/>==<sp/>0;<sp/>}</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>size_type<sp/>size()</highlight><highlight class="keyword"><sp/>const<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.size();<sp/>}</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>constexpr<sp/>size_type<sp/>max_size()<sp/>const;<sp/>TODO,<sp/>NO<sp/>SEMANTICS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reserve(size_type<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slot_map_detail::reserve_if_possible(values_,<sp/>n);</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slot_map_detail::reserve_if_possible(reverse_map_,<sp/>n);</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reserve_slots(n);</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>C<sp/>=<sp/>Container&lt;T&gt;,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>=<sp/>decltype(std::declval&lt;const<sp/>C&amp;&gt;().capacity())&gt;</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>size_type<sp/>capacity()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_.capacity();</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"></highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Functions<sp/>for<sp/>accessing<sp/>and<sp/>modifying<sp/>the<sp/>size<sp/>of<sp/>the<sp/>slots<sp/>container.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="220"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>These<sp/>are<sp/>beneficial<sp/>as<sp/>allocating<sp/>more<sp/>slots<sp/>than<sp/>values<sp/>will<sp/>cause<sp/>the</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generation<sp/>counter<sp/>increases<sp/>to<sp/>be<sp/>more<sp/>evenly<sp/>distributed<sp/>across<sp/>the<sp/>slots.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reserve_slots(size_type<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slot_map_detail::reserve_if_possible(slots_,<sp/>n);</highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>key_index_type<sp/>original_num_slots<sp/>=<sp/>static_cast&lt;key_index_type&gt;(slots_.size());</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(original_num_slots<sp/>&lt;<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slots_.emplace_back(key_type{next_available_slot_index_,<sp/>key_generation_type{}});</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>key_index_type<sp/>last_new_slot<sp/>=<sp/>original_num_slots;</highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>--n;</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(last_new_slot<sp/>!=<sp/>n)<sp/>{</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slots_.emplace_back(key_type{last_new_slot,<sp/>key_generation_type{}});</highlight></codeline>
+<codeline lineno="232"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++last_new_slot;</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next_available_slot_index_<sp/>=<sp/>last_new_slot;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>size_type<sp/>slot_count()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>slots_.size();<sp/>}</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>These<sp/>operations<sp/>have<sp/>O(1)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>When<sp/>size()<sp/>==<sp/>capacity()<sp/>an<sp/>allocation<sp/>is<sp/>required</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>which<sp/>has<sp/>O(n)<sp/>time<sp/>and<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>key_type<sp/>insert(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>mapped_type&amp;<sp/>value)<sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;emplace(value);<sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>key_type<sp/>insert(mapped_type&amp;&amp;<sp/>value)<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;emplace(std::move(value));<sp/>}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...<sp/>Args&gt;<sp/>constexpr<sp/>key_type<sp/>emplace(Args&amp;&amp;...<sp/>args)<sp/>{</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_pos<sp/>=<sp/>values_.size();</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values_.emplace_back(std::forward&lt;Args&gt;(args)...);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reverse_map_.emplace_back(next_available_slot_index_);</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(next_available_slot_index_<sp/>==<sp/>slots_.size())<sp/>{</highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>idx<sp/>=<sp/>next_available_slot_index_;<sp/>++idx;</highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slots_.emplace_back(key_type{idx,<sp/>key_generation_type{}});<sp/><sp/></highlight><highlight class="comment">//<sp/>make<sp/>a<sp/>new<sp/>slot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_available_slot_index_<sp/>=<sp/>idx;</highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>next_available_slot_index_);</highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(next_available_slot_index_<sp/>==<sp/>last_available_slot_index_)<sp/>{</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next_available_slot_index_<sp/>=<sp/>static_cast&lt;key_index_type&gt;(slots_.size());</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_available_slot_index_<sp/>=<sp/>next_available_slot_index_;</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next_available_slot_index_<sp/>=<sp/>this-&gt;get_index(*slot_iter);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;set_index(*slot_iter,<sp/>value_pos);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>key_type<sp/>result<sp/>=<sp/>*slot_iter;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;set_index(result,<sp/>std::distance(slots_.begin(),<sp/>slot_iter));</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>result;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Each<sp/>erase()<sp/>version<sp/>has<sp/>an<sp/>O(1)<sp/>time<sp/>complexity<sp/>per<sp/>value</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>O(1)<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>erase(iterator<sp/>pos)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;erase(const_iterator(pos));<sp/>}</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>erase(iterator<sp/>first,<sp/>iterator<sp/>last)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;erase(const_iterator(first),<sp/>const_iterator(last));<sp/>}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>erase(const_iterator<sp/>pos)<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_iter<sp/>=<sp/>this-&gt;slot_iter_from_value_iter(pos);</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>erase_slot_iter(slot_iter);</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>erase(const_iterator<sp/>first,<sp/>const_iterator<sp/>last)<sp/>{</highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Must<sp/>use<sp/>indexes,<sp/>not<sp/>iterators,<sp/>because<sp/>Container<sp/>iterators<sp/>might<sp/>be<sp/>invalidated<sp/>by<sp/>pop_back</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>first_index<sp/>=<sp/>std::distance(this-&gt;cbegin(),<sp/>first);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>last_index<sp/>=<sp/>std::distance(this-&gt;cbegin(),<sp/>last);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(last_index<sp/>!=<sp/>first_index)<sp/>{</highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>--last_index;</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>std::next(this-&gt;cbegin(),<sp/>last_index);</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;erase(iter);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::next(this-&gt;begin(),<sp/>first_index);</highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>size_type<sp/>erase(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>key_type&amp;<sp/>key)<sp/>{</highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>iter<sp/>=<sp/>this-&gt;find(key);</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(iter<sp/>==<sp/>this-&gt;end())<sp/>{</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;erase(iter);</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>1;</highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>clear()<sp/>has<sp/>O(n)<sp/>time<sp/>complexity<sp/>and<sp/>O(1)<sp/>space<sp/>complexity.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>It<sp/>also<sp/>has<sp/>semantics<sp/>differing<sp/>from<sp/>erase(begin(),<sp/>end())</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>in<sp/>that<sp/>it<sp/>also<sp/>resets<sp/>the<sp/>generation<sp/>counter<sp/>of<sp/>every<sp/>slot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>rebuilds<sp/>the<sp/>free<sp/>list.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>clear()<sp/>{</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>resets<sp/>the<sp/>generation<sp/>counters,<sp/>which<sp/>&quot;undefined-behavior-izes&quot;<sp/>at()<sp/>and<sp/>find()<sp/>for<sp/>the<sp/>old<sp/>keys.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slots_.clear();</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values_.clear();</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reverse_map_.clear();</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next_available_slot_index_<sp/>=<sp/>key_index_type{};</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_available_slot_index_<sp/>=<sp/>key_index_type{};</highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"></highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>swap<sp/>is<sp/>not<sp/>mentioned<sp/>in<sp/>P0661r1<sp/>but<sp/>it<sp/>should<sp/>be.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>swap(<ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&amp;<sp/>rhs)<sp/>{</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>std::swap;</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>swap(slots_,<sp/>rhs.slots_);</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>swap(values_,<sp/>rhs.values_);</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>swap(reverse_map_,<sp/>rhs.reverse_map_);</highlight></codeline>
+<codeline lineno="317"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>swap(next_available_slot_index_,<sp/>rhs.next_available_slot_index_);</highlight></codeline>
+<codeline lineno="318"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>swap(last_available_slot_index_,<sp/>rhs.last_available_slot_index_);</highlight></codeline>
+<codeline lineno="319"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="320"><highlight class="normal"></highlight></codeline>
+<codeline lineno="321"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="322"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>These<sp/>accessors<sp/>are<sp/>not<sp/>part<sp/>of<sp/>P0661R2<sp/>but<sp/>are<sp/>&quot;modernized&quot;<sp/>versions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="323"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>of<sp/>the<sp/>protected<sp/>interface<sp/>of<sp/>std::priority_queue,<sp/>std::stack,<sp/>etc.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="324"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>Container&lt;mapped_type&gt;&amp;<sp/>c()<sp/>&amp;<sp/>noexcept<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_;<sp/>}</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Container&lt;mapped_type&gt;&amp;<sp/>c()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;<sp/>noexcept<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>values_;<sp/>}</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>Container&lt;mapped_type&gt;&amp;&amp;<sp/>c()<sp/>&amp;&amp;<sp/>noexcept<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::move(values_);<sp/>}</highlight></codeline>
+<codeline lineno="327"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Container&lt;mapped_type&gt;&amp;&amp;<sp/>c()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">&amp;&amp;<sp/>noexcept<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::move(values_);<sp/>}</highlight></codeline>
+<codeline lineno="328"><highlight class="normal"></highlight></codeline>
+<codeline lineno="329"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="330"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>slot_iterator<sp/>slot_iter_from_value_iter(const_iterator<sp/>value_iter)<sp/>{</highlight></codeline>
+<codeline lineno="331"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_index<sp/>=<sp/>std::distance(const_iterator(values_.begin()),<sp/>value_iter);</highlight></codeline>
+<codeline lineno="332"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_index<sp/>=<sp/>*std::next(reverse_map_.begin(),<sp/>value_index);</highlight></codeline>
+<codeline lineno="333"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::next(slots_.begin(),<sp/>slot_index);</highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="335"><highlight class="normal"><sp/><sp/><sp/><sp/>constexpr<sp/>iterator<sp/>erase_slot_iter(slot_iterator<sp/>slot_iter)<sp/>{</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_index<sp/>=<sp/>std::distance(slots_.begin(),<sp/>slot_iter);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_index<sp/>=<sp/>get_index(*slot_iter);</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_iter<sp/>=<sp/>std::next(values_.begin(),<sp/>value_index);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>value_back_iter<sp/>=<sp/>std::prev(values_.end());</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(value_iter<sp/>!=<sp/>value_back_iter)<sp/>{</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>slot_back_iter<sp/>=<sp/>slot_iter_from_value_iter(value_back_iter);</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*value_iter<sp/>=<sp/>std::move(*value_back_iter);</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;set_index(*slot_back_iter,<sp/>value_index);</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>reverse_map_iter<sp/>=<sp/>std::next(reverse_map_.begin(),<sp/>value_index);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*reverse_map_iter<sp/>=<sp/>static_cast&lt;key_index_type&gt;(std::distance(slots_.begin(),<sp/>slot_back_iter));</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>values_.pop_back();</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>reverse_map_.pop_back();</highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Expire<sp/>this<sp/>key.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(next_available_slot_index_<sp/>==<sp/>slots_.size())<sp/>{</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>next_available_slot_index_<sp/>=<sp/>static_cast&lt;key_index_type&gt;(slot_index);</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_available_slot_index_<sp/>=<sp/>static_cast&lt;key_index_type&gt;(slot_index);</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>last_slot_iter<sp/>=<sp/>std::next(slots_.begin(),<sp/>last_available_slot_index_);</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;set_index(*last_slot_iter,<sp/>slot_index);</highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>last_available_slot_index_<sp/>=<sp/>static_cast&lt;key_index_type&gt;(slot_index);</highlight></codeline>
+<codeline lineno="357"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;increment_generation(*slot_iter);</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::next(values_.begin(),<sp/>value_index);</highlight></codeline>
+<codeline lineno="360"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="361"><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"><sp/><sp/><sp/><sp/>Container&lt;key_type&gt;<sp/>slots_;<sp/><sp/></highlight><highlight class="comment">//<sp/>high_water_mark()<sp/>entries</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="363"><highlight class="normal"><sp/><sp/><sp/><sp/>Container&lt;key_index_type&gt;<sp/>reverse_map_;<sp/><sp/></highlight><highlight class="comment">//<sp/>exactly<sp/>size()<sp/>entries</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/>Container&lt;mapped_type&gt;<sp/>values_;<sp/><sp/></highlight><highlight class="comment">//<sp/>exactly<sp/>size()<sp/>entries</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="365"><highlight class="normal"><sp/><sp/><sp/><sp/>key_index_type<sp/>next_available_slot_index_{};</highlight></codeline>
+<codeline lineno="366"><highlight class="normal"><sp/><sp/><sp/><sp/>key_index_type<sp/>last_available_slot_index_{};</highlight></codeline>
+<codeline lineno="367"><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Class<sp/>invariant:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Either<sp/>next_available_slot_index_<sp/>==<sp/>last_available_slot_index_<sp/>==<sp/>slots_.size(),</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="370"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>or<sp/>else<sp/>0<sp/>&lt;=<sp/>next_available_slot_index_<sp/>&lt;<sp/>slots_.size()<sp/>and<sp/>the<sp/>&quot;key&quot;<sp/>of<sp/>that<sp/>slot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="371"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>entry<sp/>points<sp/>to<sp/>the<sp/>subsequent<sp/>available<sp/>slot,<sp/>and<sp/>so<sp/>on,<sp/>until<sp/>reaching</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="372"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>last_available_slot_index_<sp/>(which<sp/>might<sp/>equal<sp/>next_available_slot_index_<sp/>if<sp/>there</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>is<sp/>only<sp/>one<sp/>available<sp/>slot<sp/>at<sp/>the<sp/>moment).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">T,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Key,<sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal">...&gt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Container&gt;</highlight></codeline>
+<codeline lineno="377"><highlight class="normal">constexpr<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>swap(<ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map&lt;T, Key, Container&gt;</ref>&amp;<sp/>lhs,<sp/><ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map&lt;T, Key, Container&gt;</ref>&amp;<sp/>rhs)<sp/>{</highlight></codeline>
+<codeline lineno="378"><highlight class="normal"><sp/><sp/><sp/><sp/>lhs.swap(rhs);</highlight></codeline>
+<codeline lineno="379"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="380"><highlight class="normal"></highlight></codeline>
+<codeline lineno="381"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>LittleOptimizer</highlight></codeline>
+    </programlisting>
+    <location file="src/Optimizer/slot_map.h"/>
+  </compounddef>
+</doxygen>

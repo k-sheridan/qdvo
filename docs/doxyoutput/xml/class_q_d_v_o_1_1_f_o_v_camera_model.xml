@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_f_o_v_camera_model" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::FOVCameraModel</compoundname>
+    <basecompoundref refid="class_q_d_v_o_1_1_camera_model" prot="public" virt="non-virtual">QDVO::CameraModel</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_f_o_v_camera_model_1ac77fcf7c775d9dd37b010e6d998b7895" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::FOVCameraModel::FOVCameraModel</definition>
+        <argsstring>(SCALAR_TYPE fx, SCALAR_TYPE fy, SCALAR_TYPE cx, SCALAR_TYPE cy, SCALAR_TYPE fov, int width, int height)</argsstring>
+        <name>FOVCameraModel</name>
+        <param>
+          <type>SCALAR_TYPE</type>
+          <declname>fx</declname>
+        </param>
+        <param>
+          <type>SCALAR_TYPE</type>
+          <declname>fy</declname>
+        </param>
+        <param>
+          <type>SCALAR_TYPE</type>
+          <declname>cx</declname>
+        </param>
+        <param>
+          <type>SCALAR_TYPE</type>
+          <declname>cy</declname>
+        </param>
+        <param>
+          <type>SCALAR_TYPE</type>
+          <declname>fov</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>height</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/CameraModels/FOVCameraModel.hpp" line="10" column="5" bodyfile="src/CameraModels/FOVCameraModel.cpp" bodystart="3" bodyend="7"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>QDVO::CameraModel</label>
+        <link refid="class_q_d_v_o_1_1_camera_model"/>
+      </node>
+      <node id="1">
+        <label>QDVO::FOVCameraModel</label>
+        <link refid="class_q_d_v_o_1_1_f_o_v_camera_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>QDVO::CameraModel</label>
+        <link refid="class_q_d_v_o_1_1_camera_model"/>
+      </node>
+      <node id="1">
+        <label>QDVO::FOVCameraModel</label>
+        <link refid="class_q_d_v_o_1_1_f_o_v_camera_model"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/CameraModels/FOVCameraModel.hpp" line="8" column="1" bodyfile="src/CameraModels/FOVCameraModel.hpp" bodystart="7" bodyend="11"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_camera_model_1aa3d813edca56181bdebb70f1e624afb1" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>CameraModel</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a8336d8a97d163993495eabc167999610" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>cx</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a69378ba72a48c838cc40728334ddec0d" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>cy</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a47160b94f50040bfba8acebbba732daf" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>fov</name></member>
+      <member refid="class_q_d_v_o_1_1_f_o_v_camera_model_1ac77fcf7c775d9dd37b010e6d998b7895" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>FOVCameraModel</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1ae287db2e5d7e91248145653ae3ce69a5" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>fx</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1aa1269cc8ba63de1bf7ff2e1126e82c58" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>fy</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a366120f0622eff2645d7f4c40a04d1d5" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>height</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1ab201700d70c38c258661edc838f49d81" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>isPixelOnImage</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a6d4eb070369e20851e9cb945e4bed747" prot="public" virt="virtual"><scope>QDVO::FOVCameraModel</scope><name>isPointPotentiallyVisible</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1ab6e37317019c2f7ccf4edaa68623ae37" prot="public" virt="virtual"><scope>QDVO::FOVCameraModel</scope><name>project</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a381c836b33a0fb6850204fcedff26700" prot="public" virt="virtual"><scope>QDVO::FOVCameraModel</scope><name>unproject</name></member>
+      <member refid="class_q_d_v_o_1_1_camera_model_1a029de8e106724a1bf13aeb0c6995f2e0" prot="public" virt="non-virtual"><scope>QDVO::FOVCameraModel</scope><name>width</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

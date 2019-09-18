@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Template Class slot_map &#8212; qdvo  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Template Class Row" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row.html" />
+    <link rel="prev" title="Class SE3" href="class_little_optimizer_1_1_s_e3.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="template-class-slot-map">
+<span id="exhale-class-class-little-optimizer-1-1slot-map"></span><h1>Template Class slot_map<a class="headerlink" href="#template-class-slot-map" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_src_Optimizer_slot_map.h.html#file-src-optimizer-slot-map-h"><span class="std std-ref">File slot_map.h</span></a></p></li>
+</ul>
+<div class="section" id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv4I00IDpE0EN15LittleOptimizer8slot_mapE">
+<span id="_CPPv3I00IDpE0EN15LittleOptimizer8slot_mapE"></span><span id="_CPPv2I00IDpE0EN15LittleOptimizer8slot_mapE"></span><span class="target" id="class_little_optimizer_1_1slot__map"></span>template&lt;class <code class="sig-name descname">T</code>, class <code class="sig-name descname">Key</code> = std::pair&lt;unsigned, unsigned&gt;, template&lt;class...&gt; class <code class="sig-name descname">Container</code> = std::vector&gt;<br /><em class="property">class </em><code class="sig-name descname">slot_map</code><a class="headerlink" href="#_CPPv4I00IDpE0EN15LittleOptimizer8slot_mapE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8key_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8key_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8key_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a0451462cc07b45adaef389e99e358f56"></span><em class="property">using </em><code class="sig-name descname">key_type</code> = Key<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8key_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE11mapped_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE11mapped_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE11mapped_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a455b3016bce67b9ae01c0b2a9214be83"></span><em class="property">using </em><code class="sig-name descname">mapped_type</code> = T<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE11mapped_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14key_index_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14key_index_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14key_index_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a81e3bde947df0679807141da87a8bbd8"></span><em class="property">using </em><code class="sig-name descname">key_index_type</code> = decltype(slot_map::get_index(std::declval&lt;Key&gt;()))<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14key_index_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE19key_generation_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE19key_generation_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE19key_generation_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a5cba842050148d49523913861424a89b"></span><em class="property">using </em><code class="sig-name descname">key_generation_type</code> = decltype(slot_map::get_generation(std::declval&lt;Key&gt;()))<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE19key_generation_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a1552cb9ac883546196986c5fc63a2986"></span><em class="property">using </em><code class="sig-name descname">container_type</code> = Container&lt;<a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE11mapped_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::mapped_type">mapped_type</a>&gt;<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9referenceE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9referenceE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9referenceE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1af875eeddc46c0887eb28048918f8c455"></span><em class="property">using </em><code class="sig-name descname">reference</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::reference<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9referenceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE15const_referenceE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE15const_referenceE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE15const_referenceE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1ac4193ca7c180eede60ebc9e1be160ef8"></span><em class="property">using </em><code class="sig-name descname">const_reference</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::const_reference<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE15const_referenceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE7pointerE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE7pointerE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE7pointerE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a8473fa50af5debda705e78d718284eef"></span><em class="property">using </em><code class="sig-name descname">pointer</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::pointer<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE7pointerE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE13const_pointerE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE13const_pointerE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE13const_pointerE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a9e47d8942b9fa8de8aa579e988d85f9d"></span><em class="property">using </em><code class="sig-name descname">const_pointer</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::const_pointer<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE13const_pointerE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8iteratorE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8iteratorE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8iteratorE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a720abb95690a3b3c0957833c75d879e4"></span><em class="property">using </em><code class="sig-name descname">iterator</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::iterator<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE8iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14const_iteratorE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14const_iteratorE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14const_iteratorE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a6dcdbe480797406884b62da5a4189a3c"></span><em class="property">using </em><code class="sig-name descname">const_iterator</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::const_iterator<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14const_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE16reverse_iteratorE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE16reverse_iteratorE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE16reverse_iteratorE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1aa000f4446036cdda8e2143c94975971f"></span><em class="property">using </em><code class="sig-name descname">reverse_iterator</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::reverse_iterator<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE16reverse_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE22const_reverse_iteratorE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE22const_reverse_iteratorE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE22const_reverse_iteratorE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a67aa9fe9126e98ab8dc985d9baf28466"></span><em class="property">using </em><code class="sig-name descname">const_reverse_iterator</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::const_reverse_iterator<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE22const_reverse_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9size_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9size_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9size_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a7e7757348ee9c9c2314492431eb17e21"></span><em class="property">using </em><code class="sig-name descname">size_type</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::size_type<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE9size_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE10value_typeE">
+<span id="_CPPv3IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE10value_typeE"></span><span id="_CPPv2IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE10value_typeE"></span>template&lt;&gt;<br /><span class="target" id="class_little_optimizer_1_1slot__map_1a4be8e40727b8fd0dbd71a72904035816"></span><em class="property">using </em><code class="sig-name descname">value_type</code> = <em class="property">typename</em> <a class="reference internal" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE14container_typeE" title="LittleOptimizer::slot_map&lt;T, Key, Container&gt;::container_type">container_type</a>::value_type<a class="headerlink" href="#_CPPv4IEN15LittleOptimizer8slot_mapI1T3Key9ContainerE10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map8slot_mapEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map8slot_mapEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map8slot_mapEv"></span><span id="LittleOptimizer::slot_map::slot_mapCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a0661ae695f3adfc553607ee35ad149f4"></span><em class="property">constexpr</em> <code class="sig-name descname">slot_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map8slot_mapEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map8slot_mapERK8slot_map">
+<span id="_CPPv3N15LittleOptimizer8slot_map8slot_mapERK8slot_map"></span><span id="_CPPv2N15LittleOptimizer8slot_map8slot_mapERK8slot_map"></span><span id="LittleOptimizer::slot_map::slot_map__slot_mapCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1adf6277ea34149d33e059d906cdf1f8f2"></span><em class="property">constexpr</em> <code class="sig-name descname">slot_map</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N15LittleOptimizer8slot_map8slot_mapEv" title="LittleOptimizer::slot_map::slot_map">slot_map</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map8slot_mapERK8slot_map" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map8slot_mapERR8slot_map">
+<span id="_CPPv3N15LittleOptimizer8slot_map8slot_mapERR8slot_map"></span><span id="_CPPv2N15LittleOptimizer8slot_map8slot_mapERR8slot_map"></span><span id="LittleOptimizer::slot_map::slot_map__slot_mapRRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a339ac9667dc879e65770368919e57fc3"></span><em class="property">constexpr</em> <code class="sig-name descname">slot_map</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N15LittleOptimizer8slot_map8slot_mapEv" title="LittleOptimizer::slot_map::slot_map">slot_map</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map8slot_mapERR8slot_map" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_mapaSERK8slot_map">
+<span id="_CPPv3N15LittleOptimizer8slot_mapaSERK8slot_map"></span><span id="_CPPv2N15LittleOptimizer8slot_mapaSERK8slot_map"></span><span id="LittleOptimizer::slot_map::assign-operator__slot_mapCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1abf62ccd929f79876915f67788f729a64"></span><em class="property">constexpr</em> slot_map &amp;<code class="sig-name descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> slot_map&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_mapaSERK8slot_map" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_mapaSERR8slot_map">
+<span id="_CPPv3N15LittleOptimizer8slot_mapaSERR8slot_map"></span><span id="_CPPv2N15LittleOptimizer8slot_mapaSERR8slot_map"></span><span id="LittleOptimizer::slot_map::assign-operator__slot_mapRRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a1792dea877812a2f94310e2e42e0cf02"></span><em class="property">constexpr</em> slot_map &amp;<code class="sig-name descname">operator=</code><span class="sig-paren">(</span>slot_map&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_mapaSERR8slot_map" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_mapD0Ev">
+<span id="_CPPv3N15LittleOptimizer8slot_mapD0Ev"></span><span id="_CPPv2N15LittleOptimizer8slot_mapD0Ev"></span><span id="LittleOptimizer::slot_map::~slot_map"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a41ad057dd8330738b187c12e8d7522a8"></span><code class="sig-name descname">~slot_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_mapD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map2atERK8key_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map2atERK8key_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map2atERK8key_type"></span><span id="LittleOptimizer::slot_map::at__key_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a43bed36d9891c15436020a4eb1fcbcdf"></span><em class="property">constexpr</em> reference <code class="sig-name descname">at</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map2atERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map2atERK8key_type">
+<span id="_CPPv3NK15LittleOptimizer8slot_map2atERK8key_type"></span><span id="_CPPv2NK15LittleOptimizer8slot_map2atERK8key_type"></span><span id="LittleOptimizer::slot_map::at__key_typeCRCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ab1a4f19b8ff6d1f8dfd9953e13ba0e89"></span><em class="property">constexpr</em> const_reference <code class="sig-name descname">at</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map2atERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_mapixERK8key_type">
+<span id="_CPPv3N15LittleOptimizer8slot_mapixERK8key_type"></span><span id="_CPPv2N15LittleOptimizer8slot_mapixERK8key_type"></span><span id="LittleOptimizer::slot_map::subscript-operator__key_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a431fd59d2bb42bf8c84dcfa4220419d1"></span><em class="property">constexpr</em> reference <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_mapixERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_mapixERK8key_type">
+<span id="_CPPv3NK15LittleOptimizer8slot_mapixERK8key_type"></span><span id="_CPPv2NK15LittleOptimizer8slot_mapixERK8key_type"></span><span id="LittleOptimizer::slot_map::subscript-operator__key_typeCRCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a2414a28260c6c9c053f9be5d98032556"></span><em class="property">constexpr</em> const_reference <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_mapixERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map4findERK8key_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map4findERK8key_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map4findERK8key_type"></span><span id="LittleOptimizer::slot_map::find__key_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a2038aa3120727f92c4c8ef0a7432b93f"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map4findERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map4findERK8key_type">
+<span id="_CPPv3NK15LittleOptimizer8slot_map4findERK8key_type"></span><span id="_CPPv2NK15LittleOptimizer8slot_map4findERK8key_type"></span><span id="LittleOptimizer::slot_map::find__key_typeCRCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a1fa7ab17e1567622c19362eb9e86b759"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map4findERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map14find_uncheckedERK8key_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map14find_uncheckedERK8key_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map14find_uncheckedERK8key_type"></span><span id="LittleOptimizer::slot_map::find_unchecked__key_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a8afc4b24039cfabc80f72950d0b874ef"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">find_unchecked</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map14find_uncheckedERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map14find_uncheckedERK8key_type">
+<span id="_CPPv3NK15LittleOptimizer8slot_map14find_uncheckedERK8key_type"></span><span id="_CPPv2NK15LittleOptimizer8slot_map14find_uncheckedERK8key_type"></span><span id="LittleOptimizer::slot_map::find_unchecked__key_typeCRCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a0fe3f45c10caf57d36bbf97e8bfa06ae"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">find_unchecked</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map14find_uncheckedERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5beginEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map5beginEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map5beginEv"></span><span id="LittleOptimizer::slot_map::beginCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a19561580dfff913d63b1713a0ac8105b"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5beginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map3endEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map3endEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map3endEv"></span><span id="LittleOptimizer::slot_map::endCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ae8b8a9922e8b2c1c4fd7cfe57a781ca7"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map3endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map5beginEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map5beginEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map5beginEv"></span><span id="LittleOptimizer::slot_map::beginCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a342daf0b775c6a57a86cb6e38e3de5bf"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map5beginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map3endEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map3endEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map3endEv"></span><span id="LittleOptimizer::slot_map::endCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a0faf628a8f048d6c9622dc7b9b2b5616"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map3endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map6cbeginEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map6cbeginEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map6cbeginEv"></span><span id="LittleOptimizer::slot_map::cbeginCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1acf0cf741c652d5f034cae88b34111ccc"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">cbegin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map6cbeginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map4cendEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map4cendEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map4cendEv"></span><span id="LittleOptimizer::slot_map::cendCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1abb7d316e7cd3a4ca35f564797f411e5c"></span><em class="property">constexpr</em> const_iterator <code class="sig-name descname">cend</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map4cendEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map6rbeginEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map6rbeginEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map6rbeginEv"></span><span id="LittleOptimizer::slot_map::rbeginCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ab14af9034f965439181d9dc797e2eb28"></span><em class="property">constexpr</em> reverse_iterator <code class="sig-name descname">rbegin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map6rbeginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map4rendEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map4rendEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map4rendEv"></span><span id="LittleOptimizer::slot_map::rendCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1af606869268c1f64e41c0744d0d5a8d63"></span><em class="property">constexpr</em> reverse_iterator <code class="sig-name descname">rend</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map4rendEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map6rbeginEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map6rbeginEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map6rbeginEv"></span><span id="LittleOptimizer::slot_map::rbeginCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1af999f7b0d0d59e353d68f47b2324fe89"></span><em class="property">constexpr</em> const_reverse_iterator <code class="sig-name descname">rbegin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map6rbeginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map4rendEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map4rendEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map4rendEv"></span><span id="LittleOptimizer::slot_map::rendCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a79938704e19a1ff44b2e864789214bcb"></span><em class="property">constexpr</em> const_reverse_iterator <code class="sig-name descname">rend</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map4rendEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map7crbeginEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map7crbeginEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map7crbeginEv"></span><span id="LittleOptimizer::slot_map::crbeginCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1aa4c2ae013fa96b3cf08d73e1bd1c624e"></span><em class="property">constexpr</em> const_reverse_iterator <code class="sig-name descname">crbegin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map7crbeginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map5crendEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map5crendEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map5crendEv"></span><span id="LittleOptimizer::slot_map::crendCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a4d749f600183fd900614962470712cd8"></span><em class="property">constexpr</em> const_reverse_iterator <code class="sig-name descname">crend</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map5crendEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map5emptyEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map5emptyEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map5emptyEv"></span><span id="LittleOptimizer::slot_map::emptyCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a42832be30dbb93894ec460d18637b857"></span><em class="property">constexpr</em> bool <code class="sig-name descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map5emptyEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map4sizeEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map4sizeEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map4sizeEv"></span><span id="LittleOptimizer::slot_map::sizeCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a1fdcb1372dcdd877b2a3515d433d4a69"></span><em class="property">constexpr</em> size_type <code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map7reserveE9size_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map7reserveE9size_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map7reserveE9size_type"></span><span id="LittleOptimizer::slot_map::reserve__size_typeCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a81b65f43c7e1be3076e66ef91deef087"></span><em class="property">constexpr</em> void <code class="sig-name descname">reserve</code><span class="sig-paren">(</span>size_type <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map7reserveE9size_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4I00ENK15LittleOptimizer8slot_map8capacityE9size_typev">
+<span id="_CPPv3I00ENK15LittleOptimizer8slot_map8capacityEv"></span><span id="_CPPv2I00ENK15LittleOptimizer8slot_map8capacityEv"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ae693e03d1699faca90b9060f77f0de28"></span>template&lt;class <code class="sig-name descname">C</code> = Container&lt;T&gt;, class = decltype(std::declval&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4I00ENK15LittleOptimizer8slot_map8capacityE9size_typev" title="LittleOptimizer::slot_map::capacity::C">C</a>&amp;&gt;().capacity())&gt;<br /><em class="property">constexpr</em> size_type <code class="sig-name descname">capacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I00ENK15LittleOptimizer8slot_map8capacityE9size_typev" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map13reserve_slotsE9size_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map13reserve_slotsE9size_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map13reserve_slotsE9size_type"></span><span id="LittleOptimizer::slot_map::reserve_slots__size_typeCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ade72976742318502962554f74a82e256"></span><em class="property">constexpr</em> void <code class="sig-name descname">reserve_slots</code><span class="sig-paren">(</span>size_type <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map13reserve_slotsE9size_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK15LittleOptimizer8slot_map10slot_countEv">
+<span id="_CPPv3NK15LittleOptimizer8slot_map10slot_countEv"></span><span id="_CPPv2NK15LittleOptimizer8slot_map10slot_countEv"></span><span id="LittleOptimizer::slot_map::slot_countCCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a421bde31e897a239c8e7230800fac763"></span><em class="property">constexpr</em> size_type <code class="sig-name descname">slot_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK15LittleOptimizer8slot_map10slot_countEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map6insertERK11mapped_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map6insertERK11mapped_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map6insertERK11mapped_type"></span><span id="LittleOptimizer::slot_map::insert__mapped_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a3bd719ce0dd82aa1dbc28be30e0833da"></span><em class="property">constexpr</em> key_type <code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="property">const</em> mapped_type &amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map6insertERK11mapped_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map6insertERR11mapped_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map6insertERR11mapped_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map6insertERR11mapped_type"></span><span id="LittleOptimizer::slot_map::insert__mapped_typeRRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ae4b97e92a532b7a47b9902815f3fb29a"></span><em class="property">constexpr</em> key_type <code class="sig-name descname">insert</code><span class="sig-paren">(</span>mapped_type &amp;&amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map6insertERR11mapped_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4IDpEN15LittleOptimizer8slot_map7emplaceE8key_typeDpRR4Args">
+<span id="_CPPv3IDpEN15LittleOptimizer8slot_map7emplaceEDpRR4Args"></span><span id="_CPPv2IDpEN15LittleOptimizer8slot_map7emplaceEDpRR4Args"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a46d342f726eed4a36be80c489777d8ec"></span>template&lt;class ...<code class="sig-name descname">Args</code>&gt;<br /><em class="property">constexpr</em> key_type <code class="sig-name descname">emplace</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDpEN15LittleOptimizer8slot_map7emplaceE8key_typeDpRR4Args" title="LittleOptimizer::slot_map::emplace::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN15LittleOptimizer8slot_map7emplaceE8key_typeDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5eraseE8iterator">
+<span id="_CPPv3N15LittleOptimizer8slot_map5eraseE8iterator"></span><span id="_CPPv2N15LittleOptimizer8slot_map5eraseE8iterator"></span><span id="LittleOptimizer::slot_map::erase__iteratorCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a8ba8deea2fa36ad3d4ce2e710fd6b3f2"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">erase</code><span class="sig-paren">(</span>iterator <em>pos</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5eraseE8iterator" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5eraseE8iterator8iterator">
+<span id="_CPPv3N15LittleOptimizer8slot_map5eraseE8iterator8iterator"></span><span id="_CPPv2N15LittleOptimizer8slot_map5eraseE8iterator8iterator"></span><span id="LittleOptimizer::slot_map::erase__iterator.iteratorCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a37250db78ee103b92021f0a32fdf0f0a"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">erase</code><span class="sig-paren">(</span>iterator <em>first</em>, iterator <em>last</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5eraseE8iterator8iterator" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5eraseE14const_iterator">
+<span id="_CPPv3N15LittleOptimizer8slot_map5eraseE14const_iterator"></span><span id="_CPPv2N15LittleOptimizer8slot_map5eraseE14const_iterator"></span><span id="LittleOptimizer::slot_map::erase__const_iteratorCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1aefb940eb996bea74222cdd91af139296"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">erase</code><span class="sig-paren">(</span>const_iterator <em>pos</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5eraseE14const_iterator" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5eraseE14const_iterator14const_iterator">
+<span id="_CPPv3N15LittleOptimizer8slot_map5eraseE14const_iterator14const_iterator"></span><span id="_CPPv2N15LittleOptimizer8slot_map5eraseE14const_iterator14const_iterator"></span><span id="LittleOptimizer::slot_map::erase__const_iterator.const_iteratorCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a107250e5ec0517a312f26dfa7b8ee412"></span><em class="property">constexpr</em> iterator <code class="sig-name descname">erase</code><span class="sig-paren">(</span>const_iterator <em>first</em>, const_iterator <em>last</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5eraseE14const_iterator14const_iterator" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5eraseERK8key_type">
+<span id="_CPPv3N15LittleOptimizer8slot_map5eraseERK8key_type"></span><span id="_CPPv2N15LittleOptimizer8slot_map5eraseERK8key_type"></span><span id="LittleOptimizer::slot_map::erase__key_typeCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ad08abfc7615d3b1d6311ea0c62a6cb97"></span><em class="property">constexpr</em> size_type <code class="sig-name descname">erase</code><span class="sig-paren">(</span><em class="property">const</em> key_type &amp;<em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5eraseERK8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map5clearEv">
+<span id="_CPPv3N15LittleOptimizer8slot_map5clearEv"></span><span id="_CPPv2N15LittleOptimizer8slot_map5clearEv"></span><span id="LittleOptimizer::slot_map::clearCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a31d4687a7781cd6fc859a28df2ae4d78"></span><em class="property">constexpr</em> void <code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map5clearEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N15LittleOptimizer8slot_map4swapER8slot_map">
+<span id="_CPPv3N15LittleOptimizer8slot_map4swapER8slot_map"></span><span id="_CPPv2N15LittleOptimizer8slot_map4swapER8slot_map"></span><span id="LittleOptimizer::slot_map::swap__slot_mapRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a07076cbb892eabba12f9da8ad72e345a"></span><em class="property">constexpr</em> void <code class="sig-name descname">swap</code><span class="sig-paren">(</span>slot_map &amp;<em>rhs</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N15LittleOptimizer8slot_map4swapER8slot_map" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Protected Functions</p>
+<dl class="function">
+<dt id="_CPPv4NR15LittleOptimizer8slot_map1cEv">
+<span id="_CPPv3NR15LittleOptimizer8slot_map1cEv"></span><span id="_CPPv2NR15LittleOptimizer8slot_map1cEv"></span><span id="LittleOptimizer::slot_map::cRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a9ae9e46edc6b741ed6b40551c8831344"></span><em class="property">constexpr</em> Container&lt;mapped_type&gt; &amp;<code class="sig-name descname">c</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &amp;<a class="headerlink" href="#_CPPv4NR15LittleOptimizer8slot_map1cEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NKR15LittleOptimizer8slot_map1cEv">
+<span id="_CPPv3NKR15LittleOptimizer8slot_map1cEv"></span><span id="_CPPv2NKR15LittleOptimizer8slot_map1cEv"></span><span id="LittleOptimizer::slot_map::cCRCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1ae786fff943b19994e75cba757373554c"></span><em class="property">constexpr</em> <em class="property">const</em> Container&lt;mapped_type&gt; &amp;<code class="sig-name descname">c</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> &amp;<a class="headerlink" href="#_CPPv4NKR15LittleOptimizer8slot_map1cEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NO15LittleOptimizer8slot_map1cEv">
+<span id="_CPPv3NO15LittleOptimizer8slot_map1cEv"></span><span id="_CPPv2NO15LittleOptimizer8slot_map1cEv"></span><span id="LittleOptimizer::slot_map::cOCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1af909ee1d352e32cf0ef1acb3a7ac4d52"></span><em class="property">constexpr</em> Container&lt;mapped_type&gt; &amp;&amp;<code class="sig-name descname">c</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &amp;&amp;<a class="headerlink" href="#_CPPv4NO15LittleOptimizer8slot_map1cEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NKO15LittleOptimizer8slot_map1cEv">
+<span id="_CPPv3NKO15LittleOptimizer8slot_map1cEv"></span><span id="_CPPv2NKO15LittleOptimizer8slot_map1cEv"></span><span id="LittleOptimizer::slot_map::cCOCE"></span><span class="target" id="class_little_optimizer_1_1slot__map_1a92cee0356f20afc2720ebc98722ee829"></span><em class="property">constexpr</em> <em class="property">const</em> Container&lt;mapped_type&gt; &amp;&amp;<code class="sig-name descname">c</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> &amp;&amp;<a class="headerlink" href="#_CPPv4NKO15LittleOptimizer8slot_map1cEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">qdvo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="library_root.html">Library API</a><ul>
+      <li>Previous: <a href="class_little_optimizer_1_1_s_e3.html" title="previous chapter">Class SE3</a></li>
+      <li>Next: <a href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row.html" title="next chapter">Template Class Row</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Kevin Sheridan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/class_little_optimizer_1_1slot__map.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

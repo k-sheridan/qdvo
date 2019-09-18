@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Program Listing for File SparseBlockMatrixInternal.h &#8212; qdvo  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="program-listing-for-file-sparseblockmatrixinternal-h">
+<span id="program-listing-file-src-optimizer-sparseblockmatrixinternal-h"></span><h1>Program Listing for File SparseBlockMatrixInternal.h<a class="headerlink" href="#program-listing-for-file-sparseblockmatrixinternal-h" title="Permalink to this headline">¶</a></h1>
+<p>↰ <a class="reference internal" href="file_src_Optimizer_SparseBlockMatrixInternal.h.html#file-src-optimizer-sparseblockmatrixinternal-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">src/Optimizer/SparseBlockMatrixInternal.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;tuple&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;utility&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;type_traits&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;MetaHelpers.h&quot;</span><span class="cp"></span>
+
+<span class="k">namespace</span> <span class="n">LittleOptimizer</span><span class="o">::</span><span class="n">SparseBlockMatrix</span>
+<span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Row</span><span class="p">;</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span> <span class="n">Variables</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">SparseBlockMatrix</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">internal</span>
+<span class="p">{</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">add_rhs_column_matrices_to_lhs_column_matrices</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">lhsColumnMatrices</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">rhsColumnMatrices</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">lhsColumnMatrices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhsColumnMatrices</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">lhsColumnMatrices</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Variables</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">add_rhs_row_to_lhs_row</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">lhsRow</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">rhsRow</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">add_rhs_column_matrices_to_lhs_column_matrices</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhsRow</span><span class="p">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rhsRow</span><span class="p">.</span><span class="n">columns</span><span class="p">))...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Variables</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">add_rhs_row_to_lhs_row</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">lhsRow</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">rhsRow</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">VariableGroup</span><span class="o">&lt;</span><span class="n">Variables</span><span class="p">...</span><span class="o">&gt;</span> <span class="n">vars</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">lhsRow</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">rhsRow</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">lhsRow</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">add_rhs_column_matrices_to_lhs_column_matrices</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhsRow</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">).</span><span class="n">columns</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rhsRow</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">).</span><span class="n">columns</span><span class="p">))...};</span>
+        <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Variables</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">add_rhs_matrix_to_lhs_matrix</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">lhsMatrix</span><span class="p">,</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">rhsMatrix</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">VariableGroup</span><span class="o">&lt;</span><span class="n">Variables</span><span class="p">...</span><span class="o">&gt;</span> <span class="n">vars</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">add_rhs_row_to_lhs_row</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhsMatrix</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rhsMatrix</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">index_sequence_for</span><span class="o">&lt;</span><span class="n">Variables</span><span class="p">...</span><span class="o">&gt;</span><span class="p">{},</span> <span class="n">vars</span><span class="p">)...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// sets the size of a target vector to the size of a reference vector.</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T1</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">resize_vector</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">theVector</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">newSize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">theVector</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">newSize</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">TupleOfVectors</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">clear_tuple_of_vectors</span><span class="p">(</span><span class="n">TupleOfVectors</span> <span class="o">&amp;</span><span class="n">tupleOfVectors</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">resize_vector</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tupleOfVectors</span><span class="p">),</span> <span class="mi">0</span><span class="p">)...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">set_size</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">typeSizePair</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">newSize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">typeSizePair</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">newSize</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">TupleOfTypeSizePairs</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">set_sizes_zero</span><span class="p">(</span><span class="n">TupleOfTypeSizePairs</span> <span class="o">&amp;</span><span class="n">tuple</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">set_size</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tuple</span><span class="p">),</span> <span class="mi">0</span><span class="p">)...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">ColTypeIndex</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">add_column_to_matrix</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">vectorOfRows</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">vectorOfRows</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="o">&amp;</span><span class="n">vectorOfMatrixBlocks</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">ColTypeIndex</span><span class="o">&gt;</span><span class="p">(</span><span class="n">vectorOfRows</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">).</span><span class="n">columns</span><span class="p">);</span>
+
+        <span class="n">vectorOfMatrixBlocks</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">ColTypeIndex</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">add_column_to_matrix</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">tupleOfVectorOfRows</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">add_column_to_matrix</span><span class="o">&lt;</span><span class="n">ColTypeIndex</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tupleOfVectorOfRows</span><span class="p">))...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ColType</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">remove_column_from_matrix</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">T</span><span class="p">...</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">vectorOfRows</span><span class="p">,</span> <span class="n">TypedIndex</span><span class="o">&lt;</span><span class="n">ColType</span><span class="o">&gt;</span> <span class="n">index</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">vectorOfRows</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">vectorOfRows</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">).</span><span class="n">removeColumn</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">ColType</span><span class="p">,</span> <span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">remove_column_from_matrix</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">tupleOfVectorOfRows</span><span class="p">,</span> <span class="n">TypedIndex</span><span class="o">&lt;</span><span class="n">ColType</span><span class="o">&gt;</span> <span class="n">idx</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">remove_column_from_matrix</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tupleOfVectorOfRows</span><span class="p">),</span> <span class="n">idx</span><span class="p">)...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">R1</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">R2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Scalar</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">C1</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">C2</span><span class="o">&gt;</span>
+<span class="kt">bool</span> <span class="n">dot_row_with_other_row</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">MatrixBlock</span><span class="o">&lt;</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">C1</span><span class="o">&gt;&gt;&amp;</span> <span class="n">lhsVec</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">MatrixBlock</span><span class="o">&lt;</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">R2</span><span class="p">,</span> <span class="n">C2</span><span class="o">&gt;&gt;&amp;</span> <span class="n">rhsVec</span><span class="p">,</span> <span class="n">MatrixBlock</span><span class="o">&lt;</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;&amp;</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">rhsVec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">lhsVec</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">lhsVec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">auto</span><span class="o">&amp;</span> <span class="n">lhm</span> <span class="o">=</span> <span class="n">lhsVec</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+        <span class="k">auto</span><span class="o">&amp;</span> <span class="n">rhm</span> <span class="o">=</span> <span class="n">rhsVec</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+        <span class="c1">// result += lhm * rhm.transpose();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">R1</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">R2</span><span class="p">,</span> <span class="k">typename</span> <span class="n">Scalar_</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Variables</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">...</span> <span class="n">Is</span><span class="o">&gt;</span>
+<span class="n">MatrixBlock</span><span class="o">&lt;</span><span class="n">Scalar_</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;</span> <span class="n">dot_row_with_other_row</span><span class="p">(</span><span class="n">Row</span><span class="o">&lt;</span><span class="n">Scalar</span><span class="o">&lt;</span><span class="n">Scalar_</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Dimension</span><span class="o">&lt;</span><span class="n">R1</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">VariableGroup</span><span class="o">&lt;</span><span class="n">Variables</span><span class="p">...</span><span class="o">&gt;&gt;&amp;</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">Row</span><span class="o">&lt;</span><span class="n">Scalar</span><span class="o">&lt;</span><span class="n">Scalar_</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Dimension</span><span class="o">&lt;</span><span class="n">R2</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">VariableGroup</span><span class="o">&lt;</span><span class="n">Variables</span><span class="p">...</span><span class="o">&gt;&gt;&amp;</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">integer_sequence</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span> <span class="n">Is</span><span class="p">...</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="n">MatrixBlock</span><span class="o">&lt;</span><span class="n">Scalar_</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="o">&gt;</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="n">dot_row_with_other_row</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">lhs</span><span class="p">.</span><span class="n">column</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">get</span><span class="o">&lt;</span><span class="n">Is</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rhs</span><span class="p">.</span><span class="n">column</span><span class="p">),</span> <span class="n">result</span><span class="p">)...};</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">l</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">};</span> <span class="c1">// namespace internal</span>
+<span class="p">}</span> <span class="c1">// namespace LittleOptimizer::SparseBlockMatrix</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">qdvo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="library_root.html">Library API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Kevin Sheridan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/program_listing_file_src_Optimizer_SparseBlockMatrixInternal.h.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

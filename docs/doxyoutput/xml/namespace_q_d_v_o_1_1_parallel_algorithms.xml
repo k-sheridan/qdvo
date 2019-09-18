@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="namespace_q_d_v_o_1_1_parallel_algorithms" kind="namespace" language="C++">
+    <compoundname>QDVO::ParallelAlgorithms</compoundname>
+      <sectiondef kind="enum">
+      <memberdef kind="enum" id="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ExecutionType</name>
+        <enumvalue id="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90a08f9398804e239a1af821f68215ae7c5" prot="public">
+          <name>SEQUENTIAL</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90ab22f9b7b25752735b65dca7e9865abad" prot="public">
+          <name>PARALLEL_CPU</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90ae2fc5112117769dc5253629e4951c92a" prot="public">
+          <name>PARALLEL_CUDA</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ParallelAlgorithms.h" line="14" column="1" bodyfile="src/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="13" bodyend="18"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="_parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class InputIterator</type>
+          </param>
+          <param>
+            <type>class OutputIterator</type>
+          </param>
+          <param>
+            <type>class UnaryOperation</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void QDVO::ParallelAlgorithms::transform</definition>
+        <argsstring>(ExecutionType execution, InputIterator first, InputIterator last, OutputIterator result, UnaryOperation op)</argsstring>
+        <name>transform</name>
+        <param>
+          <type>ExecutionType</type>
+          <declname>execution</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>UnaryOperation</type>
+          <declname>op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ParallelAlgorithms.h" line="21" column="6" bodyfile="src/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="21" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="_parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class InputIterator1</type>
+          </param>
+          <param>
+            <type>class InputIterator2</type>
+          </param>
+          <param>
+            <type>class OutputIterator</type>
+          </param>
+          <param>
+            <type>class BinaryOperation</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void QDVO::ParallelAlgorithms::transform</definition>
+        <argsstring>(ExecutionType execution, InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, OutputIterator result, BinaryOperation binary_op)</argsstring>
+        <name>transform</name>
+        <param>
+          <type>ExecutionType</type>
+          <declname>execution</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>first1</declname>
+        </param>
+        <param>
+          <type>InputIterator1</type>
+          <declname>last1</declname>
+        </param>
+        <param>
+          <type>InputIterator2</type>
+          <declname>first2</declname>
+        </param>
+        <param>
+          <type>OutputIterator</type>
+          <declname>result</declname>
+        </param>
+        <param>
+          <type>BinaryOperation</type>
+          <declname>binary_op</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ParallelAlgorithms.h" line="47" column="6" bodyfile="src/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="47" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="_parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class InputIterator</type>
+          </param>
+          <param>
+            <type>class UnaryFunction</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void QDVO::ParallelAlgorithms::for_each</definition>
+        <argsstring>(ExecutionType execution, InputIterator first, InputIterator last, UnaryFunction f)</argsstring>
+        <name>for_each</name>
+        <param>
+          <type>ExecutionType</type>
+          <declname>execution</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>InputIterator</type>
+          <declname>last</declname>
+        </param>
+        <param>
+          <type>UnaryFunction</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ParallelAlgorithms.h" line="74" column="6" bodyfile="src/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="74" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="_threading_helpers_8h_1a08260634f488dd444692cda98dcdd8ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::ParallelAlgorithms::getSuggestedThreadCount</definition>
+        <argsstring>()</argsstring>
+        <name>getSuggestedThreadCount</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ThreadingHelpers.h" line="12" column="17" bodyfile="src/ParallelAlgorithms/ThreadingHelpers.h" bodystart="12" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="_threading_helpers_8h_1a0085469dd3786f59213263d179a652d6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt;int&gt; QDVO::ParallelAlgorithms::splitProblem</definition>
+        <argsstring>(unsigned nThreads, unsigned length)</argsstring>
+        <name>splitProblem</name>
+        <param>
+          <type>unsigned</type>
+          <declname>nThreads</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ThreadingHelpers.h" line="26" column="20" bodyfile="src/ParallelAlgorithms/ThreadingHelpers.h" bodystart="26" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="_threading_helpers_8h_1aea45d50cb6eb4967c0efd7b8bb86a8b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; std::tuple&lt; int, int &gt; &gt;</type>
+        <definition>std::vector&lt;std::tuple&lt;int, int&gt; &gt; QDVO::ParallelAlgorithms::createListDividers</definition>
+        <argsstring>(unsigned length)</argsstring>
+        <name>createListDividers</name>
+        <param>
+          <type>unsigned</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ThreadingHelpers.h" line="43" column="20" bodyfile="src/ParallelAlgorithms/ThreadingHelpers.h" bodystart="43" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="_threading_helpers_8h_1a8eb6e9129e87e5c9f4ce807805f18eae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::ParallelAlgorithms::joinThreads</definition>
+        <argsstring>(std::vector&lt; std::thread &gt; &amp;threads)</argsstring>
+        <name>joinThreads</name>
+        <param>
+          <type>std::vector&lt; std::thread &gt; &amp;</type>
+          <declname>threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ParallelAlgorithms/ThreadingHelpers.h" line="56" column="13" bodyfile="src/ParallelAlgorithms/ThreadingHelpers.h" bodystart="56" bodyend="63"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/ParallelAlgorithms/ParallelAlgorithms.h" line="12" column="1"/>
+  </compounddef>
+</doxygen>

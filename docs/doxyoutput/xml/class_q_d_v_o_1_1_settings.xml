@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_settings" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::Settings</compoundname>
+    <innerclass refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings" prot="public">QDVO::Settings::FeatureDetectionSettings</innerclass>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_settings_1ac904536b1c419581a64413678c930dba" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::Settings::nKeyframes</definition>
+        <argsstring></argsstring>
+        <name>nKeyframes</name>
+        <initializer>= 7</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="11" column="9" bodyfile="src/Settings.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_settings_1a212965ff5de2eae345fb6745298afb86" prot="public" static="no" mutable="no">
+        <type>struct <ref refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings" kindref="compound">QDVO::Settings::FeatureDetectionSettings</ref></type>
+        <definition>struct QDVO::Settings::FeatureDetectionSettings  QDVO::Settings::feature_detection</definition>
+        <argsstring></argsstring>
+        <name>feature_detection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="21" column="23"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>QDVO::Settings</label>
+        <link refid="class_q_d_v_o_1_1_settings"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>feature_detection</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>QDVO::Settings::FeatureDetectionSettings</label>
+        <link refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings"/>
+      </node>
+    </collaborationgraph>
+    <location file="src/Settings.h" line="7" column="1" bodyfile="src/Settings.h" bodystart="6" bodyend="22"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_settings_1a212965ff5de2eae345fb6745298afb86" prot="public" virt="non-virtual"><scope>QDVO::Settings</scope><name>feature_detection</name></member>
+      <member refid="class_q_d_v_o_1_1_settings_1ac904536b1c419581a64413678c930dba" prot="public" virt="non-virtual"><scope>QDVO::Settings</scope><name>nKeyframes</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_patch_8h" kind="file" language="C++">
+    <compoundname>Patch.h</compoundname>
+    <includes local="no">opencv2/core.hpp</includes>
+    <includes local="no">Eigen/Core</includes>
+    <includes refid="_global_definitions_8h" local="yes">GlobalDefinitions.h</includes>
+    <includes refid="_types_8h" local="yes">Types.h</includes>
+    <includedby refid="_correspondence_distribution_8h" local="yes">src/DataStructures/CorrespondenceDistribution.h</includedby>
+    <includedby refid="_patch_8cpp" local="yes">src/DataStructures/Patch.cpp</includedby>
+    <includedby refid="_patch_comparer_8h" local="yes">src/FeatureMatching/PatchComparer.h</includedby>
+    <includedby refid="_patch_warper_8h" local="yes">src/FeatureMatching/PatchWarper.h</includedby>
+    <incdepgraph>
+      <node id="7">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="4">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>ctime</label>
+      </node>
+      <node id="2">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="9">
+        <label>optional</label>
+      </node>
+      <node id="8">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="5">
+        <label>chrono</label>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/Patch.h</label>
+        <link refid="_patch_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10">
+        <label>src/FeatureMatching/PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/DataStructures/Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/FeatureMatching/PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/DataStructures/Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>src/FeatureDetection/FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>src/ErrorTerms/QuasiDirectErrorTerm.h</label>
+        <link refid="_quasi_direct_error_term_8h_source"/>
+      </node>
+      <node id="2">
+        <label>src/DataStructures/CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/Patch.h</label>
+        <link refid="_patch_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_q_d_v_o_1_1_patch" prot="public">QDVO::Patch</innerclass>
+    <innernamespace refid="namespace_q_d_v_o">QDVO</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>PATCH_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PATCH_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;opencv2/core.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;GlobalDefinitions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Types.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO<sp/>{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>stores<sp/>the<sp/>information<sp/>which<sp/>defines<sp/>a<sp/>feature.<sp/>Typically,<sp/>this<sp/>is<sp/>just<sp/>a<sp/>small<sp/>region<sp/>of<sp/>interest<sp/>around<sp/>the<sp/>feature.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>This<sp/>is<sp/>usually<sp/>used<sp/>as<sp/>a<sp/>way<sp/>of<sp/>storing<sp/>a<sp/>warped<sp/>patch.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="class_q_d_v_o_1_1_patch" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref>();</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref>(cv::Mat&amp;<sp/>rawPatchData,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>patchMean,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>patchStdDev);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref>(cv::Mat&amp;<sp/>rawPatchData,<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>patchMean);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref>(cv::Mat&amp;<sp/>rawPatchData);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref>(Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;&amp;<sp/>rawPatchData);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;&amp;<sp/>getImageData(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>data;}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;&amp;<sp/>getZeroMeanImageMatrix(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>zeroMeanMatrix;}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal">&amp;<sp/>getStdDev(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>patchStdDev;}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal">&amp;<sp/>getSumZeroMeanSquared(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>sumZeroMeanSquared;}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal">&amp;<sp/>getMean(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>patchMean;}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&amp;<sp/>getLevel(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>level;}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>level;<sp/></highlight><highlight class="comment">//<sp/>the<sp/>image<sp/>level<sp/>this<sp/>patch<sp/>was<sp/>created<sp/>at.<sp/>(0<sp/>=<sp/>full<sp/>resolution).</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>initialized<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;<sp/>data;<sp/></highlight><highlight class="comment">//<sp/>the<sp/>pixel<sp/>data.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;<sp/>zeroMeanMatrix;<sp/></highlight><highlight class="comment">//<sp/>the<sp/>mean<sp/>shifted<sp/>data,<sp/>computed<sp/>iff<sp/>necessary</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>patchMean,<sp/>patchStdDev,<sp/>sumZeroMeanSquared;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>PATCH_H</highlight></codeline>
+    </programlisting>
+    <location file="src/DataStructures/Patch.h"/>
+  </compounddef>
+</doxygen>

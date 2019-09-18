@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_little_optimizer_1_1_inverse_depth" kind="class" language="C++" prot="public">
+    <compoundname>LittleOptimizer::InverseDepth</compoundname>
+    <basecompoundref refid="class_little_optimizer_1_1_optimizable_variable" prot="public" virt="non-virtual">LittleOptimizer::OptimizableVariable&lt; 1 &gt;</basecompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>LittleOptimizer::InverseDepth</label>
+        <link refid="class_little_optimizer_1_1_inverse_depth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>LittleOptimizer::OptimizableVariable&lt; 1 &gt;</label>
+        <link refid="class_little_optimizer_1_1_optimizable_variable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>LittleOptimizer::InverseDepth</label>
+        <link refid="class_little_optimizer_1_1_inverse_depth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>LittleOptimizer::OptimizableVariable&lt; 1 &gt;</label>
+        <link refid="class_little_optimizer_1_1_optimizable_variable"/>
+      </node>
+    </collaborationgraph>
+    <location file="src/Optimizer/InverseDepth.h" line="7" column="51" bodyfile="src/Optimizer/InverseDepth.h" bodystart="7" bodyend="9"/>
+    <listofallmembers>
+      <member refid="class_little_optimizer_1_1_optimizable_variable_1ac816cea8501ea6c78fe95f7c2d91863e" prot="public" virt="non-virtual"><scope>LittleOptimizer::InverseDepth</scope><name>dimension</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

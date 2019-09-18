@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b" kind="class" language="C++" prot="public">
+    <compoundname>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>ErrorTerms</declname>
+        <defname>ErrorTerms</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a485a08b8bc6b7acdd46139463c61b916" prot="private" static="no" mutable="no">
+        <type>std::tuple&lt; <ref refid="class_little_optimizer_1_1slot__map" kindref="compound">slot_map</ref>&lt; Variables &gt;... &gt;</type>
+        <definition>std::tuple&lt;slot_map&lt;Variables&gt;...&gt; LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::variableVectors</definition>
+        <argsstring></argsstring>
+        <name>variableVectors</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/LittleOptimizer.h" line="18" column="16" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a07152b3c5b988b0b3697e6f46d6d27eb" prot="private" static="no" mutable="no">
+        <type>std::tuple&lt; std::vector&lt; ErrorTerms &gt;... &gt;</type>
+        <definition>std::tuple&lt;std::vector&lt;ErrorTerms&gt;...&gt; LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::errorTermVectors</definition>
+        <argsstring></argsstring>
+        <name>errorTermVectors</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/LittleOptimizer.h" line="20" column="16" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1ae67c825745f74939405f3e4f09a60ccd" prot="private" static="no" mutable="no">
+        <type><ref refid="class_little_optimizer_1_1_p_s_d_linear_system" kindref="compound">PSDLinearSystem</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>&lt; double &gt;, <ref refid="struct_little_optimizer_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
+        <definition>PSDLinearSystem&lt;Scalar&lt;double&gt;, VariableGroup&lt;Variables...&gt; &gt; LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::linearSystem</definition>
+        <argsstring></argsstring>
+        <name>linearSystem</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/LittleOptimizer.h" line="22" column="21" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a939c413e6bc101765b38bad4d5740bc2" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="struct_little_optimizer_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+        <definition>VariableKey&lt;VariableType&gt; LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::addVariable</definition>
+        <argsstring>(VariableType var)</argsstring>
+        <name>addVariable</name>
+        <param>
+          <type>VariableType</type>
+          <declname>var</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/LittleOptimizer.h" line="25" column="17" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="25" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a13efcade54e932849610dae0b1d66f93" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ErrorTermType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::addErrorTerm</definition>
+        <argsstring>(ErrorTermType errorTerm)</argsstring>
+        <name>addErrorTerm</name>
+        <param>
+          <type>ErrorTermType</type>
+          <declname>errorTerm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/LittleOptimizer.h" line="38" column="10" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="38" bodyend="41"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/LittleOptimizer.h" line="17" column="1" bodyfile="src/Optimizer/LittleOptimizer.h" bodystart="16" bodyend="43"/>
+    <listofallmembers>
+      <member refid="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a13efcade54e932849610dae0b1d66f93" prot="private" virt="non-virtual"><scope>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addErrorTerm</name></member>
+      <member refid="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a939c413e6bc101765b38bad4d5740bc2" prot="private" virt="non-virtual"><scope>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addVariable</name></member>
+      <member refid="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a07152b3c5b988b0b3697e6f46d6d27eb" prot="private" virt="non-virtual"><scope>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>errorTermVectors</name></member>
+      <member refid="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1ae67c825745f74939405f3e4f09a60ccd" prot="private" virt="non-virtual"><scope>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>linearSystem</name></member>
+      <member refid="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b_1a485a08b8bc6b7acdd46139463c61b916" prot="private" virt="non-virtual"><scope>LittleOptimizer::Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>variableVectors</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

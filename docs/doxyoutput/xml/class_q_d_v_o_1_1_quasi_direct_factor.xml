@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_quasi_direct_factor" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::QuasiDirectFactor</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">gtsam::NoiseModelFactor3&lt; gtsam::Pose3, gtsam::Pose3, QDVO::InverseDepth &gt;</basecompoundref>
+    <includes refid="_quasi_direct_error_term_8h" local="no">QuasiDirectErrorTerm.h</includes>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_quasi_direct_factor_1acb75b4fafc7d54f2627d01781e9c2472" prot="private" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_correspondence_distribution" kindref="compound">QDVO::CorrespondenceDistribution</ref> *</type>
+        <definition>QDVO::CorrespondenceDistribution* QDVO::QuasiDirectFactor::cdPtr</definition>
+        <argsstring></argsstring>
+        <name>cdPtr</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="22" column="38" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="22" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_quasi_direct_factor_1afa156c22562a39237e96ba4e1e90b3ca" prot="private" static="no" mutable="no">
+        <type>QDVO::Vector3</type>
+        <definition>QDVO::Vector3 QDVO::QuasiDirectFactor::landmarkBearing</definition>
+        <argsstring></argsstring>
+        <name>landmarkBearing</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="23" column="19" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="23" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_quasi_direct_factor_1a19fd31cd956d168ee95a04830ad52f84" prot="private" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_camera_model" kindref="compound">QDVO::CameraModel</ref> *</type>
+        <definition>QDVO::CameraModel* QDVO::QuasiDirectFactor::cmPtr_obsFrame</definition>
+        <argsstring></argsstring>
+        <name>cmPtr_obsFrame</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="24" column="23" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_quasi_direct_factor_1ae001bfb1bba1e47d6eaaffcb06ac640e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::QuasiDirectFactor::QuasiDirectFactor</definition>
+        <argsstring>(gtsam::Key obsFrameKey, gtsam::Key landmarkFrameKey, gtsam::Key landmarkInverseDepthKey, QDVO::CorrespondenceDistribution &amp;correspondenceDistribution, QDVO::Vector3 &amp;landmarkBearing, QDVO::CameraModel *obsFrameCameraModel, gtsam::SharedNoiseModel model)</argsstring>
+        <name>QuasiDirectFactor</name>
+        <param>
+          <type>gtsam::Key</type>
+          <declname>obsFrameKey</declname>
+        </param>
+        <param>
+          <type>gtsam::Key</type>
+          <declname>landmarkFrameKey</declname>
+        </param>
+        <param>
+          <type>gtsam::Key</type>
+          <declname>landmarkInverseDepthKey</declname>
+        </param>
+        <param>
+          <type><ref refid="class_q_d_v_o_1_1_correspondence_distribution" kindref="compound">QDVO::CorrespondenceDistribution</ref> &amp;</type>
+          <declname>correspondenceDistribution</declname>
+        </param>
+        <param>
+          <type>QDVO::Vector3 &amp;</type>
+          <declname>landmarkBearing</declname>
+        </param>
+        <param>
+          <type><ref refid="class_q_d_v_o_1_1_camera_model" kindref="compound">QDVO::CameraModel</ref> *</type>
+          <declname>obsFrameCameraModel</declname>
+        </param>
+        <param>
+          <type>gtsam::SharedNoiseModel</type>
+          <declname>model</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="27" column="5" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="27" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_quasi_direct_factor_1a59536ebfd4668f7bd001dc8e072a0285" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>gtsam::Vector</type>
+        <definition>gtsam::Vector QDVO::QuasiDirectFactor::evaluateError</definition>
+        <argsstring>(const gtsam::Pose3 &amp;obsFrame, const gtsam::Pose3 &amp;landmarkFrame, const QDVO::InverseDepth &amp;landmarkInverseDepth, boost::optional&lt; gtsam::Matrix &amp; &gt; H1=boost::none, boost::optional&lt; gtsam::Matrix &amp; &gt; H2=boost::none, boost::optional&lt; gtsam::Matrix &amp; &gt; H3=boost::none)</argsstring>
+        <name>evaluateError</name>
+        <param>
+          <type>const gtsam::Pose3 &amp;</type>
+          <declname>obsFrame</declname>
+        </param>
+        <param>
+          <type>const gtsam::Pose3 &amp;</type>
+          <declname>landmarkFrame</declname>
+        </param>
+        <param>
+          <type>const QDVO::InverseDepth &amp;</type>
+          <declname>landmarkInverseDepth</declname>
+        </param>
+        <param>
+          <type>boost::optional&lt; gtsam::Matrix &amp; &gt;</type>
+          <declname>H1</declname>
+          <defval>boost::none</defval>
+        </param>
+        <param>
+          <type>boost::optional&lt; gtsam::Matrix &amp; &gt;</type>
+          <declname>H2</declname>
+          <defval>boost::none</defval>
+        </param>
+        <param>
+          <type>boost::optional&lt; gtsam::Matrix &amp; &gt;</type>
+          <declname>H3</declname>
+          <defval>boost::none</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="40" column="19" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="40" bodyend="61"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This is the full QuasiDirect error term / factor. The order is as follows:</para>
+<para>Observation IMU Pose <ref refid="class_q_d_v_o_1_1_landmark" kindref="compound">Landmark</ref> Parent IMU Pose <ref refid="class_q_d_v_o_1_1_landmark" kindref="compound">Landmark</ref> Inverse Depth </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>QDVO::QuasiDirectFactor</label>
+        <link refid="class_q_d_v_o_1_1_quasi_direct_factor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>gtsam::NoiseModelFactor3&lt; gtsam::Pose3, gtsam::Pose3, QDVO::InverseDepth &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>QDVO::QuasiDirectFactor</label>
+        <link refid="class_q_d_v_o_1_1_quasi_direct_factor"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>gtsam::NoiseModelFactor3&lt; gtsam::Pose3, gtsam::Pose3, QDVO::InverseDepth &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="src/ErrorTerms/QuasiDirectErrorTerm.h" line="19" column="1" bodyfile="src/ErrorTerms/QuasiDirectErrorTerm.h" bodystart="18" bodyend="62"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1acb75b4fafc7d54f2627d01781e9c2472" prot="private" virt="non-virtual"><scope>QDVO::QuasiDirectFactor</scope><name>cdPtr</name></member>
+      <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1a19fd31cd956d168ee95a04830ad52f84" prot="private" virt="non-virtual"><scope>QDVO::QuasiDirectFactor</scope><name>cmPtr_obsFrame</name></member>
+      <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1a59536ebfd4668f7bd001dc8e072a0285" prot="public" virt="non-virtual"><scope>QDVO::QuasiDirectFactor</scope><name>evaluateError</name></member>
+      <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1afa156c22562a39237e96ba4e1e90b3ca" prot="private" virt="non-virtual"><scope>QDVO::QuasiDirectFactor</scope><name>landmarkBearing</name></member>
+      <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1ae001bfb1bba1e47d6eaaffcb06ac640e" prot="public" virt="non-virtual"><scope>QDVO::QuasiDirectFactor</scope><name>QuasiDirectFactor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

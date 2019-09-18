@@ -1,0 +1,13 @@
+.. _exhale_typedef__graph_8h_1a80b779b08c576e9c10d2da988d6d4892:
+
+Typedef QDVO::ExtrinsicSetType
+==============================
+
+- Defined in :ref:`file_src_DataStructures_Graph.h`
+
+
+Typedef Documentation
+---------------------
+
+
+.. doxygentypedef:: QDVO::ExtrinsicSetType

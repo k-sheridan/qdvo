@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_little_optimizer_1_1_typed_index" kind="struct" language="C++" prot="public">
+    <compoundname>LittleOptimizer::TypedIndex</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_little_optimizer_1_1_typed_index_1a2c7ac2b55d69c28474d98344d54754a8" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t LittleOptimizer::TypedIndex&lt; T &gt;::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MetaHelpers.h" line="19" column="12" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/MetaHelpers.h" line="18" column="17" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="18" bodyend="20"/>
+    <listofallmembers>
+      <member refid="struct_little_optimizer_1_1_typed_index_1a2c7ac2b55d69c28474d98344d54754a8" prot="public" virt="non-virtual"><scope>LittleOptimizer::TypedIndex</scope><name>index</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

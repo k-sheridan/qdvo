@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c" kind="class" language="C++" prot="public">
+    <compoundname>LittleOptimizer::PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename ScalarType</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/PSDLinearSystem.h" line="12" column="25" bodyfile="src/Optimizer/PSDLinearSystem.h" bodystart="12" bodyend="14"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

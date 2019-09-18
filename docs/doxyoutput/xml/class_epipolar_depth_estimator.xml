@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_epipolar_depth_estimator" kind="class" language="C++" prot="public">
+    <compoundname>EpipolarDepthEstimator</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_epipolar_depth_estimator_1af474639013c2c14041882779a1155991" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool EpipolarDepthEstimator::initialized</definition>
+        <argsstring></argsstring>
+        <name>initialized</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Estimation/EpipolarDepthEstimator.h" line="10" column="10" bodyfile="src/Estimation/EpipolarDepthEstimator.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_epipolar_depth_estimator_1a624e9ca2e33c746b242198fc7c1ccaae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>EpipolarDepthEstimator::EpipolarDepthEstimator</definition>
+        <argsstring>()</argsstring>
+        <name>EpipolarDepthEstimator</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Estimation/EpipolarDepthEstimator.h" line="8" column="5" bodyfile="src/Estimation/EpipolarEepthEstimator.cpp" bodystart="3" bodyend="6"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Estimation/EpipolarDepthEstimator.h" line="6" column="1" bodyfile="src/Estimation/EpipolarDepthEstimator.h" bodystart="5" bodyend="11"/>
+    <listofallmembers>
+      <member refid="class_epipolar_depth_estimator_1a624e9ca2e33c746b242198fc7c1ccaae" prot="public" virt="non-virtual"><scope>EpipolarDepthEstimator</scope><name>EpipolarDepthEstimator</name></member>
+      <member refid="class_epipolar_depth_estimator_1af474639013c2c14041882779a1155991" prot="public" virt="non-virtual"><scope>EpipolarDepthEstimator</scope><name>initialized</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="namespace_little_optimizer_1_1slot__map__detail" kind="namespace" language="C++">
+    <compoundname>LittleOptimizer::slot_map_detail</compoundname>
+    <innerclass refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" prot="public">LittleOptimizer::slot_map_detail::priority_tag</innerclass>
+    <innerclass refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4" prot="public">LittleOptimizer::slot_map_detail::priority_tag&lt; 0 &gt;</innerclass>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="slot__map_8h_1aad91b2e102898d5d164fda6dc08d00cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Ctr</type>
+          </param>
+          <param>
+            <type>class SizeType</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto LittleOptimizer::slot_map_detail::reserve_if_possible</definition>
+        <argsstring>(Ctr &amp;, SizeType, priority_tag&lt; 0 &gt;) -&gt; void</argsstring>
+        <name>reserve_if_possible</name>
+        <param>
+          <type>Ctr &amp;</type>
+        </param>
+        <param>
+          <type>SizeType</type>
+        </param>
+        <param>
+          <type><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" kindref="compound">priority_tag</ref>&lt; 0 &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/slot_map.h" line="48" column="13" bodyfile="src/Optimizer/slot_map.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="slot__map_8h_1a172d5df6b5c82e9cd9e17e3891da7b8a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Ctr</type>
+          </param>
+          <param>
+            <type>class SizeType</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto LittleOptimizer::slot_map_detail::reserve_if_possible</definition>
+        <argsstring>(Ctr &amp;ctr, SizeType n, priority_tag&lt; 1 &gt;) -&gt; decltype(void(ctr.reserve(n)))</argsstring>
+        <name>reserve_if_possible</name>
+        <param>
+          <type>Ctr &amp;</type>
+          <declname>ctr</declname>
+        </param>
+        <param>
+          <type>SizeType</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag" kindref="compound">priority_tag</ref>&lt; 1 &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/slot_map.h" line="51" column="13" bodyfile="src/Optimizer/slot_map.h" bodystart="51" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="slot__map_8h_1aa0eb68d038f05c03c1185806e6273603" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class Ctr</type>
+          </param>
+          <param>
+            <type>class SizeType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LittleOptimizer::slot_map_detail::reserve_if_possible</definition>
+        <argsstring>(Ctr &amp;ctr, const SizeType &amp;n)</argsstring>
+        <name>reserve_if_possible</name>
+        <param>
+          <type>Ctr &amp;</type>
+          <declname>ctr</declname>
+        </param>
+        <param>
+          <type>const SizeType &amp;</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/slot_map.h" line="57" column="13" bodyfile="src/Optimizer/slot_map.h" bodystart="57" bodyend="60"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/slot_map.h" line="42" column="25"/>
+  </compounddef>
+</doxygen>

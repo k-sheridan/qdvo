@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_patch_warper_8cpp" kind="file" language="C++">
+    <compoundname>PatchWarper.cpp</compoundname>
+    <includes refid="_patch_warper_8h" local="yes">PatchWarper.h</includes>
+    <incdepgraph>
+      <node id="25">
+        <label>RadialSearchPattern.h</label>
+        <link refid="_radial_search_pattern_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="37">
+        <label>opencv2/imgproc.hpp</label>
+      </node>
+      <node id="8">
+        <label>IMUState.h</label>
+        <link refid="_i_m_u_state_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Landmark.h</label>
+        <link refid="_landmark_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>unordered_set</label>
+      </node>
+      <node id="19">
+        <label>Image.h</label>
+        <link refid="_image_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>sophus/types.hpp</label>
+      </node>
+      <node id="14">
+        <label>CameraModel.hpp</label>
+        <link refid="_camera_model_8hpp_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>tuple</label>
+      </node>
+      <node id="5">
+        <label>ctime</label>
+      </node>
+      <node id="9">
+        <label>sophus/common.hpp</label>
+      </node>
+      <node id="6">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="13">
+        <label>optional</label>
+      </node>
+      <node id="7">
+        <label>Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>vector</label>
+      </node>
+      <node id="36">
+        <label>FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>ImageStatisticsLUT.h</label>
+        <link refid="_image_statistics_l_u_t_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>EpipolarDepthEstimator.h</label>
+        <link refid="_epipolar_depth_estimator_8h_source"/>
+      </node>
+      <node id="18">
+        <label>ImagePyramid.h</label>
+        <link refid="_image_pyramid_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>iostream</label>
+      </node>
+      <node id="27">
+        <label>SpatialMap.h</label>
+        <link refid="_spatial_map_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>unordered_map</label>
+      </node>
+      <node id="21">
+        <label>CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="1">
+        <label>src/FeatureMatching/PatchWarper.cpp</label>
+        <link refid="_patch_warper_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>mutex</label>
+      </node>
+      <node id="4">
+        <label>chrono</label>
+      </node>
+      <node id="34">
+        <label>thread</label>
+      </node>
+      <node id="23">
+        <label>boost/geometry.hpp</label>
+      </node>
+      <node id="29">
+        <label>Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>algorithm</label>
+      </node>
+      <node id="35">
+        <label>Settings.h</label>
+        <link refid="_settings_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>Feature.h</label>
+        <link refid="_feature_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>memory</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;PatchWarper.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal">QDVO::PatchWarper::PatchWarper()</highlight></codeline>
+<codeline lineno="4"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="5"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::PatchWarper::warpPatchToTargetFrame(QDVO::Result&lt;Patch&gt;<sp/>&amp;warpedPatch,<sp/>Landmark<sp/>&amp;landmark,<sp/>Frame<sp/>&amp;sourceFrame,<sp/>Frame<sp/>&amp;targetFrame,<sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">QDVO::Graph</ref><sp/>&amp;g,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>patchRadius)</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>warpedPatch.reset();<sp/></highlight><highlight class="comment">//<sp/>reset<sp/>the<sp/>patch.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_w_sourceImu<sp/>=<sp/>sourceFrame.imustate.getSE3();</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_w_targetImu<sp/>=<sp/>targetFrame.imustate.getSE3();</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_i_sourceCam<sp/>=<sp/>g.getExtrinsic(sourceFrame.camID);</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_i_targetCam<sp/>=<sp/>g.getExtrinsic(targetFrame.camID);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_sourceCam_targetCam<sp/>=<sp/>(T_w_sourceImu<sp/>*<sp/>T_i_sourceCam).inverse()<sp/>*<sp/>(T_w_targetImu<sp/>*<sp/>T_i_targetCam);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>T_targetCam_sourceCam<sp/>=<sp/>T_sourceCam_targetCam.inverse();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>pt_source<sp/>=<sp/>landmark.getEuclideanPoint();</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>r_pt_target<sp/>=<sp/>T_sourceCam_targetCam.translation()<sp/>-<sp/>pt_source;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>normal<sp/>=<sp/>(r_pt_target<sp/>/<sp/>r_pt_target.norm())<sp/>-<sp/>(pt_source<sp/>/<sp/>pt_source.norm());</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>normal.normalize();</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>n<sp/>=<sp/>T_targetCam_sourceCam.so3()<sp/>*<sp/>normal;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>p0<sp/>=<sp/>T_targetCam_sourceCam<sp/>*<sp/>landmark.getEuclideanPoint();</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(p0(2)<sp/>&lt;=<sp/>1e-10)</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//throw<sp/>std::runtime_error(&quot;failed<sp/>to<sp/>warp<sp/>patch.<sp/>point<sp/>behind<sp/>camera.&quot;);</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>u0<sp/>=<sp/>p0<sp/>/<sp/>p0(2);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;SCALAR_TYPE,<sp/>2,<sp/>2&gt;<sp/>projJac;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>px0<sp/>=<sp/>targetFrame.cm-&gt;project(u0,<sp/>&amp;projJac);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!px0.has_value())</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>px_source<sp/>=<sp/>sourceFrame.cm-&gt;project(pt_source,<sp/>&amp;projJac);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!px_source.has_value())</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;SCALAR_TYPE,<sp/>2,<sp/>2&gt;<sp/>unprojJac<sp/>=<sp/>projJac.inverse();</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(patchRadius<sp/>==<sp/>PATCH_RADIUS);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;float,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;<sp/>imageData;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>u,<sp/>p;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>u(2)<sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>deltaX<sp/>=<sp/>-patchRadius;<sp/>deltaX<sp/>&lt;=<sp/>patchRadius;<sp/>++deltaX)</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>deltaY<sp/>=<sp/>-patchRadius;<sp/>deltaY<sp/>&lt;=<sp/>patchRadius;<sp/>++deltaY)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>u.block(0,<sp/>0,<sp/>2,<sp/>1)<sp/>=<sp/>u0.block(0,<sp/>0,<sp/>2,<sp/>1)<sp/>+<sp/>unprojJac<sp/>*<sp/>QDVO::Vector2(deltaX,<sp/>deltaY);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>p<sp/>=<sp/>T_sourceCam_targetCam<sp/>*<sp/>(((p0.dot(n))<sp/>/<sp/>(u.dot(n)))<sp/>*<sp/>u);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>QDVO::Vector2<sp/>px<sp/>=<sp/>px_source.value()<sp/>+<sp/>projJac<sp/>*<sp/>((p.block(0,<sp/>0,<sp/>2,<sp/>1)<sp/>/<sp/>p(2))<sp/>-<sp/>landmark.bearing.block(0,<sp/>0,<sp/>2,<sp/>1));</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>brightness<sp/>=<sp/>sourceFrame.imagePyr.getImage().getSubPixelIntensity(px);</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!brightness.has_value())</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>imageData(deltaY<sp/>+<sp/>patchRadius,<sp/>deltaX<sp/>+<sp/>patchRadius)<sp/>=<sp/>(brightness.value());</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>warpedPatch<sp/>=<sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref>(imageData);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="src/FeatureMatching/PatchWarper.cpp"/>
+  </compounddef>
+</doxygen>

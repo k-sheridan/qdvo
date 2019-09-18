@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Library API &#8212; qdvo  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js"></script>
+    <script type="text/javascript" src="../_static/collapsible-lists/js/apply-collapsible-lists.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Namespace LittleOptimizer" href="namespace_LittleOptimizer.html" />
+    <link rel="prev" title="Welcome to qdvo’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="library-api">
+<h1>Library API<a class="headerlink" href="#library-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="class-hierarchy">
+<h2>Class Hierarchy<a class="headerlink" href="#class-hierarchy" title="Permalink to this headline">¶</a></h2>
+<ul class="treeView" id="class-treeView">
+  <li>
+    <ul class="collapsibleList">
+      <li>Namespace <a href="namespace_LittleOptimizer.html#namespace-LittleOptimizer">LittleOptimizer</a><ul><li>Namespace <a href="namespace_LittleOptimizer__internal.html#namespace-LittleOptimizer-internal">LittleOptimizer::internal</a><ul><li>Template Struct <a href="struct_little_optimizer_1_1internal_1_1_index.html#exhale-struct-struct-little-optimizer-1-1internal-1-1-index">Index</a></li><li>Template Struct <a href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html#exhale-struct-struct-little-optimizer-1-1internal-1-1-index-3-01-t-00-01std-1-1tuple-3-01-t-00-01-types-8-8-8-01-4-01-4">Index&lt; T, std::tuple&lt; T, Types... &gt; &gt;</a></li><li class="lastChild">Template Struct <a href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4.html#exhale-struct-struct-little-optimizer-1-1internal-1-1-index-3-01-t-00-01std-1-1tuple-3-01-u-00-01-types-8-8-8-01-4-01-4">Index&lt; T, std::tuple&lt; U, Types... &gt; &gt;</a></li></ul></li><li>Namespace <a href="namespace_LittleOptimizer__slot_map_detail.html#namespace-LittleOptimizer-slot-map-detail">LittleOptimizer::slot_map_detail</a><ul><li>Template Struct <a href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag.html#exhale-struct-struct-little-optimizer-1-1slot-map-detail-1-1priority-tag">priority_tag</a></li><li class="lastChild">Template <a href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4.html#exhale-struct-struct-little-optimizer-1-1slot-map-detail-1-1priority-tag-3-010-01-4">Struct priority_tag&lt; 0 &gt;</a></li></ul></li><li>Namespace <a href="namespace_LittleOptimizer__SparseBlockMatrix.html#namespace-LittleOptimizer-SparseBlockMatrix">LittleOptimizer::SparseBlockMatrix</a><ul><li>Template Class <a href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row.html#exhale-class-class-little-optimizer-1-1-sparse-block-matrix-1-1-row">Row</a></li><li>Template Class <a href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477.html#exhale-class-class-little-optimizer-1-1-sparse-block-matrix-1-1-row-3-01-scalar-3-01-scalar--01-4-00-01-dimec7e7eacd7b5ab458d77e5a4b0c621477">Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</a></li><li>Template Class <a href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix.html#exhale-class-class-little-optimizer-1-1-sparse-block-matrix-1-1-sparse-block-matrix">SparseBlockMatrix</a></li><li class="lastChild">Template Class <a href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar__afdf0b45d6efe09857ea6ab6b4e073bb.html#exhale-class-class-little-optimizer-1-1-sparse-block-matrix-1-1-sparse-block-matrix-3-01-scalar-3-01-scalar-afdf0b45d6efe09857ea6ab6b4e073bb">SparseBlockMatrix&lt; Scalar&lt; Scalar_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</a></li></ul></li><li>Template Struct <a href="struct_little_optimizer_1_1_dimension.html#exhale-struct-struct-little-optimizer-1-1-dimension">Dimension</a></li><li>Template Struct <a href="struct_little_optimizer_1_1_error_term_group.html#exhale-struct-struct-little-optimizer-1-1-error-term-group">ErrorTermGroup</a></li><li>Template Struct <a href="struct_little_optimizer_1_1_scalar.html#exhale-struct-struct-little-optimizer-1-1-scalar">Scalar</a></li><li>Template Struct <a href="struct_little_optimizer_1_1_typed_index.html#exhale-struct-struct-little-optimizer-1-1-typed-index">TypedIndex</a></li><li>Template Struct <a href="struct_little_optimizer_1_1_variable_group.html#exhale-struct-struct-little-optimizer-1-1-variable-group">VariableGroup</a></li><li>Template Struct <a href="struct_little_optimizer_1_1_variable_key.html#exhale-struct-struct-little-optimizer-1-1-variable-key">VariableKey</a></li><li>Class <a href="class_little_optimizer_1_1_inverse_depth.html#exhale-class-class-little-optimizer-1-1-inverse-depth">InverseDepth</a></li><li>Template Class <a href="class_little_optimizer_1_1_matrix_block.html#exhale-class-class-little-optimizer-1-1-matrix-block">MatrixBlock</a></li><li>Template Class <a href="class_little_optimizer_1_1_optimizable_variable.html#exhale-class-class-little-optimizer-1-1-optimizable-variable">OptimizableVariable</a></li><li>Template Class <a href="class_little_optimizer_1_1_optimizer.html#exhale-class-class-little-optimizer-1-1-optimizer">Optimizer</a></li><li>Template Class <a href="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b.html#exhale-class-class-little-optimizer-1-1-optimizer-3-01-variable-group-3-01-variables-8-8-8-01-4-00-01-error-t283b1846a122f35ebd1c551ffc2e7e4b">Optimizer&lt; VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</a></li><li>Template Class <a href="class_little_optimizer_1_1_p_s_d_linear_system.html#exhale-class-class-little-optimizer-1-1-p-s-d-linear-system">PSDLinearSystem</a></li><li>Template Class <a href="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c.html#exhale-class-class-little-optimizer-1-1-p-s-d-linear-system-3-01-scalar-3-01-scalar-type-01-4-00-01-variable-925f8286232571c061a9a5a40e90566c">PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</a></li><li>Class <a href="class_little_optimizer_1_1_s_e3.html#exhale-class-class-little-optimizer-1-1-s-e3">SE3</a></li><li class="lastChild">Template Class <a href="class_little_optimizer_1_1slot__map.html#exhale-class-class-little-optimizer-1-1slot-map">slot_map</a></li></ul></li><li>Namespace <a href="namespace_QDVO.html#namespace-QDVO">QDVO</a><ul><li>Namespace <a href="namespace_QDVO__ParallelAlgorithms.html#namespace-QDVO-ParallelAlgorithms">QDVO::ParallelAlgorithms</a><ul><li class="lastChild">Enum <a href="enum__parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90.html#exhale-enum-parallel-algorithms-8h-1ab660246938aa3a92290299791334ad90">ExecutionType</a></li></ul></li><li>Class <a href="class_q_d_v_o_1_1_basic_pipeline.html#exhale-class-class-q-d-v-o-1-1-basic-pipeline">BasicPipeline</a></li><li>Class <a href="class_q_d_v_o_1_1_camera_model.html#exhale-class-class-q-d-v-o-1-1-camera-model">CameraModel</a></li><li>Class <a href="class_q_d_v_o_1_1_correspondence_distribution.html#exhale-class-class-q-d-v-o-1-1-correspondence-distribution">CorrespondenceDistribution</a><ul><li class="lastChild">Struct <a href="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence.html#exhale-struct-struct-q-d-v-o-1-1-correspondence-distribution-1-1-potential-correspondence">CorrespondenceDistribution::PotentialCorrespondence</a></li></ul></li><li>Class <a href="class_q_d_v_o_1_1_equidistant_camera_model.html#exhale-class-class-q-d-v-o-1-1-equidistant-camera-model">EquidistantCameraModel</a><ul><li class="lastChild">Struct <a href="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table.html#exhale-struct-struct-q-d-v-o-1-1-equidistant-camera-model-1-1-uniform-radius-look-up-table">EquidistantCameraModel::UniformRadiusLookUpTable</a></li></ul></li><li>Class <a href="class_q_d_v_o_1_1_feature.html#exhale-class-class-q-d-v-o-1-1-feature">Feature</a></li><li>Class <a href="class_q_d_v_o_1_1_feature_detector.html#exhale-class-class-q-d-v-o-1-1-feature-detector">FeatureDetector</a><ul><li class="lastChild">Struct <a href="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate.html#exhale-struct-struct-q-d-v-o-1-1-feature-detector-1-1-feature-candidate">FeatureDetector::FeatureCandidate</a></li></ul></li><li>Class <a href="class_q_d_v_o_1_1_f_o_v_camera_model.html#exhale-class-class-q-d-v-o-1-1-f-o-v-camera-model">FOVCameraModel</a></li><li>Class <a href="class_q_d_v_o_1_1_frame.html#exhale-class-class-q-d-v-o-1-1-frame">Frame</a></li><li>Template Class <a href="class_q_d_v_o_1_1_generic_quad_tree.html#exhale-class-class-q-d-v-o-1-1-generic-quad-tree">GenericQuadTree</a><ul><li class="lastChild">Struct <a href="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad.html#exhale-struct-struct-q-d-v-o-1-1-generic-quad-tree-1-1-quad">GenericQuadTree::Quad</a></li></ul></li><li>Class <a href="class_q_d_v_o_1_1_graph.html#exhale-class-class-q-d-v-o-1-1-graph">Graph</a></li><li>Class <a href="class_q_d_v_o_1_1_image.html#exhale-class-class-q-d-v-o-1-1-image">Image</a></li><li>Class <a href="class_q_d_v_o_1_1_image_pyramid.html#exhale-class-class-q-d-v-o-1-1-image-pyramid">ImagePyramid</a></li><li>Class <a href="class_q_d_v_o_1_1_image_statistics_l_u_t.html#exhale-class-class-q-d-v-o-1-1-image-statistics-l-u-t">ImageStatisticsLUT</a></li><li>Class <a href="class_q_d_v_o_1_1_i_m_u_state.html#exhale-class-class-q-d-v-o-1-1-i-m-u-state">IMUState</a></li><li>Class <a href="class_q_d_v_o_1_1_key.html#exhale-class-class-q-d-v-o-1-1-key">Key</a></li><li>Class <a href="class_q_d_v_o_1_1_landmark.html#exhale-class-class-q-d-v-o-1-1-landmark">Landmark</a></li><li>Class <a href="class_q_d_v_o_1_1_patch.html#exhale-class-class-q-d-v-o-1-1-patch">Patch</a></li><li>Class <a href="class_q_d_v_o_1_1_patch_comparer.html#exhale-class-class-q-d-v-o-1-1-patch-comparer">PatchComparer</a></li><li>Class <a href="class_q_d_v_o_1_1_patch_warper.html#exhale-class-class-q-d-v-o-1-1-patch-warper">PatchWarper</a></li><li>Class <a href="class_q_d_v_o_1_1_quasi_direct_factor.html#exhale-class-class-q-d-v-o-1-1-quasi-direct-factor">QuasiDirectFactor</a></li><li>Class <a href="class_q_d_v_o_1_1_radial_search_pattern.html#exhale-class-class-q-d-v-o-1-1-radial-search-pattern">RadialSearchPattern</a></li><li>Class <a href="class_q_d_v_o_1_1_settings.html#exhale-class-class-q-d-v-o-1-1-settings">Settings</a><ul><li class="lastChild">Struct <a href="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings.html#exhale-struct-struct-q-d-v-o-1-1-settings-1-1-feature-detection-settings">Settings::FeatureDetectionSettings</a></li></ul></li><li class="lastChild">Template Class <a href="class_q_d_v_o_1_1_spatial_map.html#exhale-class-class-q-d-v-o-1-1-spatial-map">SpatialMap</a></li></ul></li><li>Class <a href="class_epipolar_depth_estimator.html#exhale-class-class-epipolar-depth-estimator">EpipolarDepthEstimator</a></li><li>Class <a href="class_front_end_visual_odometry.html#exhale-class-class-front-end-visual-odometry">FrontEndVisualOdometry</a></li><li class="lastChild">Class <a href="class_sliding_window_estimator.html#exhale-class-class-sliding-window-estimator">SlidingWindowEstimator</a></li>
+    </ul>
+  </li><!-- only tree view element -->
+</ul><!-- /treeView class-treeView --></div>
+<div class="section" id="file-hierarchy">
+<h2>File Hierarchy<a class="headerlink" href="#file-hierarchy" title="Permalink to this headline">¶</a></h2>
+<ul class="treeView" id="file-treeView">
+  <li>
+    <ul class="collapsibleList">
+      <li class="lastChild">Directory <a href="dir_src.html#dir-src">src</a><ul><li>Directory <a href="dir_src_CameraModels.html#dir-src-CameraModels">CameraModels</a><ul><li>File <a href="file_src_CameraModels_CameraModel.cpp.html#file-src-CameraModels-CameraModel.cpp">CameraModel.cpp</a></li><li>File <a href="file_src_CameraModels_CameraModel.hpp.html#file-src-CameraModels-CameraModel.hpp">CameraModel.hpp</a></li><li>File <a href="file_src_CameraModels_EquidistantCameraModel.cpp.html#file-src-CameraModels-EquidistantCameraModel.cpp">EquidistantCameraModel.cpp</a></li><li>File <a href="file_src_CameraModels_EquidistantCameraModel.h.html#file-src-CameraModels-EquidistantCameraModel.h">EquidistantCameraModel.h</a></li><li>File <a href="file_src_CameraModels_FOVCameraModel.cpp.html#file-src-CameraModels-FOVCameraModel.cpp">FOVCameraModel.cpp</a></li><li class="lastChild">File <a href="file_src_CameraModels_FOVCameraModel.hpp.html#file-src-CameraModels-FOVCameraModel.hpp">FOVCameraModel.hpp</a></li></ul></li><li>Directory <a href="dir_src_DataStructures.html#dir-src-DataStructures">DataStructures</a><ul><li>File <a href="file_src_DataStructures_CorrespondenceDistribution.cpp.html#file-src-DataStructures-CorrespondenceDistribution.cpp">CorrespondenceDistribution.cpp</a></li><li>File <a href="file_src_DataStructures_CorrespondenceDistribution.h.html#file-src-DataStructures-CorrespondenceDistribution.h">CorrespondenceDistribution.h</a></li><li>File <a href="file_src_DataStructures_Feature.cpp.html#file-src-DataStructures-Feature.cpp">Feature.cpp</a></li><li>File <a href="file_src_DataStructures_Feature.h.html#file-src-DataStructures-Feature.h">Feature.h</a></li><li>File <a href="file_src_DataStructures_Frame.cpp.html#file-src-DataStructures-Frame.cpp">Frame.cpp</a></li><li>File <a href="file_src_DataStructures_Frame.h.html#file-src-DataStructures-Frame.h">Frame.h</a></li><li>File <a href="file_src_DataStructures_GenericQuadTree.h.html#file-src-DataStructures-GenericQuadTree.h">GenericQuadTree.h</a></li><li>File <a href="file_src_DataStructures_Graph.cpp.html#file-src-DataStructures-Graph.cpp">Graph.cpp</a></li><li>File <a href="file_src_DataStructures_Graph.h.html#file-src-DataStructures-Graph.h">Graph.h</a></li><li>File <a href="file_src_DataStructures_Image.cpp.html#file-src-DataStructures-Image.cpp">Image.cpp</a></li><li>File <a href="file_src_DataStructures_Image.h.html#file-src-DataStructures-Image.h">Image.h</a></li><li>File <a href="file_src_DataStructures_ImagePyramid.cpp.html#file-src-DataStructures-ImagePyramid.cpp">ImagePyramid.cpp</a></li><li>File <a href="file_src_DataStructures_ImagePyramid.h.html#file-src-DataStructures-ImagePyramid.h">ImagePyramid.h</a></li><li>File <a href="file_src_DataStructures_ImageStatisticsLUT.h.html#file-src-DataStructures-ImageStatisticsLUT.h">ImageStatisticsLUT.h</a></li><li>File <a href="file_src_DataStructures_IMUState.cpp.html#file-src-DataStructures-IMUState.cpp">IMUState.cpp</a></li><li>File <a href="file_src_DataStructures_IMUState.h.html#file-src-DataStructures-IMUState.h">IMUState.h</a></li><li>File <a href="file_src_DataStructures_Landmark.cpp.html#file-src-DataStructures-Landmark.cpp">Landmark.cpp</a></li><li>File <a href="file_src_DataStructures_Landmark.h.html#file-src-DataStructures-Landmark.h">Landmark.h</a></li><li>File <a href="file_src_DataStructures_Patch.cpp.html#file-src-DataStructures-Patch.cpp">Patch.cpp</a></li><li>File <a href="file_src_DataStructures_Patch.h.html#file-src-DataStructures-Patch.h">Patch.h</a></li><li>File <a href="file_src_DataStructures_RadialSearchPattern.cpp.html#file-src-DataStructures-RadialSearchPattern.cpp">RadialSearchPattern.cpp</a></li><li>File <a href="file_src_DataStructures_RadialSearchPattern.h.html#file-src-DataStructures-RadialSearchPattern.h">RadialSearchPattern.h</a></li><li class="lastChild">File <a href="file_src_DataStructures_SpatialMap.h.html#file-src-DataStructures-SpatialMap.h">SpatialMap.h</a></li></ul></li><li>Directory <a href="dir_src_ErrorTerms.html#dir-src-ErrorTerms">ErrorTerms</a><ul><li class="lastChild">File <a href="file_src_ErrorTerms_QuasiDirectErrorTerm.h.html#file-src-ErrorTerms-QuasiDirectErrorTerm.h">QuasiDirectErrorTerm.h</a></li></ul></li><li>Directory <a href="dir_src_Estimation.html#dir-src-Estimation">Estimation</a><ul><li>File <a href="file_src_Estimation_EpipolarDepthEstimator.h.html#file-src-Estimation-EpipolarDepthEstimator.h">EpipolarDepthEstimator.h</a></li><li>File <a href="file_src_Estimation_EpipolarEepthEstimator.cpp.html#file-src-Estimation-EpipolarEepthEstimator.cpp">EpipolarEepthEstimator.cpp</a></li><li>File <a href="file_src_Estimation_FrontEndVisualOdometry.cpp.html#file-src-Estimation-FrontEndVisualOdometry.cpp">FrontEndVisualOdometry.cpp</a></li><li>File <a href="file_src_Estimation_FrontFndVisualOdometry.h.html#file-src-Estimation-FrontFndVisualOdometry.h">FrontFndVisualOdometry.h</a></li><li>File <a href="file_src_Estimation_SlidingWindowEstimator.cpp.html#file-src-Estimation-SlidingWindowEstimator.cpp">SlidingWindowEstimator.cpp</a></li><li class="lastChild">File <a href="file_src_Estimation_SlidingWindowEstimator.h.html#file-src-Estimation-SlidingWindowEstimator.h">SlidingWindowEstimator.h</a></li></ul></li><li>Directory <a href="dir_src_FeatureDetection.html#dir-src-FeatureDetection">FeatureDetection</a><ul><li>File <a href="file_src_FeatureDetection_FeatureDetector.cpp.html#file-src-FeatureDetection-FeatureDetector.cpp">FeatureDetector.cpp</a></li><li class="lastChild">File <a href="file_src_FeatureDetection_FeatureDetector.h.html#file-src-FeatureDetection-FeatureDetector.h">FeatureDetector.h</a></li></ul></li><li>Directory <a href="dir_src_FeatureMatching.html#dir-src-FeatureMatching">FeatureMatching</a><ul><li>File <a href="file_src_FeatureMatching_PatchComparer.cpp.html#file-src-FeatureMatching-PatchComparer.cpp">PatchComparer.cpp</a></li><li>File <a href="file_src_FeatureMatching_PatchComparer.h.html#file-src-FeatureMatching-PatchComparer.h">PatchComparer.h</a></li><li>File <a href="file_src_FeatureMatching_PatchWarper.cpp.html#file-src-FeatureMatching-PatchWarper.cpp">PatchWarper.cpp</a></li><li class="lastChild">File <a href="file_src_FeatureMatching_PatchWarper.h.html#file-src-FeatureMatching-PatchWarper.h">PatchWarper.h</a></li></ul></li><li>Directory <a href="dir_src_Optimizer.html#dir-src-Optimizer">Optimizer</a><ul><li>File <a href="file_src_Optimizer_InverseDepth.h.html#file-src-Optimizer-InverseDepth.h">InverseDepth.h</a></li><li>File <a href="file_src_Optimizer_Key.h.html#file-src-Optimizer-Key.h">Key.h</a></li><li>File <a href="file_src_Optimizer_LittleOptimizer.h.html#file-src-Optimizer-LittleOptimizer.h">LittleOptimizer.h</a></li><li>File <a href="file_src_Optimizer_MatrixBlock.h.html#file-src-Optimizer-MatrixBlock.h">MatrixBlock.h</a></li><li>File <a href="file_src_Optimizer_MetaHelpers.h.html#file-src-Optimizer-MetaHelpers.h">MetaHelpers.h</a></li><li>File <a href="file_src_Optimizer_OptimizableVariable.h.html#file-src-Optimizer-OptimizableVariable.h">OptimizableVariable.h</a></li><li>File <a href="file_src_Optimizer_PSDLinearSystem.h.html#file-src-Optimizer-PSDLinearSystem.h">PSDLinearSystem.h</a></li><li>File <a href="file_src_Optimizer_SE3.h.html#file-src-Optimizer-SE3.h">SE3.h</a></li><li>File <a href="file_src_Optimizer_slot_map.h.html#file-src-Optimizer-slot-map.h">slot_map.h</a></li><li>File <a href="file_src_Optimizer_SparseBlockMatrix.h.html#file-src-Optimizer-SparseBlockMatrix.h">SparseBlockMatrix.h</a></li><li class="lastChild">File <a href="file_src_Optimizer_SparseBlockMatrixInternal.h.html#file-src-Optimizer-SparseBlockMatrixInternal.h">SparseBlockMatrixInternal.h</a></li></ul></li><li>Directory <a href="dir_src_ParallelAlgorithms.html#dir-src-ParallelAlgorithms">ParallelAlgorithms</a><ul><li>File <a href="file_src_ParallelAlgorithms_Macros.h.html#file-src-ParallelAlgorithms-Macros.h">Macros.h</a></li><li>File <a href="file_src_ParallelAlgorithms_ParallelAlgorithms.h.html#file-src-ParallelAlgorithms-ParallelAlgorithms.h">ParallelAlgorithms.h</a></li><li class="lastChild">File <a href="file_src_ParallelAlgorithms_ThreadingHelpers.h.html#file-src-ParallelAlgorithms-ThreadingHelpers.h">ThreadingHelpers.h</a></li></ul></li><li>Directory <a href="dir_src_Pipeline.html#dir-src-Pipeline">Pipeline</a><ul><li>File <a href="file_src_Pipeline_BasicPipeline.cpp.html#file-src-Pipeline-BasicPipeline.cpp">BasicPipeline.cpp</a></li><li class="lastChild">File <a href="file_src_Pipeline_BasicPipeline.h.html#file-src-Pipeline-BasicPipeline.h">BasicPipeline.h</a></li></ul></li><li>File <a href="file_src_GlobalDefinitions.h.html#file-src-GlobalDefinitions.h">GlobalDefinitions.h</a></li><li>File <a href="file_src_Settings.h.html#file-src-Settings.h">Settings.h</a></li><li class="lastChild">File <a href="file_src_Types.h.html#file-src-Types.h">Types.h</a></li></ul></li>
+    </ul>
+  </li><!-- only tree view element -->
+</ul><!-- /treeView file-treeView --></div>
+<div class="section" id="full-api">
+<h2>Full API<a class="headerlink" href="#full-api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="namespaces">
+<h3>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_LittleOptimizer.html">Namespace LittleOptimizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_LittleOptimizer__internal.html">Namespace LittleOptimizer::internal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__internal.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_LittleOptimizer__slot_map_detail.html">Namespace LittleOptimizer::slot_map_detail</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__slot_map_detail.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__slot_map_detail.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix.html">Namespace LittleOptimizer::SparseBlockMatrix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix__internal.html">Namespace LittleOptimizer::SparseBlockMatrix::internal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_LittleOptimizer__SparseBlockMatrix__internal.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_QDVO.html">Namespace QDVO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_QDVO.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_QDVO.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_QDVO.html#typedefs">Typedefs</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="namespace_QDVO__ParallelAlgorithms.html">Namespace QDVO::ParallelAlgorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="namespace_QDVO__ParallelAlgorithms.html#enums">Enums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="namespace_QDVO__ParallelAlgorithms.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="classes-and-structs">
+<h3>Classes and Structs<a class="headerlink" href="#classes-and-structs" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_dimension.html">Template Struct Dimension</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_dimension.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_error_term_group.html">Template Struct ErrorTermGroup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_error_term_group.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index.html">Template Struct Index</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html">Template Struct Index&lt; T, std::tuple&lt; T, Types… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4.html">Template Struct Index&lt; T, std::tuple&lt; U, Types… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_scalar.html">Template Struct Scalar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_scalar.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag.html">Template Struct priority_tag</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4.html">Template Struct priority_tag&lt; 0 &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1slot__map__detail_1_1priority__tag_3_010_01_4.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_typed_index.html">Template Struct TypedIndex</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_typed_index.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_variable_group.html">Template Struct VariableGroup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_variable_group.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_little_optimizer_1_1_variable_key.html">Template Struct VariableKey</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_little_optimizer_1_1_variable_key.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence.html">Struct CorrespondenceDistribution::PotentialCorrespondence</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table.html">Struct EquidistantCameraModel::UniformRadiusLookUpTable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate.html">Struct FeatureDetector::FeatureCandidate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad.html">Struct GenericQuadTree::Quad</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings.html">Struct Settings::FeatureDetectionSettings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings.html#nested-relationships">Nested Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings.html#struct-documentation">Struct Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_epipolar_depth_estimator.html">Class EpipolarDepthEstimator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_epipolar_depth_estimator.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_front_end_visual_odometry.html">Class FrontEndVisualOdometry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_front_end_visual_odometry.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_inverse_depth.html">Class InverseDepth</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_inverse_depth.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_little_optimizer_1_1_inverse_depth.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_inverse_depth.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_matrix_block.html">Template Class MatrixBlock</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_matrix_block.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_optimizable_variable.html">Template Class OptimizableVariable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_optimizable_variable.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_optimizer.html">Template Class Optimizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_optimizer.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b.html">Template Class Optimizer&lt; VariableGroup&lt; Variables… &gt;, ErrorTermGroup&lt; ErrorTerms… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_optimizer_3_01_variable_group_3_01_variables_8_8_8_01_4_00_01_error_t283b1846a122f35ebd1c551ffc2e7e4b.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_p_s_d_linear_system.html">Template Class PSDLinearSystem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_p_s_d_linear_system.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c.html">Template Class PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_s_e3.html">Class SE3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_s_e3.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_little_optimizer_1_1_s_e3.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_s_e3.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1slot__map.html">Template Class slot_map</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1slot__map.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row.html">Template Class Row</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477.html">Template Class Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix.html">Template Class SparseBlockMatrix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar__afdf0b45d6efe09857ea6ab6b4e073bb.html">Template Class SparseBlockMatrix&lt; Scalar&lt; Scalar_ &gt;, VariableGroup&lt; Variables… &gt; &gt;</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_little_optimizer_1_1_sparse_block_matrix_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar__afdf0b45d6efe09857ea6ab6b4e073bb.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_basic_pipeline.html">Class BasicPipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_basic_pipeline.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_camera_model.html">Class CameraModel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_camera_model.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_camera_model.html#derived-types">Derived Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_camera_model.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_correspondence_distribution.html">Class CorrespondenceDistribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_correspondence_distribution.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_correspondence_distribution.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_correspondence_distribution.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html">Class EquidistantCameraModel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_equidistant_camera_model.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_feature.html">Class Feature</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_feature.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_feature_detector.html">Class FeatureDetector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_feature_detector.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_feature_detector.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_feature_detector.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_f_o_v_camera_model.html">Class FOVCameraModel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_f_o_v_camera_model.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_f_o_v_camera_model.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_f_o_v_camera_model.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_frame.html">Class Frame</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_frame.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_generic_quad_tree.html">Template Class GenericQuadTree</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_generic_quad_tree.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_generic_quad_tree.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_generic_quad_tree.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_graph.html">Class Graph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_graph.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_image.html">Class Image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_image.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_image_pyramid.html">Class ImagePyramid</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_image_pyramid.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_image_statistics_l_u_t.html">Class ImageStatisticsLUT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_image_statistics_l_u_t.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_i_m_u_state.html">Class IMUState</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_i_m_u_state.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_key.html">Class Key</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_key.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_landmark.html">Class Landmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_landmark.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_patch.html">Class Patch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_patch.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_patch_comparer.html">Class PatchComparer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_patch_comparer.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_patch_warper.html">Class PatchWarper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_patch_warper.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_quasi_direct_factor.html">Class QuasiDirectFactor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_quasi_direct_factor.html#inheritance-relationships">Inheritance Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_quasi_direct_factor.html#base-type">Base Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_quasi_direct_factor.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_radial_search_pattern.html">Class RadialSearchPattern</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_radial_search_pattern.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_settings.html">Class Settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_settings.html#nested-relationships">Nested Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="class_q_d_v_o_1_1_settings.html#nested-types">Nested Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_settings.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_q_d_v_o_1_1_spatial_map.html">Template Class SpatialMap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_q_d_v_o_1_1_spatial_map.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="class_sliding_window_estimator.html">Class SlidingWindowEstimator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="class_sliding_window_estimator.html#class-documentation">Class Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="enums">
+<h3>Enums<a class="headerlink" href="#enums" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="enum__parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90.html">Enum ExecutionType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="enum__parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90.html#enum-documentation">Enum Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_slot__map_8h_1aad91b2e102898d5d164fda6dc08d00cb.html">Template Function LittleOptimizer::slot_map_detail::reserve_if_possible(Ctr&amp;, SizeType, priority_tag&lt;0&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_slot__map_8h_1aad91b2e102898d5d164fda6dc08d00cb.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_slot__map_8h_1a172d5df6b5c82e9cd9e17e3891da7b8a.html">Template Function LittleOptimizer::slot_map_detail::reserve_if_possible(Ctr&amp;, SizeType, priority_tag&lt;1&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_slot__map_8h_1a172d5df6b5c82e9cd9e17e3891da7b8a.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_slot__map_8h_1aa0eb68d038f05c03c1185806e6273603.html">Template Function LittleOptimizer::slot_map_detail::reserve_if_possible(Ctr&amp;, const SizeType&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_slot__map_8h_1aa0eb68d038f05c03c1185806e6273603.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a19fd90fa5986cf095fbbd8499a9a6bb7.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_column_to_matrix(std::vector&lt;T&gt;&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a19fd90fa5986cf095fbbd8499a9a6bb7.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1aed9f4a63bba4b5298629ba8309cf8dc8.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_column_to_matrix(T&amp;, std::integer_sequence&lt;size_t, Is…&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1aed9f4a63bba4b5298629ba8309cf8dc8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1adf0ce66b3c3b36a31eeae889226e006e.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_rhs_column_matrices_to_lhs_column_matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1adf0ce66b3c3b36a31eeae889226e006e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a2c6095c0cea85e70b02fab93c9578311.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_rhs_matrix_to_lhs_matrix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a2c6095c0cea85e70b02fab93c9578311.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a308ac53576d3dfff990080229f4d1e78.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_rhs_row_to_lhs_row(T&amp;, T&amp;, std::integer_sequence&lt;size_t, Is…&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a308ac53576d3dfff990080229f4d1e78.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a990233c1d28591b7d47f3a46905f3ea8.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::add_rhs_row_to_lhs_row(std::vector&lt;T&gt;&amp;, std::vector&lt;T&gt;&amp;, std::integer_sequence&lt;size_t, Is…&gt;, VariableGroup&lt;Variables…&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a990233c1d28591b7d47f3a46905f3ea8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ae8a6666e586dbbe49ed41e1ec20389ee.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::clear_tuple_of_vectors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ae8a6666e586dbbe49ed41e1ec20389ee.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a3c72a4f6c130007e7913f802e5c6b40e.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::dot_row_with_other_row(std::vector&lt;MatrixBlock&lt;Scalar, R1, C1&gt;&gt;&amp;, std::vector&lt;MatrixBlock&lt;Scalar, R2, C2&gt;&gt;&amp;, MatrixBlock&lt;Scalar, R1, R2&gt;&amp;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a3c72a4f6c130007e7913f802e5c6b40e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ae5331f4a1b59f18c1d7d8fa4b720bb6e.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::dot_row_with_other_row(Row&lt;Scalar&lt;Scalar_&gt;, Dimension&lt;R1&gt;, VariableGroup&lt;Variables…&gt;&gt;&amp;, Row&lt;Scalar&lt;Scalar_&gt;, Dimension&lt;R2&gt;, VariableGroup&lt;Variables…&gt;&gt;&amp;, std::integer_sequence&lt;size_t, Is…&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ae5331f4a1b59f18c1d7d8fa4b720bb6e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ac9e17e1da8fae21f0df1c09b373ae8bf.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::remove_column_from_matrix(std::vector&lt;Row&lt;T…&gt;&gt;&amp;, TypedIndex&lt;ColType&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1ac9e17e1da8fae21f0df1c09b373ae8bf.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a64386e2c3d384fecf6c97ca4e10e2d6f.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::remove_column_from_matrix(T&amp;, TypedIndex&lt;ColType&gt;, std::integer_sequence&lt;size_t, Is…&gt;)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a64386e2c3d384fecf6c97ca4e10e2d6f.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a8dee564e0f688185ff2239b4a9f42d59.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::resize_vector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a8dee564e0f688185ff2239b4a9f42d59.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a04450bce98f3ed516fc11f7df04bf3f8.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::set_size</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a04450bce98f3ed516fc11f7df04bf3f8.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a996b9f3f0015181d3efc0fa789f2563e.html">Template Function LittleOptimizer::SparseBlockMatrix::internal::set_sizes_zero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__sparse_block_matrix_internal_8h_1a996b9f3f0015181d3efc0fa789f2563e.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function_slot__map_8h_1a4a3d4a29e5a5e1157f4aa14b9a636a22.html">Template Function LittleOptimizer::swap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function_slot__map_8h_1a4a3d4a29e5a5e1157f4aa14b9a636a22.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__threading_helpers_8h_1aea45d50cb6eb4967c0efd7b8bb86a8b4.html">Function QDVO::ParallelAlgorithms::createListDividers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__threading_helpers_8h_1aea45d50cb6eb4967c0efd7b8bb86a8b4.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7.html">Template Function QDVO::ParallelAlgorithms::for_each</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__threading_helpers_8h_1a08260634f488dd444692cda98dcdd8ca.html">Function QDVO::ParallelAlgorithms::getSuggestedThreadCount</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__threading_helpers_8h_1a08260634f488dd444692cda98dcdd8ca.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__threading_helpers_8h_1a8eb6e9129e87e5c9f4ce807805f18eae.html">Function QDVO::ParallelAlgorithms::joinThreads</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__threading_helpers_8h_1a8eb6e9129e87e5c9f4ce807805f18eae.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__threading_helpers_8h_1a0085469dd3786f59213263d179a652d6.html">Function QDVO::ParallelAlgorithms::splitProblem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__threading_helpers_8h_1a0085469dd3786f59213263d179a652d6.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144.html">Template Function QDVO::ParallelAlgorithms::transform(ExecutionType, InputIterator, InputIterator, OutputIterator, UnaryOperation)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="function__parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b.html">Template Function QDVO::ParallelAlgorithms::transform(ExecutionType, InputIterator1, InputIterator1, InputIterator2, OutputIterator, BinaryOperation)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="function__parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b.html#function-documentation">Function Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="defines">
+<h3>Defines<a class="headerlink" href="#defines" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__generic_quad_tree_8h_1abfa713d7e820c70b3922c36965188fde.html">Define DEFAULT_BIN_WIDTH</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__generic_quad_tree_8h_1abfa713d7e820c70b3922c36965188fde.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a7a49fa746f53f0103790f05e21c5e991.html">Define DEFAULT_LANDMARK_DINV</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a7a49fa746f53f0103790f05e21c5e991.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__threading_helpers_8h_1ac9e94064e8ce15d44ef2b94289b1548b.html">Define DEFAULT_THREAD_COUNT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__threading_helpers_8h_1ac9e94064e8ce15d44ef2b94289b1548b.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1a2ff06c778076f4b3bc0944fb4f6e4032.html">Define EDGE_WEIGHT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1a2ff06c778076f4b3bc0944fb4f6e4032.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a8029edf869757f2e261a6423fa9627ee.html">Define EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a8029edf869757f2e261a6423fa9627ee.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1a12f83d460ec467034d853b2ebaf3e182.html">Define HARRIS_K</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1a12f83d460ec467034d853b2ebaf3e182.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1a6269ba973177f8976185429d8ce53940.html">Define HARRIS_WIDTH</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1a6269ba973177f8976185429d8ce53940.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1ad036ff1f84c7a4758be729230f1f4d98.html">Define ID_TYPE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1ad036ff1f84c7a4758be729230f1f4d98.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a762024f42de3c36920d0b0d4df286994.html">Define IMAGE_PYRAMID_LEVELS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a762024f42de3c36920d0b0d4df286994.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a0885a37842f1bac24cfb0259f09faeb9.html">Define IMAGE_STDDEV_RESOLUTION</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a0885a37842f1bac24cfb0259f09faeb9.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1acbdb5d8dffc68d9117ec1977a63d9164.html">Define INVARIANT_THRESHOLD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1acbdb5d8dffc68d9117ec1977a63d9164.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1ad46743f54d9cf21a2613b7d336946fa6.html">Define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1ad46743f54d9cf21a2613b7d336946fa6.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1aac0b6fa574ec3157da05b94444508702.html">Define MINIMUM_NORMALIZED_GRADIENT_MAG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1aac0b6fa574ec3157da05b94444508702.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a8afdbeffca25c5e7badaacb2b427ff83.html">Define MINUMUM_ACTIVE_LANDMARKS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a8afdbeffca25c5e7badaacb2b427ff83.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a516e382dc18558f8ffeca081323210ac.html">Define N_FEATURES_DESIRED</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a516e382dc18558f8ffeca081323210ac.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a4a86c25d060a5568a208323bab919e45.html">Define N_KEYFRAMES</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a4a86c25d060a5568a208323bab919e45.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1a42c43c43ddaa38d61089fcb328aec404.html">Define N_SECTIONS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1a42c43c43ddaa38d61089fcb328aec404.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a13bf64f6739cfc3c4584fca6415bf7f5.html">Define PATCH_RADIUS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a13bf64f6739cfc3c4584fca6415bf7f5.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a40f7fa822ed3ba3381239031af20c26a.html">Define PATCH_WIDTH</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a40f7fa822ed3ba3381239031af20c26a.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a598a3330b3c21701223ee0ca14316eca.html">Define PI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a598a3330b3c21701223ee0ca14316eca.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a1a55cd810b248442cfadbb8b4646ed6f.html">Define POTENTIAL_CORRESPONDENCE_THRESHOLD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a1a55cd810b248442cfadbb8b4646ed6f.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1ac803dd169f5cb219cd68e1f83b5aabc5.html">Define RETIK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1ac803dd169f5cb219cd68e1f83b5aabc5.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1ac00921c55a1cce6c82cd56cbbee27831.html">Define RETOK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1ac00921c55a1cce6c82cd56cbbee27831.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1ad4d790352c3126b534f489fcfe1ab979.html">Define SCALAR_TYPE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1ad4d790352c3126b534f489fcfe1ab979.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a35e1a071e318ae7b4a636de4a12b00e9.html">Define SEARCH_RADIUS_PADDING</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a35e1a071e318ae7b4a636de4a12b00e9.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define_slot__map_8h_1affeb937caa845b3028904eff6ff617b7.html">Define SLOT_MAP_THROW_EXCEPTION</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define_slot__map_8h_1affeb937caa845b3028904eff6ff617b7.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a4b9c2c17b44d318829df5e1bd7e50f1d.html">Define SMALL_NUMBER</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a4b9c2c17b44d318829df5e1bd7e50f1d.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1ae2f2c303161078b920dbfb1863736226.html">Define SPATIAL_MASK_RADIUS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1ae2f2c303161078b920dbfb1863736226.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1aee019848f6eff7eb3711734671c5f1d6.html">Define TIK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1aee019848f6eff7eb3711734671c5f1d6.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a1b51cc7dda6df543664af07e475f60ee.html">Define TOK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a1b51cc7dda6df543664af07e475f60ee.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__spatial_map_8h_1ada82d664d485cc7ab73d879016990a9f.html">Define TOP_HASH_BIT_COUNT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__spatial_map_8h_1ada82d664d485cc7ab73d879016990a9f.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__feature_detector_8h_1a4a3a2ee18540aa447464950b86800be9.html">Define USE_SPATIAL_MASK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__feature_detector_8h_1a4a3a2ee18540aa447464950b86800be9.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="define__global_definitions_8h_1a65f425b26eb17d29d5eda1b795cce774.html">Define ZNCC_PATCH_COMPARISON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="define__global_definitions_8h_1a65f425b26eb17d29d5eda1b795cce774.html#define-documentation">Define Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="typedefs">
+<h3>Typedefs<a class="headerlink" href="#typedefs" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__sparse_block_matrix_8h_1a42109dc0470b2429d87889b25c84ac5e.html">Typedef LittleOptimizer::SparseBlockMatrix::SparseBlockVector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__sparse_block_matrix_8h_1a42109dc0470b2429d87889b25c84ac5e.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__graph_8h_1a1ae4fb69a4a7d3e1b8a6866896244a80.html">Typedef QDVO::CameraModelMapType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__graph_8h_1a1ae4fb69a4a7d3e1b8a6866896244a80.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__graph_8h_1a80b779b08c576e9c10d2da988d6d4892.html">Typedef QDVO::ExtrinsicSetType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__graph_8h_1a80b779b08c576e9c10d2da988d6d4892.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a81f84252582a515bef9677c51c41e579.html">Typedef QDVO::ID</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a81f84252582a515bef9677c51c41e579.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__image_8h_1a58ad47e9b89be2260983b7d7b0c12d1f.html">Typedef QDVO::ImageIntensityType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__image_8h_1a58ad47e9b89be2260983b7d7b0c12d1f.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__image_8h_1aaa519dd5512568b38342fcd09fb40d70.html">Typedef QDVO::ImageType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__image_8h_1aaa519dd5512568b38342fcd09fb40d70.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__graph_8h_1a64a1d0fe6aff802e0b23ad9eb80af443.html">Typedef QDVO::KeyframeSetType</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__graph_8h_1a64a1d0fe6aff802e0b23ad9eb80af443.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a427bfabf27fdd3444da4c39421b54b63.html">Typedef QDVO::Matrix2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a427bfabf27fdd3444da4c39421b54b63.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a658790863139c0a122f035e85dea7860.html">Typedef QDVO::Result</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a658790863139c0a122f035e85dea7860.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1afac8eb69b9c060f1295b82784a48293c.html">Typedef QDVO::Scalar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1afac8eb69b9c060f1295b82784a48293c.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1ac2472037cf9d64b3a26d972a2622b601.html">Typedef QDVO::SE3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1ac2472037cf9d64b3a26d972a2622b601.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a7bd071f41d8bb8f10474122cdd6ba68d.html">Typedef QDVO::SO3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a7bd071f41d8bb8f10474122cdd6ba68d.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a8c63adc55566c351b8010558c547ea9d.html">Typedef QDVO::Vector2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a8c63adc55566c351b8010558c547ea9d.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="typedef__types_8h_1a9a904d81b47f14dde370f4a5f2f6a0d0.html">Typedef QDVO::Vector3</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="typedef__types_8h_1a9a904d81b47f14dde370f4a5f2f6a0d0.html#typedef-documentation">Typedef Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">qdvo</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Library API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-api">Full API</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to qdvo’s documentation!</a></li>
+      <li>Next: <a href="namespace_LittleOptimizer.html" title="next chapter">Namespace LittleOptimizer</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Kevin Sheridan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/library_root.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

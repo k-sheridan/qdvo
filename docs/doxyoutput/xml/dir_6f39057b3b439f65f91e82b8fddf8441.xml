@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="dir_6f39057b3b439f65f91e82b8fddf8441" kind="dir">
+    <compoundname>src/Optimizer</compoundname>
+    <innerfile refid="_inverse_depth_8h">InverseDepth.h</innerfile>
+    <innerfile refid="_key_8h">Key.h</innerfile>
+    <innerfile refid="_little_optimizer_8h">LittleOptimizer.h</innerfile>
+    <innerfile refid="_matrix_block_8h">MatrixBlock.h</innerfile>
+    <innerfile refid="_meta_helpers_8h">MetaHelpers.h</innerfile>
+    <innerfile refid="_optimizable_variable_8h">OptimizableVariable.h</innerfile>
+    <innerfile refid="_p_s_d_linear_system_8h">PSDLinearSystem.h</innerfile>
+    <innerfile refid="_s_e3_8h">SE3.h</innerfile>
+    <innerfile refid="slot__map_8h">slot_map.h</innerfile>
+    <innerfile refid="_sparse_block_matrix_8h">SparseBlockMatrix.h</innerfile>
+    <innerfile refid="_sparse_block_matrix_internal_8h">SparseBlockMatrixInternal.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/"/>
+  </compounddef>
+</doxygen>

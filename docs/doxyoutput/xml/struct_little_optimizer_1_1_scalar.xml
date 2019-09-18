@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_little_optimizer_1_1_scalar" kind="struct" language="C++" prot="public">
+    <compoundname>LittleOptimizer::Scalar</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/MetaHelpers.h" line="15" column="13" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="15" bodyend="15"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

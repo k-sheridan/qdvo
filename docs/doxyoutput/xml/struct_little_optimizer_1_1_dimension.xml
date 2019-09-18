@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_little_optimizer_1_1_dimension" kind="struct" language="C++" prot="public">
+    <compoundname>LittleOptimizer::Dimension</compoundname>
+    <templateparamlist>
+      <param>
+        <type>size_t</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/MetaHelpers.h" line="12" column="16" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="12" bodyend="12"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

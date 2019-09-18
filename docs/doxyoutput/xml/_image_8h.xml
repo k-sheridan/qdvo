@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_image_8h" kind="file" language="C++">
+    <compoundname>Image.h</compoundname>
+    <includes local="no">Eigen/Core</includes>
+    <includes local="no">opencv2/core.hpp</includes>
+    <includes refid="_global_definitions_8h" local="yes">GlobalDefinitions.h</includes>
+    <includes refid="_types_8h" local="yes">Types.h</includes>
+    <includedby refid="_image_pyramid_8h" local="yes">src/DataStructures/ImagePyramid.h</includedby>
+    <includedby refid="_image_8cpp" local="yes">src/DataStructures/Image.cpp</includedby>
+    <includedby refid="_patch_8cpp" local="yes">src/DataStructures/Patch.cpp</includedby>
+    <incdepgraph>
+      <node id="7">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="4">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/Image.h</label>
+        <link refid="_image_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>ctime</label>
+      </node>
+      <node id="3">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="9">
+        <label>optional</label>
+      </node>
+      <node id="8">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="5">
+        <label>chrono</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="10">
+        <label>src/FeatureMatching/PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/DataStructures/Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/FeatureMatching/PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/Image.h</label>
+        <link refid="_image_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/DataStructures/Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>src/FeatureDetection/FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/DataStructures/ImagePyramid.h</label>
+        <link refid="_image_pyramid_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_q_d_v_o_1_1_image" prot="public">QDVO::Image</innerclass>
+    <innernamespace refid="namespace_q_d_v_o">QDVO</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;opencv2/core.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;GlobalDefinitions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Types.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO<sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>ImageIntensityType;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;ImageIntensityType,<sp/>Eigen::Dynamic,<sp/>Eigen::Dynamic&gt;<sp/>ImageType;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="class_q_d_v_o_1_1_image" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_image" kindref="compound">Image</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_image" kindref="compound">Image</ref>(cv::Mat&amp;<sp/>cvImage);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_image" kindref="compound">Image</ref>(){}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cv::Mat<sp/>toOpenCVImage();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ImageType&amp;<sp/>getImageData(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>image;}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>rows(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>image.rows();}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>cols(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>image.cols();}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>QDVO::Result&lt;ImageIntensityType&gt;<sp/>getSubPixelIntensity(QDVO::Vector2<sp/>px);</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ImageType<sp/>image;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="src/DataStructures/Image.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,605 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_basic_pipeline_8h" kind="file" language="C++">
+    <compoundname>BasicPipeline.h</compoundname>
+    <includes refid="_global_definitions_8h" local="yes">GlobalDefinitions.h</includes>
+    <includes refid="_graph_8h" local="yes">Graph.h</includes>
+    <includes refid="_front_fnd_visual_odometry_8h" local="yes">FrontFndVisualOdometry.h</includes>
+    <includes refid="_sliding_window_estimator_8h" local="yes">SlidingWindowEstimator.h</includes>
+    <includes refid="_image_statistics_l_u_t_8h" local="yes">ImageStatisticsLUT.h</includes>
+    <includes refid="_patch_comparer_8h" local="yes">PatchComparer.h</includes>
+    <includes refid="_patch_warper_8h" local="yes">PatchWarper.h</includes>
+    <includes refid="_radial_search_pattern_8h" local="yes">RadialSearchPattern.h</includes>
+    <includes local="no">opencv2/core.hpp</includes>
+    <includes local="no">opencv2/highgui.hpp</includes>
+    <includes refid="_types_8h" local="yes">Types.h</includes>
+    <includes refid="_parallel_algorithms_8h" local="yes">ParallelAlgorithms.h</includes>
+    <includedby refid="_basic_pipeline_8cpp" local="yes">src/Pipeline/BasicPipeline.cpp</includedby>
+    <incdepgraph>
+      <node id="25">
+        <label>RadialSearchPattern.h</label>
+        <link refid="_radial_search_pattern_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="52">
+        <label>PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+      </node>
+      <node id="43">
+        <label>SparseBlockMatrix.h</label>
+        <link refid="_sparse_block_matrix_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="49" relation="include">
+        </childnode>
+        <childnode refid="50" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="53">
+        <label>PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="57">
+        <label>ThreadingHelpers.h</label>
+        <link refid="_threading_helpers_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="51">
+        <label>SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="48">
+        <label>stdexcept</label>
+      </node>
+      <node id="55">
+        <label>ParallelAlgorithms.h</label>
+        <link refid="_parallel_algorithms_8h_source"/>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="56" relation="include">
+        </childnode>
+        <childnode refid="57" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="36">
+        <label>opencv2/imgproc.hpp</label>
+      </node>
+      <node id="8">
+        <label>IMUState.h</label>
+        <link refid="_i_m_u_state_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="47">
+        <label>slot_map.h</label>
+        <link refid="slot__map_8h_source"/>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="48" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Landmark.h</label>
+        <link refid="_landmark_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>unordered_set</label>
+      </node>
+      <node id="41">
+        <label>PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h_source"/>
+        <childnode refid="42" relation="include">
+        </childnode>
+        <childnode refid="43" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Image.h</label>
+        <link refid="_image_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="46">
+        <label>Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>sophus/types.hpp</label>
+      </node>
+      <node id="14">
+        <label>CameraModel.hpp</label>
+        <link refid="_camera_model_8hpp_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="40">
+        <label>LittleOptimizer.h</label>
+        <link refid="_little_optimizer_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="46" relation="include">
+        </childnode>
+        <childnode refid="47" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>tuple</label>
+      </node>
+      <node id="4">
+        <label>ctime</label>
+      </node>
+      <node id="9">
+        <label>sophus/common.hpp</label>
+      </node>
+      <node id="7">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="13">
+        <label>optional</label>
+      </node>
+      <node id="6">
+        <label>Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="28">
+        <label>vector</label>
+      </node>
+      <node id="35">
+        <label>FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>ImageStatisticsLUT.h</label>
+        <link refid="_image_statistics_l_u_t_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>EpipolarDepthEstimator.h</label>
+        <link refid="_epipolar_depth_estimator_8h_source"/>
+      </node>
+      <node id="44">
+        <label>utility</label>
+      </node>
+      <node id="49">
+        <label>MatrixBlock.h</label>
+        <link refid="_matrix_block_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="56">
+        <label>math.h</label>
+      </node>
+      <node id="54">
+        <label>opencv2/highgui.hpp</label>
+      </node>
+      <node id="18">
+        <label>ImagePyramid.h</label>
+        <link refid="_image_pyramid_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>iostream</label>
+      </node>
+      <node id="27">
+        <label>SpatialMap.h</label>
+        <link refid="_spatial_map_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>unordered_map</label>
+      </node>
+      <node id="21">
+        <label>CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="32">
+        <label>mutex</label>
+      </node>
+      <node id="3">
+        <label>chrono</label>
+      </node>
+      <node id="33">
+        <label>thread</label>
+      </node>
+      <node id="23">
+        <label>boost/geometry.hpp</label>
+      </node>
+      <node id="29">
+        <label>Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="42">
+        <label>MetaHelpers.h</label>
+        <link refid="_meta_helpers_8h_source"/>
+      </node>
+      <node id="1">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="51" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="52" relation="include">
+        </childnode>
+        <childnode refid="53" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="54" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="55" relation="include">
+        </childnode>
+      </node>
+      <node id="45">
+        <label>type_traits</label>
+      </node>
+      <node id="24">
+        <label>algorithm</label>
+      </node>
+      <node id="34">
+        <label>Settings.h</label>
+        <link refid="_settings_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>Feature.h</label>
+        <link refid="_feature_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>memory</label>
+      </node>
+      <node id="50">
+        <label>SparseBlockMatrixInternal.h</label>
+        <link refid="_sparse_block_matrix_internal_8h_source"/>
+        <childnode refid="38" relation="include">
+        </childnode>
+        <childnode refid="44" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="45" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="42" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_q_d_v_o_1_1_basic_pipeline" prot="public">QDVO::BasicPipeline</innerclass>
+    <innernamespace refid="namespace_q_d_v_o">QDVO</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;GlobalDefinitions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Graph.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;FrontFndVisualOdometry.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SlidingWindowEstimator.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;ImageStatisticsLUT.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PatchComparer.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;PatchWarper.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;RadialSearchPattern.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;opencv2/core.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;opencv2/highgui.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Types.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;ParallelAlgorithms.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO</highlight></codeline>
+<codeline lineno="17"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>The<sp/>goal<sp/>of<sp/>this<sp/>class<sp/>is<sp/>to<sp/>be<sp/>a<sp/>&quot;easily&quot;<sp/>modifiable<sp/>implementation<sp/>of<sp/>the<sp/>quasi-direct<sp/>approach<sp/>to<sp/>visual<sp/>odometry.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>This<sp/>should<sp/>allow<sp/>easy<sp/>modification<sp/>of<sp/>the<sp/>patch<sp/>comparison,<sp/>and<sp/>serve<sp/>as<sp/>a<sp/>place<sp/>for<sp/>preallocation<sp/>of<sp/>quantities.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>basic<sp/>datastructures<sp/>are<sp/>held<sp/>in<sp/>the<sp/>graph<sp/>datastructure.<sp/>They<sp/>contain<sp/>all<sp/>necessary<sp/>information,<sp/>access,<sp/>insert,<sp/>and<sp/>reset<sp/>functions<sp/>implemented<sp/>in<sp/>a<sp/>protected<sp/>way.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="class_q_d_v_o_1_1_basic_pipeline" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_basic_pipeline" kindref="compound">BasicPipeline</ref></highlight></codeline>
+<codeline lineno="27"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline" kindref="compound">BasicPipeline</ref>();</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref><sp/>graph;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>datastructure<sp/>for<sp/>all<sp/>possible<sp/>QDVO<sp/>algorithms.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref><sp/>frontEndVisualOdometry;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>current<sp/>frame<sp/>pose.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref><sp/>swe;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>estimator<sp/>for<sp/>the<sp/>whole<sp/>algorithm</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Preallocates<sp/>keyframes<sp/>and<sp/>current<sp/>frame.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initialize();</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Gives<sp/>the<sp/>algorithm<sp/>a<sp/>new<sp/>image</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>addFrame(cv::Mat<sp/>&amp;image,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;time,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>adds<sp/>a<sp/>new<sp/>camera<sp/>for<sp/>the<sp/>visual<sp/>odometry<sp/>algorithm.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>addCamera(std::unique_ptr&lt;QDVO::CameraModel&gt;<sp/>&amp;cameraModel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>detects<sp/>features<sp/>and<sp/>adds<sp/>new<sp/>landmarks<sp/>to<sp/>the<sp/>frame.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createNewLandmarks(std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;keyframe,<sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>&amp;featureDetector);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Activates<sp/>new<sp/>landmarks<sp/>from<sp/>the<sp/>set<sp/>of<sp/>keyframes<sp/>such<sp/>that<sp/>the<sp/>current<sp/>features<sp/>are<sp/>well<sp/>distributed.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>activateNewLandmarks();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Does<sp/>an<sp/>initial<sp/>search<sp/>for<sp/>potential<sp/>correspondences<sp/>between<sp/>active<sp/>landmarks<sp/>and<sp/>the<sp/>current<sp/>frame.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initializeCorrespondenceDistributionsForCurrentFrame();</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Attempts<sp/>to<sp/>initialize<sp/>inactive<sp/>landmarks<sp/>using<sp/>an<sp/>epipolar<sp/>search</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runEpipolarDepthEstimators();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>marginalizes<sp/>keyframes.<sp/>This<sp/>function<sp/>can<sp/>be<sp/>changed<sp/>in<sp/>a<sp/>modular<sp/>fashion</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runMarginalizationStrategy();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Checks<sp/>if<sp/>the<sp/>current<sp/>frame<sp/>has<sp/>met<sp/>the<sp/>criteria<sp/>for<sp/>a<sp/>keyframe.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isCurrentFrameAKeyframe();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>function<sp/>is<sp/>ran<sp/>after<sp/>the<sp/>current<sp/>frame<sp/>is<sp/>setup<sp/>and<sp/>before<sp/>the<sp/>correspondence<sp/>distributions<sp/>are<sp/>initialized.<sp/>It<sp/>will<sp/>insert<sp/>a<sp/>new<sp/>patch<sp/>comparer</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>into<sp/>the<sp/>unordered_map<sp/>of<sp/>patch<sp/>comparers<sp/>while<sp/>removing<sp/>any<sp/>old/redundant<sp/>patch<sp/>comparers.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>updatePatchComparers();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>-=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ZNCC<sp/>IMPLEMENTATION<sp/>SPECIFIC<sp/>and<sp/>PREALLOCATED<sp/>/<sp/>PRECOMPUTED<sp/>DATA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>featureDetector;<sp/></highlight><highlight class="comment">//<sp/>global<sp/>feature<sp/>detector.<sp/>NOT<sp/>MEANT<sp/>TO<sp/>BE<sp/>USED<sp/>IN<sp/>MULTIPLE<sp/>THREADS<sp/>WITHOUT<sp/>LOCKING!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;ID_TYPE,<sp/>std::shared_ptr&lt;PatchComparer&gt;&gt;<sp/>patchComparers;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>speed<sp/>up<sp/>the<sp/>patch<sp/>comparisons.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;RadialSearchPattern&gt;<sp/>radialSearchPatternPtr;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>globally<sp/>to<sp/>generate<sp/>the<sp/>correspondence<sp/>distributions.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::PatchWarper&gt;<sp/>patchWarper;<sp/></highlight><highlight class="comment">//<sp/>pointer<sp/>to<sp/>the<sp/>patch<sp/>warp<sp/>implementation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/Pipeline/BasicPipeline.h"/>
+  </compounddef>
+</doxygen>

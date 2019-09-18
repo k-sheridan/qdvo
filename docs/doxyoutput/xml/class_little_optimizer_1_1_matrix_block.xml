@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_little_optimizer_1_1_matrix_block" kind="class" language="C++" prot="public">
+    <compoundname>LittleOptimizer::MatrixBlock</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename</type>
+        <declname>Scalar</declname>
+        <defname>Scalar</defname>
+      </param>
+      <param>
+        <type>size_t</type>
+        <declname>rows</declname>
+        <defname>rows</defname>
+      </param>
+      <param>
+        <type>size_t</type>
+        <declname>cols</declname>
+        <defname>cols</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_little_optimizer_1_1_matrix_block_1ae0a09be52796e3bf423b0a4fabd3129f" prot="private" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>, rows, cols &gt;</type>
+        <definition>typedef Eigen::Matrix&lt;Scalar, rows, cols&gt; LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::matrix_t</definition>
+        <argsstring></argsstring>
+        <name>matrix_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="10" column="23" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_little_optimizer_1_1_matrix_block_1a8c0c84d9b623b23c7b7568eba61713f4" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::zero</definition>
+        <argsstring></argsstring>
+        <name>zero</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="53" column="6" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_little_optimizer_1_1_matrix_block_1ac5acd6f907b39b97ec45ad983e50e653" prot="private" static="no" mutable="no">
+        <type>matrix_t</type>
+        <definition>matrix_t LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::matrix</definition>
+        <argsstring></argsstring>
+        <name>matrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="55" column="10" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1a770faca5123afb8ef11b785b2078b431" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::isZero</definition>
+        <argsstring>() const</argsstring>
+        <name>isZero</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="12" column="6" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="12" bodyend="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1a6208539afd8e0f0ddf574e797424d2e0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::setZero</definition>
+        <argsstring>()</argsstring>
+        <name>setZero</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="16" column="6" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="16" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1a5794e448b6d6f9a1f2e470a63665c1a0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>matrix_t &amp;</type>
+        <definition>matrix_t&amp; LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::getMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>getMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="20" column="10" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="20" bodyend="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1ac99b4894a163be4e698a8ec2b6a02909" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::setMatrix</definition>
+        <argsstring>(matrix_t &amp;m)</argsstring>
+        <name>setMatrix</name>
+        <param>
+          <type>matrix_t &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="24" column="6" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="24" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1a006f39ef856eb74d9bf8e01b4a24bbfa" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>, rows, cols &gt; &amp;</type>
+        <definition>MatrixBlock&lt;Scalar, rows, cols&gt;&amp; LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::operator+=</definition>
+        <argsstring>(MatrixBlock&lt; Scalar, rows, cols &gt; &amp;b)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>, rows, cols &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="29" column="13" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="29" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_matrix_block_1a63ecf4e5d9a6a7e27ecf297d3439feca" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>, rows, cols &gt;</type>
+        <definition>MatrixBlock&lt;Scalar, rows, cols&gt; LittleOptimizer::MatrixBlock&lt; Scalar, rows, cols &gt;::operator*</definition>
+        <argsstring>(MatrixBlock&lt; Scalar, rows, cols &gt; &amp;b)</argsstring>
+        <name>operator*</name>
+        <param>
+          <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>, rows, cols &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MatrixBlock.h" line="42" column="13" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="42" bodyend="48"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/MatrixBlock.h" line="8" column="18" bodyfile="src/Optimizer/MatrixBlock.h" bodystart="8" bodyend="57"/>
+    <listofallmembers>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a5794e448b6d6f9a1f2e470a63665c1a0" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>getMatrix</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a770faca5123afb8ef11b785b2078b431" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>isZero</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1ac5acd6f907b39b97ec45ad983e50e653" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>matrix</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1ae0a09be52796e3bf423b0a4fabd3129f" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>matrix_t</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a63ecf4e5d9a6a7e27ecf297d3439feca" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>operator*</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a006f39ef856eb74d9bf8e01b4a24bbfa" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>operator+=</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1ac99b4894a163be4e698a8ec2b6a02909" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>setMatrix</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a6208539afd8e0f0ddf574e797424d2e0" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>setZero</name></member>
+      <member refid="class_little_optimizer_1_1_matrix_block_1a8c0c84d9b623b23c7b7568eba61713f4" prot="private" virt="non-virtual"><scope>LittleOptimizer::MatrixBlock</scope><name>zero</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

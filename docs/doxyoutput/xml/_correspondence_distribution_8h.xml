@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_correspondence_distribution_8h" kind="file" language="C++">
+    <compoundname>CorrespondenceDistribution.h</compoundname>
+    <includes local="no">unordered_set</includes>
+    <includes refid="_global_definitions_8h" local="yes">GlobalDefinitions.h</includes>
+    <includes local="no">boost/geometry.hpp</includes>
+    <includes local="no">algorithm</includes>
+    <includes refid="_radial_search_pattern_8h" local="yes">RadialSearchPattern.h</includes>
+    <includes refid="_spatial_map_8h" local="yes">SpatialMap.h</includes>
+    <includes refid="_patch_8h" local="yes">Patch.h</includes>
+    <includedby refid="_correspondence_distribution_8cpp" local="yes">src/DataStructures/CorrespondenceDistribution.cpp</includedby>
+    <includedby refid="_frame_8h" local="yes">src/DataStructures/Frame.h</includedby>
+    <includedby refid="_quasi_direct_error_term_8h" local="yes">src/ErrorTerms/QuasiDirectErrorTerm.h</includedby>
+    <incdepgraph>
+      <node id="8">
+        <label>RadialSearchPattern.h</label>
+        <link refid="_radial_search_pattern_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="3">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>unordered_set</label>
+      </node>
+      <node id="5">
+        <label>ctime</label>
+      </node>
+      <node id="9">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="17">
+        <label>optional</label>
+      </node>
+      <node id="13">
+        <label>vector</label>
+      </node>
+      <node id="11">
+        <label>iostream</label>
+      </node>
+      <node id="12">
+        <label>SpatialMap.h</label>
+        <link refid="_spatial_map_8h_source"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="4">
+        <label>chrono</label>
+      </node>
+      <node id="6">
+        <label>boost/geometry.hpp</label>
+      </node>
+      <node id="14">
+        <label>Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>algorithm</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="9">
+        <label>src/FeatureMatching/PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/DataStructures/Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/FeatureMatching/PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/DataStructures/Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/FeatureDetection/FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>src/ErrorTerms/QuasiDirectErrorTerm.h</label>
+        <link refid="_quasi_direct_error_term_8h_source"/>
+      </node>
+      <node id="1">
+        <label>src/DataStructures/CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_q_d_v_o_1_1_correspondence_distribution" prot="public">QDVO::CorrespondenceDistribution</innerclass>
+    <innerclass refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" prot="public">QDVO::CorrespondenceDistribution::PotentialCorrespondence</innerclass>
+    <innernamespace refid="namespace_q_d_v_o">QDVO</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>CORRESPONDENCEDISTRIBUTION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CORRESPONDENCEDISTRIBUTION_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_set&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;GlobalDefinitions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;boost/geometry.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;RadialSearchPattern.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SpatialMap.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Patch.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO<sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Frame;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">PatchComparer;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>The<sp/>correspondence<sp/>distribution<sp/>is<sp/>modeled<sp/>as<sp/>a<sp/>gaussian<sp/>mixture<sp/>model.<sp/>The<sp/>means<sp/>are<sp/>of<sp/>pixel<sp/>resolution<sp/>and<sp/>have<sp/>associated<sp/>scores.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>This<sp/>class<sp/>provides<sp/>all<sp/>the<sp/>functionality<sp/>necessary<sp/>for<sp/>efficiently<sp/>adding<sp/>to<sp/>and<sp/>evaluting<sp/>the<sp/>gaussian<sp/>mixture<sp/>model.<sp/>It<sp/>is<sp/>meant<sp/>to<sp/>be<sp/>preallocated<sp/>once<sp/>and<sp/>held<sp/>until<sp/>the<sp/>algorithm<sp/>completes.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="class_q_d_v_o_1_1_correspondence_distribution" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_correspondence_distribution" kindref="compound">CorrespondenceDistribution</ref></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" kindref="compound">PotentialCorrespondence</ref>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SCALAR_TYPE<sp/>score;<sp/></highlight><highlight class="comment">//<sp/>match<sp/>score.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Vector2i<sp/>pixel;</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>initialized<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reset(){initialized<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref><sp/>warpedPatch;<sp/></highlight><highlight class="comment">//<sp/>the<sp/>warped<sp/>template<sp/>patch<sp/>to<sp/>be<sp/>used<sp/>for<sp/>the<sp/>creation<sp/>of<sp/>the<sp/>correspondence<sp/>distribution.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_frame" kindref="compound">QDVO::Frame</ref>*<sp/>framePtr<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>a<sp/>pointer<sp/>to<sp/>the<sp/>frame<sp/>which<sp/>the<sp/>patch<sp/>should<sp/>be<sp/>compared<sp/>to.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>serves<sp/>as<sp/>a<sp/>method<sp/>for<sp/>finding<sp/>nearest<sp/>neighbors.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_spatial_map" kindref="compound">SpatialMap&lt;PotentialCorrespondence&gt;</ref><sp/>correspondenceMap;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>dormant<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight><highlight class="comment">//<sp/>is<sp/>this<sp/>correspondence<sp/>distribution<sp/>currently<sp/>not<sp/>being<sp/>used.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_correspondence_distribution" kindref="compound">CorrespondenceDistribution</ref>(</highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>width,<sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>height,<sp/>std::shared_ptr&lt;RadialSearchPattern&gt;<sp/>patternPtr,<sp/><ref refid="class_q_d_v_o_1_1_frame" kindref="compound">QDVO::Frame</ref>*<sp/>framePtr);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Will<sp/>perform<sp/>an<sp/>initial<sp/>radial<sp/>search<sp/>for<sp/>potential<sp/>correspondences<sp/>to<sp/>get<sp/>an<sp/>idea<sp/>of<sp/>the<sp/>structure<sp/>of<sp/>the<sp/>raw<sp/>patch<sp/>comparison<sp/>function.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initializeDistribution(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Vector2i&amp;<sp/>centerPixel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>floodRadius,<sp/>std::shared_ptr&lt;QDVO::PatchComparer&gt;<sp/>patchComparerPtr,<sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref><sp/>warpedPatch);</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Efficiently<sp/>evaluates<sp/>the<sp/>gradient<sp/>of<sp/>the<sp/>negative<sp/>log<sp/>likelihood<sp/>of<sp/>the<sp/>gaussian<sp/>mixture<sp/>model<sp/>described<sp/>by<sp/>this<sp/>class.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;SCALAR_TYPE,<sp/>2,<sp/>1&gt;<sp/>computeResidual(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;SCALAR_TYPE,<sp/>2,<sp/>1&gt;&amp;<sp/>px_0);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>clears<sp/>all<sp/>potential<sp/>correspondences<sp/>while<sp/>retaining<sp/>allocated<sp/>memory,<sp/>and<sp/>sets<sp/>the<sp/>correspondence<sp/>distribution<sp/>into<sp/>a<sp/>dormant<sp/>state.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>reset();</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>does<sp/>a<sp/>radial<sp/>search<sp/>while<sp/>evaluating<sp/>the<sp/>patch<sp/>comparison<sp/>metric</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;PotentialCorrespondence*&gt;<sp/>search(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Vector2i&amp;<sp/>centerPixel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/>searchRadius,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>minimalSearch);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>pre-allocated<sp/>quantities.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;SCALAR_TYPE&gt;<sp/>expScoreArray;</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;QDVO::Vector2&gt;<sp/>errorArray,<sp/>weightedErrorArray;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;QDVO::RadialSearchPattern&gt;<sp/>radialSearchPattern;<sp/></highlight><highlight class="comment">//<sp/>shared<sp/>among<sp/>all<sp/>correspondence<sp/>distributions.<sp/>NOT<sp/>TO<sp/>BE<sp/>MODIFIED!</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;QDVO::PatchComparer&gt;<sp/>patchComparer;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/>//<sp/>CORRESPONDENCEDISTRIBUTION_H</highlight></codeline>
+    </programlisting>
+    <location file="src/DataStructures/CorrespondenceDistribution.h"/>
+  </compounddef>
+</doxygen>

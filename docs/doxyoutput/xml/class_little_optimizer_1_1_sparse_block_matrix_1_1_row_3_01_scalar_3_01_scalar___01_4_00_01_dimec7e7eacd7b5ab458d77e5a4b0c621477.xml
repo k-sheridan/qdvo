@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477" kind="class" language="C++" prot="public">
+    <compoundname>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename Scalar_</type>
+      </param>
+      <param>
+        <type>size_t</type>
+        <declname>Rows_</declname>
+        <defname>Rows_</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a058cde758c322575d9f4d010d7694297" prot="private" static="no">
+        <type>std::tuple&lt; Variables... &gt;</type>
+        <definition>using LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::variable_list =  std::tuple&lt;Variables...&gt;</definition>
+        <argsstring></argsstring>
+        <name>variable_list</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="162" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a8ef7947d71b5f461f307b34f0cc525f2" prot="private" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="struct_little_optimizer_1_1internal_1_1_index" kindref="compound">LittleOptimizer::internal::Index</ref>&lt; VariableType, variable_list &gt;</type>
+        <definition>using LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::variable_index =  LittleOptimizer::internal::Index&lt;VariableType, variable_list&gt;</definition>
+        <argsstring></argsstring>
+        <name>variable_index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="166" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a0ffb7032b8f21dbe8cd8274d6046172e" prot="public" static="no">
+        <type>std::tuple&lt; std::vector&lt; <ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; Scalar_, Rows_, Variables::dimension &gt; &gt;... &gt;</type>
+        <definition>typedef std::tuple&lt;std::vector&lt;MatrixBlock&lt;Scalar_, Rows_, Variables::dimension&gt; &gt;...&gt; LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::columns_t</definition>
+        <argsstring></argsstring>
+        <name>columns_t</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="169" column="24" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="169" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a72c5799b04b736f687fb294b5f2fe42b" prot="public" static="no" mutable="no">
+        <type>columns_t</type>
+        <definition>columns_t LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::columns</definition>
+        <argsstring></argsstring>
+        <name>columns</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="171" column="15" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="171" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a3aa54bb82909fa7015726dc23157c9b9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::Row</definition>
+        <argsstring>()</argsstring>
+        <name>Row</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="173" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="173" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1ab6e68e6ffed8d387a7387905b5ab4b25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename TupleOfTypeSizePair</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Is</declname>
+            <defname>Is</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::Row</definition>
+        <argsstring>(TupleOfTypeSizePair &amp;tuple, std::integer_sequence&lt; size_t, Is... &gt;)</argsstring>
+        <name>Row</name>
+        <param>
+          <type>TupleOfTypeSizePair &amp;</type>
+          <declname>tuple</declname>
+        </param>
+        <param>
+          <type>std::integer_sequence&lt; size_t, Is... &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="180" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="180" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a36c4c5477a8e35e7044146f5ae35cfef" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ColType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; Scalar_, Rows_, ColType::dimension &gt; &amp;</type>
+        <definition>MatrixBlock&lt;Scalar_, Rows_, ColType::dimension&gt;&amp; LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::getColumn</definition>
+        <argsstring>(LittleOptimizer::TypedIndex&lt; ColType &gt; col)</argsstring>
+        <name>getColumn</name>
+        <param>
+          <type><ref refid="struct_little_optimizer_1_1_typed_index" kindref="compound">LittleOptimizer::TypedIndex</ref>&lt; ColType &gt;</type>
+          <declname>col</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the sub matrix for the corresponding type keys, and returns it by reference. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="190" column="17" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="190" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1aad54192d4415a8c0fa88a94a15e7481a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="195" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="195" bodyend="197"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1ad6ddab21d0c795e2f8afbb85a6c104cd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ColType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="struct_little_optimizer_1_1_typed_index" kindref="compound">TypedIndex</ref>&lt; ColType &gt;</type>
+        <definition>TypedIndex&lt;ColType&gt; LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::addColumn</definition>
+        <argsstring>()</argsstring>
+        <name>addColumn</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="201" column="16" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="201" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a99ced8d8f96323793114e05cc46b8af8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ColType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::removeColumn</definition>
+        <argsstring>(TypedIndex&lt; ColType &gt; idx)</argsstring>
+        <name>removeColumn</name>
+        <param>
+          <type><ref refid="struct_little_optimizer_1_1_typed_index" kindref="compound">TypedIndex</ref>&lt; ColType &gt;</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="212" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="212" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a415baf1547012301bc3430f5cf43a873" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ColumnType</type>
+          </param>
+        </templateparamlist>
+        <type>size_t</type>
+        <definition>size_t LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::columnsOfType</definition>
+        <argsstring>()</argsstring>
+        <name>columnsOfType</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes how many rows there are for a given type. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="220" column="12" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="220" bodyend="222"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a2c2a389c0ad75da1414c0bf7a9d75131" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>OtherRowDimension</declname>
+            <defname>OtherRowDimension</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_little_optimizer_1_1_matrix_block" kindref="compound">MatrixBlock</ref>&lt; Scalar_, Rows_, OtherRowDimension &gt;</type>
+        <definition>MatrixBlock&lt;Scalar_, Rows_, OtherRowDimension&gt; LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::dot</definition>
+        <argsstring>(Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; OtherRowDimension &gt;, VariableGroup&lt; Variables... &gt;&gt; &amp;rhsRow)</argsstring>
+        <name>dot</name>
+        <param>
+          <type><ref refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row" kindref="compound">Row</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>&lt; Scalar_ &gt;, <ref refid="struct_little_optimizer_1_1_dimension" kindref="compound">Dimension</ref>&lt; OtherRowDimension &gt;, <ref refid="struct_little_optimizer_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt;&gt; &amp;</type>
+          <declname>rhsRow</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the block dot product or two rows. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="228" column="17" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="228" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a82df926185a08c1f0571c8d154b59e12" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row" kindref="compound">Row</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>&lt; Scalar_ &gt;, <ref refid="struct_little_optimizer_1_1_dimension" kindref="compound">Dimension</ref>&lt; Rows_ &gt;, <ref refid="struct_little_optimizer_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt; &amp;</type>
+        <definition>Row&lt;Scalar&lt;Scalar_&gt;, Dimension&lt;Rows_&gt;, VariableGroup&lt;Variables...&gt; &gt;&amp; LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;::operator+=</definition>
+        <argsstring>(Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt;&gt; &amp;rhs)</argsstring>
+        <name>operator+=</name>
+        <param>
+          <type><ref refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row" kindref="compound">Row</ref>&lt; <ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>&lt; Scalar_ &gt;, <ref refid="struct_little_optimizer_1_1_dimension" kindref="compound">Dimension</ref>&lt; Rows_ &gt;, <ref refid="struct_little_optimizer_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt;&gt; &amp;</type>
+          <declname>rhs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Adds together in the most efficient way two sparse block matrices. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="235" column="9" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="235" bodyend="239"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/SparseBlockMatrix.h" line="160" column="1" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="159" bodyend="240"/>
+    <listofallmembers>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1ad6ddab21d0c795e2f8afbb85a6c104cd" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addColumn</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1aad54192d4415a8c0fa88a94a15e7481a" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>clear</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a72c5799b04b736f687fb294b5f2fe42b" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>columns</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a0ffb7032b8f21dbe8cd8274d6046172e" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>columns_t</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a415baf1547012301bc3430f5cf43a873" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>columnsOfType</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a2c2a389c0ad75da1414c0bf7a9d75131" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>dot</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a36c4c5477a8e35e7044146f5ae35cfef" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getColumn</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a82df926185a08c1f0571c8d154b59e12" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>operator+=</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a99ced8d8f96323793114e05cc46b8af8" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeColumn</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a3aa54bb82909fa7015726dc23157c9b9" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>Row</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1ab6e68e6ffed8d387a7387905b5ab4b25" prot="public" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>Row</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a8ef7947d71b5f461f307b34f0cc525f2" prot="private" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>variable_index</name></member>
+      <member refid="class_little_optimizer_1_1_sparse_block_matrix_1_1_row_3_01_scalar_3_01_scalar___01_4_00_01_dimec7e7eacd7b5ab458d77e5a4b0c621477_1a058cde758c322575d9f4d010d7694297" prot="private" virt="non-virtual"><scope>LittleOptimizer::SparseBlockMatrix::Row&lt; Scalar&lt; Scalar_ &gt;, Dimension&lt; Rows_ &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>variable_list</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

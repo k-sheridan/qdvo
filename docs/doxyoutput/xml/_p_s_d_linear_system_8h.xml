@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_p_s_d_linear_system_8h" kind="file" language="C++">
+    <compoundname>PSDLinearSystem.h</compoundname>
+    <includes refid="_meta_helpers_8h" local="yes">MetaHelpers.h</includes>
+    <includes refid="_sparse_block_matrix_8h" local="yes">SparseBlockMatrix.h</includes>
+    <includedby refid="_little_optimizer_8h" local="yes">src/Optimizer/LittleOptimizer.h</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>SparseBlockMatrix.h</label>
+        <link refid="_sparse_block_matrix_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>stdexcept</label>
+      </node>
+      <node id="19">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="16">
+        <label>slot_map.h</label>
+        <link refid="slot__map_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>tuple</label>
+      </node>
+      <node id="13">
+        <label>ctime</label>
+      </node>
+      <node id="15">
+        <label>optional</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+      <node id="5">
+        <label>utility</label>
+      </node>
+      <node id="18">
+        <label>MatrixBlock.h</label>
+        <link refid="_matrix_block_8h_source"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="12">
+        <label>chrono</label>
+      </node>
+      <node id="2">
+        <label>MetaHelpers.h</label>
+        <link refid="_meta_helpers_8h_source"/>
+      </node>
+      <node id="7">
+        <label>type_traits</label>
+      </node>
+      <node id="6">
+        <label>memory</label>
+      </node>
+      <node id="20">
+        <label>SparseBlockMatrixInternal.h</label>
+        <link refid="_sparse_block_matrix_internal_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/Optimizer/LittleOptimizer.h</label>
+        <link refid="_little_optimizer_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_little_optimizer_1_1_p_s_d_linear_system" prot="public">LittleOptimizer::PSDLinearSystem</innerclass>
+    <innerclass refid="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c" prot="public">LittleOptimizer::PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</innerclass>
+    <innernamespace refid="namespace_little_optimizer">LittleOptimizer</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;MetaHelpers.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SparseBlockMatrix.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">LittleOptimizer<sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>T&gt;</highlight></codeline>
+<codeline lineno="9" refid="class_little_optimizer_1_1_p_s_d_linear_system" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_little_optimizer_1_1_p_s_d_linear_system" kindref="compound">PSDLinearSystem</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ScalarType,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Variables&gt;</highlight></codeline>
+<codeline lineno="12" refid="class_little_optimizer_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_925f8286232571c061a9a5a40e90566c" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_little_optimizer_1_1_p_s_d_linear_system" kindref="compound">PSDLinearSystem</ref>&lt;<ref refid="struct_little_optimizer_1_1_scalar" kindref="compound">Scalar</ref>&lt;ScalarType&gt;,<sp/><ref refid="struct_little_optimizer_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt;Variables...&gt;&gt;<sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="src/Optimizer/PSDLinearSystem.h"/>
+  </compounddef>
+</doxygen>
