@@ -1,6 +1,8 @@
 # Little Optimizer
 ## Overview
 
+https://github.com/k-sheridan/qdvo/blob/c565a844518a0eea941e5a7d4589f5fffcdd17d6/matlab/qdvo/FeatureDetection/detectFeatures.m#L1-L28
+
 Little Optimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton. Little Optimizer also stores a gaussian prior for all variables in its state. 
 
 Little Optimizer is written with a significant amount of template meta programming to improve speed. The key way high speed is achieved is by using Little Optimizer's Sparse Block Matrix/Vector classes for most operations including. These classes are built on top of Eigen using a set of fixed size matrices. This allows Little Optimizer to exploit Eigen's vectorized operations.
