@@ -128,7 +128,7 @@ These block matrices were made to allow for dense matrix operations with fixed s
 
 ### Sparse Block Matrix
 ```cpp
-class BlockMatrix<ScalarType, VariableGroup<V1, V2, ...>> {
+class SparseBlockMatrix<ScalarType, VariableGroup<V1, V2, ...>> {
   
   // Gets a block matrix at a given index.
   MatrixBlock<ScalarType, T1::Dimension, T2::Dimension> get(TypedIndex<T1> row, TypedIndex<T2> col);
@@ -157,7 +157,7 @@ class BlockMatrix<ScalarType, VariableGroup<V1, V2, ...>> {
 ```
 ### Sparse Block Row
 ```cpp
-class BlockRow<ScalarType, RowDimension, VariableGroup<V1, V2, ...>> {
+class SparseBlockRow<ScalarType, RowDimension, VariableGroup<V1, V2, ...>> {
   
   // Gets a block vector at a given index.
   MatrixBlock<ScalarType, RowDimension, T1::Dimension> get(TypedIndex<T1> row);
