@@ -3,9 +3,7 @@
 
 Little Optimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton. Little Optimizer also stores a gaussian prior for all variables in its state. 
 
-Little Optimizer is written with a significant amount of template meta programming to improve speed. The key way high speed is achieved is by using Little Optimizer's Block Matrix/Vector classes for most operations including. These classes are built on top of Eigen using a set of fixed size matrices. This allows Little Optimizer to exploit Eigen's vectorized operations.
-
-The application Little Optimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. The main reason the library is called "Little" Optimizer is because of the way the Block Matrix is implemented. The Block Matrix allocated memory for all matrix blocks regardless of their sparsity. This allows for constant time access to all matrix blocks and a flag stating whether the matrix is zero or not.
+The application Little Optimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. 
 
 ```cpp
 class LittleOptimizer <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
@@ -97,9 +95,38 @@ void computeResidual(std::tuple<V1*, V2*, ...> variables, bool linearize = false
 };
 ```
 
-## Block Linear Equations
+## Linear Equations
 
-### Block Matrix
+### Positive Semi-Definite Linear System
+```cpp
+class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
+
+  BlockMatrix A;
+  BlockVector x, b;
+
+  // adds a variable to the linear system, and resizes the matrix and vector accordingly
+  TypedIndex<T> addVariable<T>();
+
+  // overloaded += operator which adds two PSDLinearSystems together: (A1 + A2) * x = (b1 + b2)
+
+};
+```
+
+### Gaussian Prior
+```cpp
+class GaussianPrior : public PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
+
+// Updates the prior error term on manifold. A * (x + dx) = b => A * x = b - A * dx; 
+void update(BlockVector<ScalarType, VariableGroup<V1, V2, ...>> dx);
+
+};
+```
+
+## Sparse Block Matrices
+
+These block matrices were made to allow for dense matrix operations with fixed size sub matrices.
+
+### Sparse Block Matrix
 ```cpp
 class BlockMatrix<ScalarType, VariableGroup<V1, V2, ...>> {
   
@@ -128,7 +155,7 @@ class BlockMatrix<ScalarType, VariableGroup<V1, V2, ...>> {
 
 };
 ```
-### Block Row
+### Sparse Block Row
 ```cpp
 class BlockRow<ScalarType, RowDimension, VariableGroup<V1, V2, ...>> {
   
@@ -151,29 +178,5 @@ class BlockRow<ScalarType, RowDimension, VariableGroup<V1, V2, ...>> {
 };
 ```
 
-### Positive Semi-Definite Linear System
-```cpp
-class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
-
-  BlockMatrix A;
-  BlockVector x, b;
-
-  // adds a variable to the linear system, and resizes the matrix and vector accordingly
-  TypedIndex<T> addVariable<T>();
-
-  // overloaded += operator which adds two PSDLinearSystems together: (A1 + A2) * x = (b1 + b2)
-
-};
-```
-
-### Gaussian Prior
-```cpp
-class GaussianPrior : public PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
-
-// Updates the prior error term on manifold. A * (x + dx) = b => A * x = b - A * dx; 
-void update(BlockVector<ScalarType, VariableGroup<V1, V2, ...>> dx);
-
-};
-```
 
 
