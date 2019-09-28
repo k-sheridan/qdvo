@@ -1,12 +1,12 @@
-# Little Optimizer
+# ArgMin
 ## Overview
 
-Little Optimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton. Little Optimizer also stores a gaussian prior for all variables in its state. 
+ArgMin is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton. Little Optimizer also stores a gaussian prior for all variables in its state. 
 
 The application Little Optimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. 
 
 ```cpp
-class LittleOptimizer <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
+class ArgMin <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
 
 public:
 
