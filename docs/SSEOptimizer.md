@@ -40,25 +40,37 @@ GaussianPrior<VariableGroup<V1, V2, ...>> prior; // Used during marginalization 
 };
 ```
 ## Variable and ErrorTerm Storage
+To keep the SSEOptimizer general, I allow the user to specify the types of variables and error terms in a template.
+These types are then stored in tuples of slot maps which allows for easy access internally, and allows the user to interact
+with the SSE optimizer to define their own marginalization strategy.
+```
 template <Variables...>
 struct VariableContainer : tuple<slot_map<V1>, ...> {
    // Gets the index of the first scalar of the given variable. 
    // This is used to build and operate on a matrix.
    size_t variableIndex(VariableKey<V> key);
 };
-  
+```
+```
 template <ErrorTerms...>
 struct ErrorTermContainer : tuple<slot_map<E1>, ...> {
 
 };
+```
 
 ## Solving for the perturbation.
+During each iteration, the SSEOptimizer must set up a large linear system using the prior and linearlized error terms
+to solve for a small perturbation which can be applied to the variables to minimize the SSE of the error terms give a prior estimate.
 ### Positive Semi-Definite Linear System
 ```cpp
 class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
 
   Matrix A;
   Vector dx, b;
+  std::shared_ptr<VariableContainer>; // Gives the LinearSystem shared ownership with the variables.
+  std::shared_ptr<ErrorTermContainer>; // Gives the LinearSystem shared access to the error term container.
+  
+  PSDLinearSystem(std::shared_ptr<VariableContainer> variables, std::shared_ptr<ErrorTermContainer> errorTerms);
 
   // adds a variable to the linear system, and resizes the matrix and vector accordingly
   TypedIndex<T> addVariable<T>();
@@ -85,10 +97,13 @@ approximated with a quadratic error term / gaussian prior. Typically, this quadr
 very sparse. To improve speed, the information matrix, A0, is stored as a sparse block matrix.
 ### Gaussian Prior
 ```cpp
-class GaussianPrior {
+class GaussianPrior<ScalarType, VariableGroup<V1, V2, ...>> {
 
+std::shared_ptr<VariableContainer>; // Gives the LinearSystem shared ownership with the variables.
 SparseBlockMatrix A0; // sparse information matrix representing the prior uncertainty.
 Vector b0; // dense column vector representing the mean of the prior.
+
+GaussianPrior(std::shared_ptr<VariableContainer> variables);
 
 // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx; 
 void update(Vector dx);
