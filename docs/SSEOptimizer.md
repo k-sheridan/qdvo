@@ -50,6 +50,45 @@ void solveUsingSchurComplement(TypedIndex<T> blockDiagonalStartIndex);
 
 };
 ```
+## Variable and ErrorTerm Storage
+template <Variables...>
+struct VariableContainer : tuple<slot_map<V1>, ...> {
+   // Gets the index of the first scalar of the given variable. 
+   // This is used to build and operate on a matrix.
+   size_t variableIndex(VariableKey<V> key);
+};
+  
+template <ErrorTerms...>
+struct ErrorTermContainer : tuple<slot_map<E1>, ...> {
+
+};
+
+## Solving for the perturbation.
+### Positive Semi-Definite Linear System
+```cpp
+class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
+
+  Matrix A;
+  Vector x, b;
+
+  // adds a variable to the linear system, and resizes the matrix and vector accordingly
+  TypedIndex<T> addVariable<T>();
+
+  // overloaded += operator which adds two PSDLinearSystems together: (A1 + A2) * x = (b1 + b2)
+
+};
+```
+
+## Marginalization
+### Gaussian Prior
+```cpp
+class GaussianPrior : public PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
+
+// Updates the prior error term on manifold. A * (x + dx) = b => A * x = b - A * dx; 
+void update(BlockVector<ScalarType, VariableGroup<V1, V2, ...>> dx);
+
+};
+```
 
 ## Variable and ErrorTerm Requirements
 ### Optimizable Variable Requirements
@@ -98,30 +137,4 @@ void computeResidual(std::tuple<V1*, V2*, ...> variables, bool linearize = false
 };
 ```
 
-## Linear Equations
-
-### Positive Semi-Definite Linear System
-```cpp
-class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
-
-  Matrix A;
-  Vector x, b;
-
-  // adds a variable to the linear system, and resizes the matrix and vector accordingly
-  TypedIndex<T> addVariable<T>();
-
-  // overloaded += operator which adds two PSDLinearSystems together: (A1 + A2) * x = (b1 + b2)
-
-};
-```
-
-### Gaussian Prior
-```cpp
-class GaussianPrior : public PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
-
-// Updates the prior error term on manifold. A * (x + dx) = b => A * x = b - A * dx; 
-void update(BlockVector<ScalarType, VariableGroup<V1, V2, ...>> dx);
-
-};
-```
 
