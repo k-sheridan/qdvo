@@ -24,11 +24,16 @@ public:
 
 } // namespace QDVO
 
-namespace LittleOptimizer {
+namespace ArgMin {
 
 template <typename T>
-struct VariableKey {
-    std::pair<unsigned, unsigned> slotMapKey; // Slot Map key (index, generation).
+struct VariableKey : public std::pair<unsigned, unsigned> {
+     // Slot Map key (index, generation).
 };
 
-} // namespace LittleOptimizer
+template <typename T>
+struct ErrorTermKey : public std::pair<unsigned, unsigned> {
+     // Slot Map key (index, generation).
+};
+
+} // namespace ArgMin

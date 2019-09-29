@@ -32,6 +32,7 @@ include_directories(
 
 file(GLOB QDVO_HEADER_FILES
     "${PROJECT_SOURCE_DIR}/src/*/*.h"
+    "${PROJECT_SOURCE_DIR}/src/*/*/*.h"
     "${PROJECT_SOURCE_DIR}/src/*/*.hpp"
     "${PROJECT_SOURCE_DIR}/src/*.h"
     "${PROJECT_SOURCE_DIR}/src/*.hpp"

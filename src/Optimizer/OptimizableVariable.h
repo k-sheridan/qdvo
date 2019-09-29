@@ -2,7 +2,7 @@
 
 #include "Types.h"
 
-namespace LittleOptimizer {
+namespace ArgMin {
 
 template <size_t Dimension>
 class OptimizableVariable {

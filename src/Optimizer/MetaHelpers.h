@@ -1,6 +1,8 @@
 #pragma once
 
-namespace LittleOptimizer {
+#include <tuple>
+
+namespace ArgMin {
 
 template <typename... T>
 struct VariableGroup {};
@@ -19,9 +21,7 @@ struct TypedIndex {
     size_t index;
 };
 
-}
-
-namespace LittleOptimizer::internal {
+namespace internal {
     // Used to get the index of a tuple.
     template <class T, class Tuple>
     struct Index;
@@ -35,4 +35,8 @@ namespace LittleOptimizer::internal {
     struct Index<T, std::tuple<U, Types...>> {
         static const std::size_t value = 1 + Index<T, std::tuple<Types...>>::value;
     };
+
+
+}
+
 }
