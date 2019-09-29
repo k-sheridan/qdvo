@@ -44,7 +44,6 @@ To keep the SSEOptimizer general, I allow the user to specify the types of varia
 These types are then stored in tuples of slot maps which allows for easy access internally, and allows the user to interact
 with the SSE optimizer to define their own marginalization strategy.
 ```
-template <Variables...>
 struct VariableContainer : tuple<slot_map<V1>, ...> {
    // Gets the index of the first scalar of the given variable. 
    // This is used to build and operate on a matrix.
@@ -52,7 +51,6 @@ struct VariableContainer : tuple<slot_map<V1>, ...> {
 };
 ```
 ```
-template <ErrorTerms...>
 struct ErrorTermContainer : tuple<slot_map<E1>, ...> {
 
 };
