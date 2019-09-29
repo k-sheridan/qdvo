@@ -31,8 +31,8 @@ void optimize();
 
 private:
 
-ErrorTermContainers errorTerms; // Tuple of vectors of all error term types.
-VariableContainers variables; // Tuple of vectors of variables.
+std::shared_ptr<ErrorTermContainer<E1, ...>> errorTerms; // stores all error term types.
+std::shared_ptr<VariableContainer<V1, ...>> variables; // stores all variables.
 
 PSDLinearSystem linearSystem; // Used to solve for perturbation.
 GaussianPrior prior; // Used during marginalization to approximate deleted information.
