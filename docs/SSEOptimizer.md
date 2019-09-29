@@ -1,12 +1,12 @@
-# LittleOptimizer
+# SSEOptimizer
 ## Overview
 
-LittleOptimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton. LittleOptimizer also stores a gaussian prior for all variables in its state. 
+SSEOptimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton on manifold. SSEOptimizer also stores a gaussian prior for all variables in its state. 
 
-The application LittleOptimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. 
+The application SSEOptimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. 
 
 ```cpp
-class LittleOptimizer <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
+class SSEOptimizer <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
 
 public:
 
@@ -104,8 +104,8 @@ void computeResidual(std::tuple<V1*, V2*, ...> variables, bool linearize = false
 ```cpp
 class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
 
-  BlockMatrix A;
-  BlockVector x, b;
+  Matrix A;
+  Vector x, b;
 
   // adds a variable to the linear system, and resizes the matrix and vector accordingly
   TypedIndex<T> addVariable<T>();
