@@ -112,9 +112,18 @@ void update(Vector dx);
 ## Sparse Block Matrices
 When, the dimensionality of our problem becomes large, it is not feasible to stores a NxN matrix where N is the dimensionality of our problem. To get around this problem, it is common to exploit the inherent sparsity of the problem. In SSEOptimizer, I want a sparse block matrix which is designed to work well with our variable container keys. 
 ## Sparse Block Matrix
+```
+class SparseBlockMatrix<ScalarType, VariableGroup<V1, ...>> {
+
+std::tuple<std::map<VariableKey<V1>, SparseBlockRow<ScalarType, V1::dimension, VariableGroup<V1, ...>>>, ...> rows;
+
+// Returns the row map for the given key.
+auto getMapForKey(VariableKey<V> key);
+
+};
+```
 
 ## Sparse Block Row
-
 ```
 class SparseBlockRow<ScalarType, RowDimension, VariableGroup<V1, ...>> {
 
@@ -126,7 +135,7 @@ std::tuple<std::map<VariableKey<V1>, MatrixBlock<ScalarType, RowDimension, V1::d
 // Returns a std map for the given key type.
 auto& getMapForKey(VariableKey<V> key);
 
-}
+};
 ```
 
 ## Variable and ErrorTerm Requirements
