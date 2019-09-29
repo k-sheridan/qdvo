@@ -1,9 +1,9 @@
 # SSEOptimizer
 ## Overview
 
-SSEOptimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton on manifold. SSEOptimizer also stores a gaussian prior for all variables in its state. 
+SSEOptimizer is a semi generic nonlinear optimizer capable of performing Levenberg-Marquardt or Gauss-Newton on manifold. SSEOptimizer also stores a gaussian prior for all variables in its state. The gaussian prior is stored in a sparse block format which allows it to handle a very large state dimensionality assuming it remains sparse.
 
-The application SSEOptimizer was designed for is small SLAM problems. Specifically, optimizer was designed for windowed SLAM problems. 
+SSEOptimizer was designed for is small SLAM problems. Specifically, SSEOptimizer was designed for windowed SLAM problems.
 
 ```cpp
 class SSEOptimizer <VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
@@ -34,19 +34,8 @@ private:
 std::shared_ptr<ErrorTermContainer<E1, ...>> errorTerms; // stores all error term types.
 std::shared_ptr<VariableContainer<V1, ...>> variables; // stores all variables.
 
-PSDLinearSystem linearSystem; // Used to solve for perturbation.
-GaussianPrior prior; // Used during marginalization to approximate deleted information.
-
-// Sets up the linear system efficiently. (A_prior + Jt * W^(-1) * J) * dx = (b_prior + Jt * W^(-1) * e).
-void buildProblem();
-
-// Solves the linear system efficiently using schur complement.
-// The given index is used to find where the top left element of D is.
-// [ A   |  B ]
-// [ -------- ]
-// [ Bt  |  D ]
-// Where D is the block diagonal matrix.
-void solveUsingSchurComplement(TypedIndex<T> blockDiagonalStartIndex);
+PSDLinearSystem<VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> linearSystem; // Used to solve for perturbation.
+GaussianPrior<VariableGroup<V1, V2, ...>> prior; // Used during marginalization to approximate deleted information.
 
 };
 ```
@@ -69,10 +58,21 @@ struct ErrorTermContainer : tuple<slot_map<E1>, ...> {
 class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
 
   Matrix A;
-  Vector x, b;
+  Vector dx, b;
 
   // adds a variable to the linear system, and resizes the matrix and vector accordingly
   TypedIndex<T> addVariable<T>();
+  
+  // Sets up the linear system efficiently. (A_prior + Jt * W^(-1) * J) * dx = (b_prior + Jt * W^(-1) * e).
+  void buildProblem();
+
+  // Solves the linear system efficiently using schur complement.
+  // The given index is used to find where the top left element of D is.
+  // [ A   |  B ]
+  // [ -------- ]
+  // [ Bt  |  D ]
+  // Where D is the block diagonal matrix.
+  void solve();
 
   // overloaded += operator which adds two PSDLinearSystems together: (A1 + A2) * x = (b1 + b2)
 
@@ -80,12 +80,18 @@ class PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
 ```
 
 ## Marginalization
+Before an error term or variable can be removed, the information it provided to the current solution is 
+approximated with a quadratic error term / gaussian prior. Typically, this quadratic error term's information matrix is 
+very sparse. To improve speed, the information matrix, A0, is stored as a sparse block matrix.
 ### Gaussian Prior
 ```cpp
-class GaussianPrior : public PSDLinearSystem<ScalarType, VariableGroup<V1, V2, ...>> {
+class GaussianPrior {
 
-// Updates the prior error term on manifold. A * (x + dx) = b => A * x = b - A * dx; 
-void update(BlockVector<ScalarType, VariableGroup<V1, V2, ...>> dx);
+SparseBlockMatrix A0; // sparse information matrix representing the prior uncertainty.
+Vector b0; // dense column vector representing the mean of the prior.
+
+// Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx; 
+void update(Vector dx);
 
 };
 ```
