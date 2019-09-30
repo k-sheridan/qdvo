@@ -111,7 +111,7 @@ void update(Vector dx);
 
 ## Sparse Block Matrices
 When, the dimensionality of our problem becomes large, it is not feasible to stores a NxN matrix where N is the dimensionality of our problem. To get around this problem, it is common to exploit the inherent sparsity of the problem. In SSEOptimizer, I want a sparse block matrix which is designed to work well with our variable container keys. 
-## Sparse Block Matrix
+### Sparse Block Matrix
 ```
 class SparseBlockMatrix<ScalarType, VariableGroup<V1, ...>> {
 
@@ -123,7 +123,7 @@ auto getMapForKey(VariableKey<V> key);
 };
 ```
 
-## Sparse Block Row
+### Sparse Block Row
 ```
 class SparseBlockRow<ScalarType, RowDimension, VariableGroup<V1, ...>> {
 
