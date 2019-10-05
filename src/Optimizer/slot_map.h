@@ -37,7 +37,7 @@
 #define SLOT_MAP_THROW_EXCEPTION(type, ...) throw type(__VA_ARGS__)
 #endif
 
-namespace LittleOptimizer {
+namespace ArgMin {
 
 namespace slot_map_detail {
 
@@ -378,4 +378,4 @@ constexpr void swap(slot_map<T, Key, Container>& lhs, slot_map<T, Key, Container
     lhs.swap(rhs);
 }
 
-} // namespace LittleOptimizer
+} // namespace ArgMin

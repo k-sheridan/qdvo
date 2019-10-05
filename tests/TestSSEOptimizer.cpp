@@ -7,5 +7,5 @@ TEST(SSEOptimizer, Basic){
     SE3 pose;
     InverseDepth zinv;
 
-    //LittleOptimizer::Optimizer<LittleOptimizer::VariableGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth>, LittleOptimizer::ErrorTermGroup<LittleOptimizer::SE3, LittleOptimizer::InverseDepth>> optimizer;
+    ArgMin::SSEOptimizer<ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<SE3, InverseDepth>> optimizer;
 }
