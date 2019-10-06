@@ -6,6 +6,7 @@ SSEOptimizer is a semi generic nonlinear optimizer capable of performing Levenbe
 SSEOptimizer was designed for is small SLAM problems. Specifically, SSEOptimizer was designed for windowed SLAM problems.
 
 ```cpp
+/// Requirement: E1 != E2 != E3... and V1 != V2 != V3...
 class SSEOptimizer <ScalarType, VariableGroup<V1, V2, ...>, ErrorTermGroup<E1, E2, ...>> {
 
 public:
@@ -48,6 +49,9 @@ These types are then stored in tuples of slot maps which allows for easy access 
 with the SSE optimizer to define their own marginalization strategy.
 ```cpp
 struct VariableContainer : tuple<slot_map<V1>, ...> {
+   // Gets the slot map for a variable
+   slot_map<V> getVariableMap<V>();
+
    // Gets the index of the first scalar of the given variable. 
    // This is used to build and operate on a matrix.
    size_t variableIndex(VariableKey<V> key);
