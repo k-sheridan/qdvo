@@ -33,7 +33,7 @@ TEST(CameraModel, BreakingIt)
     auto p2 = Eigen::Vector3d(100, 0, 1);
 }
 
-TEST(EQUIDISTANTCameraModel, Basic)
+TEST(EquidistantCameraModel, Basic)
 {
     QDVO::EquidistantCameraModel cm = QDVO::EquidistantCameraModel(300, 301, 255, 256, PI / 2.1, 512, 400, Eigen::Vector4d(0.0034823894022493434, 0.0007150348452162257, -0.0020532361418706202, 0.00020293673591811182));
 
