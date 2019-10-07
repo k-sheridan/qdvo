@@ -3,13 +3,12 @@
 #include <vector>
 #include <set>
 
-template <typename Index, typename Generation>
 struct SlotMapKeyBase {
-using index_type = Index;
-using generation_type = Generation;
+using index_type = size_t;
+using generation_type = size_t;
 
-Index index;
-Generation generation;
+index_type index;
+generation_type generation;
 };
 
 /**
@@ -24,7 +23,7 @@ class SlotMap
 
     struct Slot
     {
-        typename KeyType::index_type index = 0;
+        size_t dataIndex; // index of the data in the data array.
         typename KeyType::generation_type generation = 0;
         bool free = true;
     };
@@ -44,8 +43,41 @@ public:
     /**
      * O(1)
      */
-    KeyType insert(DataType&& data)
+    KeyType insert(DataType value)
     {
+        size_t slotIndex;
+
+        if (freeSlots.empty())
+        { 
+            // add new slot
+            slotIndex = slots.size();
+            slots.emplace_back();
+
+        } else
+        {
+            slotIndex = freeSlots.back();
+            freeSlots.pop_back();
+        }
+
+        // get slot reference
+        Slot& slot = slots.at(slotIndex);
+        assert(slot.free == true);
+
+        // set up slot
+        // set slot to not free
+        slot.free = false;
+        slot.dataIndex = data.size();
+
+        // push a new data member to the back of the data arrays.
+        data.push_back(value);
+        dataToSlotIndex.push_back(slotIndex);
+
+        // setup key.
+        KeyType key;
+        key.index = slotIndex;
+        key.generation = slot.generation;
+
+        return key;
 
     }
 
@@ -54,6 +86,40 @@ public:
      */
     void erase(KeyType& key) 
     {
+        // check if there are enough slots
+        if (slots.size() <= key.index)
+        {
+            return;
+        }
+
+        const auto& slot = slots.at(key.index);
+
+        // check if the generations match
+        if (slot.generation != key.generation)
+        {
+            return;
+        }
+
+        assert(slot.dataIndex < data.size());
+
+        // swap the data to be deleted with the last data element.
+        std::swap(data.at(slot.dataIndex), data.back());
+        std::swap(dataToSlotIndex.at(slot.dataIndex), dataToSlotIndex.back());
+
+        // fix the slot pointing to the swapped data
+        slots.at(dataToSlotIndex.at(slot.dataIndex)).dataIndex = slot.dataIndex;
+
+        // increment the deleted slots generation
+        const size_t deletedSlotIndex = dataToSlotIndex.back();
+        ++slots.at(deletedSlotIndex).generation;
+
+        // pop the data from the back
+        data.pop_back();
+        dataToSlotIndex.pop_back();
+
+        // free the slot
+        slots.at(deletedSlotIndex).free = true;
+        freeSlots.push_back(deletedSlotIndex);
 
     }
 
@@ -63,7 +129,23 @@ public:
      */
     typename std::vector<DataType>::iterator at(KeyType& key)
     {
-        
+        // check if there are enough slots
+        if (slots.size() <= key.index)
+        {
+            return data.end();
+        }
+
+        const auto& slot = slots.at(key.index);
+
+        // check if the generations match
+        if (slot.generation != key.generation)
+        {
+            return data.end();
+        }
+
+        assert(slot.dataIndex < data.size());
+
+        return data.begin() + slot.dataIndex;
     }
 
     /**
@@ -82,6 +164,15 @@ public:
     typename std::vector<DataType>::iterator end()
     {
         return data.end();
+    }
+
+    /**
+     * O(1)
+     * number of elements currently stored the slot map.
+     */
+    size_t size()
+    {
+        return data.size();
     }
 
 };

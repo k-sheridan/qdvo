@@ -9,8 +9,6 @@ TEST(SSEOptimizer, Basic){
     SE3 pose;
     InverseDepth zinv;
 
-    typedef ArgMin::VariableKey<SE3> keytype;
-
     // Create an optimizer.
  
     //ArgMin::SSEOptimizer<ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<SE3, InverseDepth>> optimizer;

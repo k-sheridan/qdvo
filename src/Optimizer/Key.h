@@ -7,7 +7,7 @@ namespace ArgMin
 {
 
 template <typename T>
-class VariableKey : public SlotMapKeyBase<unsigned, unsigned>
+class VariableKey : public SlotMapKeyBase
 {
     typedef T variable_type;
     // Slot Map key (index, generation).
@@ -18,7 +18,7 @@ class VariableKey : public SlotMapKeyBase<unsigned, unsigned>
 };
 
 template <typename T>
-class ErrorTermKey : public SlotMapKeyBase<unsigned, unsigned>
+class ErrorTermKey : public SlotMapKeyBase
 {
     typedef T errorterm_type;
     // Slot Map key (index, generation).
