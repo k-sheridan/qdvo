@@ -6,12 +6,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(CMAKE_CXX_FLAGS -O3)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
 find_package(GTest REQUIRED)
+find_package(GoogleBenchmark REQUIRED)
 find_package(Boost REQUIRED)
 
+include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${SOPHUS_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
@@ -50,16 +54,11 @@ target_link_libraries(QDVO ${OpenCV_LIBS} ${sophus_LIBRARIES} ${Boost_LIBRARIES}
 
 set_property(TARGET QDVO PROPERTY CXX_STANDARD 17)
 
-#Testing
-option(PACKAGE_TESTS "Build the tests" ON)
-if(PACKAGE_TESTS)
-    enable_testing()
-    #add_subdirectory(tests)
-endif()
-
-
 # unit tests
-add_subdirectory(tests)
+add_subdirectory(test)
+
+# benchmark
+add_subdirectory(bench)
 
 # Installation
 
@@ -120,3 +119,16 @@ target_include_directories(QDVO
 )
 
 add_library(QDVO::QDVO ALIAS QDVO)
+
+
+# debug cmake
+#macro(print_all_variables)
+ #   message(STATUS "print_all_variables------------------------------------------{")
+ #   get_cmake_property(_variableNames VARIABLES)
+ #   foreach (_variableName ${_variableNames})
+ #       message(STATUS "${_variableName}=${${_variableName}}")
+ #   endforeach()
+#    message(STATUS "print_all_variables------------------------------------------}")
+#endmacro()
+
+#print_all_variables()

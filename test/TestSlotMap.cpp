@@ -40,10 +40,13 @@ TEST(SlotMap, Simple) {
     EXPECT_EQ(key5.generation, 0);
     EXPECT_EQ(key5.index, 3);
 
+    int i = 0;
     for (auto& e : map)
     {
         EXPECT_TRUE(e > 0);
+        ++i;
     }
+    EXPECT_EQ(i, 4);
 }
 
 TEST(SlotMap, Stress) {
