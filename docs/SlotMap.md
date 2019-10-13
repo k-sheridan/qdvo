@@ -1,5 +1,7 @@
 # SlotMap
 
+The slot map is a data structure which provides constant time insert, erase, and access with a versioned key.
+
 ```cpp
 class SlotMap<T, Key> {
 
