@@ -1,10 +1,10 @@
 #pragma once
 
 #include "GlobalDefinitions.h"
-#include "Graph.h"
+#include "DataStructures/Graph.h"
 #include "FrontFndVisualOdometry.h"
 #include "SlidingWindowEstimator.h"
-#include "ImageStatisticsLUT.h"
+#include "DataStructures/ImageStatisticsLUT.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
 #include "RadialSearchPattern.h"

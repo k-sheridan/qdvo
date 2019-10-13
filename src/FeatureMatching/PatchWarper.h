@@ -3,9 +3,9 @@
 
 #include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
-#include "Frame.h"
-#include "Patch.h"
-#include "Graph.h"
+#include "DataStructures/Frame.h"
+#include "DataStructures/Patch.h"
+#include "DataStructures/Graph.h"
 #include "Types.h"
 
 namespace QDVO {

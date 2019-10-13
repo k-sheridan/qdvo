@@ -4,9 +4,9 @@
 #include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include "Frame.h"
-#include "Patch.h"
-#include "ImageStatisticsLUT.h"
+#include "DataStructures/Frame.h"
+#include "DataStructures/Patch.h"
+#include "DataStructures/ImageStatisticsLUT.h"
 #include "Types.h"
 #include <Eigen/Core>
 

@@ -1,7 +1,7 @@
 #ifndef SLIDINGWINDOWESTIMATOR_H
 #define SLIDINGWINDOWESTIMATOR_H
 
-#include "Graph.h"
+#include "DataStructures/Graph.h"
 
 class SlidingWindowEstimator
 {

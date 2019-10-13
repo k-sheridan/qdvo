@@ -26,7 +26,6 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/Optimizer/
     ${PROJECT_SOURCE_DIR}/src/ErrorTerms/
     ${PROJECT_SOURCE_DIR}/src/FeatureDetection/
-    ${PROJECT_SOURCE_DIR}/src/DataStructures/
     ${PROJECT_SOURCE_DIR}/src/FeatureMatching/
     ${PROJECT_SOURCE_DIR}/src/Estimation/
     ${PROJECT_SOURCE_DIR}/src/ParallelAlgorithms/

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "CorrespondenceDistribution.h"
+#include "DataStructures/CorrespondenceDistribution.h"
 #include "GlobalDefinitions.h"
 #include "PatchComparer.h"
 

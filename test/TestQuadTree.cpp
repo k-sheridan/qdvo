@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <GenericQuadTree.h>
+#include "DataStructures/GenericQuadTree.h"
 
 TEST(QuadTree, Basic)
 {

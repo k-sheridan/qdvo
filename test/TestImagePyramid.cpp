@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 //#include "VO.h"
-#include <Frame.h>
-#include <ImagePyramid.h>
+#include "DataStructures/Frame.h"
+#include "DataStructures/ImagePyramid.h"
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 

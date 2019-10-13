@@ -1,5 +1,4 @@
-#ifndef DEQUEARRAY_H
-#define DEQUEARRAY_H
+#pragma once
 
 #include <vector>
 #include <Eigen/Core>
@@ -31,6 +30,21 @@ public:
 
     SpatialMap(const unsigned width);
 
+    void reset()
+    {
+        for (auto& e : this->mapOfMaps)
+        {
+            // if there is data here, reset it.
+            if (e != nullptr)
+            {
+                for (auto& pc : *(e))
+                {
+                    pc.reset();
+                }
+            }
+        }
+    }
+
     T& get(const Eigen::Vector2i& pixel)
     {
         this->index1 = this->topHash(pixel(0), pixel(1));
@@ -49,21 +63,6 @@ public:
 
 
         return bottomHashTableRef->at(this->index2);
-    }
-
-    void reset()
-    {
-        for (auto& e : this->mapOfMaps)
-        {
-            // if there is data here, reset it.
-            if (e != nullptr)
-            {
-                for (auto& pc : *(e))
-                {
-                    pc.reset();
-                }
-            }
-        }
     }
 
 private:
@@ -133,6 +132,3 @@ template <typename T> SpatialMap<T>::SpatialMap(unsigned width)
 
 }
 
-
-
-#endif // DEQUEARRAY_H

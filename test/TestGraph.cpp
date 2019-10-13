@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "Graph.h"
+#include "DataStructures/Graph.h"
 
 TEST(CameraModelAdd, Basic)
 {

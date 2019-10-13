@@ -3,8 +3,8 @@
 #include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include "Feature.h"
-#include "Frame.h"
+#include "DataStructures/Feature.h"
+#include "DataStructures/Frame.h"
 #include <algorithm>
 
 
