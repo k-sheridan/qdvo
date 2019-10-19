@@ -23,7 +23,6 @@ include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(
     ${PROJECT_SOURCE_DIR}/src/
     ${PROJECT_SOURCE_DIR}/src/CameraModels/
-    ${PROJECT_SOURCE_DIR}/src/Optimizer/
     ${PROJECT_SOURCE_DIR}/src/ErrorTerms/
     ${PROJECT_SOURCE_DIR}/src/FeatureDetection/
     ${PROJECT_SOURCE_DIR}/src/FeatureMatching/

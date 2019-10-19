@@ -15,21 +15,21 @@ class VariableContainer
    template <typename VariableType>
    auto &getVariableMap()
    {  
-      //return std::get<0>(tupleOfVariableMaps);
+      assert(false);
    }
 
    /// Gets the index of the first scalar of the given variable.
    /// This is used to build and operate on a matrix.
-   template <typename V>
-   size_t variableIndex(VariableKey<V> key)
+   template <typename VariableType>
+   size_t variableIndex(VariableKey<VariableType>& key)
    {
-      //TODO
+      assert(false);
    }
 
    /// Computes the total dimensionality of the variables stored in this container.
    size_t totalDimensions()
    {
-      //TODO
+      assert(false);
    }
 
    // Stores the variables.

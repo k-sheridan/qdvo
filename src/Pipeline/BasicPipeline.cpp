@@ -251,8 +251,6 @@ void QDVO::BasicPipeline::updatePatchComparers()
         this->patchComparers.at(cf->frameID) = std::shared_ptr<QDVO::PatchComparer>(new QDVO::PatchComparer());
     }
 
-    this->patchComparers.at(cf->frameID)->meanStdDevTable.setupTables(cf->imagePyr.getImage().toOpenCVImage(), cf.get());
-
     std::cout << "there are " << this->patchComparers.size() << " patch comparers in the table" << std::endl;
 }
 

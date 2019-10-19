@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "SlotMap.h"
+#include "Optimizer/SlotMap.h"
 #include <numeric>
 
 template <typename T>

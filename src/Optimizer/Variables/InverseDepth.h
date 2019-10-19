@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OptimizableVariable.h"
+#include "Optimizer/OptimizableVariable.h"
 
 class InverseDepth : public ArgMin::OptimizableVariable<1> {
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DataStructures/Graph.h"
-#include "SSEOptimizer.h"
+#include "Optimizer/SSEOptimizer.h"
 
 class FrontEndVisualOdometry
 {

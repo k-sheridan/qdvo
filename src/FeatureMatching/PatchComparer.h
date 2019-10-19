@@ -6,7 +6,6 @@
 #include <opencv2/imgproc.hpp>
 #include "DataStructures/Frame.h"
 #include "DataStructures/Patch.h"
-#include "DataStructures/ImageStatisticsLUT.h"
 #include "Types.h"
 #include <Eigen/Core>
 
@@ -20,8 +19,6 @@ namespace QDVO {
 class PatchComparer
 {
 public:
-
-    ImageStatisticsLUT meanStdDevTable; // precomputed LUT used to speed up the ZNCC or ZNSSD.
 
     PatchComparer();
 

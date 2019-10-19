@@ -5,10 +5,10 @@
 #include "CameraModel.hpp"
 #include "Landmark.h"
 #include "ImagePyramid.h"
-#include "ImageStatisticsLUT.h"
 #include "CorrespondenceDistribution.h"
 
-namespace  QDVO {
+namespace QDVO
+{
 class Frame
 {
 public:
@@ -20,23 +20,24 @@ public:
 
     ImagePyramid imagePyr; // holds the actual image for this frame.
 
-    CameraModel* cm = nullptr; // pointer to the global camera model for this frame.
+    CameraModel *cm = nullptr; // pointer to the global camera model for this frame.
 
     std::vector<Landmark> landmarks; // array of landmarks hosted in this frame. ID's should be ordered and landmarks should never be deleted.
 
     bool initialized = false;
 
-    enum FrameStatus {
-       INACTIVE,
-       ACTIVE,
-       MARGINALIZED
+    enum FrameStatus
+    {
+        INACTIVE,
+        ACTIVE,
+        MARGINALIZED
     } status;
 
-    void updateImage(cv::Mat& baseImage);
+    void updateImage(cv::Mat &baseImage);
 
-    int maxIntensity(){return this->maxImageIntensity;}
+    int maxIntensity() { return this->maxImageIntensity; }
 
-    Landmark& getLandmark(QDVO::ID landmarkID) {return landmarks.at(landmarkID - 1);}
+    Landmark &getLandmark(QDVO::ID landmarkID) { return landmarks.at(landmarkID - 1); }
 
     /*
      * resets all members of this frame while leaving the memory used by them allocated.
@@ -46,7 +47,7 @@ public:
     void resetCorrespondenceDistributions()
     {
         // reset all correspondence distributions
-        for (auto& e : this->correspondenceDistributions)
+        for (auto &e : this->correspondenceDistributions)
         {
             e.reset();
         }
@@ -58,9 +59,8 @@ public:
      */
     std::deque<CorrespondenceDistribution> correspondenceDistributions;
 
-    private:
-
+private:
     int maxImageIntensity;
 };
 
-}
+} // namespace QDVO

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OptimizableVariable.h"
+#include "Optimizer/OptimizableVariable.h"
 
 class SE3 : public ArgMin::OptimizableVariable<6> {
 

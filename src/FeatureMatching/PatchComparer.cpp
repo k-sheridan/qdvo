@@ -12,7 +12,6 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame
     Eigen::Vector2i tl = pixel - shift;
     Eigen::Vector2i br = pixel + shift;
 
-    assert(this->meanStdDevTable.framePtr == &targetFrame);
     assert(patch.getStdDev() > 1e-8);
     assert(PATCH_WIDTH == 2*PATCH_RADIUS + 1);
 
@@ -22,9 +21,6 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame
     {
         return {};
     }
-
-    // Get the approximate mean of the test patch
-    //float approxMean = this->meanStdDevTable.getMean(cv::Point2i(pixel(0), pixel(1)));
 
     // get the test patch from the image and compute its zero mean self.
     Eigen::Matrix<QDVO::ImageIntensityType, PATCH_WIDTH, PATCH_WIDTH> patchData = targetImage.block<PATCH_WIDTH, PATCH_WIDTH>(tl(1), tl(0));

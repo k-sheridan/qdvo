@@ -1,5 +1,5 @@
 #include <benchmark/benchmark.h>
-#include "SlotMap.h"
+#include "Optimizer/SlotMap.h"
 
 static void BM_SlotMapInsert(benchmark::State &state)
 {
