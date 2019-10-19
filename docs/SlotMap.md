@@ -27,3 +27,12 @@ Key getKeyFromIterator(iterator);
 
 };
 ```
+
+## SlotMap Key Requirements
+
+```cpp
+struct KeyExample {
+  unsigned index;
+  unsigned generation;
+}
+```
