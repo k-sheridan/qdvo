@@ -145,8 +145,9 @@ using MatrixBlock = Eigen::Matrix<ScalarType, RowDimension, C>;
 
 std::tuple<std::map<VariableKey<V1>, MatrixBlock<ScalarType, RowDimension, V1::dimension>>, ...> blocks;
 
-// Returns a std map for the given key type.
-auto& getMapForKey(VariableKey<V> key);
+// Returns a std map of blocks for the given variable type.
+template <typename VariableType>
+auto& getVariableMap();
 
 // Computes the dot product of this row with a dense column vector.
 // The variable container is used to determine the indices of each block.
