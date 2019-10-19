@@ -55,5 +55,11 @@ TEST(ArgMin, SparseBlockRowOperations)
     Eigen::Matrix<double, Eigen::Dynamic, 1> dx;
     dx.resize(variableContainer.totalDimensions(), 1);
 
+    EXPECT_EQ(variableContainer.variableIndex(se3Key1), 0);
+    EXPECT_EQ(variableContainer.variableIndex(se3Key2), 6);
+    EXPECT_EQ(variableContainer.variableIndex(dinvKey1), 12);
+    EXPECT_EQ(variableContainer.variableIndex(dinvKey2), 13);
+
+
 
 }
