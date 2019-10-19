@@ -49,6 +49,7 @@ namespace internal {
        static_for_impl(t, std::forward<Func>(f), std::make_index_sequence<sizeof...(T)>{});
     }
     /* USAGE EXAMPLE
+    // args: (tuple index, tuple value)
     int main()
     {
         auto t = std::make_tuple( 1, 22, 3, 4 );

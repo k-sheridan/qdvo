@@ -9,9 +9,10 @@ namespace ArgMin
 template <typename T>
 class VariableKey : public SlotMapKeyBase
 {
+public:
     typedef T variable_type;
     // Slot Map key (index, generation).
-    bool operator<(const VariableKey<T> &other) const 
+    bool operator<(const VariableKey<T> &other) const
     {
         return this->index < other.index;
     }
@@ -20,6 +21,7 @@ class VariableKey : public SlotMapKeyBase
 template <typename T>
 class ErrorTermKey : public SlotMapKeyBase
 {
+public:
     typedef T errorterm_type;
     // Slot Map key (index, generation).
     bool operator<(const ErrorTermKey<T> &other) const

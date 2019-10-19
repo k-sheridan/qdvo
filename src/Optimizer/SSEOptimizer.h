@@ -11,7 +11,7 @@ template <typename...>
 class SSEOptimizer;
 
 template <typename ScalarType, typename... Variables, typename... ErrorTerms>
-class SSEOptimizer<ScalarType, VariableGroup<Variables...>, ErrorTermGroup<ErrorTerms...>>
+class SSEOptimizer<Scalar<ScalarType>, VariableGroup<Variables...>, ErrorTermGroup<ErrorTerms...>>
 {
 public:
     /// Inserts a variable into the optimizer.
