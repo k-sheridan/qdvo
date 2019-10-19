@@ -5,6 +5,7 @@
 #include <Eigen/Core>
 #include "Optimizer/MetaHelpers.h"
 #include "Optimizer/SlotMap.h"
+#include "Optimizer/Containers.h"
 
 namespace ArgMin
 {
@@ -33,8 +34,33 @@ public:
 
     /// Computes the dot product of this row with a dense column vector.
     /// The variable container is used to determine the indices of each block.
-    Eigen::Matrix<ScalarType, RowDimension, 1> dot(const VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &v)
+    Eigen::Matrix<ScalarType, RowDimension, 1> dot(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &v)
     {
+        Eigen::Matrix<ScalarType, RowDimension, 1> result = Eigen::Matrix<ScalarType, RowDimension, 1>::Zero();
+
+        internal::static_for(columns, [&](auto i, auto &matrixMap) {
+            auto &map = variableOrder.template getVariableMap<typename std::tuple_element<i, std::tuple<Variables...>>::type>();
+
+            if (map.size() > 0)
+            {
+                auto firstVariableKey = map.getKeyFromDataIndex(0);
+                // Precompute the offset index for the current variable type.
+                auto startingIndex = variableOrder.template variableIndex(firstVariableKey);
+
+                for (auto &pair : matrixMap)
+                {
+                    auto variableIterator = map.at(pair.first);
+                    if (variableIterator != map.end())
+                    {
+                        auto index = startingIndex + (variableIterator - map.begin()) * std::tuple_element<i, std::tuple<Variables...>>::type::dimension;
+
+                        result += pair.second * v.block(index, 0, std::tuple_element<i, std::tuple<Variables...>>::type::dimension, 1);
+                    }
+                }
+            }
+        });
+
+        return result;
     }
 
 private:

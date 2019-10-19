@@ -127,7 +127,7 @@ public:
      * O(1)
      * returns end() if key is invalid.
      */
-    typename std::vector<DataType>::iterator at(KeyType& key)
+    typename std::vector<DataType>::iterator at(const KeyType& key)
     {
         // check if there are enough slots
         if (slots.size() <= key.index)
@@ -148,6 +148,11 @@ public:
         return data.begin() + slot.dataIndex;
     }
 
+    typename std::vector<DataType>::const_iterator at(const KeyType& key) const {
+        return at(key);
+    }
+
+
     /**
      * O(1)
      * iterator pointing to the beginning of this containers internal data container.
@@ -156,12 +161,23 @@ public:
     {
         return data.begin();
     }
+    
+    typename std::vector<DataType>::const_iterator begin() const
+    {
+        return data.begin();
+    }
+
 
     /**
      * O(1)
      * iterator pointing to one past the end of this containers internal data container.
      */
     typename std::vector<DataType>::iterator end()
+    {
+        return data.end();
+    }
+    
+    typename std::vector<DataType>::const_iterator end() const
     {
         return data.end();
     }
@@ -173,6 +189,23 @@ public:
     size_t size() const
     {
         return data.size();
+    }
+
+    /**
+     * O(1)
+     * constructs a variable key index and generation from a data index.
+     * Asserts that the data index is valid.
+     */
+    KeyType getKeyFromDataIndex(size_t dataIndex)
+    {
+        size_t slotIndex = dataToSlotIndex.at(dataIndex);
+
+        KeyType result;
+
+        result.index = slotIndex;
+        result.generation = slots.at(slotIndex).generation;
+
+        return result;
     }
 
 };

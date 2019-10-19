@@ -27,10 +27,9 @@ TEST(ArgMin, SparseBlockRowOperations)
     SE3 pose;
     InverseDepth zinv;
 
-    using SBR = ArgMin::SparseBlockRow<Scalar<double>, Dimension<1>, ArgMin::VariableGroup<SE3, InverseDepth>>;
+    using SBR = ArgMin::SparseBlockRow<Scalar<double>, Dimension<2>, ArgMin::VariableGroup<SE3, InverseDepth>>;
 
     SBR sbr;
-    SBR sbr2;
 
     VariableContainer<SE3, InverseDepth> variableContainer;
 
@@ -59,6 +58,12 @@ TEST(ArgMin, SparseBlockRowOperations)
     EXPECT_EQ(variableContainer.variableIndex(se3Key2), 6);
     EXPECT_EQ(variableContainer.variableIndex(dinvKey1), 12);
     EXPECT_EQ(variableContainer.variableIndex(dinvKey2), 13);
+
+    // try dotting with zeros
+    dx.setZero();
+    auto result = sbr.dot(variableContainer, dx);
+    EXPECT_EQ(result(0, 0), 0);
+    EXPECT_EQ(result(1, 0), 0);
 
 
 

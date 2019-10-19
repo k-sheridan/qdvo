@@ -47,6 +47,11 @@ TEST(SlotMap, Simple) {
         ++i;
     }
     EXPECT_EQ(i, 4);
+
+    auto generatedKey = map.getKeyFromDataIndex(map.at(key5) - map.begin());
+
+    EXPECT_EQ(generatedKey.index, key5.index);
+    EXPECT_EQ(generatedKey.generation, key5.generation);
 }
 
 TEST(SlotMap, Stress) {
