@@ -51,9 +51,11 @@ static void BM_SparseBlockRowDenseDotProduct(benchmark::State &state)
 
     dx.resize(1000, 1);
 
+    Eigen::Matrix<ScalarType, 2, 1> result;
+
     for (auto _ : state)
     {
-        sbr.dot(variableContainer, dx);
+        sbr.dot(variableContainer, dx, result);
     }
 }
 
@@ -93,9 +95,11 @@ static void BM_SparseBlockRowDotProduct(benchmark::State &state)
 
     dx.resize(1000, 1);
 
+    Eigen::Matrix<ScalarType, 2, 1> result;
+
     for (auto _ : state)
     {
-        sbr.dot(variableContainer, dx);
+        sbr.dot(variableContainer, dx, result);
     }
 }
 

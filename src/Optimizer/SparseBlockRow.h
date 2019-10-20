@@ -34,10 +34,11 @@ public:
 
     /// Computes the dot product of this row with a dense column vector.
     /// The variable container is used to determine the indices of each block.
+    /// a.k.a. Row * v = result
     template <int DenseMatrixColumns>
-    Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns> dot(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, DenseMatrixColumns> &v)
+    void dot(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, DenseMatrixColumns> &v, Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& result)
     {
-        Eigen::Matrix<ScalarType, RowDimension, 1> result = Eigen::Matrix<ScalarType, RowDimension, 1>::Zero();
+        result = Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>::Zero();
 
         internal::static_for(columns, [&](auto i, auto &matrixMap) {
             auto &map = variableOrder.template getVariableMap<typename std::tuple_element<i, std::tuple<Variables...>>::type>();
@@ -60,8 +61,6 @@ public:
                 }
             }
         });
-
-        return result;
     }
 
     /// Sets all current non zero blocks to zero.
