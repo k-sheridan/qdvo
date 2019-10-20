@@ -34,7 +34,8 @@ public:
 
     /// Computes the dot product of this row with a dense column vector.
     /// The variable container is used to determine the indices of each block.
-    Eigen::Matrix<ScalarType, RowDimension, 1> dot(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &v)
+    template <int DenseMatrixColumns>
+    Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns> dot(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, DenseMatrixColumns> &v)
     {
         Eigen::Matrix<ScalarType, RowDimension, 1> result = Eigen::Matrix<ScalarType, RowDimension, 1>::Zero();
 
@@ -54,7 +55,7 @@ public:
                     {
                         auto index = startingIndex + (variableIterator - map.begin()) * std::tuple_element<i, std::tuple<Variables...>>::type::dimension;
 
-                        result += pair.second * v.block(index, 0, std::tuple_element<i, std::tuple<Variables...>>::type::dimension, 1);
+                        result += pair.second * v.block(index, 0, std::tuple_element<i, std::tuple<Variables...>>::type::dimension, DenseMatrixColumns);
                     }
                 }
             }
