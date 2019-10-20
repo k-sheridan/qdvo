@@ -153,6 +153,9 @@ auto& getVariableMap();
 // The variable container is used to determine the indices of each block.
 auto dot(VariableContainer<V1, ...>& variables, const Vector<ScalarType, N, 1>& v);
 
+// Set all non zero elements to zero without deleting them
+void setZero();
+
 };
 ```
 
