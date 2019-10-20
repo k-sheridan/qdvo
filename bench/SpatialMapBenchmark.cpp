@@ -63,5 +63,3 @@ static void BM_SpatialMapGetOneFrom512X512(benchmark::State &state)
 
 BENCHMARK(BM_SpatialMapInsert512X512)->Unit(benchmark::kMillisecond)->Iterations(1);
 BENCHMARK(BM_SpatialMapGetOneFrom512X512)->Unit(benchmark::kNanosecond)->Iterations(1000);
-
-BENCHMARK_MAIN();
