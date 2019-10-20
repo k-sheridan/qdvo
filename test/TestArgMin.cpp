@@ -65,6 +65,10 @@ TEST(ArgMin, SparseBlockRowOperations)
     EXPECT_EQ(result(0, 0), 0);
     EXPECT_EQ(result(1, 0), 0);
 
+    // set blocks to zero.
+    sbr.setZero();
 
-
+    EXPECT_EQ(sbr.getVariableMap<SE3>().at(se3Key1)(0, 0), 0);
+    EXPECT_EQ(sbr.getVariableMap<SE3>().at(se3Key2)(0, 0), 0);
+    EXPECT_EQ(sbr.getVariableMap<InverseDepth>().at(dinvKey1)(0, 0), 0);
 }

@@ -63,6 +63,17 @@ public:
         return result;
     }
 
+    /// Sets all current non zero blocks to zero.
+    void setZero()
+    {
+        internal::static_for(columns, [](auto i, auto& v) {
+            for (auto& pair : v)
+            {
+                pair.second.setZero();
+            }
+        });
+    }
+
 private:
     std::tuple<VariableColumns<Variables>...> columns; // Main storage for the matrix blocks in the row.
 };
