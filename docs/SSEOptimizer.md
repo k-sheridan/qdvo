@@ -110,11 +110,22 @@ very sparse. To improve speed, the information matrix, A0, is stored as a sparse
 ```cpp
 class GaussianPrior<ScalarType, VariableGroup<V1, V2, ...>> {
 
-std::shared_ptr<VariableContainer> variableContainer; // Gives the LinearSystem shared ownership with the variables.
 SparseBlockMatrix A0; // sparse information matrix representing the prior uncertainty.
-Vector b0; // dense column vector representing the mean of the prior.
+SparseBlockVector b0; // dense column vector representing the mean of the prior.
 
-GaussianPrior(std::shared_ptr<VariableContainer> variables);
+GaussianPrior();
+
+/// Adds variable to the gaussian prior with an initial uncertainty.
+    template <typename VariableType>
+    void addVariable(VariableKey<VariableType>& key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>& informationMatrix);
+
+    /// Marginalizes the variable requested using a set of linearized error terms.
+    template <typename VariableType, typename... ErrorTermTypes>
+    void marginalizeVariable(VariableKey<VariableType>& marginalizedKey, ErrorTermContainer<ErrorTermTypes...>& linearizedErrorTerms);
+
+    /// Removes a variable from the 
+    template <typename VariableType>
+    void removeVariable(VariableKey<VariableType>& removedKey);
 
 // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx; 
 void update(Vector dx);
