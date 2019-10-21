@@ -111,7 +111,7 @@ very sparse. To improve speed, the information matrix, A0, is stored as a sparse
 class GaussianPrior<ScalarType, VariableGroup<V1, V2, ...>> {
 
 SparseBlockMatrix A0; // sparse information matrix representing the prior uncertainty.
-SparseBlockVector b0; // dense column vector representing the mean of the prior.
+Vector b0; // dense column vector representing the mean of the prior.
 
 GaussianPrior();
 
