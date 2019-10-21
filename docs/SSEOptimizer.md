@@ -168,7 +168,7 @@ auto& getVariableMap();
 
 // Computes the dot product of this row with a dense column vector.
 // The variable container is used to determine the indices of each block.
-auto dot(VariableContainer<V1, ...>& variables, const Vector<ScalarType, N, 1>& v);
+void dot(VariableContainer<V1, ...>& variables, const Vector<ScalarType, N, M>& v, Eigen::Matrix<RowDimension, M>& result);
 
 // Set all non zero elements to zero without deleting them
 void setZero();
