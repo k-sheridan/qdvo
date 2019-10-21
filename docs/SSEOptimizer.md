@@ -118,14 +118,23 @@ GaussianPrior();
 /// Adds variable to the gaussian prior with an initial uncertainty.
 void addVariable(VariableKey<VariableType>& key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>& informationMatrix);
 
-/// Marginalizes the variable requested using a set of linearized error terms.
-void marginalizeVariable(VariableKey<VariableType>& marginalizedKey, ErrorTermContainer<ErrorTermTypes...>& linearizedErrorTerms);
-
 /// Removes a variable from the
 void removeVariable(VariableKey<VariableType>& removedKey);
 
 // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx; 
 void update(Vector dx);
+
+};
+```
+
+### Marginalizer
+
+The marginzalizer removes variables from the problem and approximates their effect by updating the gaussian prior
+```cpp
+class Marginalizer {
+
+/// Marginalizes the variable requested using a set of linearized error terms.
+void marginalizeVariable(GaussianPrior& prior, VariableKey<VariableType>& marginalizedKey, ErrorTermContainer<ErrorTermTypes...>& linearizedErrorTerms);
 
 };
 ```
