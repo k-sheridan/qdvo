@@ -19,8 +19,8 @@ TEST(ArgMin, Basic)
     ArgMin::SSEOptimizer<Scalar<double>, ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<SE3, InverseDepth>> optimizer;
 
     // Add some variables
-    //ArgMin::VariableKey<SE3> se3Key = optimizer.addVariable<SE3>(se3);
-    //VariableKey<InverseDepth> dinvKey = optimizer.addVariable(InverseDepth());
+    ArgMin::VariableKey<SE3> se3Key = optimizer.addVariable(pose);
+    VariableKey<InverseDepth> dinvKey = optimizer.addVariable(zinv);
 }
 
 TEST(ArgMin, SparseBlockRowOperations)

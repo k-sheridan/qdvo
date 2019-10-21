@@ -18,7 +18,7 @@ public:
     template <typename VariableType>
     VariableKey<VariableType> addVariable(VariableType &optimizableVariable)
     {
-        assert(false);
+        return variables.template getVariableMap<VariableType>().insert(optimizableVariable);
     }
 
     // Updates the marginal information of the given variable.
@@ -40,7 +40,9 @@ public:
     template <typename VariableType>
     void removeVariable(VariableKey<VariableType>& key)
     {
-        assert(false);
+        variables.template getVariableMap<VariableType>().erase(key);
+
+        // TODO erase the variables from the sparse prior.
     }
 
     /// Adds error term to the problem.
