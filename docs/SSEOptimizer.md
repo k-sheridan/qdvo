@@ -116,16 +116,13 @@ SparseBlockVector b0; // dense column vector representing the mean of the prior.
 GaussianPrior();
 
 /// Adds variable to the gaussian prior with an initial uncertainty.
-    template <typename VariableType>
-    void addVariable(VariableKey<VariableType>& key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>& informationMatrix);
+void addVariable(VariableKey<VariableType>& key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>& informationMatrix);
 
-    /// Marginalizes the variable requested using a set of linearized error terms.
-    template <typename VariableType, typename... ErrorTermTypes>
-    void marginalizeVariable(VariableKey<VariableType>& marginalizedKey, ErrorTermContainer<ErrorTermTypes...>& linearizedErrorTerms);
+/// Marginalizes the variable requested using a set of linearized error terms.
+void marginalizeVariable(VariableKey<VariableType>& marginalizedKey, ErrorTermContainer<ErrorTermTypes...>& linearizedErrorTerms);
 
-    /// Removes a variable from the 
-    template <typename VariableType>
-    void removeVariable(VariableKey<VariableType>& removedKey);
+/// Removes a variable from the
+void removeVariable(VariableKey<VariableType>& removedKey);
 
 // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx; 
 void update(Vector dx);
