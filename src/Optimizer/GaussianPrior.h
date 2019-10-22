@@ -4,6 +4,7 @@
 #include "Optimizer/Containers.h"
 #include "Optimizer/SparseBlockMatrix.h"
 #include "Optimizer/SparseBlockRow.h"
+#include "Optimizer/BlockVector.h"
 #include "Optimizer/Key.h"
 #include "MetaHelpers.h"
 
@@ -16,36 +17,49 @@ class GaussianPrior;
 template <typename ScalarType, typename... Variables>
 class GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>>
 {
-    public:
+public:
+    static constexpr ScalarType DefaultInverseVariance = 1e-24;
+
     using SBM = SparseBlockMatrix<Scalar<ScalarType>, VariableGroup<Variables...>>;
-    using SBV = SparseBlockRow<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>;
+
+    using BV = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>;
 
     SBM A0; // Sparse Block Information Matrix.
-    SBV b0; // Sparse mean vector of the gaussian prior.
 
-    GaussianPrior () {}
+    BV b0; // dense mean vector of the gaussian prior.
+
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> temporaryVector; // Preallocated vector.
+
+    GaussianPrior() {}
 
     /// Adds variable to the gaussian prior with an initial uncertainty.
     template <typename VariableType>
-    void addVariable(VariableKey<VariableType>& key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>& informationMatrix)
+    void addVariable(VariableKey<VariableType> &key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension> informationMatrix = Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>::Constant(DefaultInverseVariance))
     {
-
+        
     }
 
-    /// Removes a variable from the 
+    /// Removes a variable from the
     template <typename VariableType>
-    void removeVariable(VariableKey<VariableType>& removedKey)
+    void removeVariable(VariableKey<VariableType> &removedKey)
     {
-
     }
 
     // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
-    void update(VariableContainer& variableOrder, Eigen::Matrix<ScalarType, Eigen::Dynamic, 1>& dx)
+    void update(VariableContainer<Variables...> &variableOrder, Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
     {
+        /*assert(b0.rows() == variableOrder.totalDimensions());
+        assert(dx.rows() == b0.rows());
 
+        // Uneccesarily expensive. This can be packaged directly into the dot function.
+        // This is ran once per iteration.
+        temporaryVector.resize(b0.rows(), Eigen::NoChange);
+
+        // Compute the perturbation.
+        A0.dot(variableOrder, dx, temporaryVector);
+
+        b0 -= temporaryVector;*/
     }
-
-    
 };
 
 } // namespace ArgMin

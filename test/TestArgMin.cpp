@@ -2,6 +2,8 @@
 #include "Optimizer/SSEOptimizer.h"
 #include "Optimizer/SparseBlockRow.h"
 #include "Optimizer/SparseBlockMatrix.h"
+#include "Optimizer/GaussianPrior.h"
+#include "Optimizer/BlockVector.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/InverseDepth.h"
@@ -111,4 +113,62 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     EXPECT_EQ(result, expectedResult);
 
 
+}
+
+TEST(ArgMin, BlockVector)
+{
+    SE3 pose;
+    InverseDepth zinv;
+
+    using V = ArgMin::BlockVector<Scalar<double>, Dimension<1>, ArgMin::VariableGroup<SE3, InverseDepth>>;
+
+    V vec;
+
+    VariableContainer<SE3, InverseDepth> variableContainer;
+
+    // insert variables
+    auto se3Key1 = variableContainer.getVariableMap<SE3>().insert(pose);
+    auto se3Key2 = variableContainer.getVariableMap<SE3>().insert(pose);
+
+    auto dinvKey1 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+    auto dinvKey2 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+
+    V::MatrixBlock<SE3> mat = V::MatrixBlock<SE3>::Ones();
+    vec.addRowBlock(se3Key1, mat);
+
+    EXPECT_EQ(vec.getRowBlock(se3Key1), mat);
+
+    vec.removeRowBlock(se3Key1);
+
+    EXPECT_DEATH(vec.getRowBlock(se3Key1), "");
+}
+
+TEST(ArgMin, GaussianPrior)
+{
+    SE3 pose;
+    InverseDepth zinv;
+
+    using Prior = ArgMin::GaussianPrior<Scalar<double>, ArgMin::VariableGroup<SE3, InverseDepth>>;
+    Prior prior;
+
+    VariableContainer<SE3, InverseDepth> variableContainer;
+
+    // insert variables
+    auto se3Key1 = variableContainer.getVariableMap<SE3>().insert(pose);
+    auto se3Key2 = variableContainer.getVariableMap<SE3>().insert(pose);
+
+    auto dinvKey1 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+    auto dinvKey2 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+
+    // Add variables to prior.
+    prior.addVariable(se3Key1);
+    prior.addVariable(se3Key2);
+    prior.addVariable(dinvKey1);
+    prior.addVariable(dinvKey2);
+
+    Eigen::Matrix<double, Eigen::Dynamic, 1> dx;
+    dx.resize(14, Eigen::NoChange);
+    dx.setOnes();
+
+    prior.update(variableContainer, dx);
 }

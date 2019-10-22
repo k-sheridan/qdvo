@@ -57,7 +57,6 @@ public:
       return dims;
    }
 
-private:
    // Stores the variables.
    std::tuple<VariableMap<Variables>...> tupleOfVariableMaps;
 };
@@ -79,7 +78,6 @@ public:
       return std::get<ErrorTermMap<ErrorTermType>>(tupleOfErrorTermMaps);
    }
 
-private:
    // Stores the error terms.
    std::tuple<ErrorTermMap<ErrorTerms>...> tupleOfErrorTermMaps;
 };

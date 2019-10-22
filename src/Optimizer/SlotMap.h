@@ -3,12 +3,24 @@
 #include <vector>
 #include <set>
 
-struct SlotMapKeyBase {
-using index_type = size_t;
-using generation_type = size_t;
+struct SlotMapKeyBase
+{
+public:
+    using index_type = size_t;
+    using generation_type = size_t;
 
-index_type index;
-generation_type generation;
+    index_type index;
+    generation_type generation;
+
+    void setInvalid()
+    {
+        index = std::numeric_limits<index_type>::max();
+    }
+
+    bool isInvalid()
+    {
+        return index == std::numeric_limits<index_type>::max();
+    }
 };
 
 /**
@@ -28,12 +40,11 @@ class SlotMap
         bool free = true;
     };
 
-    std::vector<Slot> slots; // Set of keys currently in use.
+    std::vector<Slot> slots;       // Set of keys currently in use.
     std::vector<size_t> freeSlots; // Stores indices of which slots can be inserted to.
 
-    std::vector<DataType> data;  // vector containing all data.
+    std::vector<DataType> data;          // vector containing all data.
     std::vector<size_t> dataToSlotIndex; // vector which points data to its slot index.
-    
 
 public:
     SlotMap()
@@ -48,19 +59,19 @@ public:
         size_t slotIndex;
 
         if (freeSlots.empty())
-        { 
+        {
             // add new slot
             slotIndex = slots.size();
             slots.emplace_back();
-
-        } else
+        }
+        else
         {
             slotIndex = freeSlots.back();
             freeSlots.pop_back();
         }
 
         // get slot reference
-        Slot& slot = slots.at(slotIndex);
+        Slot &slot = slots.at(slotIndex);
         assert(slot.free == true);
 
         // set up slot
@@ -78,13 +89,12 @@ public:
         key.generation = slot.generation;
 
         return key;
-
     }
 
     /**
      * O(1)
      */
-    void erase(KeyType& key) 
+    void erase(KeyType &key)
     {
         // check if there are enough slots
         if (slots.size() <= key.index)
@@ -92,7 +102,7 @@ public:
             return;
         }
 
-        const auto& slot = slots.at(key.index);
+        const auto &slot = slots.at(key.index);
 
         // check if the generations match
         if (slot.generation != key.generation)
@@ -120,14 +130,13 @@ public:
         // free the slot
         slots.at(deletedSlotIndex).free = true;
         freeSlots.push_back(deletedSlotIndex);
-
     }
 
     /**
      * O(1)
      * returns end() if key is invalid.
      */
-    typename std::vector<DataType>::iterator at(const KeyType& key)
+    typename std::vector<DataType>::iterator at(const KeyType &key)
     {
         // check if there are enough slots
         if (slots.size() <= key.index)
@@ -135,7 +144,7 @@ public:
             return data.end();
         }
 
-        const auto& slot = slots.at(key.index);
+        const auto &slot = slots.at(key.index);
 
         // check if the generations match
         if (slot.generation != key.generation)
@@ -148,10 +157,10 @@ public:
         return data.begin() + slot.dataIndex;
     }
 
-    typename std::vector<DataType>::const_iterator at(const KeyType& key) const {
+    typename std::vector<DataType>::const_iterator at(const KeyType &key) const
+    {
         return at(key);
     }
-
 
     /**
      * O(1)
@@ -161,12 +170,11 @@ public:
     {
         return data.begin();
     }
-    
+
     typename std::vector<DataType>::const_iterator begin() const
     {
         return data.begin();
     }
-
 
     /**
      * O(1)
@@ -176,7 +184,7 @@ public:
     {
         return data.end();
     }
-    
+
     typename std::vector<DataType>::const_iterator end() const
     {
         return data.end();
@@ -207,5 +215,4 @@ public:
 
         return result;
     }
-
 };
