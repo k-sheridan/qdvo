@@ -46,19 +46,24 @@ public:
     }
 
     // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
-    void update(VariableContainer<Variables...> &variableOrder, Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
+    void update(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
     {
-        /*assert(b0.rows() == variableOrder.totalDimensions());
-        assert(dx.rows() == b0.rows());
-
+        
         // Uneccesarily expensive. This can be packaged directly into the dot function.
         // This is ran once per iteration.
-        temporaryVector.resize(b0.rows(), Eigen::NoChange);
+        size_t problemSize = variableOrder.totalDimensions();
+        assert(dx.rows() == problemSize); // ensure that dx is consistent with the current variable set.
+
+        if (problemSize > temporaryVector.rows())
+        {
+            temporaryVector.resize(problemSize, Eigen::NoChange);
+        }
 
         // Compute the perturbation.
         A0.dot(variableOrder, dx, temporaryVector);
 
-        b0 -= temporaryVector;*/
+        // Move the mean.
+        b0.subtractVector(variableOrder, temporaryVector);
     }
 };
 

@@ -135,12 +135,44 @@ TEST(ArgMin, BlockVector)
 
     V::MatrixBlock<SE3> mat = V::MatrixBlock<SE3>::Ones();
     vec.addRowBlock(se3Key1, mat);
+    V::MatrixBlock<SE3> mat2 = V::MatrixBlock<SE3>::Constant(2);
+    vec.addRowBlock(se3Key2, mat2);
 
+    EXPECT_EQ(vec.getRowBlock(se3Key2), mat2);
     EXPECT_EQ(vec.getRowBlock(se3Key1), mat);
+
+    vec.getRowBlock(se3Key1) = mat2;
+
+    EXPECT_EQ(vec.getRowBlock(se3Key1), mat2);
+
+    vec.getRowBlock(se3Key1) = mat;
+
+    EXPECT_TRUE(vec.blockExists(se3Key1));
+
+    Eigen::Matrix<double, Eigen::Dynamic, 1> dx;
+    dx.setOnes(14, 1);
+
+    // subtract the vector from the block vec.
+    vec.subtractVector(variableContainer, dx);
+
+    // verify the values
+    EXPECT_TRUE(vec.blockExists(se3Key1));
+    EXPECT_EQ(vec.getRowBlock(se3Key1), V::MatrixBlock<SE3>::Zero());
+
+    EXPECT_TRUE(vec.blockExists(se3Key2));
+    EXPECT_EQ(vec.getRowBlock(se3Key2), V::MatrixBlock<SE3>::Ones());
+
+    EXPECT_TRUE(vec.blockExists(dinvKey1));
+    EXPECT_EQ(vec.getRowBlock(dinvKey1), -V::MatrixBlock<InverseDepth>::Ones());
+
+    EXPECT_TRUE(vec.blockExists(dinvKey2));
+    EXPECT_EQ(vec.getRowBlock(dinvKey2), -V::MatrixBlock<InverseDepth>::Ones());
 
     vec.removeRowBlock(se3Key1);
 
-    EXPECT_DEATH(vec.getRowBlock(se3Key1), "");
+    EXPECT_FALSE(vec.blockExists(se3Key1));
+
+    ASSERT_DEATH(vec.getRowBlock(se3Key1), "");
 }
 
 TEST(ArgMin, GaussianPrior)
@@ -171,4 +203,17 @@ TEST(ArgMin, GaussianPrior)
     dx.setOnes();
 
     prior.update(variableContainer, dx);
+
+    EXPECT_TRUE(prior.b0.blockExists(se3Key1));
+    EXPECT_EQ(prior.b0.getRowBlock(se3Key1), Prior::BV::MatrixBlock<SE3>::Constant(Prior::DefaultInverseVariance));
+
+    EXPECT_TRUE(prior.b0.blockExists(se3Key2));
+    EXPECT_EQ(prior.b0.getRowBlock(se3Key2), Prior::BV::MatrixBlock<SE3>::Constant(Prior::DefaultInverseVariance));
+
+    EXPECT_TRUE(prior.b0.blockExists(dinvKey1));
+    EXPECT_EQ(prior.b0.getRowBlock(dinvKey1), Prior::BV::MatrixBlock<InverseDepth>::Constant(Prior::DefaultInverseVariance));
+
+    EXPECT_TRUE(prior.b0.blockExists(dinvKey2));
+    EXPECT_EQ(prior.b0.getRowBlock(dinvKey2), Prior::BV::MatrixBlock<InverseDepth>::Constant(Prior::DefaultInverseVariance));
+
 }

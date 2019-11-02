@@ -60,12 +60,9 @@ public:
         auto& internalKey = getInternalKey(key);
 
         // Erase the slot map element at the internal key.
-        if (!internalKey.isInvalid())
-        {
-            std::get<RowMap<VariableType>>(tupleOfRowMaps).erase(internalKey);
+        std::get<RowMap<VariableType>>(tupleOfRowMaps).erase(internalKey);
 
-            internalKey.setInvalid();
-        }
+        internalKey.setInvalid();
     }
 
     /// Gets a reference to the block matrix at the key.
@@ -75,7 +72,7 @@ public:
         // Get key used to access the internal slot map.
         auto& internalKey = getInternalKey(key);
 
-        assert(!internalKey.isInvalid());
+        assert(internalKey.isInvalid() != true);
 
         // Get the element at the internal key.
         auto it = std::get<RowMap<VariableType>>(tupleOfRowMaps).at(internalKey);
@@ -85,10 +82,54 @@ public:
         return *it;
     }
 
-    /// Computes BlockVector -= v.
-    void subtractVector(VariableContainer<Variables...> &variableOrder, Eigen::Matrix<ScalarType, Eigen::Dynamic, ColumnDimension> &v)
+    /// Evaluates if the key exists in the block vector.
+    template <typename VariableType>
+    bool blockExists(VariableKey<VariableType> key)
     {
+        // Get key used to access the internal slot map.
+        auto& internalKey = getInternalKey(key);
 
+        return !internalKey.isInvalid();
+    }
+
+    /// Computes BlockVector -= v.
+    void subtractVector(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, ColumnDimension> &v)
+    {
+        internal::static_for(variableOrder.tupleOfVariableMaps, [&](auto i, auto &variableMap){
+            auto &map = variableOrder.template getVariableMap<typename std::tuple_element<i, std::tuple<Variables...>>::type>();
+            constexpr int variableDimension = std::tuple_element<i, std::tuple<Variables...>>::type::dimension;
+
+            MatrixBlock<typename std::tuple_element<i, std::tuple<Variables...>>::type> zero = MatrixBlock<typename std::tuple_element<i, std::tuple<Variables...>>::type>::Zero();
+
+            if (map.size() > 0)
+            {
+                auto firstVariableKey = map.getKeyFromDataIndex(0);
+                // Precompute the offset index for the current variable type.
+                auto startingIndex = variableOrder.template variableIndex(firstVariableKey);
+
+                for (auto variableIterator = map.begin(); variableIterator != map.end(); variableIterator++)
+                {
+                    auto key = map.getKeyFromDataIndex(variableIterator - map.begin());
+                    int index = startingIndex + (variableIterator - map.begin()) * variableDimension;
+
+                    const auto& rhs = v.block(index, 0, variableDimension, 1);
+
+                    if (blockExists(key))
+                    {
+                        auto& rowBlock = getRowBlock(key);
+
+                        rowBlock -= rhs;
+                    }
+                    else
+                    {
+                        // Add the row.
+                        addRowBlock(key, zero);
+                        getRowBlock(key) -= rhs;
+                    }
+
+                }
+            }
+        });
     }
 
 private:
