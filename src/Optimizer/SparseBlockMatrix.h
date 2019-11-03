@@ -29,6 +29,49 @@ public:
         return std::get<RowMap<VariableType>>(tupleOfRowMaps);
     }
 
+    /// Inserts a row into the matrix and return its reference.
+    template <typename VariableType>
+    auto& addRowIfItDoesNotExist(VariableKey<VariableType> key)
+    {
+        // Only insert if the key is not in the map.
+        auto rowIt = getRowMap<VariableType>().find(key);
+
+        if (rowIt == getRowMap<VariableType>().end())
+        {
+            std::tie(rowIt, std::ignore) = getRowMap<VariableType>().insert(std::make_pair(key, Row<VariableType>()));
+        }
+
+        return rowIt->second;
+    }
+
+    /// Inserts or assigns a block at the given keys.
+    template <typename RowType, typename ColType>
+    void setBlock(VariableKey<RowType> rowKey, VariableKey<ColType> colKey, const Eigen::Matrix<ScalarType, RowType::dimension, ColType::dimension>& blockMatrix)
+    {
+        // Add a row to the sbm.
+        auto& row = addRowIfItDoesNotExist(rowKey);
+
+        // insert or assign the block
+        row.template getVariableMap<ColType>().insert_or_assign(colKey, blockMatrix);
+    }
+
+    /// Removes a block using the keys. Essentially, sets the block to zero.
+    template <typename RowType, typename ColType>
+    void removeBlock(VariableKey<RowType> rowKey, VariableKey<ColType> colKey)
+    {
+        // get the row.
+        auto row = getRowMap<RowType>().find(rowKey);
+
+        // If the row exists remove the column.
+        if (row != getRowMap<RowType>().end())
+        {
+            row->second.template getVariableMap<ColType>().erase(colKey);
+        }
+        
+    }
+
+    
+
     /// Computes the dot product of this Matrix with a dense column vector.
     /// The variable container is used to determine the indices of each block.
     /// a.k.a. A * v = result

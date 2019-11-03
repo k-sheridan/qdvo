@@ -34,9 +34,14 @@ public:
 
     /// Adds variable to the gaussian prior with an initial uncertainty.
     template <typename VariableType>
-    void addVariable(VariableKey<VariableType> &key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension> informationMatrix = Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension>::Constant(DefaultInverseVariance))
+    void addVariable(VariableKey<VariableType> &key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension> informationMatrix = Eigen::Matrix<ScalarType, VariableType::dimension, 1>::Constant(DefaultInverseVariance).asDiagonal())
     {
-        
+        // insert the information block
+        A0.setBlock(key, key, informationMatrix);
+
+        // Insert a zero mean.
+        Eigen::Matrix<ScalarType, VariableType::dimension, 1> zeroVec = Eigen::Matrix<ScalarType, VariableType::dimension, 1>::Zero();
+        b0.addRowBlock(key, zeroVec);
     }
 
     /// Removes a variable from the

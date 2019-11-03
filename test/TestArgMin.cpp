@@ -95,10 +95,9 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     auto dinvKey1 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
     auto dinvKey2 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
 
-    // Test manual insert. This obviously needs to be simplified.
-    sbm.getRowMap<SE3>().insert(std::make_pair(se3Key1, SBM::Row<SE3>()));
+    // Test insert.
     Eigen::Matrix<double, 6, 6> matrix = Eigen::Matrix<double, 6, 6>::Identity();
-    sbm.getRowMap<SE3>().at(se3Key1).getVariableMap<SE3>().insert(std::make_pair(se3Key1, matrix));
+    sbm.setBlock(se3Key1, se3Key1, matrix);
 
     Eigen::Matrix<double, Eigen::Dynamic, 2> v = Eigen::Matrix<double, 14, 2>::Ones();
 
@@ -112,7 +111,38 @@ TEST(ArgMin, SparseBlockMatrixOperations)
 
     EXPECT_EQ(result, expectedResult);
 
+    // insert another diagonal member
+    matrix *= 2;
+    sbm.setBlock(se3Key2, se3Key2, matrix);
+    // insert a inverse depth diagonal.
+    auto matrix2 = Eigen::Matrix<double, 1, 1>::Ones();
+    sbm.setBlock(dinvKey2, dinvKey2, matrix2);
 
+    expectedResult.block(6,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(2);
+    expectedResult.block(13,0, 1,2) = Eigen::Matrix<double, 1, 2>::Ones();
+
+    sbm.dot(variableContainer, v, result);
+
+    EXPECT_EQ(result, expectedResult);
+    
+    // insert an off diagonal element 
+    matrix = Eigen::Matrix<double, 6, 6>::Identity();
+    sbm.setBlock(se3Key1, se3Key2, matrix);
+
+    expectedResult.block(0,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(2);
+
+    sbm.dot(variableContainer, v, result);
+
+    EXPECT_EQ(result, expectedResult);
+
+    // erase an element
+    sbm.removeBlock(se3Key1, se3Key1);
+
+    expectedResult.block(0,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(1);
+
+    sbm.dot(variableContainer, v, result);
+
+    EXPECT_EQ(result, expectedResult);
 }
 
 TEST(ArgMin, BlockVector)
@@ -205,15 +235,17 @@ TEST(ArgMin, GaussianPrior)
     prior.update(variableContainer, dx);
 
     EXPECT_TRUE(prior.b0.blockExists(se3Key1));
-    EXPECT_EQ(prior.b0.getRowBlock(se3Key1), Prior::BV::MatrixBlock<SE3>::Constant(Prior::DefaultInverseVariance));
+    std::cout << prior.A0.getRowMap<SE3>().at(se3Key1).getVariableMap<SE3>().at(se3Key1) << std::endl;
+    std::cout << prior.b0.getRowBlock(se3Key1) << std::endl;
+    EXPECT_TRUE(prior.b0.getRowBlock(se3Key1).isApprox(Prior::BV::MatrixBlock<SE3>::Constant(-Prior::DefaultInverseVariance)));
 
     EXPECT_TRUE(prior.b0.blockExists(se3Key2));
-    EXPECT_EQ(prior.b0.getRowBlock(se3Key2), Prior::BV::MatrixBlock<SE3>::Constant(Prior::DefaultInverseVariance));
+    EXPECT_TRUE(prior.b0.getRowBlock(se3Key2).isApprox(Prior::BV::MatrixBlock<SE3>::Constant(-Prior::DefaultInverseVariance)));
 
     EXPECT_TRUE(prior.b0.blockExists(dinvKey1));
-    EXPECT_EQ(prior.b0.getRowBlock(dinvKey1), Prior::BV::MatrixBlock<InverseDepth>::Constant(Prior::DefaultInverseVariance));
+    EXPECT_TRUE(prior.b0.getRowBlock(dinvKey1).isApprox(Prior::BV::MatrixBlock<InverseDepth>::Constant(-Prior::DefaultInverseVariance)));
 
     EXPECT_TRUE(prior.b0.blockExists(dinvKey2));
-    EXPECT_EQ(prior.b0.getRowBlock(dinvKey2), Prior::BV::MatrixBlock<InverseDepth>::Constant(Prior::DefaultInverseVariance));
+    EXPECT_TRUE(prior.b0.getRowBlock(dinvKey2).isApprox(Prior::BV::MatrixBlock<InverseDepth>::Constant(-Prior::DefaultInverseVariance)));
 
 }
