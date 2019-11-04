@@ -62,6 +62,29 @@ namespace internal {
         return 0;
     }*/
 
+
+    // Test if type is in tuple
+    template <typename V, typename T>
+    struct Is_in_tuple;
+
+    template <typename V, typename T0, typename... T>
+    struct Is_in_tuple <V, std::tuple<T0, T...> >
+    {
+        static const bool value = Is_in_tuple<V, std::tuple<T...> >::value;
+    };
+
+    template <typename V, typename... T>
+    struct Is_in_tuple <V, std::tuple<V, T...> >
+    {
+        static const bool value = true;
+    };
+
+    template <typename V>
+    struct Is_in_tuple <V, std::tuple<> >
+    {
+        static const bool value = false;
+    };
+
 }
 
 }

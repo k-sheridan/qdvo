@@ -3,6 +3,7 @@
 #include "MetaHelpers.h"
 #include "Key.h"
 #include "Containers.h"
+#include "GaussianPrior.h"
 
 namespace ArgMin
 {
@@ -69,6 +70,9 @@ private:
     /// Containers for both variables and error terms.
     VariableContainer<Variables...> variables;
     ErrorTermContainer<ErrorTerms...> errorTerms;
+
+    /// Gaussian Prior
+    GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> prior;
 };
 
 } //namespace ArgMin
