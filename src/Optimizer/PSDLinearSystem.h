@@ -11,6 +11,15 @@ namespace ArgMin {
 template <typename... T>
 class PSDLinearSystem;
 
+/**
+ * This class provides the functions to solve a levenberg marquardt or gauss newton iteration.
+ * It sets up the sparse linear system, and solves it by exploiting the sparsity using the schur complement.
+ * 
+ * Internally, the linear system, which contains a square PSD matrix, is split into 3 blocks
+ * [A,  B]
+ * [B', D]
+ * A is a dense matrix, D is a block diagonal matrix, and B is a dense matrix correlating A and D.
+ */
 template <typename ScalarType, typename... ErrorTerms, typename... Variables>
 class PSDLinearSystem<Scalar<ScalarType>, ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>> {
 public:

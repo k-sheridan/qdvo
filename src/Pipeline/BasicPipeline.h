@@ -10,7 +10,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include "Types.h"
-#include "ParallelAlgorithms.h"
+#include "Optimizer/ParallelAlgorithms/ParallelAlgorithms.h"
 
 namespace QDVO
 {

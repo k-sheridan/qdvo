@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "ParallelAlgorithms.h"
+#include "Optimizer/ParallelAlgorithms/ParallelAlgorithms.h"
 #include <random>
 #include "GlobalDefinitions.h"
 
