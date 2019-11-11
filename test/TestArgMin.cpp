@@ -4,6 +4,7 @@
 #include "Optimizer/SparseBlockMatrix.h"
 #include "Optimizer/GaussianPrior.h"
 #include "Optimizer/BlockVector.h"
+#include "Optimizer/PSDLinearSystem.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/InverseDepth.h"
@@ -248,4 +249,16 @@ TEST(ArgMin, GaussianPrior)
     EXPECT_TRUE(prior.b0.blockExists(dinvKey2));
     EXPECT_TRUE(prior.b0.getRowBlock(dinvKey2).isApprox(Prior::BV::MatrixBlock<InverseDepth>::Constant(-Prior::DefaultInverseVariance)));
 
+}
+
+TEST(ArgMin, PSDLinearSystem)
+{
+    SE3 pose;
+    InverseDepth zinv;
+
+    using ErrorTermSet = ArgMin::ErrorTermGroup<SE3, InverseDepth>;
+
+    using LS = ArgMin::PSDLinearSystem<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SE3>, ArgMin::VariableGroup<InverseDepth>>;
+
+    LS linearSystem;
 }
