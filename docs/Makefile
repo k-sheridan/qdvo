@@ -22,5 +22,5 @@ help:
 .PHONY: help Makefile clean
 
 clean:
-	rm -rf build/doxyoutput/ build/api/
+	rm -rf source/doxyoutput/ source/api/
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

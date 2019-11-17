@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_s_e3" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::SE3</compoundname>
+    <basecompoundref refid="class_arg_min_1_1_optimizable_variable" prot="public" virt="non-virtual">ArgMin::OptimizableVariable&lt; double, 6 &gt;</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_s_e3_1ac8d4caa79dfb667d9554bc3b610f9243" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::SE3::SE3</definition>
+        <argsstring>()</argsstring>
+        <name>SE3</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Variables/SE3.h" line="11" column="5" bodyfile="src/Optimizer/Variables/SE3.h" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_e3_1a81a923430e717bd823a0a4fe5ab4b24b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::SE3::update</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;dx)</argsstring>
+        <name>update</name>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Variables/SE3.h" line="15" column="10" bodyfile="src/Optimizer/Variables/SE3.h" bodystart="15" bodyend="17"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>ArgMin::SE3</label>
+        <link refid="class_arg_min_1_1_s_e3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ArgMin::OptimizableVariable&lt; double, 6 &gt;</label>
+        <link refid="class_arg_min_1_1_optimizable_variable"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>ArgMin::SE3</label>
+        <link refid="class_arg_min_1_1_s_e3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ArgMin::OptimizableVariable&lt; double, 6 &gt;</label>
+        <link refid="class_arg_min_1_1_optimizable_variable"/>
+      </node>
+    </collaborationgraph>
+    <location file="src/Optimizer/Variables/SE3.h" line="9" column="1" bodyfile="src/Optimizer/Variables/SE3.h" bodystart="8" bodyend="18"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::SE3</scope><name>dimension</name></member>
+      <member refid="class_arg_min_1_1_s_e3_1ac8d4caa79dfb667d9554bc3b610f9243" prot="public" virt="non-virtual"><scope>ArgMin::SE3</scope><name>SE3</name></member>
+      <member refid="class_arg_min_1_1_s_e3_1a81a923430e717bd823a0a4fe5ab4b24b" prot="public" virt="non-virtual"><scope>ArgMin::SE3</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

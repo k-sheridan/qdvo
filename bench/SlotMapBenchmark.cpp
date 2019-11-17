@@ -1,6 +1,8 @@
 #include <benchmark/benchmark.h>
 #include "Optimizer/SlotMap.h"
 
+using namespace ArgMin;
+
 static void BM_SlotMapInsert(benchmark::State &state)
 {
     SlotMap<double, SlotMapKeyBase> map;

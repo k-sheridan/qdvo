@@ -12,6 +12,8 @@ Program Listing for File FrontEndVisualOdometry.cpp
 
    #include "FrontFndVisualOdometry.h"
    
+   using namespace QDVO;
+   
    FrontEndVisualOdometry::FrontEndVisualOdometry()
    {
    

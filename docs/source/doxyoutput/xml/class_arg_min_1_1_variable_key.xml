@@ -2,7 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="class_arg_min_1_1_variable_key" kind="class" language="C++" prot="public">
     <compoundname>ArgMin::VariableKey</compoundname>
-    <basecompoundref refid="struct_slot_map_key_base" prot="public" virt="non-virtual">SlotMapKeyBase</basecompoundref>
+    <basecompoundref refid="struct_arg_min_1_1_slot_map_key_base" prot="public" virt="non-virtual">ArgMin::SlotMapKeyBase</basecompoundref>
     <templateparamlist>
       <param>
         <type>typename</type>
@@ -50,8 +50,8 @@
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
-        <label>SlotMapKeyBase</label>
-        <link refid="struct_slot_map_key_base"/>
+        <label>ArgMin::SlotMapKeyBase</label>
+        <link refid="struct_arg_min_1_1_slot_map_key_base"/>
       </node>
       <node id="1">
         <label>ArgMin::VariableKey&lt; T &gt;</label>
@@ -62,8 +62,8 @@
     </inheritancegraph>
     <collaborationgraph>
       <node id="2">
-        <label>SlotMapKeyBase</label>
-        <link refid="struct_slot_map_key_base"/>
+        <label>ArgMin::SlotMapKeyBase</label>
+        <link refid="struct_arg_min_1_1_slot_map_key_base"/>
       </node>
       <node id="1">
         <label>ArgMin::VariableKey&lt; T &gt;</label>
@@ -74,13 +74,13 @@
     </collaborationgraph>
     <location file="src/Optimizer/Key.h" line="11" column="1" bodyfile="src/Optimizer/Key.h" bodystart="10" bodyend="19"/>
     <listofallmembers>
-      <member refid="struct_slot_map_key_base_1a0c6cc235a00b077544539251bf653aeb" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>generation</name></member>
-      <member refid="struct_slot_map_key_base_1a04a7d5ae4e887c4730834b7207faaa38" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>generation_type</name></member>
-      <member refid="struct_slot_map_key_base_1a17f35b16ea6c16adb9e9e4c3d9da4876" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>index</name></member>
-      <member refid="struct_slot_map_key_base_1a92c7faa62fb0c1779cca5f896afab73c" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>index_type</name></member>
-      <member refid="struct_slot_map_key_base_1aba7a7e2773aeecccdb0d4b272ec41525" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>isInvalid</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a4cb457c60080674c38645473645c49b1" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>generation</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1ac32ae3716a52214a5cd5ae969b0b811d" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>generation_type</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a34bd2125b53bb7466752384a9cff8f95" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>index</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a6362383e7e05b450a7dea5d761525dd7" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>index_type</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a87e819f5877a10722c465ca23f029947" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>isInvalid</name></member>
       <member refid="class_arg_min_1_1_variable_key_1a7667c7fcac259f8a66f57bb5f8cb693f" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>operator&lt;</name></member>
-      <member refid="struct_slot_map_key_base_1a5ba568d77ee39bcecfbe15a1a91620d8" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>setInvalid</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1ab83bb70c6c503c206273618df67f0af6" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>setInvalid</name></member>
       <member refid="class_arg_min_1_1_variable_key_1a27cecfb4d121bd763d6a0453053b38e0" prot="public" virt="non-virtual"><scope>ArgMin::VariableKey</scope><name>variable_type</name></member>
     </listofallmembers>
   </compounddef>

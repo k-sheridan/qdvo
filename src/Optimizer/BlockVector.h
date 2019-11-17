@@ -12,7 +12,7 @@ template <typename... T>
 class BlockVector;
 
 /**
- * Unlike the Sparse Block Row, the BlockVector is assumed to be dense and can then 
+ * Unlike the SparseBlockRow, the BlockVector is assumed to be dense and can then 
  * achieve constant time insert, lookup, and erase via the slot map.
  * This class uses a slightly different variant of the slot map. One which
  * allows us to choose a key value pair.

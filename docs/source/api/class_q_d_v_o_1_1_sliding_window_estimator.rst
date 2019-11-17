@@ -1,4 +1,4 @@
-.. _exhale_class_class_sliding_window_estimator:
+.. _exhale_class_class_q_d_v_o_1_1_sliding_window_estimator:
 
 Class SlidingWindowEstimator
 ============================
@@ -10,7 +10,7 @@ Class Documentation
 -------------------
 
 
-.. doxygenclass:: SlidingWindowEstimator
+.. doxygenclass:: QDVO::SlidingWindowEstimator
    :members:
    :protected-members:
    :undoc-members:

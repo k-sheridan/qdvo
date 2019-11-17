@@ -16,7 +16,7 @@
             <type>typename VariableType</type>
           </param>
         </templateparamlist>
-        <type><ref refid="class_slot_map" kindref="compound">SlotMap</ref>&lt; VariableType, <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &gt;</type>
+        <type><ref refid="class_arg_min_1_1_slot_map" kindref="compound">SlotMap</ref>&lt; VariableType, <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &gt;</type>
         <definition>using ArgMin::VariableContainer&lt; Variables &gt;::VariableMap =  SlotMap&lt;VariableType, VariableKey&lt;VariableType&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>VariableMap</name>
@@ -31,7 +31,7 @@
       </sectiondef>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="class_arg_min_1_1_variable_container_1a5fc7874e55bbeabe28d7628491294a3a" prot="public" static="no" mutable="no">
-        <type>std::tuple&lt; <ref refid="class_slot_map" kindref="compound">VariableMap</ref>&lt; Variables &gt;... &gt;</type>
+        <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_map" kindref="compound">VariableMap</ref>&lt; Variables &gt;... &gt;</type>
         <definition>std::tuple&lt;VariableMap&lt;Variables&gt;...&gt; ArgMin::VariableContainer&lt; Variables &gt;::tupleOfVariableMaps</definition>
         <argsstring></argsstring>
         <name>tupleOfVariableMaps</name>
@@ -51,7 +51,7 @@
             <type>typename VariableType</type>
           </param>
         </templateparamlist>
-        <type><ref refid="class_slot_map" kindref="compound">VariableMap</ref>&lt; VariableType &gt; &amp;</type>
+        <type><ref refid="class_arg_min_1_1_slot_map" kindref="compound">VariableMap</ref>&lt; VariableType &gt; &amp;</type>
         <definition>VariableMap&lt;VariableType&gt;&amp; ArgMin::VariableContainer&lt; Variables &gt;::getVariableMap</definition>
         <argsstring>()</argsstring>
         <name>getVariableMap</name>

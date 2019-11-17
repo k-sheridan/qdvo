@@ -78,12 +78,7 @@ public:
       return std::get<ErrorTermMap<ErrorTermType>>(tupleOfErrorTermMaps);
    }
 
-   /// Linearizes all error terms stored in this container.
-   void linearize() {
-      assert(false && "not ready");
-   }
-
-   // Stores the error terms.
+   /// Stores the error terms.
    std::tuple<ErrorTermMap<ErrorTerms>...> tupleOfErrorTermMaps;
 };
 

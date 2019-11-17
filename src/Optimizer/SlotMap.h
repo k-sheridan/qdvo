@@ -3,6 +3,9 @@
 #include <vector>
 #include <set>
 
+namespace ArgMin
+{
+
 struct SlotMapKeyBase
 {
 public:
@@ -216,3 +219,5 @@ public:
         return result;
     }
 };
+
+} //namespace ArgMin

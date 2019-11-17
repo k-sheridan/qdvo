@@ -1,4 +1,4 @@
-.. _exhale_class_class_epipolar_depth_estimator:
+.. _exhale_class_class_q_d_v_o_1_1_epipolar_depth_estimator:
 
 Class EpipolarDepthEstimator
 ============================
@@ -10,7 +10,7 @@ Class Documentation
 -------------------
 
 
-.. doxygenclass:: EpipolarDepthEstimator
+.. doxygenclass:: QDVO::EpipolarDepthEstimator
    :members:
    :protected-members:
    :undoc-members:

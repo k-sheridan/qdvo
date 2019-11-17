@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_slot_array" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::SlotArray</compoundname>
+    <includes refid="_slot_array_8h" local="no">SlotArray.h</includes>
+    <innerclass refid="struct_arg_min_1_1_slot_array_1_1_slot" prot="private">ArgMin::SlotArray::Slot</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename</type>
+        <declname>DataType</declname>
+        <defname>DataType</defname>
+      </param>
+      <param>
+        <type>typename</type>
+        <declname>KeyType</declname>
+        <defname>KeyType</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fde" prot="public" static="no" strong="no">
+        <type></type>
+        <name>InsertResult</name>
+        <enumvalue id="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea42fa9e5d17d02ec493f80d926a106691" prot="public">
+          <name>SUCCESS_NO_OVERWRITE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea7b534180d379b4d66114221fc0a3e9a9" prot="public">
+          <name>SUCCESS_OVERWRITE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea231fd5606c7ee76080a565eeca078fec" prot="public">
+          <name>FAILURE</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="32" column="22" bodyfile="src/Optimizer/SlotArray.h" bodystart="32" bodyend="36"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_slot_array_1a71bc16a37f57c9d0c90aa65fabe25a79" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; Slot &gt;</type>
+        <definition>std::vector&lt;Slot&gt; ArgMin::SlotArray&lt; DataType, KeyType &gt;::slots</definition>
+        <argsstring></argsstring>
+        <name>slots</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="25" column="17" bodyfile="src/Optimizer/SlotArray.h" bodystart="25" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_slot_array_1aebc8d34b5923f9d6816cf6b289112fb2" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; DataType &gt;</type>
+        <definition>std::vector&lt;DataType&gt; ArgMin::SlotArray&lt; DataType, KeyType &gt;::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="27" column="17" bodyfile="src/Optimizer/SlotArray.h" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_slot_array_1a6516448c907447b405937c240d2761d1" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; size_t &gt;</type>
+        <definition>std::vector&lt;size_t&gt; ArgMin::SlotArray&lt; DataType, KeyType &gt;::dataToSlotIndex</definition>
+        <argsstring></argsstring>
+        <name>dataToSlotIndex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="28" column="17" bodyfile="src/Optimizer/SlotArray.h" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1ab685310e77872e85ad8d78b0156eb3d2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::SlotArray&lt; DataType, KeyType &gt;::SlotArray</definition>
+        <argsstring>()</argsstring>
+        <name>SlotArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="38" column="5" bodyfile="src/Optimizer/SlotArray.h" bodystart="38" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1aab4525cd57bcf1a2ad1971e1761c419f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>InsertResult</type>
+        <definition>InsertResult ArgMin::SlotArray&lt; DataType, KeyType &gt;::insert</definition>
+        <argsstring>(KeyType key, DataType value)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>KeyType</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>DataType</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) The insert result lets the user know if an element was overwritten, or if a failure occured. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="47" column="18" bodyfile="src/Optimizer/SlotArray.h" bodystart="47" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a38549864c6784a8ef0a4f4bba269838e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::SlotArray&lt; DataType, KeyType &gt;::erase</definition>
+        <argsstring>(KeyType &amp;key)</argsstring>
+        <name>erase</name>
+        <param>
+          <type>KeyType &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="84" column="10" bodyfile="src/Optimizer/SlotArray.h" bodystart="84" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1ad0285070ee952bdc369fb100ff43eb89" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::iterator</type>
+        <definition>std::vector&lt;DataType&gt;::iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::at</definition>
+        <argsstring>(const KeyType &amp;key)</argsstring>
+        <name>at</name>
+        <param>
+          <type>const KeyType &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) returns <ref refid="class_arg_min_1_1_slot_array_1a1f7977f2be18c00006c5c0b23a09d0e4" kindref="member">end()</ref> if key is invalid. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="120" column="37" bodyfile="src/Optimizer/SlotArray.h" bodystart="120" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a2f73839603a8610c6c8c3eb58528029e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::const_iterator</type>
+        <definition>std::vector&lt;DataType&gt;::const_iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::at</definition>
+        <argsstring>(const KeyType &amp;key) const</argsstring>
+        <name>at</name>
+        <param>
+          <type>const KeyType &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="140" column="43" bodyfile="src/Optimizer/SlotArray.h" bodystart="140" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a2f4643fb713e40daf1a1f9763da1af4b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::iterator</type>
+        <definition>std::vector&lt;DataType&gt;::iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) iterator pointing to the beginning of this containers internal data container. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="149" column="37" bodyfile="src/Optimizer/SlotArray.h" bodystart="149" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a3eb669c85db8703b351660e8e0021fb0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::const_iterator</type>
+        <definition>std::vector&lt;DataType&gt;::const_iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="154" column="43" bodyfile="src/Optimizer/SlotArray.h" bodystart="154" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a1f7977f2be18c00006c5c0b23a09d0e4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::iterator</type>
+        <definition>std::vector&lt;DataType&gt;::iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) iterator pointing to one past the end of this containers internal data container. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="163" column="37" bodyfile="src/Optimizer/SlotArray.h" bodystart="163" bodyend="166"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1ac030f452aea9028fbe2462a011fb2846" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; DataType &gt;::const_iterator</type>
+        <definition>std::vector&lt;DataType&gt;::const_iterator ArgMin::SlotArray&lt; DataType, KeyType &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="168" column="43" bodyfile="src/Optimizer/SlotArray.h" bodystart="168" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1a4cac7ba208968dfe0040c246cbf0d8cf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t ArgMin::SlotArray&lt; DataType, KeyType &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) number of elements currently stored the slot map. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="177" column="12" bodyfile="src/Optimizer/SlotArray.h" bodystart="177" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1ab622ecfe5eee7b66f3e88701f4cfa712" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>KeyType</type>
+        <definition>KeyType ArgMin::SlotArray&lt; DataType, KeyType &gt;::getKeyFromDataIndex</definition>
+        <argsstring>(size_t dataIndex)</argsstring>
+        <name>getKeyFromDataIndex</name>
+        <param>
+          <type>size_t</type>
+          <declname>dataIndex</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(1) constructs a variable key index and generation from a data index. Asserts that the data index is valid. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="187" column="13" bodyfile="src/Optimizer/SlotArray.h" bodystart="187" bodyend="197"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The slot array is basically a vector which uses keys and 1 layer of indirection to allow for constant time insert, erase, and access. Additionally, this implementation allows for fast iteration. </para>
+    </detaileddescription>
+    <location file="src/Optimizer/SlotArray.h" line="15" column="1" bodyfile="src/Optimizer/SlotArray.h" bodystart="14" bodyend="198"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_slot_array_1ad0285070ee952bdc369fb100ff43eb89" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>at</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a2f73839603a8610c6c8c3eb58528029e" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>at</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a2f4643fb713e40daf1a1f9763da1af4b" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>begin</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a3eb669c85db8703b351660e8e0021fb0" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>begin</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1aebc8d34b5923f9d6816cf6b289112fb2" prot="private" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>data</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a6516448c907447b405937c240d2761d1" prot="private" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>dataToSlotIndex</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a1f7977f2be18c00006c5c0b23a09d0e4" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>end</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ac030f452aea9028fbe2462a011fb2846" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>end</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a38549864c6784a8ef0a4f4bba269838e" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>erase</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea231fd5606c7ee76080a565eeca078fec" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>FAILURE</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ab622ecfe5eee7b66f3e88701f4cfa712" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>getKeyFromDataIndex</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1aab4525cd57bcf1a2ad1971e1761c419f" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>insert</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fde" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>InsertResult</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a4cac7ba208968dfe0040c246cbf0d8cf" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>size</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ab685310e77872e85ad8d78b0156eb3d2" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>SlotArray</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1a71bc16a37f57c9d0c90aa65fabe25a79" prot="private" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>slots</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea42fa9e5d17d02ec493f80d926a106691" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>SUCCESS_NO_OVERWRITE</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea7b534180d379b4d66114221fc0a3e9a9" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>SUCCESS_OVERWRITE</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

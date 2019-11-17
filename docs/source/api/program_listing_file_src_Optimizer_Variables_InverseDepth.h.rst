@@ -14,6 +14,19 @@ Program Listing for File InverseDepth.h
    
    #include "Optimizer/OptimizableVariable.h"
    
-   class InverseDepth : public ArgMin::OptimizableVariable<1> {
+   namespace ArgMin
+   {
    
+   class InverseDepth : public ArgMin::OptimizableVariable<double, 1>
+   {
+   public:
+       InverseDepth()
+       {
+       }
+   
+       void update(const Eigen::Matrix<double, 1, 1> &dx)
+       {
+       }
    };
+   
+   } // namespace ArgMin

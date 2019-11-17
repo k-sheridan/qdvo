@@ -65,9 +65,9 @@
   </compound>
   <compound refid="struct_arg_min_1_1_dimension" kind="struct"><name>ArgMin::Dimension</name>
   </compound>
-  <compound refid="class_epipolar_depth_estimator" kind="class"><name>EpipolarDepthEstimator</name>
-    <member refid="class_epipolar_depth_estimator_1af474639013c2c14041882779a1155991" kind="variable"><name>initialized</name></member>
-    <member refid="class_epipolar_depth_estimator_1a624e9ca2e33c746b242198fc7c1ccaae" kind="function"><name>EpipolarDepthEstimator</name></member>
+  <compound refid="class_q_d_v_o_1_1_epipolar_depth_estimator" kind="class"><name>QDVO::EpipolarDepthEstimator</name>
+    <member refid="class_q_d_v_o_1_1_epipolar_depth_estimator_1a467024e1fb11d2599a6d14fd226c0d14" kind="variable"><name>initialized</name></member>
+    <member refid="class_q_d_v_o_1_1_epipolar_depth_estimator_1a624e9ca2e33c746b242198fc7c1ccaae" kind="function"><name>EpipolarDepthEstimator</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_equidistant_camera_model" kind="class"><name>QDVO::EquidistantCameraModel</name>
     <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1ad676731447269a999c0cbb0ed3d567ed" kind="variable"><name>distortionCoeffs</name></member>
@@ -85,6 +85,7 @@
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a715f0bde55a3b0e9dc50b8303696b454" kind="variable"><name>variableKeys</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1acf8d4d24f8574fd61e41cb307cf65d25" kind="variable"><name>variablePointers</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ae47eb3544a9055af96f13fcfa00a3edc" kind="variable"><name>residual</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a3716dfa71701cb254ce0da4acc9c204d" kind="variable"><name>linearizationValid</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afcc06aeb70943279333e85c9477a3905" kind="function"><name>updateVariablePointers</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a8b8962bdc9719c1d2ef34386fc4f7b03" kind="function"><name>checkVariablePointerConsistency</name></member>
   </compound>
@@ -92,7 +93,6 @@
     <member refid="class_arg_min_1_1_error_term_container_1a675a6bc072f2707ac5446283e567d76e" kind="typedef"><name>ErrorTermMap</name></member>
     <member refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" kind="variable"><name>tupleOfErrorTermMaps</name></member>
     <member refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" kind="function"><name>getErrorTermMap</name></member>
-    <member refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" kind="function"><name>linearize</name></member>
   </compound>
   <compound refid="struct_arg_min_1_1_error_term_group" kind="struct"><name>ArgMin::ErrorTermGroup</name>
   </compound>
@@ -159,9 +159,9 @@
     <member refid="class_q_d_v_o_1_1_frame_1a66f0ccbfa7f2305de08f6fb7e3a9a1cd" kind="function"><name>reset</name></member>
     <member refid="class_q_d_v_o_1_1_frame_1a95ad8da1e4f65672d32e6a97cb41b514" kind="function"><name>resetCorrespondenceDistributions</name></member>
   </compound>
-  <compound refid="class_front_end_visual_odometry" kind="class"><name>FrontEndVisualOdometry</name>
-    <member refid="class_front_end_visual_odometry_1a40bc0478c01e064ad17972d4afe15e3c" kind="function"><name>FrontEndVisualOdometry</name></member>
-    <member refid="class_front_end_visual_odometry_1a91c0a5c005fe9fe6036aabddca4ad19c" kind="function"><name>run</name></member>
+  <compound refid="class_q_d_v_o_1_1_front_end_visual_odometry" kind="class"><name>QDVO::FrontEndVisualOdometry</name>
+    <member refid="class_q_d_v_o_1_1_front_end_visual_odometry_1a40bc0478c01e064ad17972d4afe15e3c" kind="function"><name>FrontEndVisualOdometry</name></member>
+    <member refid="class_q_d_v_o_1_1_front_end_visual_odometry_1a91c0a5c005fe9fe6036aabddca4ad19c" kind="function"><name>run</name></member>
   </compound>
   <compound refid="class_arg_min_1_1_gaussian_prior" kind="class"><name>ArgMin::GaussianPrior</name>
   </compound>
@@ -244,7 +244,9 @@
   <compound refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4" kind="struct"><name>ArgMin::internal::Index&lt; T, std::tuple&lt; U, Types... &gt; &gt;</name>
     <member refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4_1aca6b080765a4b4c96c18ca8c83ecd580" kind="variable"><name>value</name></member>
   </compound>
-  <compound refid="class_inverse_depth" kind="class"><name>InverseDepth</name>
+  <compound refid="class_arg_min_1_1_inverse_depth" kind="class"><name>ArgMin::InverseDepth</name>
+    <member refid="class_arg_min_1_1_inverse_depth_1a53b1b29ff40054752760b31a839b48a4" kind="function"><name>InverseDepth</name></member>
+    <member refid="class_arg_min_1_1_inverse_depth_1a0c56fd319a3195b1a47e5dc19fe88ad0" kind="function"><name>update</name></member>
   </compound>
   <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple" kind="struct"><name>ArgMin::internal::Is_in_tuple</name>
   </compound>
@@ -279,7 +281,7 @@
     <member refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a32a544dd89c67f5fbccf79a651f0dfb6" kind="function"><name>marginalizeVariable</name></member>
   </compound>
   <compound refid="class_arg_min_1_1_optimizable_variable" kind="class"><name>ArgMin::OptimizableVariable</name>
-    <member refid="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" kind="variable"><name>dimension</name></member>
+    <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" kind="variable"><name>dimension</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_patch" kind="class"><name>QDVO::Patch</name>
     <member refid="class_q_d_v_o_1_1_patch_1a64f917bbc42d05c434e23a7f89e5cfd9" kind="variable"><name>level</name></member>
@@ -315,21 +317,27 @@
     <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1aa6f0f252c48109716751a0ddeb8c00d1" kind="variable"><name>initialized</name></member>
     <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1a35119c5c14ccab73398b2c8cc7a1a112" kind="function"><name>reset</name></member>
   </compound>
-  <compound refid="class_arg_min_1_1_p_s_d_linear_system" kind="class"><name>ArgMin::PSDLinearSystem</name>
+  <compound refid="class_arg_min_1_1_p_s_d_schur_solver" kind="class"><name>ArgMin::PSDSchurSolver</name>
   </compound>
-  <compound refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415" kind="class"><name>ArgMin::PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</name>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a60494d5a58535b27f253fa31bafa87eb" kind="typedef"><name>BVector</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a0474ad4840fda11c4a2d2e3f50f22539" kind="typedef"><name>DBlock</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ab891905a80e0a629f22d38ab73bb7ab4" kind="typedef"><name>DVector</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a05a845af22b76b193d69d63fd30f8a22" kind="variable"><name>A</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a1c60993a81aa9e35b84379d1f5f354cb" kind="variable"><name>B</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a7b017f557c8fbcf6a70c08ab0a47f790" kind="variable"><name>D</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ac15cbdee162ad8665a52de71cf0afb0b" kind="variable"><name>dx</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ade0b2504071de2593b981a4e1c5239a0" kind="variable"><name>dxBlockVector</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a7928f630fc8b1670c075defc52b538c7" kind="variable"><name>b</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a6693e475dda4d2d76462af6872f9f179" kind="function"><name>PSDLinearSystem</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ab722064a5c17bba992514dfdeb8ca58e" kind="function"><name>initialize</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a5c991643fe3c7156a3bef2f24f88527f" kind="function"><name>solve</name></member>
+  <compound refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f" kind="class"><name>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a1b24a11e39cdffacab1313141f4551fc" kind="typedef"><name>BVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a603cb1cb93a352982ae2d9147e5e45cf" kind="typedef"><name>DBlock</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a79c20c07860275600f7e53871fea637d" kind="typedef"><name>DVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1adcc01e0dc877dcc8c812bec4af541ca3" kind="typedef"><name>IndexMap</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a09dd6d7309824efe86f787e41985d7c0" kind="variable"><name>A</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a7514fda9a0c9c7b261437a2344d3ef8c" kind="variable"><name>B</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a9f2726dc39792469f6ab2bf602219fcb" kind="variable"><name>D</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a0c34effc825a57dd6468be4ec348e92e" kind="variable"><name>dx</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a8a5a3031fe9d395279cf95bbec98f76e" kind="variable"><name>dxBlockVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a3dcf93cacfe15d9b2efef617a8534e6a" kind="variable"><name>b</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a566a1f1bae6e58ad61418810b06e1fb0" kind="variable"><name>variableToIndexMaps</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a7d29f23c425781623efc78f849a599ce" kind="variable"><name>dimensionOfA</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a311fa383900c504f73baba6bca028d99" kind="function"><name>PSDSchurSolver</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a1f9f30945cf53c34c1e880ddce2d412b" kind="function"><name>initialize</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a76309543da9f0a4afed9c3c2f7228867" kind="function"><name>solve</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a9078bf869b37db43d5f6d55b8066b5fd" kind="function"><name>linearize</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1afb67b674bdb8c5c6f1505009c4798501" kind="function"><name>reset</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1aa02cddad0217fafbdefdcaf10add9d96" kind="function"><name>precomputeIndexMapAndResizeA</name></member>
   </compound>
   <compound refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kind="struct"><name>QDVO::GenericQuadTree::Quad</name>
     <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a9dca5fe55dc7c02859d9df7556e268de" kind="variable"><name>parentQuad</name></member>
@@ -359,71 +367,79 @@
   </compound>
   <compound refid="struct_arg_min_1_1_scalar" kind="struct"><name>ArgMin::Scalar</name>
   </compound>
-  <compound refid="class_s_e3" kind="class"><name>SE3</name>
+  <compound refid="class_arg_min_1_1_s_e3" kind="class"><name>ArgMin::SE3</name>
+    <member refid="class_arg_min_1_1_s_e3_1ac8d4caa79dfb667d9554bc3b610f9243" kind="function"><name>SE3</name></member>
+    <member refid="class_arg_min_1_1_s_e3_1a81a923430e717bd823a0a4fe5ab4b24b" kind="function"><name>update</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_settings" kind="class"><name>QDVO::Settings</name>
     <member refid="class_q_d_v_o_1_1_settings_1ac904536b1c419581a64413678c930dba" kind="variable"><name>nKeyframes</name></member>
     <member refid="class_q_d_v_o_1_1_settings_1a212965ff5de2eae345fb6745298afb86" kind="variable"><name>feature_detection</name></member>
   </compound>
-  <compound refid="class_sliding_window_estimator" kind="class"><name>SlidingWindowEstimator</name>
-    <member refid="class_sliding_window_estimator_1a109d95640e926963d92d44cd06a539fe" kind="function"><name>SlidingWindowEstimator</name></member>
-    <member refid="class_sliding_window_estimator_1a500b11445321582f7d7424b69da726e2" kind="function"><name>run</name></member>
-    <member refid="class_sliding_window_estimator_1ac8a89b05d998b159b13833a713e7d490" kind="function"><name>removeOutliers</name></member>
-    <member refid="class_sliding_window_estimator_1a91233ae318c4257f732e2e1b849bca1a" kind="function"><name>runMarginalizationStrategy</name></member>
+  <compound refid="class_arg_min_1_1_simple_scalar" kind="class"><name>ArgMin::SimpleScalar</name>
+    <member refid="class_arg_min_1_1_simple_scalar_1a82f3d474b55c8484cd0e173926357192" kind="variable"><name>value</name></member>
+    <member refid="class_arg_min_1_1_simple_scalar_1afd7a75d258d8bb3a92a3369b99154d28" kind="function"><name>SimpleScalar</name></member>
+    <member refid="class_arg_min_1_1_simple_scalar_1a074cd5307f770ce96e428368baaf6973" kind="function"><name>SimpleScalar</name></member>
+    <member refid="class_arg_min_1_1_simple_scalar_1a5d1ebf2018d3d7d1ea847a545e50b9a5" kind="function"><name>update</name></member>
   </compound>
-  <compound refid="struct_slot_array_1_1_slot" kind="struct"><name>SlotArray::Slot</name>
-    <member refid="struct_slot_array_1_1_slot_1a11ef771449c7459379325f8eb31f79fc" kind="variable"><name>dataIndex</name></member>
-    <member refid="struct_slot_array_1_1_slot_1af922b44b97e19aa95b8e9e153f1b5d32" kind="variable"><name>free</name></member>
+  <compound refid="class_q_d_v_o_1_1_sliding_window_estimator" kind="class"><name>QDVO::SlidingWindowEstimator</name>
+    <member refid="class_q_d_v_o_1_1_sliding_window_estimator_1a109d95640e926963d92d44cd06a539fe" kind="function"><name>SlidingWindowEstimator</name></member>
+    <member refid="class_q_d_v_o_1_1_sliding_window_estimator_1a500b11445321582f7d7424b69da726e2" kind="function"><name>run</name></member>
+    <member refid="class_q_d_v_o_1_1_sliding_window_estimator_1ac8a89b05d998b159b13833a713e7d490" kind="function"><name>removeOutliers</name></member>
+    <member refid="class_q_d_v_o_1_1_sliding_window_estimator_1a91233ae318c4257f732e2e1b849bca1a" kind="function"><name>runMarginalizationStrategy</name></member>
   </compound>
-  <compound refid="struct_slot_map_1_1_slot" kind="struct"><name>SlotMap::Slot</name>
-    <member refid="struct_slot_map_1_1_slot_1a7be2d753f245ba32ed51b5175d628c2f" kind="variable"><name>dataIndex</name></member>
-    <member refid="struct_slot_map_1_1_slot_1a97e355318989b7cfac914a35da6399bd" kind="variable"><name>generation</name></member>
-    <member refid="struct_slot_map_1_1_slot_1af7af719e533ee20c013fb2ae2704229f" kind="variable"><name>free</name></member>
+  <compound refid="struct_arg_min_1_1_slot_array_1_1_slot" kind="struct"><name>ArgMin::SlotArray::Slot</name>
+    <member refid="struct_arg_min_1_1_slot_array_1_1_slot_1a858acd040173550ebe824e4f7e43a326" kind="variable"><name>dataIndex</name></member>
+    <member refid="struct_arg_min_1_1_slot_array_1_1_slot_1a3da3e4fe3bab03164849ea6a6dafe3ea" kind="variable"><name>free</name></member>
   </compound>
-  <compound refid="class_slot_array" kind="class"><name>SlotArray</name>
-    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5f" kind="enum"><name>InsertResult</name></member>
-    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fadb7e770c94f0e5363b42cbee679169c1" kind="enumvalue"><name>SUCCESS_NO_OVERWRITE</name></member>
-    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fa645f52f4d70041b265d67251a8eeb157" kind="enumvalue"><name>SUCCESS_OVERWRITE</name></member>
-    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fa803286bd3c041ebe1bea96663b9cb875" kind="enumvalue"><name>FAILURE</name></member>
-    <member refid="class_slot_array_1a4028bedfb8c772ebd9e06388c02b989c" kind="variable"><name>slots</name></member>
-    <member refid="class_slot_array_1a8b349679f37d1aeaf6c3caa148fd1fa2" kind="variable"><name>data</name></member>
-    <member refid="class_slot_array_1a8fcc545bae5717de44557edc49eee4c9" kind="variable"><name>dataToSlotIndex</name></member>
-    <member refid="class_slot_array_1a03c47676bc2c7e9f8dc9bada7f0060c8" kind="function"><name>SlotArray</name></member>
-    <member refid="class_slot_array_1a6e1113c1b12f0edb307487fd9d592aa0" kind="function"><name>insert</name></member>
-    <member refid="class_slot_array_1a475e0a1ad61a966758bceb2d01a83a0c" kind="function"><name>erase</name></member>
-    <member refid="class_slot_array_1af9f979e8e1dc1bbcaae7dca19a6d886c" kind="function"><name>at</name></member>
-    <member refid="class_slot_array_1a273af203b2f1e2ba1c04c94e75d10507" kind="function"><name>at</name></member>
-    <member refid="class_slot_array_1a856a60adcf5b3a85e6552ed59b074041" kind="function"><name>begin</name></member>
-    <member refid="class_slot_array_1a099df7ffec246e59b2a8b639d8fffd57" kind="function"><name>begin</name></member>
-    <member refid="class_slot_array_1a99d1cfa6ed02d447eeb124a72e9e1451" kind="function"><name>end</name></member>
-    <member refid="class_slot_array_1a59545645599fa4b26f871072760676aa" kind="function"><name>end</name></member>
-    <member refid="class_slot_array_1a4b6b4cae7c51d5d91ad73469f9d82416" kind="function"><name>size</name></member>
-    <member refid="class_slot_array_1ac7aa5384ff259ceba8196535c6e21a18" kind="function"><name>getKeyFromDataIndex</name></member>
+  <compound refid="struct_arg_min_1_1_slot_map_1_1_slot" kind="struct"><name>ArgMin::SlotMap::Slot</name>
+    <member refid="struct_arg_min_1_1_slot_map_1_1_slot_1adbe77fc5d7bf620e9bda9420c008ddc9" kind="variable"><name>dataIndex</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_1_1_slot_1a31d0efb393433ebded29d74e449c5f5f" kind="variable"><name>generation</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_1_1_slot_1ab25e7ba374c3ca9944dbfdef0bd50b6a" kind="variable"><name>free</name></member>
   </compound>
-  <compound refid="class_slot_map" kind="class"><name>SlotMap</name>
-    <member refid="class_slot_map_1afc39d78f08f17568af45e30bc5fd4138" kind="variable"><name>slots</name></member>
-    <member refid="class_slot_map_1a0eb048ecdbad11d4c7c0bb2f3e25f240" kind="variable"><name>freeSlots</name></member>
-    <member refid="class_slot_map_1a2c8073c971097e126a2bd97901e3042c" kind="variable"><name>data</name></member>
-    <member refid="class_slot_map_1a6673b23172d5584c3241f07aa4723741" kind="variable"><name>dataToSlotIndex</name></member>
-    <member refid="class_slot_map_1a5726c458637cb6da5d75e029e4d63ad6" kind="function"><name>SlotMap</name></member>
-    <member refid="class_slot_map_1a9f1185ff4b8462ef1a43942471f15677" kind="function"><name>insert</name></member>
-    <member refid="class_slot_map_1a1f1ca132953d33ec67d50450c4fada32" kind="function"><name>erase</name></member>
-    <member refid="class_slot_map_1acbcbc564ad5bad6e55da9b756b463eb1" kind="function"><name>at</name></member>
-    <member refid="class_slot_map_1ac0cf82289e42cb3249990f5512f4690b" kind="function"><name>at</name></member>
-    <member refid="class_slot_map_1ae75c0a24ce5e0d4dc9290d6ec7c43521" kind="function"><name>begin</name></member>
-    <member refid="class_slot_map_1aa3570359215c6fdbb0259b77745e5a1d" kind="function"><name>begin</name></member>
-    <member refid="class_slot_map_1a133119f1475d61112aeca763ccc98d1b" kind="function"><name>end</name></member>
-    <member refid="class_slot_map_1a35722d0e7e8816f776173e66dde8d330" kind="function"><name>end</name></member>
-    <member refid="class_slot_map_1a1a906d5cafee436c6db2ac739d2b8155" kind="function"><name>size</name></member>
-    <member refid="class_slot_map_1af864e5eb0258fd16b2a8ec83cf8ea1da" kind="function"><name>getKeyFromDataIndex</name></member>
+  <compound refid="class_arg_min_1_1_slot_array" kind="class"><name>ArgMin::SlotArray</name>
+    <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fde" kind="enum"><name>InsertResult</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea42fa9e5d17d02ec493f80d926a106691" kind="enumvalue"><name>SUCCESS_NO_OVERWRITE</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea7b534180d379b4d66114221fc0a3e9a9" kind="enumvalue"><name>SUCCESS_OVERWRITE</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ae76545557954de9ebdce74c9a4259fdea231fd5606c7ee76080a565eeca078fec" kind="enumvalue"><name>FAILURE</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a71bc16a37f57c9d0c90aa65fabe25a79" kind="variable"><name>slots</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1aebc8d34b5923f9d6816cf6b289112fb2" kind="variable"><name>data</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a6516448c907447b405937c240d2761d1" kind="variable"><name>dataToSlotIndex</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ab685310e77872e85ad8d78b0156eb3d2" kind="function"><name>SlotArray</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1aab4525cd57bcf1a2ad1971e1761c419f" kind="function"><name>insert</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a38549864c6784a8ef0a4f4bba269838e" kind="function"><name>erase</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ad0285070ee952bdc369fb100ff43eb89" kind="function"><name>at</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a2f73839603a8610c6c8c3eb58528029e" kind="function"><name>at</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a2f4643fb713e40daf1a1f9763da1af4b" kind="function"><name>begin</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a3eb669c85db8703b351660e8e0021fb0" kind="function"><name>begin</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a1f7977f2be18c00006c5c0b23a09d0e4" kind="function"><name>end</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ac030f452aea9028fbe2462a011fb2846" kind="function"><name>end</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1a4cac7ba208968dfe0040c246cbf0d8cf" kind="function"><name>size</name></member>
+    <member refid="class_arg_min_1_1_slot_array_1ab622ecfe5eee7b66f3e88701f4cfa712" kind="function"><name>getKeyFromDataIndex</name></member>
   </compound>
-  <compound refid="struct_slot_map_key_base" kind="struct"><name>SlotMapKeyBase</name>
-    <member refid="struct_slot_map_key_base_1a92c7faa62fb0c1779cca5f896afab73c" kind="typedef"><name>index_type</name></member>
-    <member refid="struct_slot_map_key_base_1a04a7d5ae4e887c4730834b7207faaa38" kind="typedef"><name>generation_type</name></member>
-    <member refid="struct_slot_map_key_base_1a17f35b16ea6c16adb9e9e4c3d9da4876" kind="variable"><name>index</name></member>
-    <member refid="struct_slot_map_key_base_1a0c6cc235a00b077544539251bf653aeb" kind="variable"><name>generation</name></member>
-    <member refid="struct_slot_map_key_base_1a5ba568d77ee39bcecfbe15a1a91620d8" kind="function"><name>setInvalid</name></member>
-    <member refid="struct_slot_map_key_base_1aba7a7e2773aeecccdb0d4b272ec41525" kind="function"><name>isInvalid</name></member>
+  <compound refid="class_arg_min_1_1_slot_map" kind="class"><name>ArgMin::SlotMap</name>
+    <member refid="class_arg_min_1_1_slot_map_1aa9b2d195e39ea625939d710452d08e8d" kind="variable"><name>slots</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1a0f5e5a9c93b8c3d171dcf109f240b918" kind="variable"><name>freeSlots</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1a2594ea887d8c70b65f7100714cdf57ea" kind="variable"><name>data</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1ac55626882ddd10855bb687dc0568a762" kind="variable"><name>dataToSlotIndex</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1acef06d10affb8a548406423378089679" kind="function"><name>SlotMap</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1aeb028dcc193e1da55231058b447078b7" kind="function"><name>insert</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1accda219a32c1cebab81d0a5f6c587a1a" kind="function"><name>erase</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1aa003e8ddd786fa7021036b351b9b98af" kind="function"><name>at</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1ac765b2261bfa607ef81325ae904cf4ff" kind="function"><name>at</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1a1611846b780ac06daa14381fc1466e8d" kind="function"><name>begin</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1a1b275549d0cb219570cef8aef130e465" kind="function"><name>begin</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1ae63c9169b362de89449fb633bd7282aa" kind="function"><name>end</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1aae08b563ec2b909423d16b72e06dca6e" kind="function"><name>end</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1aef6d9c562588b357a68223c0fb7040df" kind="function"><name>size</name></member>
+    <member refid="class_arg_min_1_1_slot_map_1a3b2a4c6b5a53dc507aaaddcd2bf3f502" kind="function"><name>getKeyFromDataIndex</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_slot_map_key_base" kind="struct"><name>ArgMin::SlotMapKeyBase</name>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1a6362383e7e05b450a7dea5d761525dd7" kind="typedef"><name>index_type</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1ac32ae3716a52214a5cd5ae969b0b811d" kind="typedef"><name>generation_type</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1a34bd2125b53bb7466752384a9cff8f95" kind="variable"><name>index</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1a4cb457c60080674c38645473645c49b1" kind="variable"><name>generation</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1ab83bb70c6c503c206273618df67f0af6" kind="function"><name>setInvalid</name></member>
+    <member refid="struct_arg_min_1_1_slot_map_key_base_1a87e819f5877a10722c465ca23f029947" kind="function"><name>isInvalid</name></member>
   </compound>
   <compound refid="class_arg_min_1_1_sparse_block_matrix" kind="class"><name>ArgMin::SparseBlockMatrix</name>
   </compound>
@@ -672,7 +688,7 @@
   <compound refid="_threading_helpers_8h" kind="file"><name>ThreadingHelpers.h</name>
     <member refid="_threading_helpers_8h_1ac9e94064e8ce15d44ef2b94289b1548b" kind="define"><name>DEFAULT_THREAD_COUNT</name></member>
   </compound>
-  <compound refid="_p_s_d_linear_system_8h" kind="file"><name>PSDLinearSystem.h</name>
+  <compound refid="_p_s_d_schur_solver_8h" kind="file"><name>PSDSchurSolver.h</name>
   </compound>
   <compound refid="_slot_array_8h" kind="file"><name>SlotArray.h</name>
   </compound>
@@ -687,6 +703,8 @@
   <compound refid="_inverse_depth_8h" kind="file"><name>InverseDepth.h</name>
   </compound>
   <compound refid="_s_e3_8h" kind="file"><name>SE3.h</name>
+  </compound>
+  <compound refid="_simple_scalar_8h" kind="file"><name>SimpleScalar.h</name>
   </compound>
   <compound refid="_basic_pipeline_8cpp" kind="file"><name>BasicPipeline.cpp</name>
   </compound>

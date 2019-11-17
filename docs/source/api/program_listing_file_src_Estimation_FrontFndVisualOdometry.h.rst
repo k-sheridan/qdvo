@@ -15,6 +15,8 @@ Program Listing for File FrontFndVisualOdometry.h
    #include "DataStructures/Graph.h"
    #include "Optimizer/SSEOptimizer.h"
    
+   namespace QDVO {
+   
    class FrontEndVisualOdometry
    {
    public:
@@ -22,4 +24,6 @@ Program Listing for File FrontFndVisualOdometry.h
    
        void run(QDVO::Graph& graph);
    };
+   
+   } // namespace
    

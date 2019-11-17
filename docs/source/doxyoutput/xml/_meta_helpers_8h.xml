@@ -8,7 +8,7 @@
     <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
     <includedby refid="_gaussian_prior_8h" local="yes">src/Optimizer/GaussianPrior.h</includedby>
     <includedby refid="_marginalizer_8h" local="yes">src/Optimizer/Marginalizer.h</includedby>
-    <includedby refid="_p_s_d_linear_system_8h" local="yes">src/Optimizer/PSDLinearSystem.h</includedby>
+    <includedby refid="_p_s_d_schur_solver_8h" local="yes">src/Optimizer/PSDSchurSolver.h</includedby>
     <includedby refid="_sparse_block_matrix_8h" local="yes">src/Optimizer/SparseBlockMatrix.h</includedby>
     <includedby refid="_sparse_block_row_8h" local="yes">src/Optimizer/SparseBlockRow.h</includedby>
     <includedby refid="_s_s_e_optimizer_8h" local="yes">src/Optimizer/SSEOptimizer.h</includedby>
@@ -62,6 +62,10 @@
         <childnode refid="6" relation="include">
         </childnode>
       </node>
+      <node id="5">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
       <node id="7">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
         <link refid="_front_fnd_visual_odometry_8h_source"/>
@@ -77,10 +81,6 @@
       <node id="4">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
-      </node>
-      <node id="5">
-        <label>src/Optimizer/PSDLinearSystem.h</label>
-        <link refid="_p_s_d_linear_system_8h_source"/>
       </node>
       <node id="8">
         <label>src/Pipeline/BasicPipeline.h</label>

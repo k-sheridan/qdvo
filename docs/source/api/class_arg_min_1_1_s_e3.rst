@@ -1,4 +1,4 @@
-.. _exhale_class_class_s_e3:
+.. _exhale_class_class_arg_min_1_1_s_e3:
 
 Class SE3
 =========
@@ -12,14 +12,14 @@ Inheritance Relationships
 Base Type
 *********
 
-- ``public ArgMin::OptimizableVariable< 6 >`` (:ref:`exhale_class_class_arg_min_1_1_optimizable_variable`)
+- ``public ArgMin::OptimizableVariable< double, 6 >`` (:ref:`exhale_class_class_arg_min_1_1_optimizable_variable`)
 
 
 Class Documentation
 -------------------
 
 
-.. doxygenclass:: SE3
+.. doxygenclass:: ArgMin::SE3
    :members:
    :protected-members:
    :undoc-members:

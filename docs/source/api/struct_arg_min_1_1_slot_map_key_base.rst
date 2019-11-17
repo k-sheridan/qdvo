@@ -1,4 +1,4 @@
-.. _exhale_struct_struct_slot_map_key_base:
+.. _exhale_struct_struct_arg_min_1_1_slot_map_key_base:
 
 Struct SlotMapKeyBase
 =====================
@@ -20,7 +20,7 @@ Struct Documentation
 --------------------
 
 
-.. doxygenstruct:: SlotMapKeyBase
+.. doxygenstruct:: ArgMin::SlotMapKeyBase
    :members:
    :protected-members:
    :undoc-members:

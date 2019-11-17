@@ -40,6 +40,8 @@ Classes
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_correspondence_distribution`
 
+- :ref:`exhale_class_class_q_d_v_o_1_1_epipolar_depth_estimator`
+
 - :ref:`exhale_class_class_q_d_v_o_1_1_equidistant_camera_model`
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_feature`
@@ -49,6 +51,8 @@ Classes
 - :ref:`exhale_class_class_q_d_v_o_1_1_f_o_v_camera_model`
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_frame`
+
+- :ref:`exhale_class_class_q_d_v_o_1_1_front_end_visual_odometry`
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_generic_quad_tree`
 
@@ -73,6 +77,8 @@ Classes
 - :ref:`exhale_class_class_q_d_v_o_1_1_radial_search_pattern`
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_settings`
+
+- :ref:`exhale_class_class_q_d_v_o_1_1_sliding_window_estimator`
 
 - :ref:`exhale_class_class_q_d_v_o_1_1_spatial_map`
 

@@ -17,7 +17,7 @@
         <location file="src/Pipeline/BasicPipeline.h" line="30" column="11" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="30" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1aaa206ab3ae086d7bfa1121a5b3eef889" prot="public" static="no" mutable="no">
-        <type><ref refid="class_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref></type>
+        <type><ref refid="class_q_d_v_o_1_1_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref></type>
         <definition>FrontEndVisualOdometry QDVO::BasicPipeline::frontEndVisualOdometry</definition>
         <argsstring></argsstring>
         <name>frontEndVisualOdometry</name>
@@ -30,7 +30,7 @@
         <location file="src/Pipeline/BasicPipeline.h" line="32" column="28" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="32" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" prot="public" static="no" mutable="no">
-        <type><ref refid="class_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref></type>
+        <type><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref></type>
         <definition>SlidingWindowEstimator QDVO::BasicPipeline::swe</definition>
         <argsstring></argsstring>
         <name>swe</name>
@@ -293,12 +293,12 @@
         </childnode>
       </node>
       <node id="4">
-        <label>SlidingWindowEstimator</label>
-        <link refid="class_sliding_window_estimator"/>
+        <label>QDVO::SlidingWindowEstimator</label>
+        <link refid="class_q_d_v_o_1_1_sliding_window_estimator"/>
       </node>
       <node id="3">
-        <label>FrontEndVisualOdometry</label>
-        <link refid="class_front_end_visual_odometry"/>
+        <label>QDVO::FrontEndVisualOdometry</label>
+        <link refid="class_q_d_v_o_1_1_front_end_visual_odometry"/>
       </node>
     </collaborationgraph>
     <location file="src/Pipeline/BasicPipeline.h" line="26" column="1" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="25" bodyend="97"/>

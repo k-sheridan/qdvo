@@ -29,7 +29,7 @@ Files
 - :ref:`file_src_Optimizer_Marginalizer.h`
 - :ref:`file_src_Optimizer_MetaHelpers.h`
 - :ref:`file_src_Optimizer_OptimizableVariable.h`
-- :ref:`file_src_Optimizer_PSDLinearSystem.h`
+- :ref:`file_src_Optimizer_PSDSchurSolver.h`
 - :ref:`file_src_Optimizer_SlotArray.h`
 - :ref:`file_src_Optimizer_SlotMap.h`
 - :ref:`file_src_Optimizer_SparseBlockMatrix.h`

@@ -2,6 +2,19 @@
 
 #include "Optimizer/OptimizableVariable.h"
 
-class SE3 : public ArgMin::OptimizableVariable<6> {
+namespace ArgMin
+{
 
+class SE3 : public ArgMin::OptimizableVariable<double, 6>
+{
+public:
+    SE3()
+    {
+    }
+
+    void update(const Eigen::Matrix<double, 6, 1> &dx)
+    {
+    }
 };
+
+} // namespace ArgMin

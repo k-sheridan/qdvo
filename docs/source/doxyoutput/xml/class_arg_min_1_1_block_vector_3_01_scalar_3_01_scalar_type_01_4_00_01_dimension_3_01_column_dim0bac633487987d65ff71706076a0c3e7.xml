@@ -43,7 +43,7 @@
             <type>typename VariableType</type>
           </param>
         </templateparamlist>
-        <type><ref refid="class_slot_array" kindref="compound">SlotArray</ref>&lt; MatrixBlock&lt; VariableType &gt;, <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &gt;</type>
+        <type><ref refid="class_arg_min_1_1_slot_array" kindref="compound">SlotArray</ref>&lt; MatrixBlock&lt; VariableType &gt;, <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &gt;</type>
         <definition>using ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::RowMap =  SlotArray&lt;MatrixBlock&lt;VariableType&gt;, VariableKey&lt;VariableType&gt; &gt;</definition>
         <argsstring></argsstring>
         <name>RowMap</name>
@@ -58,7 +58,7 @@
       </sectiondef>
       <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ae3404c9244c35dae1a0ee0247afec60c" prot="private" static="no" mutable="no">
-        <type>std::tuple&lt; <ref refid="class_slot_array" kindref="compound">RowMap</ref>&lt; Variables &gt;... &gt;</type>
+        <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_array" kindref="compound">RowMap</ref>&lt; Variables &gt;... &gt;</type>
         <definition>std::tuple&lt;RowMap&lt;Variables&gt;...&gt; ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::tupleOfRowMaps</definition>
         <argsstring></argsstring>
         <name>tupleOfRowMaps</name>
@@ -91,7 +91,7 @@
             <type>typename VariableType</type>
           </param>
         </templateparamlist>
-        <type><ref refid="class_slot_array" kindref="compound">RowMap</ref>&lt; VariableType &gt;::InsertResult</type>
+        <type><ref refid="class_arg_min_1_1_slot_array" kindref="compound">RowMap</ref>&lt; VariableType &gt;::InsertResult</type>
         <definition>RowMap&lt;VariableType&gt;::InsertResult ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::addRowBlock</definition>
         <argsstring>(VariableKey&lt; VariableType &gt; key, MatrixBlock&lt; VariableType &gt; &amp;value)</argsstring>
         <name>addRowBlock</name>
@@ -208,7 +208,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>Unlike the Sparse Block Row, the <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> is assumed to be dense and can then achieve constant time insert, lookup, and erase via the slot map. This class uses a slightly different variant of the slot map. One which allows us to choose a key value pair. </para>
+<para>Unlike the <ref refid="class_arg_min_1_1_sparse_block_row" kindref="compound">SparseBlockRow</ref>, the <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> is assumed to be dense and can then achieve constant time insert, lookup, and erase via the slot map. This class uses a slightly different variant of the slot map. One which allows us to choose a key value pair. </para>
     </detaileddescription>
     <location file="src/Optimizer/BlockVector.h" line="21" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="21" bodyend="109"/>
     <listofallmembers>

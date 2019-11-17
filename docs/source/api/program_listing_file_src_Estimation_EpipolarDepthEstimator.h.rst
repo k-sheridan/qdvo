@@ -10,9 +10,9 @@ Program Listing for File EpipolarDepthEstimator.h
 
 .. code-block:: cpp
 
-   #ifndef EPIPOLARDEPTHESTIMATOR_H
-   #define EPIPOLARDEPTHESTIMATOR_H
+   #pragma once
    
+   namespace QDVO {
    
    class EpipolarDepthEstimator
    {
@@ -22,4 +22,4 @@ Program Listing for File EpipolarDepthEstimator.h
        bool initialized = false; // flag which means that the landmark depth has been succesfully initialized.
    };
    
-   #endif // EPIPOLARDEPTHESTIMATOR_H
+   } // namespace QDVO

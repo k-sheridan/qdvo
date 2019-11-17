@@ -4,14 +4,59 @@
 #include "Optimizer/SparseBlockMatrix.h"
 #include "Optimizer/GaussianPrior.h"
 #include "Optimizer/BlockVector.h"
-#include "Optimizer/PSDLinearSystem.h"
+#include "Optimizer/PSDSchurSolver.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/InverseDepth.h"
+#include "Optimizer/Variables/SimpleScalar.h"
 #include "Optimizer/ErrorTermBase.h"
 #include <type_traits>
 
 using namespace ArgMin;
+
+class DifferentSimpleScalar : public SimpleScalar
+{
+public:
+    DifferentSimpleScalar(double val) : SimpleScalar(val)
+    {
+    }
+};
+
+class DifferenceErrorTerm : public ErrorTermBase<Scalar<double>, Dimension<1>, VariableGroup<SimpleScalar, DifferentSimpleScalar>>
+{
+public:
+    DifferenceErrorTerm(VariableKey<SimpleScalar> key1, VariableKey<DifferentSimpleScalar> key2)
+    {
+        std::get<0>(variableKeys) = key1;
+        std::get<1>(variableKeys) = key2;
+    }
+
+    template <typename... Variables>
+    void evaluate(VariableContainer<Variables...> &variables, bool relinearize)
+    {
+        EXPECT_TRUE(checkVariablePointerConsistency(variables));
+
+        auto &var1 = *(std::get<0>(variablePointers));
+        auto &var2 = *(std::get<1>(variablePointers));
+
+        residual(0, 0) = var2.value - var1.value;
+
+        if (relinearize)
+        {
+            auto &jac1 = (std::get<0>(variableJacobians));
+            auto &jac2 = (std::get<1>(variableJacobians));
+
+            jac1(0, 0) = -1;
+            jac2(0, 0) = 1;
+
+            linearizationValid = true;
+        }
+        else
+        {
+            linearizationValid = false;
+        }
+    }
+};
 
 TEST(ArgMin, Basic)
 {
@@ -20,7 +65,7 @@ TEST(ArgMin, Basic)
 
     // Create an optimizer.
 
-    ArgMin::SSEOptimizer<Scalar<double>, ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<SE3, InverseDepth>> optimizer;
+    ArgMin::SSEOptimizer<Scalar<double>, ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<DifferenceErrorTerm>> optimizer;
 
     // Add some variables
     ArgMin::VariableKey<SE3> se3Key = optimizer.addVariable(pose);
@@ -109,7 +154,7 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     sbm.dot(variableContainer, v, result);
 
     Eigen::Matrix<double, Eigen::Dynamic, 2> expectedResult = Eigen::Matrix<double, 14, 2>::Zero();
-    expectedResult.block(0,0, 6,2) = Eigen::Matrix<double, 6, 2>::Ones();
+    expectedResult.block(0, 0, 6, 2) = Eigen::Matrix<double, 6, 2>::Ones();
 
     EXPECT_EQ(result, expectedResult);
 
@@ -120,18 +165,18 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     auto matrix2 = Eigen::Matrix<double, 1, 1>::Ones();
     sbm.setBlock(dinvKey2, dinvKey2, matrix2);
 
-    expectedResult.block(6,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(2);
-    expectedResult.block(13,0, 1,2) = Eigen::Matrix<double, 1, 2>::Ones();
+    expectedResult.block(6, 0, 6, 2) = Eigen::Matrix<double, 6, 2>::Constant(2);
+    expectedResult.block(13, 0, 1, 2) = Eigen::Matrix<double, 1, 2>::Ones();
 
     sbm.dot(variableContainer, v, result);
 
     EXPECT_EQ(result, expectedResult);
-    
-    // insert an off diagonal element 
+
+    // insert an off diagonal element
     matrix = Eigen::Matrix<double, 6, 6>::Identity();
     sbm.setBlock(se3Key1, se3Key2, matrix);
 
-    expectedResult.block(0,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(2);
+    expectedResult.block(0, 0, 6, 2) = Eigen::Matrix<double, 6, 2>::Constant(2);
 
     sbm.dot(variableContainer, v, result);
 
@@ -140,7 +185,7 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     // erase an element
     sbm.removeBlock(se3Key1, se3Key1);
 
-    expectedResult.block(0,0, 6,2) = Eigen::Matrix<double, 6, 2>::Constant(1);
+    expectedResult.block(0, 0, 6, 2) = Eigen::Matrix<double, 6, 2>::Constant(1);
 
     sbm.dot(variableContainer, v, result);
 
@@ -249,10 +294,10 @@ TEST(ArgMin, GaussianPrior)
 
     EXPECT_TRUE(prior.b0.blockExists(dinvKey2));
     EXPECT_TRUE(prior.b0.getRowBlock(dinvKey2).isApprox(Prior::BV::MatrixBlock<InverseDepth>::Constant(-Prior::DefaultInverseVariance)));
-
 }
 
-TEST(ArgMin, ErrorTermBasePointer) {
+TEST(ArgMin, ErrorTermBasePointer)
+{
     using ET = ArgMin::ErrorTermBase<ArgMin::Scalar<double>, ArgMin::Dimension<2>, ArgMin::VariableGroup<SE3, SE3>>;
 
     SE3 pose;
@@ -279,17 +324,37 @@ TEST(ArgMin, ErrorTermBasePointer) {
     errorTerm.updateVariablePointers(variableContainer);
 
     EXPECT_TRUE(errorTerm.checkVariablePointerConsistency(variableContainer));
-    
 }
 
-TEST(ArgMin, PSDLinearSystem)
+TEST(ArgMin, PSDSchurSolverSimple)
 {
-    SE3 pose;
-    InverseDepth zinv;
+    SimpleScalar ss1 = 1;
+    SimpleScalar ss2 = 2;
+    DifferentSimpleScalar dss1 = 5;
 
-    using ErrorTermSet = ArgMin::ErrorTermGroup<SE3, InverseDepth>;
+    using ErrorTermSet = ArgMin::ErrorTermGroup<DifferenceErrorTerm>;
 
-    using LS = ArgMin::PSDLinearSystem<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SE3>, ArgMin::VariableGroup<InverseDepth>>;
+    using LS = ArgMin::PSDSchurSolver<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>, ArgMin::VariableGroup<InverseDepth>>;
 
-    LS linearSystem;
+    LS solver;
+
+    VariableContainer<SimpleScalar, DifferentSimpleScalar> variableContainer;
+
+    // insert variables
+    auto ssKey1 = variableContainer.getVariableMap<SimpleScalar>().insert(ss1);
+    auto ssKey2 = variableContainer.getVariableMap<SimpleScalar>().insert(ss2);
+
+    auto dssKey1 = variableContainer.getVariableMap<DifferentSimpleScalar>().insert(dss1);
+
+    ErrorTermContainer<DifferenceErrorTerm> errorTermContainer;
+
+    // insert error terms
+    auto errorTermKey1 = errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().insert(DifferenceErrorTerm(ssKey1, dssKey1));
+    auto errorTermKey2 = errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().insert(DifferenceErrorTerm(ssKey2, dssKey1));
+
+    // Test that reset runs
+    solver.reset();
+
+    // Test that initialize runs
+    solver.initialize(variableContainer, errorTermContainer);
 }

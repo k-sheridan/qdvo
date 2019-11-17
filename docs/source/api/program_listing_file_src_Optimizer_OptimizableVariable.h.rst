@@ -12,11 +12,11 @@ Program Listing for File OptimizableVariable.h
 
    #pragma once
    
-   #include "Types.h"
+   #include <Eigen/Core>
    
    namespace ArgMin {
    
-   template <size_t Dimension>
+   template <typename ScalarType, size_t Dimension>
    class OptimizableVariable {
        public:
    

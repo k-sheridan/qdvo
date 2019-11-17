@@ -8,7 +8,7 @@
     <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
     <includedby refid="_gaussian_prior_8h" local="yes">src/Optimizer/GaussianPrior.h</includedby>
     <includedby refid="_marginalizer_8h" local="yes">src/Optimizer/Marginalizer.h</includedby>
-    <includedby refid="_p_s_d_linear_system_8h" local="yes">src/Optimizer/PSDLinearSystem.h</includedby>
+    <includedby refid="_p_s_d_schur_solver_8h" local="yes">src/Optimizer/PSDSchurSolver.h</includedby>
     <includedby refid="_sparse_block_row_8h" local="yes">src/Optimizer/SparseBlockRow.h</includedby>
     <includedby refid="_s_s_e_optimizer_8h" local="yes">src/Optimizer/SSEOptimizer.h</includedby>
     <incdepgraph>
@@ -95,6 +95,10 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
+      <node id="5">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
       <node id="7">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
         <link refid="_front_fnd_visual_odometry_8h_source"/>
@@ -110,10 +114,6 @@
       <node id="4">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
-      </node>
-      <node id="5">
-        <label>src/Optimizer/PSDLinearSystem.h</label>
-        <link refid="_p_s_d_linear_system_8h_source"/>
       </node>
       <node id="8">
         <label>src/Pipeline/BasicPipeline.h</label>
@@ -176,10 +176,10 @@
 <codeline lineno="12"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
-<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_slot_map" kindref="compound">VariableMap</ref><sp/>=<sp/><ref refid="class_slot_map" kindref="compound">SlotMap&lt;VariableType, VariableKey&lt;VariableType&gt;</ref>&gt;;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">VariableMap</ref><sp/>=<sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">SlotMap&lt;VariableType, VariableKey&lt;VariableType&gt;</ref>&gt;;</highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight></codeline>
 <codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
-<codeline lineno="19" refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_slot_map" kindref="compound">VariableMap&lt;VariableType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" kindref="member">getVariableMap</ref>()</highlight></codeline>
+<codeline lineno="19" refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">VariableMap&lt;VariableType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" kindref="member">getVariableMap</ref>()</highlight></codeline>
 <codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;VariableMap&lt;VariableType&gt;&gt;(tupleOfVariableMaps);</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
@@ -225,23 +225,18 @@
 <codeline lineno="69"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ErrorTermType&gt;</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_slot_map" kindref="compound">ErrorTermMap</ref><sp/>=<sp/><ref refid="class_slot_map" kindref="compound">SlotMap&lt;ErrorTermType, ErrorTermKey&lt;ErrorTermType&gt;</ref>&gt;;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">ErrorTermMap</ref><sp/>=<sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">SlotMap&lt;ErrorTermType, ErrorTermKey&lt;ErrorTermType&gt;</ref>&gt;;</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"></highlight></codeline>
 <codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ErrorTermType&gt;</highlight></codeline>
-<codeline lineno="76" refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_slot_map" kindref="compound">ErrorTermMap&lt;ErrorTermType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" kindref="member">getErrorTermMap</ref>()</highlight></codeline>
+<codeline lineno="76" refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_arg_min_1_1_slot_map" kindref="compound">ErrorTermMap&lt;ErrorTermType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" kindref="member">getErrorTermMap</ref>()</highlight></codeline>
 <codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;ErrorTermMap&lt;ErrorTermType&gt;&gt;(tupleOfErrorTermMaps);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;ErrorTermMap&lt;ErrorTermType&gt;&gt;(<ref refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" kindref="member">tupleOfErrorTermMaps</ref>);</highlight></codeline>
 <codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82" refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" kindref="member">linearize</ref>()<sp/>{</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/></highlight><highlight class="stringliteral">&quot;not<sp/>ready&quot;</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stores<sp/>the<sp/>error<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/>std::tuple&lt;ErrorTermMap&lt;ErrorTerms&gt;...&gt;<sp/>tupleOfErrorTermMaps;</highlight></codeline>
-<codeline lineno="88"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" refkind="member"><highlight class="normal"><sp/><sp/><sp/>std::tuple&lt;ErrorTermMap&lt;ErrorTerms&gt;...&gt;<sp/><ref refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" kindref="member">tupleOfErrorTermMaps</ref>;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/Optimizer/Containers.h"/>
   </compounddef>

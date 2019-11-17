@@ -4,6 +4,7 @@
     <compoundname>src/Optimizer/Variables</compoundname>
     <innerfile refid="_inverse_depth_8h">InverseDepth.h</innerfile>
     <innerfile refid="_s_e3_8h">SE3.h</innerfile>
+    <innerfile refid="_simple_scalar_8h">SimpleScalar.h</innerfile>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

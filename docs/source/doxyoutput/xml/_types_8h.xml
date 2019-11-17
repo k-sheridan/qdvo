@@ -14,7 +14,6 @@
     <includedby refid="_patch_comparer_8h" local="yes">src/FeatureMatching/PatchComparer.h</includedby>
     <includedby refid="_patch_warper_8h" local="yes">src/FeatureMatching/PatchWarper.h</includedby>
     <includedby refid="_key_8h" local="yes">src/Optimizer/Key.h</includedby>
-    <includedby refid="_optimizable_variable_8h" local="yes">src/Optimizer/OptimizableVariable.h</includedby>
     <includedby refid="_basic_pipeline_8h" local="yes">src/Pipeline/BasicPipeline.h</includedby>
     <incdepgraph>
       <node id="2">
@@ -87,10 +86,6 @@
         <childnode refid="21" relation="include">
         </childnode>
       </node>
-      <node id="30">
-        <label>src/Optimizer/Variables/InverseDepth.h</label>
-        <link refid="_inverse_depth_8h_source"/>
-      </node>
       <node id="10">
         <label>src/FeatureMatching/PatchWarper.h</label>
         <link refid="_patch_warper_8h_source"/>
@@ -124,8 +119,6 @@
         </childnode>
         <childnode refid="19" relation="include">
         </childnode>
-        <childnode refid="29" relation="include">
-        </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
@@ -142,6 +135,10 @@
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
+      </node>
+      <node id="23">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
       </node>
       <node id="7">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
@@ -166,10 +163,6 @@
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
-      </node>
-      <node id="31">
-        <label>src/Optimizer/Variables/SE3.h</label>
-        <link refid="_s_e3_8h_source"/>
       </node>
       <node id="22">
         <label>src/Optimizer/Marginalizer.h</label>
@@ -223,10 +216,6 @@
         <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="23">
-        <label>src/Optimizer/PSDLinearSystem.h</label>
-        <link refid="_p_s_d_linear_system_8h_source"/>
-      </node>
       <node id="8">
         <label>src/Pipeline/BasicPipeline.h</label>
         <link refid="_basic_pipeline_8h_source"/>
@@ -249,14 +238,6 @@
         <label>src/DataStructures/Image.h</label>
         <link refid="_image_8h_source"/>
         <childnode refid="18" relation="include">
-        </childnode>
-      </node>
-      <node id="29">
-        <label>src/Optimizer/OptimizableVariable.h</label>
-        <link refid="_optimizable_variable_8h_source"/>
-        <childnode refid="30" relation="include">
-        </childnode>
-        <childnode refid="31" relation="include">
         </childnode>
       </node>
       <node id="25">
@@ -307,7 +288,7 @@
 <codeline lineno="9"><highlight class="normal"></highlight></codeline>
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>ID<sp/>=<sp/>ID_TYPE;</highlight></codeline>
 <codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Scalar<sp/>=<sp/>SCALAR_TYPE;</highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_s_e3" kindref="compound">SE3</ref><sp/>=<sp/>Sophus::SE3&lt;Scalar&gt;;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>SE3<sp/>=<sp/>Sophus::SE3&lt;Scalar&gt;;</highlight></codeline>
 <codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>SO3<sp/>=<sp/>Sophus::SO3&lt;Scalar&gt;;</highlight></codeline>
 <codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Vector3<sp/>=<sp/>Eigen::Matrix&lt;Scalar,<sp/>3,<sp/>1&gt;;</highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Vector2<sp/>=<sp/>Eigen::Matrix&lt;Scalar,<sp/>2,<sp/>1&gt;;</highlight></codeline>

@@ -12,7 +12,7 @@
     <innerfile refid="_marginalizer_8h">Marginalizer.h</innerfile>
     <innerfile refid="_meta_helpers_8h">MetaHelpers.h</innerfile>
     <innerfile refid="_optimizable_variable_8h">OptimizableVariable.h</innerfile>
-    <innerfile refid="_p_s_d_linear_system_8h">PSDLinearSystem.h</innerfile>
+    <innerfile refid="_p_s_d_schur_solver_8h">PSDSchurSolver.h</innerfile>
     <innerfile refid="_slot_array_8h">SlotArray.h</innerfile>
     <innerfile refid="_slot_map_8h">SlotMap.h</innerfile>
     <innerfile refid="_sparse_block_matrix_8h">SparseBlockMatrix.h</innerfile>

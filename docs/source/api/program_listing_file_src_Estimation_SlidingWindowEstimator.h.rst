@@ -10,10 +10,11 @@ Program Listing for File SlidingWindowEstimator.h
 
 .. code-block:: cpp
 
-   #ifndef SLIDINGWINDOWESTIMATOR_H
-   #define SLIDINGWINDOWESTIMATOR_H
+   #pragma once
    
    #include "DataStructures/Graph.h"
+   
+   namespace QDVO {
    
    class SlidingWindowEstimator
    {
@@ -27,4 +28,4 @@ Program Listing for File SlidingWindowEstimator.h
        void runMarginalizationStrategy(QDVO::Graph& graph);
    };
    
-   #endif // SLIDINGWINDOWESTIMATOR_H
+   } // namespace QDVO

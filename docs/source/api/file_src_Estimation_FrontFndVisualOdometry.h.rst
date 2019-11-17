@@ -46,9 +46,16 @@ Included By
 
 
 
+Namespaces
+----------
+
+
+- :ref:`namespace_QDVO`
+
+
 Classes
 -------
 
 
-- :ref:`exhale_class_class_front_end_visual_odometry`
+- :ref:`exhale_class_class_q_d_v_o_1_1_front_end_visual_odometry`
 

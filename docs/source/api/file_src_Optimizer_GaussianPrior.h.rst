@@ -51,7 +51,7 @@ Included By
 
 - :ref:`file_src_Optimizer_Marginalizer.h`
 
-- :ref:`file_src_Optimizer_PSDLinearSystem.h`
+- :ref:`file_src_Optimizer_PSDSchurSolver.h`
 
 - :ref:`file_src_Optimizer_SSEOptimizer.h`
 

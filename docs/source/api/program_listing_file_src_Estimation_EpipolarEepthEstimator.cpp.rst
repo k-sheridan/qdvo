@@ -12,6 +12,8 @@ Program Listing for File EpipolarEepthEstimator.cpp
 
    #include "EpipolarDepthEstimator.h"
    
+   using namespace QDVO;
+   
    EpipolarDepthEstimator::EpipolarDepthEstimator()
    {
    

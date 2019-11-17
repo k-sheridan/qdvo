@@ -1,4 +1,4 @@
-.. _exhale_class_class_slot_array:
+.. _exhale_class_class_arg_min_1_1_slot_array:
 
 Template Class SlotArray
 ========================
@@ -13,14 +13,14 @@ Nested Relationships
 Nested Types
 ************
 
-- :ref:`exhale_struct_struct_slot_array_1_1_slot`
+- :ref:`exhale_struct_struct_arg_min_1_1_slot_array_1_1_slot`
 
 
 Class Documentation
 -------------------
 
 
-.. doxygenclass:: SlotArray
+.. doxygenclass:: ArgMin::SlotArray
    :members:
    :protected-members:
    :undoc-members:

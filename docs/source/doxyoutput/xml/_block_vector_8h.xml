@@ -101,6 +101,10 @@
         <childnode refid="2" relation="include">
         </childnode>
       </node>
+      <node id="4">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
       <node id="6">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
         <link refid="_front_fnd_visual_odometry_8h_source"/>
@@ -116,10 +120,6 @@
       <node id="3">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
-      </node>
-      <node id="4">
-        <label>src/Optimizer/PSDLinearSystem.h</label>
-        <link refid="_p_s_d_linear_system_8h_source"/>
       </node>
       <node id="7">
         <label>src/Pipeline/BasicPipeline.h</label>
@@ -163,7 +163,7 @@
 <codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
 <codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>MatrixBlock<sp/>=<sp/>Eigen::Matrix&lt;ScalarType,<sp/>VariableType::dimension,<sp/>ColumnDimension&gt;;</highlight></codeline>
 <codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_slot_array" kindref="compound">RowMap</ref><sp/>=<sp/><ref refid="class_slot_array" kindref="compound">SlotArray&lt;MatrixBlock&lt;VariableType&gt;</ref>,<sp/><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey&lt;VariableType&gt;</ref>&gt;;</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_slot_array" kindref="compound">RowMap</ref><sp/>=<sp/><ref refid="class_arg_min_1_1_slot_array" kindref="compound">SlotArray&lt;MatrixBlock&lt;VariableType&gt;</ref>,<sp/><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey&lt;VariableType&gt;</ref>&gt;;</highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref>()<sp/>{}</highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight></codeline>

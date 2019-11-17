@@ -10,7 +10,7 @@
     <includes refid="_key_8h" local="yes">Optimizer/Key.h</includes>
     <includes refid="_meta_helpers_8h" local="yes">MetaHelpers.h</includes>
     <includedby refid="_marginalizer_8h" local="yes">src/Optimizer/Marginalizer.h</includedby>
-    <includedby refid="_p_s_d_linear_system_8h" local="yes">src/Optimizer/PSDLinearSystem.h</includedby>
+    <includedby refid="_p_s_d_schur_solver_8h" local="yes">src/Optimizer/PSDSchurSolver.h</includedby>
     <includedby refid="_s_s_e_optimizer_8h" local="yes">src/Optimizer/SSEOptimizer.h</includedby>
     <incdepgraph>
       <node id="16">
@@ -156,6 +156,10 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
+      <node id="3">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
       <node id="5">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
         <link refid="_front_fnd_visual_odometry_8h_source"/>
@@ -171,10 +175,6 @@
       <node id="2">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
-      </node>
-      <node id="3">
-        <label>src/Optimizer/PSDLinearSystem.h</label>
-        <link refid="_p_s_d_linear_system_8h_source"/>
       </node>
       <node id="6">
         <label>src/Pipeline/BasicPipeline.h</label>
@@ -247,31 +247,32 @@
 <codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
 <codeline lineno="49" refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" kindref="member">removeVariable</ref>(<ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey&lt;VariableType&gt;</ref><sp/>&amp;removedKey)</highlight></codeline>
 <codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Updates<sp/>the<sp/>prior<sp/>error<sp/>term<sp/>on<sp/>manifold.<sp/>A0<sp/>*<sp/>(x<sp/>+<sp/>dx)<sp/>=<sp/>b0<sp/>=&gt;<sp/>A0<sp/>*<sp/>x<sp/>=<sp/>b0<sp/>-<sp/>A0<sp/>*<sp/>dx;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>update(<ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer&lt;Variables...&gt;</ref><sp/>&amp;variableOrder,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;ScalarType,<sp/>Eigen::Dynamic,<sp/>1&gt;<sp/>&amp;dx)</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Uneccesarily<sp/>expensive.<sp/>This<sp/>can<sp/>be<sp/>packaged<sp/>directly<sp/>into<sp/>the<sp/>dot<sp/>function.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>ran<sp/>once<sp/>per<sp/>iteration.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>problemSize<sp/>=<sp/>variableOrder.<ref refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" kindref="member">totalDimensions</ref>();</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(dx.rows()<sp/>==<sp/>problemSize);<sp/></highlight><highlight class="comment">//<sp/>ensure<sp/>that<sp/>dx<sp/>is<sp/>consistent<sp/>with<sp/>the<sp/>current<sp/>variable<sp/>set.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"></highlight></codeline>
-<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(problemSize<sp/>&gt;<sp/>temporaryVector.rows())</highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temporaryVector.resize(problemSize,<sp/>Eigen::NoChange);</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>the<sp/>perturbation.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A0.<ref refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4d5d7cce85c82023fcbef3ef2358d384" kindref="member">dot</ref>(variableOrder,<sp/>dx,<sp/>temporaryVector);</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Move<sp/>the<sp/>mean.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b0.subtractVector(variableOrder,<sp/>temporaryVector);</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="73"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Updates<sp/>the<sp/>prior<sp/>error<sp/>term<sp/>on<sp/>manifold.<sp/>A0<sp/>*<sp/>(x<sp/>+<sp/>dx)<sp/>=<sp/>b0<sp/>=&gt;<sp/>A0<sp/>*<sp/>x<sp/>=<sp/>b0<sp/>-<sp/>A0<sp/>*<sp/>dx;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>update(<ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer&lt;Variables...&gt;</ref><sp/>&amp;variableOrder,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;ScalarType,<sp/>Eigen::Dynamic,<sp/>1&gt;<sp/>&amp;dx)</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Uneccesarily<sp/>expensive.<sp/>This<sp/>can<sp/>be<sp/>packaged<sp/>directly<sp/>into<sp/>the<sp/>dot<sp/>function.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>This<sp/>is<sp/>ran<sp/>once<sp/>per<sp/>iteration.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>problemSize<sp/>=<sp/>variableOrder.<ref refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" kindref="member">totalDimensions</ref>();</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(dx.rows()<sp/>==<sp/>problemSize);<sp/></highlight><highlight class="comment">//<sp/>ensure<sp/>that<sp/>dx<sp/>is<sp/>consistent<sp/>with<sp/>the<sp/>current<sp/>variable<sp/>set.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(problemSize<sp/>&gt;<sp/>temporaryVector.rows())</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>temporaryVector.resize(problemSize,<sp/>Eigen::NoChange);</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>the<sp/>perturbation.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>A0.<ref refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4d5d7cce85c82023fcbef3ef2358d384" kindref="member">dot</ref>(variableOrder,<sp/>dx,<sp/>temporaryVector);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Move<sp/>the<sp/>mean.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b0.subtractVector(variableOrder,<sp/>temporaryVector);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/Optimizer/GaussianPrior.h"/>
   </compounddef>

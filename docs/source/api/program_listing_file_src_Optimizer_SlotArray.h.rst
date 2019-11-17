@@ -14,6 +14,9 @@ Program Listing for File SlotArray.h
    
    #include <vector>
    
+   namespace ArgMin
+   {
+   
    template <typename DataType, typename KeyType>
    class SlotArray
    {
@@ -171,3 +174,5 @@ Program Listing for File SlotArray.h
            return result;
        }
    };
+   
+   } //namespace ArgMin 

@@ -131,7 +131,7 @@
 <codeline lineno="16"><highlight class="normal"></highlight></codeline>
 <codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>ID_TYPE<sp/>landmarkID,<sp/>parentFrameID;<sp/></highlight><highlight class="comment">//<sp/>unique<sp/>id<sp/>for<sp/>this<sp/>landmark.<sp/>unique<sp/>id<sp/>for<sp/>the<sp/>parent<sp/>frame<sp/>of<sp/>this<sp/>landmark.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="18"><highlight class="normal"></highlight></codeline>
-<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_epipolar_depth_estimator" kindref="compound">EpipolarDepthEstimator</ref><sp/>depthEstimator;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>depth<sp/>for<sp/>this<sp/>landmark</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_epipolar_depth_estimator" kindref="compound">EpipolarDepthEstimator</ref><sp/>depthEstimator;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>depth<sp/>for<sp/>this<sp/>landmark</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="20"><highlight class="normal"></highlight></codeline>
 <codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>LandmarkStatus{</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>INACTIVE,</highlight></codeline>

@@ -34,6 +34,8 @@ Program Listing for File ErrorTermBase.h
    
        Eigen::Matrix<ScalarType, ResidualDimension, 1> residual;
    
+       bool linearizationValid = false;
+   
        template <typename... Variables>
        void updateVariablePointers(VariableContainer<Variables...> &variableContainer)
        {

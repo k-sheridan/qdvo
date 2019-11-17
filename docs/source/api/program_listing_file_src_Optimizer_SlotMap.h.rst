@@ -15,6 +15,9 @@ Program Listing for File SlotMap.h
    #include <vector>
    #include <set>
    
+   namespace ArgMin
+   {
+   
    struct SlotMapKeyBase
    {
    public:
@@ -198,3 +201,5 @@ Program Listing for File SlotMap.h
            return result;
        }
    };
+   
+   } //namespace ArgMin

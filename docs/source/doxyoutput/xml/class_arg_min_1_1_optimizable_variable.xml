@@ -2,7 +2,13 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="class_arg_min_1_1_optimizable_variable" kind="class" language="C++" prot="public">
     <compoundname>ArgMin::OptimizableVariable</compoundname>
+    <includes refid="_optimizable_variable_8h" local="no">OptimizableVariable.h</includes>
     <templateparamlist>
+      <param>
+        <type>typename</type>
+        <declname>ScalarType</declname>
+        <defname>ScalarType</defname>
+      </param>
       <param>
         <type>size_t</type>
         <declname>Dimension</declname>
@@ -10,9 +16,9 @@
       </param>
     </templateparamlist>
       <sectiondef kind="public-static-attrib">
-      <memberdef kind="variable" id="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" prot="public" static="yes" mutable="no">
+      <memberdef kind="variable" id="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" static="yes" mutable="no">
         <type>const size_t</type>
-        <definition>const size_t ArgMin::OptimizableVariable&lt; Dimension &gt;::dimension</definition>
+        <definition>const size_t ArgMin::OptimizableVariable&lt; ScalarType, Dimension &gt;::dimension</definition>
         <argsstring></argsstring>
         <name>dimension</name>
         <initializer>= <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref></initializer>
@@ -22,16 +28,17 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/OptimizableVariable.h" line="11" column="25" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="11" bodyend="-1"/>
+        <location file="src/Optimizer/OptimizableVariable.h" line="16" column="25" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="16" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
+<para>This base class defines the concept of an optimizable variable. This allows ArgMin to update/perturb the variable with a minimal dimension vector while the variable is stored in another representation. </para>
     </detaileddescription>
-    <location file="src/Optimizer/OptimizableVariable.h" line="8" column="26" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="8" bodyend="13"/>
+    <location file="src/Optimizer/OptimizableVariable.h" line="13" column="26" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="13" bodyend="18"/>
     <listofallmembers>
-      <member refid="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" prot="public" virt="non-virtual"><scope>ArgMin::OptimizableVariable</scope><name>dimension</name></member>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::OptimizableVariable</scope><name>dimension</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

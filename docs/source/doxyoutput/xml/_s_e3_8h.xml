@@ -4,41 +4,14 @@
     <compoundname>SE3.h</compoundname>
     <includes refid="_optimizable_variable_8h" local="yes">Optimizer/OptimizableVariable.h</includes>
     <incdepgraph>
-      <node id="4">
-        <label>GlobalDefinitions.h</label>
-        <link refid="_global_definitions_8h_source"/>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
       <node id="3">
-        <label>Types.h</label>
-        <link refid="_types_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
+        <label>Eigen/Core</label>
       </node>
       <node id="1">
         <label>src/Optimizer/Variables/SE3.h</label>
         <link refid="_s_e3_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-      </node>
-      <node id="6">
-        <label>ctime</label>
-      </node>
-      <node id="8">
-        <label>optional</label>
-      </node>
-      <node id="7">
-        <label>sophus/se3.hpp</label>
-      </node>
-      <node id="5">
-        <label>chrono</label>
       </node>
       <node id="2">
         <label>Optimizer/OptimizableVariable.h</label>
@@ -47,7 +20,8 @@
         </childnode>
       </node>
     </incdepgraph>
-    <innerclass refid="class_s_e3" prot="public">SE3</innerclass>
+    <innerclass refid="class_arg_min_1_1_s_e3" prot="public">ArgMin::SE3</innerclass>
+    <innernamespace refid="namespace_arg_min">ArgMin</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -57,9 +31,22 @@
 <codeline lineno="2"><highlight class="normal"></highlight></codeline>
 <codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Optimizer/OptimizableVariable.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight></codeline>
-<codeline lineno="5" refid="class_s_e3" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_s_e3" kindref="compound">SE3</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_optimizable_variable" kindref="compound">ArgMin::OptimizableVariable</ref>&lt;6&gt;<sp/>{</highlight></codeline>
-<codeline lineno="6"><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ArgMin</highlight></codeline>
+<codeline lineno="6"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8" refid="class_arg_min_1_1_s_e3" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_arg_min_1_1_s_e3" kindref="compound">SE3</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_optimizable_variable" kindref="compound">ArgMin::OptimizableVariable</ref>&lt;double,<sp/>6&gt;</highlight></codeline>
+<codeline lineno="9"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_s_e3" kindref="compound">SE3</ref>()</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>update(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;double,<sp/>6,<sp/>1&gt;<sp/>&amp;dx)</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/Optimizer/Variables/SE3.h"/>
   </compounddef>

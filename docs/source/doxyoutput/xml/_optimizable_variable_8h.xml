@@ -2,39 +2,13 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="_optimizable_variable_8h" kind="file" language="C++">
     <compoundname>OptimizableVariable.h</compoundname>
-    <includes refid="_types_8h" local="yes">Types.h</includes>
+    <includes local="no">Eigen/Core</includes>
     <includedby refid="_inverse_depth_8h" local="yes">src/Optimizer/Variables/InverseDepth.h</includedby>
     <includedby refid="_s_e3_8h" local="yes">src/Optimizer/Variables/SE3.h</includedby>
+    <includedby refid="_simple_scalar_8h" local="yes">src/Optimizer/Variables/SimpleScalar.h</includedby>
     <incdepgraph>
-      <node id="3">
-        <label>GlobalDefinitions.h</label>
-        <link refid="_global_definitions_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-      </node>
       <node id="2">
-        <label>Types.h</label>
-        <link refid="_types_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>ctime</label>
-      </node>
-      <node id="7">
-        <label>optional</label>
-      </node>
-      <node id="6">
-        <label>sophus/se3.hpp</label>
-      </node>
-      <node id="4">
-        <label>chrono</label>
+        <label>Eigen/Core</label>
       </node>
       <node id="1">
         <label>src/Optimizer/OptimizableVariable.h</label>
@@ -52,12 +26,18 @@
         <label>src/Optimizer/Variables/SE3.h</label>
         <link refid="_s_e3_8h_source"/>
       </node>
+      <node id="4">
+        <label>src/Optimizer/Variables/SimpleScalar.h</label>
+        <link refid="_simple_scalar_8h_source"/>
+      </node>
       <node id="1">
         <label>src/Optimizer/OptimizableVariable.h</label>
         <link refid="_optimizable_variable_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -70,19 +50,19 @@
     <programlisting>
 <codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="2"><highlight class="normal"></highlight></codeline>
-<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Types.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="4"><highlight class="normal"></highlight></codeline>
 <codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ArgMin<sp/>{</highlight></codeline>
 <codeline lineno="6"><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>Dimension&gt;</highlight></codeline>
-<codeline lineno="8" refid="class_arg_min_1_1_optimizable_variable" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_arg_min_1_1_optimizable_variable" kindref="compound">OptimizableVariable</ref><sp/>{</highlight></codeline>
-<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight></codeline>
-<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dimension<sp/>=<sp/><ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>;</highlight></codeline>
-<codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="14"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight></codeline>
+<codeline lineno="12"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ScalarType,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>Dimension&gt;</highlight></codeline>
+<codeline lineno="13" refid="class_arg_min_1_1_optimizable_variable" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_arg_min_1_1_optimizable_variable" kindref="compound">OptimizableVariable</ref><sp/>{</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dimension<sp/>=<sp/><ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight></codeline>
     </programlisting>
     <location file="src/Optimizer/OptimizableVariable.h"/>
   </compounddef>

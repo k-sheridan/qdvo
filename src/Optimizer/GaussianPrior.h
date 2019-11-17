@@ -48,6 +48,7 @@ public:
     template <typename VariableType>
     void removeVariable(VariableKey<VariableType> &removedKey)
     {
+        assert(false);
     }
 
     // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;

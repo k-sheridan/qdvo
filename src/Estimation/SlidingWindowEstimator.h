@@ -1,7 +1,8 @@
-#ifndef SLIDINGWINDOWESTIMATOR_H
-#define SLIDINGWINDOWESTIMATOR_H
+#pragma once
 
 #include "DataStructures/Graph.h"
+
+namespace QDVO {
 
 class SlidingWindowEstimator
 {
@@ -15,4 +16,4 @@ public:
     void runMarginalizationStrategy(QDVO::Graph& graph);
 };
 
-#endif // SLIDINGWINDOWESTIMATOR_H
+} // namespace QDVO

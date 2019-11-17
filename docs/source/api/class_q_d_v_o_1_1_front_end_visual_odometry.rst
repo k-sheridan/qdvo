@@ -1,4 +1,4 @@
-.. _exhale_class_class_front_end_visual_odometry:
+.. _exhale_class_class_q_d_v_o_1_1_front_end_visual_odometry:
 
 Class FrontEndVisualOdometry
 ============================
@@ -10,7 +10,7 @@ Class Documentation
 -------------------
 
 
-.. doxygenclass:: FrontEndVisualOdometry
+.. doxygenclass:: QDVO::FrontEndVisualOdometry
    :members:
    :protected-members:
    :undoc-members:

@@ -38,9 +38,16 @@ Included By
 
 
 
+Namespaces
+----------
+
+
+- :ref:`namespace_QDVO`
+
+
 Classes
 -------
 
 
-- :ref:`exhale_class_class_epipolar_depth_estimator`
+- :ref:`exhale_class_class_q_d_v_o_1_1_epipolar_depth_estimator`
 

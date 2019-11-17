@@ -17,5 +17,6 @@ Files
 
 - :ref:`file_src_Optimizer_Variables_InverseDepth.h`
 - :ref:`file_src_Optimizer_Variables_SE3.h`
+- :ref:`file_src_Optimizer_Variables_SimpleScalar.h`
 
 

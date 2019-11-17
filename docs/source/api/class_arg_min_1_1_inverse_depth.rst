@@ -1,4 +1,4 @@
-.. _exhale_class_class_inverse_depth:
+.. _exhale_class_class_arg_min_1_1_inverse_depth:
 
 Class InverseDepth
 ==================
@@ -12,14 +12,14 @@ Inheritance Relationships
 Base Type
 *********
 
-- ``public ArgMin::OptimizableVariable< 1 >`` (:ref:`exhale_class_class_arg_min_1_1_optimizable_variable`)
+- ``public ArgMin::OptimizableVariable< double, 1 >`` (:ref:`exhale_class_class_arg_min_1_1_optimizable_variable`)
 
 
 Class Documentation
 -------------------
 
 
-.. doxygenclass:: InverseDepth
+.. doxygenclass:: ArgMin::InverseDepth
    :members:
    :protected-members:
    :undoc-members:

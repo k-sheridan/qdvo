@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_inverse_depth" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::InverseDepth</compoundname>
+    <basecompoundref refid="class_arg_min_1_1_optimizable_variable" prot="public" virt="non-virtual">ArgMin::OptimizableVariable&lt; double, 1 &gt;</basecompoundref>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_inverse_depth_1a53b1b29ff40054752760b31a839b48a4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::InverseDepth::InverseDepth</definition>
+        <argsstring>()</argsstring>
+        <name>InverseDepth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Variables/InverseDepth.h" line="11" column="5" bodyfile="src/Optimizer/Variables/InverseDepth.h" bodystart="11" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_inverse_depth_1a0c56fd319a3195b1a47e5dc19fe88ad0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::InverseDepth::update</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, 1, 1 &gt; &amp;dx)</argsstring>
+        <name>update</name>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 1, 1 &gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Variables/InverseDepth.h" line="15" column="10" bodyfile="src/Optimizer/Variables/InverseDepth.h" bodystart="15" bodyend="17"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>ArgMin::OptimizableVariable&lt; double, 1 &gt;</label>
+        <link refid="class_arg_min_1_1_optimizable_variable"/>
+      </node>
+      <node id="1">
+        <label>ArgMin::InverseDepth</label>
+        <link refid="class_arg_min_1_1_inverse_depth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>ArgMin::OptimizableVariable&lt; double, 1 &gt;</label>
+        <link refid="class_arg_min_1_1_optimizable_variable"/>
+      </node>
+      <node id="1">
+        <label>ArgMin::InverseDepth</label>
+        <link refid="class_arg_min_1_1_inverse_depth"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/Optimizer/Variables/InverseDepth.h" line="9" column="1" bodyfile="src/Optimizer/Variables/InverseDepth.h" bodystart="8" bodyend="18"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>dimension</name></member>
+      <member refid="class_arg_min_1_1_inverse_depth_1a53b1b29ff40054752760b31a839b48a4" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>InverseDepth</name></member>
+      <member refid="class_arg_min_1_1_inverse_depth_1a0c56fd319a3195b1a47e5dc19fe88ad0" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>update</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

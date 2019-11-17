@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="class_q_d_v_o_1_1_graph" kind="class" language="C++" prot="public">
     <compoundname>QDVO::Graph</compoundname>
+    <includes refid="_graph_8h" local="no">Graph.h</includes>
       <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_q_d_v_o_1_1_graph_1a4741fd25a014dc7683ab52bb3e279f12" prot="private" static="no" mutable="no">
         <type>CameraModelMapType</type>
@@ -340,6 +341,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
+<para>The core datastructure for QDVO. </para>
     </detaileddescription>
     <location file="src/DataStructures/Graph.h" line="28" column="1" bodyfile="src/DataStructures/Graph.h" bodystart="27" bodyend="96"/>
     <listofallmembers>

@@ -1,10 +1,15 @@
 #pragma once
 
-#include "Types.h"
+#include <Eigen/Core>
 
 namespace ArgMin {
 
-template <size_t Dimension>
+/**
+ * This base class defines the concept of an optimizable variable.
+ * This allows ArgMin to update/perturb the variable with a minimal dimension vector
+ * while the variable is stored in another representation.
+ */
+template <typename ScalarType, size_t Dimension>
 class OptimizableVariable {
     public:
 

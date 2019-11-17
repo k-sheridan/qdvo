@@ -2,6 +2,8 @@
 #include "Optimizer/SlotMap.h"
 #include <numeric>
 
+using namespace ArgMin;
+
 template <typename T>
 struct TypedKey : public SlotMapKeyBase {
 

@@ -12,7 +12,7 @@ Inheritance Relationships
 Base Type
 *********
 
-- ``public SlotMapKeyBase`` (:ref:`exhale_struct_struct_slot_map_key_base`)
+- ``public ArgMin::SlotMapKeyBase`` (:ref:`exhale_struct_struct_arg_min_1_1_slot_map_key_base`)
 
 
 Class Documentation

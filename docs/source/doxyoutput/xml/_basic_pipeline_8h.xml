@@ -531,9 +531,9 @@
 <codeline lineno="29"><highlight class="normal"></highlight></codeline>
 <codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref><sp/>graph;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>datastructure<sp/>for<sp/>all<sp/>possible<sp/>QDVO<sp/>algorithms.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref><sp/>frontEndVisualOdometry;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>current<sp/>frame<sp/>pose.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref><sp/>frontEndVisualOdometry;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>current<sp/>frame<sp/>pose.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref><sp/>swe;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>estimator<sp/>for<sp/>the<sp/>whole<sp/>algorithm</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref><sp/>swe;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>estimator<sp/>for<sp/>the<sp/>whole<sp/>algorithm</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="37"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Preallocates<sp/>keyframes<sp/>and<sp/>current<sp/>frame.</highlight></codeline>

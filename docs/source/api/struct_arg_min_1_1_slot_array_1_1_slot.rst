@@ -1,4 +1,4 @@
-.. _exhale_struct_struct_slot_array_1_1_slot:
+.. _exhale_struct_struct_arg_min_1_1_slot_array_1_1_slot:
 
 Struct SlotArray::Slot
 ======================
@@ -9,14 +9,14 @@ Struct SlotArray::Slot
 Nested Relationships
 --------------------
 
-This struct is a nested type of :ref:`exhale_class_class_slot_array`.
+This struct is a nested type of :ref:`exhale_class_class_arg_min_1_1_slot_array`.
 
 
 Struct Documentation
 --------------------
 
 
-.. doxygenstruct:: SlotArray::Slot
+.. doxygenstruct:: ArgMin::SlotArray::Slot
    :members:
    :protected-members:
    :undoc-members:

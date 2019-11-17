@@ -39,16 +39,23 @@ Included By
 
 - :ref:`file_src_Optimizer_BlockVector.h`
 
-- :ref:`file_src_Optimizer_PSDLinearSystem.h`
+- :ref:`file_src_Optimizer_PSDSchurSolver.h`
 
 
+
+
+Namespaces
+----------
+
+
+- :ref:`namespace_ArgMin`
 
 
 Classes
 -------
 
 
-- :ref:`exhale_struct_struct_slot_array_1_1_slot`
+- :ref:`exhale_struct_struct_arg_min_1_1_slot_array_1_1_slot`
 
-- :ref:`exhale_class_class_slot_array`
+- :ref:`exhale_class_class_arg_min_1_1_slot_array`
 

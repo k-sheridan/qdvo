@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_arg_min_1_1_slot_map_key_base" kind="struct" language="C++" prot="public">
+    <compoundname>ArgMin::SlotMapKeyBase</compoundname>
+    <derivedcompoundref refid="class_arg_min_1_1_error_term_key" prot="public" virt="non-virtual">ArgMin::ErrorTermKey&lt; T &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_arg_min_1_1_variable_key" prot="public" virt="non-virtual">ArgMin::VariableKey&lt; T &gt;</derivedcompoundref>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_arg_min_1_1_slot_map_key_base_1a6362383e7e05b450a7dea5d761525dd7" prot="public" static="no">
+        <type>size_t</type>
+        <definition>using ArgMin::SlotMapKeyBase::index_type =  size_t</definition>
+        <argsstring></argsstring>
+        <name>index_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="12" column="5" bodyfile="src/Optimizer/SlotMap.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_arg_min_1_1_slot_map_key_base_1ac32ae3716a52214a5cd5ae969b0b811d" prot="public" static="no">
+        <type>size_t</type>
+        <definition>using ArgMin::SlotMapKeyBase::generation_type =  size_t</definition>
+        <argsstring></argsstring>
+        <name>generation_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="13" column="5" bodyfile="src/Optimizer/SlotMap.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_arg_min_1_1_slot_map_key_base_1a34bd2125b53bb7466752384a9cff8f95" prot="public" static="no" mutable="no">
+        <type>index_type</type>
+        <definition>index_type ArgMin::SlotMapKeyBase::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="15" column="16" bodyfile="src/Optimizer/SlotMap.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_arg_min_1_1_slot_map_key_base_1a4cb457c60080674c38645473645c49b1" prot="public" static="no" mutable="no">
+        <type>generation_type</type>
+        <definition>generation_type ArgMin::SlotMapKeyBase::generation</definition>
+        <argsstring></argsstring>
+        <name>generation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="16" column="21" bodyfile="src/Optimizer/SlotMap.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_arg_min_1_1_slot_map_key_base_1ab83bb70c6c503c206273618df67f0af6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::SlotMapKeyBase::setInvalid</definition>
+        <argsstring>()</argsstring>
+        <name>setInvalid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="18" column="10" bodyfile="src/Optimizer/SlotMap.h" bodystart="18" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_arg_min_1_1_slot_map_key_base_1a87e819f5877a10722c465ca23f029947" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ArgMin::SlotMapKeyBase::isInvalid</definition>
+        <argsstring>()</argsstring>
+        <name>isInvalid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="23" column="10" bodyfile="src/Optimizer/SlotMap.h" bodystart="23" bodyend="26"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>ArgMin::SlotMapKeyBase</label>
+        <link refid="struct_arg_min_1_1_slot_map_key_base"/>
+      </node>
+      <node id="3">
+        <label>ArgMin::VariableKey&lt; T &gt;</label>
+        <link refid="class_arg_min_1_1_variable_key"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ArgMin::ErrorTermKey&lt; T &gt;</label>
+        <link refid="class_arg_min_1_1_error_term_key"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="src/Optimizer/SlotMap.h" line="10" column="1" bodyfile="src/Optimizer/SlotMap.h" bodystart="9" bodyend="27"/>
+    <listofallmembers>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a4cb457c60080674c38645473645c49b1" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>generation</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1ac32ae3716a52214a5cd5ae969b0b811d" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>generation_type</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a34bd2125b53bb7466752384a9cff8f95" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>index</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a6362383e7e05b450a7dea5d761525dd7" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>index_type</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1a87e819f5877a10722c465ca23f029947" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>isInvalid</name></member>
+      <member refid="struct_arg_min_1_1_slot_map_key_base_1ab83bb70c6c503c206273618df67f0af6" prot="public" virt="non-virtual"><scope>ArgMin::SlotMapKeyBase</scope><name>setInvalid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

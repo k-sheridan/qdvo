@@ -2,6 +2,9 @@
 
 #include <vector>
 
+namespace ArgMin
+{
+
 /**
  * The slot array is basically a vector which uses keys and 1
  * layer of indirection to allow for constant time insert, erase,
@@ -193,3 +196,5 @@ public:
         return result;
     }
 };
+
+} //namespace ArgMin 

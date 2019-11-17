@@ -1,5 +1,7 @@
 #include "SlidingWindowEstimator.h"
 
+using namespace QDVO;
+
 SlidingWindowEstimator::SlidingWindowEstimator()
 {
 

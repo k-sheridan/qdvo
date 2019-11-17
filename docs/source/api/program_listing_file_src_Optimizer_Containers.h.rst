@@ -81,11 +81,6 @@ Program Listing for File Containers.h
          return std::get<ErrorTermMap<ErrorTermType>>(tupleOfErrorTermMaps);
       }
    
-      void linearize() {
-         assert(false && "not ready");
-      }
-   
-      // Stores the error terms.
       std::tuple<ErrorTermMap<ErrorTerms>...> tupleOfErrorTermMaps;
    };
    

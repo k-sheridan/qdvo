@@ -83,6 +83,21 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   struct_arg_min_1_1_slot_array_1_1_slot.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_arg_min_1_1_slot_map_1_1_slot.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_arg_min_1_1_slot_map_key_base.rst
+
+.. toctree::
+   :maxdepth: 5
+
    struct_arg_min_1_1_typed_index.rst
 
 .. toctree::
@@ -114,21 +129,6 @@ Classes and Structs
    :maxdepth: 5
 
    struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_slot_array_1_1_slot.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_slot_map_1_1_slot.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   struct_slot_map_key_base.rst
 
 .. toctree::
    :maxdepth: 5
@@ -173,6 +173,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_arg_min_1_1_inverse_depth.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_arg_min_1_1_marginalizer.rst
 
 .. toctree::
@@ -188,12 +193,32 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_arg_min_1_1_p_s_d_linear_system.rst
+   class_arg_min_1_1_p_s_d_schur_solver.rst
 
 .. toctree::
    :maxdepth: 5
 
-   class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415.rst
+   class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_arg_min_1_1_s_e3.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_arg_min_1_1_simple_scalar.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_arg_min_1_1_slot_array.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_arg_min_1_1_slot_map.rst
 
 .. toctree::
    :maxdepth: 5
@@ -238,21 +263,6 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_epipolar_depth_estimator.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_front_end_visual_odometry.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_inverse_depth.rst
-
-.. toctree::
-   :maxdepth: 5
-
    class_q_d_v_o_1_1_basic_pipeline.rst
 
 .. toctree::
@@ -264,6 +274,11 @@ Classes and Structs
    :maxdepth: 5
 
    class_q_d_v_o_1_1_correspondence_distribution.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_q_d_v_o_1_1_epipolar_depth_estimator.rst
 
 .. toctree::
    :maxdepth: 5
@@ -289,6 +304,11 @@ Classes and Structs
    :maxdepth: 5
 
    class_q_d_v_o_1_1_frame.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_q_d_v_o_1_1_front_end_visual_odometry.rst
 
 .. toctree::
    :maxdepth: 5
@@ -353,27 +373,12 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_q_d_v_o_1_1_sliding_window_estimator.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_q_d_v_o_1_1_spatial_map.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_s_e3.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_sliding_window_estimator.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_slot_array.rst
-
-.. toctree::
-   :maxdepth: 5
-
-   class_slot_map.rst
 
 Enums
 *****

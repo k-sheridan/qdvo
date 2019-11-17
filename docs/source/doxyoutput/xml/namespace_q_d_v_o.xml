@@ -5,11 +5,13 @@
     <innerclass refid="class_q_d_v_o_1_1_basic_pipeline" prot="public">QDVO::BasicPipeline</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_camera_model" prot="public">QDVO::CameraModel</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_correspondence_distribution" prot="public">QDVO::CorrespondenceDistribution</innerclass>
+    <innerclass refid="class_q_d_v_o_1_1_epipolar_depth_estimator" prot="public">QDVO::EpipolarDepthEstimator</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_equidistant_camera_model" prot="public">QDVO::EquidistantCameraModel</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_feature" prot="public">QDVO::Feature</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_feature_detector" prot="public">QDVO::FeatureDetector</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_f_o_v_camera_model" prot="public">QDVO::FOVCameraModel</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_frame" prot="public">QDVO::Frame</innerclass>
+    <innerclass refid="class_q_d_v_o_1_1_front_end_visual_odometry" prot="public">QDVO::FrontEndVisualOdometry</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_generic_quad_tree" prot="public">QDVO::GenericQuadTree</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_graph" prot="public">QDVO::Graph</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_image" prot="public">QDVO::Image</innerclass>
@@ -22,6 +24,7 @@
     <innerclass refid="class_q_d_v_o_1_1_quasi_direct_factor" prot="public">QDVO::QuasiDirectFactor</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_radial_search_pattern" prot="public">QDVO::RadialSearchPattern</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_settings" prot="public">QDVO::Settings</innerclass>
+    <innerclass refid="class_q_d_v_o_1_1_sliding_window_estimator" prot="public">QDVO::SlidingWindowEstimator</innerclass>
     <innerclass refid="class_q_d_v_o_1_1_spatial_map" prot="public">QDVO::SpatialMap</innerclass>
     <innernamespace refid="namespace_q_d_v_o_1_1_parallel_algorithms">QDVO::ParallelAlgorithms</innernamespace>
       <sectiondef kind="typedef">

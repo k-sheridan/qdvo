@@ -36,9 +36,16 @@ Includes
 
 
 
+Namespaces
+----------
+
+
+- :ref:`namespace_ArgMin`
+
+
 Classes
 -------
 
 
-- :ref:`exhale_class_class_inverse_depth`
+- :ref:`exhale_class_class_arg_min_1_1_inverse_depth`
 

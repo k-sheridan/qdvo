@@ -1,8 +1,8 @@
 
-.. _file_src_Optimizer_PSDLinearSystem.h:
+.. _file_src_Optimizer_PSDSchurSolver.h:
 
-File PSDLinearSystem.h
-======================
+File PSDSchurSolver.h
+=====================
 
 |exhale_lsh| :ref:`Parent directory <dir_src_Optimizer>` (``src/Optimizer``)
 
@@ -12,14 +12,14 @@ File PSDLinearSystem.h
    :local:
    :backlinks: none
 
-Definition (``src/Optimizer/PSDLinearSystem.h``)
-------------------------------------------------
+Definition (``src/Optimizer/PSDSchurSolver.h``)
+-----------------------------------------------
 
 
 .. toctree::
    :maxdepth: 1
 
-   program_listing_file_src_Optimizer_PSDLinearSystem.h.rst
+   program_listing_file_src_Optimizer_PSDSchurSolver.h.rst
 
 
 
@@ -55,7 +55,7 @@ Classes
 -------
 
 
-- :ref:`exhale_class_class_arg_min_1_1_p_s_d_linear_system`
+- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver`
 
-- :ref:`exhale_class_class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415`
+- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f`
 

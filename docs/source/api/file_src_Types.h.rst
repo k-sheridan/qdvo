@@ -59,8 +59,6 @@ Included By
 
 - :ref:`file_src_Optimizer_Key.h`
 
-- :ref:`file_src_Optimizer_OptimizableVariable.h`
-
 - :ref:`file_src_Pipeline_BasicPipeline.h`
 
 

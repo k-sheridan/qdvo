@@ -29,7 +29,7 @@ Includes
 --------
 
 
-- ``Types.h`` (:ref:`file_src_Types.h`)
+- ``Eigen/Core``
 
 
 
@@ -40,6 +40,8 @@ Included By
 - :ref:`file_src_Optimizer_Variables_InverseDepth.h`
 
 - :ref:`file_src_Optimizer_Variables_SE3.h`
+
+- :ref:`file_src_Optimizer_Variables_SimpleScalar.h`
 
 
 

@@ -315,7 +315,7 @@ Files
 .. toctree::
    :maxdepth: 5
 
-   file_src_Optimizer_PSDLinearSystem.h.rst
+   file_src_Optimizer_PSDSchurSolver.h.rst
 
 .. toctree::
    :maxdepth: 5
@@ -341,6 +341,11 @@ Files
    :maxdepth: 5
 
    file_src_Settings.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   file_src_Optimizer_Variables_SimpleScalar.h.rst
 
 .. toctree::
    :maxdepth: 5

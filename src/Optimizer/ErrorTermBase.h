@@ -14,17 +14,34 @@ class ErrorTermBase;
 /**
  * This serves as the base of a simple error term with only a handful of independent variables.
  * This base stores the linearized error term and the pointers to to extract the variables.
+ * 
+ * The derived error term may contain more information than this base class, but it MUST contain
+ * a function: 
+ * 
+ * void evaluate(VariableContainer<Variables...>& variables, bool relinearize);
+ * 
+ * This function must compute the residual given the variable states, and will compute the jacobians w.r.t to the variables
+ * if relinearize is true. Check the linearizationValid flag before using the error term.
  */
 template <int ResidualDimension, typename ScalarType, typename... IndependentVariables>
 class ErrorTermBase<Scalar<ScalarType>, Dimension<ResidualDimension>, VariableGroup<IndependentVariables...>>
 {
 public:
 
+    /// These jacobians are from the most recent linearization.
     std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...> variableJacobians;
+    /// These are the keys used to access the variables over time.
+    /// These keys can only be invalidated is the variable is removed or overwritten.
     std::tuple<VariableKey<IndependentVariables>...> variableKeys;
+    /// These pointers are used to avoid the indirection of the slotmap.
+    /// These pointers are invalidated every time a key is added or removed from the slot map.
     std::tuple<IndependentVariables*...> variablePointers;
 
+    /// This is the most recent residual computed for the error term.
     Eigen::Matrix<ScalarType, ResidualDimension, 1> residual;
+
+    /// This flag is used to let the user know if the error term was linearized successfully.
+    bool linearizationValid = false;
 
     /// Extracts the most recent pointer to each of the variables using their key and updates them.
     template <typename... Variables>

@@ -36,9 +36,16 @@ Includes
 
 
 
+Namespaces
+----------
+
+
+- :ref:`namespace_ArgMin`
+
+
 Classes
 -------
 
 
-- :ref:`exhale_class_class_s_e3`
+- :ref:`exhale_class_class_arg_min_1_1_s_e3`
 

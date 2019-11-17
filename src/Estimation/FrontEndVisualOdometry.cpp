@@ -1,5 +1,7 @@
 #include "FrontFndVisualOdometry.h"
 
+using namespace QDVO;
+
 FrontEndVisualOdometry::FrontEndVisualOdometry()
 {
 

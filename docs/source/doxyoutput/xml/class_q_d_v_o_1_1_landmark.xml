@@ -103,7 +103,7 @@
         <location file="src/DataStructures/Landmark.h" line="17" column="24" bodyfile="src/DataStructures/Landmark.h" bodystart="17" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_landmark_1af6d72b9d78f4a02f4d2f26c0f05321b5" prot="public" static="no" mutable="no">
-        <type><ref refid="class_epipolar_depth_estimator" kindref="compound">EpipolarDepthEstimator</ref></type>
+        <type><ref refid="class_q_d_v_o_1_1_epipolar_depth_estimator" kindref="compound">EpipolarDepthEstimator</ref></type>
         <definition>EpipolarDepthEstimator QDVO::Landmark::depthEstimator</definition>
         <argsstring></argsstring>
         <name>depthEstimator</name>
@@ -162,16 +162,16 @@
     <detaileddescription>
     </detaileddescription>
     <collaborationgraph>
-      <node id="2">
-        <label>EpipolarDepthEstimator</label>
-        <link refid="class_epipolar_depth_estimator"/>
-      </node>
       <node id="1">
         <label>QDVO::Landmark</label>
         <link refid="class_q_d_v_o_1_1_landmark"/>
         <childnode refid="2" relation="usage">
           <edgelabel>depthEstimator</edgelabel>
         </childnode>
+      </node>
+      <node id="2">
+        <label>QDVO::EpipolarDepthEstimator</label>
+        <link refid="class_q_d_v_o_1_1_epipolar_depth_estimator"/>
       </node>
     </collaborationgraph>
     <location file="src/DataStructures/Landmark.h" line="9" column="1" bodyfile="src/DataStructures/Landmark.h" bodystart="8" bodyend="28"/>
