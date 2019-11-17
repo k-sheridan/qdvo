@@ -22,8 +22,7 @@ class PSDLinearSystem;
  * A is a dense matrix, D is a block diagonal matrix, and B is a dense matrix correlating A and D.
  * 
  * Uncorrelated variables are variables which share no off diagonal elements.
- * It is assumed that variables are unique across both variable sets.
- * For example: CorrelatedSet = {T1, T2, T3}, Uncorrelated Set = {T4, T5, T6}
+ * The uncorrelated variable set must be a subset of all variables.
  */
 template <typename ScalarType, typename... ErrorTerms, typename... Variables, typename... UncorrelatedVariables>
 class PSDLinearSystem<Scalar<ScalarType>, ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>, VariableGroup<UncorrelatedVariables...>>

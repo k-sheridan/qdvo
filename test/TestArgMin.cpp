@@ -8,6 +8,7 @@
 #include "Optimizer/Key.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/InverseDepth.h"
+#include "Optimizer/ErrorTermBase.h"
 #include <type_traits>
 
 using namespace ArgMin;
@@ -249,6 +250,36 @@ TEST(ArgMin, GaussianPrior)
     EXPECT_TRUE(prior.b0.blockExists(dinvKey2));
     EXPECT_TRUE(prior.b0.getRowBlock(dinvKey2).isApprox(Prior::BV::MatrixBlock<InverseDepth>::Constant(-Prior::DefaultInverseVariance)));
 
+}
+
+TEST(ArgMin, ErrorTermBasePointer) {
+    using ET = ArgMin::ErrorTermBase<ArgMin::Scalar<double>, ArgMin::Dimension<2>, ArgMin::VariableGroup<SE3, SE3>>;
+
+    SE3 pose;
+    InverseDepth zinv;
+    VariableContainer<SE3, InverseDepth> variableContainer;
+
+    // insert variables
+    auto se3Key1 = variableContainer.getVariableMap<SE3>().insert(pose);
+    auto se3Key2 = variableContainer.getVariableMap<SE3>().insert(pose);
+
+    auto dinvKey1 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+    auto dinvKey2 = variableContainer.getVariableMap<InverseDepth>().insert(zinv);
+
+    ET errorTerm;
+
+    std::get<0>(errorTerm.variableKeys) = se3Key1;
+    std::get<1>(errorTerm.variableKeys) = se3Key2;
+
+    std::get<0>(errorTerm.variablePointers) = nullptr;
+    std::get<1>(errorTerm.variablePointers) = nullptr;
+
+    EXPECT_FALSE(errorTerm.checkVariablePointerConsistency(variableContainer));
+
+    errorTerm.updateVariablePointers(variableContainer);
+
+    EXPECT_TRUE(errorTerm.checkVariablePointerConsistency(variableContainer));
+    
 }
 
 TEST(ArgMin, PSDLinearSystem)
