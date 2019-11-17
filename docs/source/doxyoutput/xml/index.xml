@@ -1,0 +1,721 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.16">
+  <compound refid="class_q_d_v_o_1_1_basic_pipeline" kind="class"><name>QDVO::BasicPipeline</name>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1af41fd7e475aa394632256fd5792c46dc" kind="variable"><name>graph</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1aaa206ab3ae086d7bfa1121a5b3eef889" kind="variable"><name>frontEndVisualOdometry</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" kind="variable"><name>swe</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a4a2972517e53bf079102c72f8c24c090" kind="variable"><name>featureDetector</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a88c2ca0211b6ccc3e689c55d57bf1d10" kind="variable"><name>patchComparers</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1ac67b02f5de3b44576cdae9ea3b85cabe" kind="variable"><name>radialSearchPatternPtr</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1ad98ee9aefea5524f51346acc0d4b4ab1" kind="variable"><name>patchWarper</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a8bf8518558a309739592e9be0265ca25" kind="function"><name>BasicPipeline</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1aec25914726581bacf05e6abdf053fed5" kind="function"><name>initialize</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a23e84a2ce01234fab8325603da834821" kind="function"><name>addFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1af9c6182da0eef93e45f1ac06362eea09" kind="function"><name>addCamera</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a7a9ed3a35a1eb842c021a9c444f52473" kind="function"><name>createNewLandmarks</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a6b90259131f4b6fb6e532cfa07ef7ae4" kind="function"><name>activateNewLandmarks</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a7446e40b000d8f3aa99a4c4563a17409" kind="function"><name>initializeCorrespondenceDistributionsForCurrentFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a172afb9a0940a3ce6543777036976047" kind="function"><name>runEpipolarDepthEstimators</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a2f6b21312fc1e5440711cd82f06d30af" kind="function"><name>runMarginalizationStrategy</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a30af66aa558eeb9cf876b10954bef9cc" kind="function"><name>isCurrentFrameAKeyframe</name></member>
+    <member refid="class_q_d_v_o_1_1_basic_pipeline_1a7ae2e691f88ee7d54128cd830d732089" kind="function"><name>updatePatchComparers</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_block_vector" kind="class"><name>ArgMin::BlockVector</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7" kind="class"><name>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a50d984520400f1dfb34e42636cdde21c" kind="typedef"><name>MatrixBlock</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac3288df5419d8131d54844c0c27a828e" kind="typedef"><name>RowMap</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ae3404c9244c35dae1a0ee0247afec60c" kind="variable"><name>tupleOfRowMaps</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a0755baa1dc753a3f02ddef8baf2e24b2" kind="function"><name>BlockVector</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" kind="function"><name>addRowBlock</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" kind="function"><name>removeRowBlock</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" kind="function"><name>getRowBlock</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" kind="function"><name>blockExists</name></member>
+    <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a31bc69bd9f12604c9112664a75e6897a" kind="function"><name>subtractVector</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_camera_model" kind="class"><name>QDVO::CameraModel</name>
+    <member refid="class_q_d_v_o_1_1_camera_model_1ae287db2e5d7e91248145653ae3ce69a5" kind="variable"><name>fx</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1aa1269cc8ba63de1bf7ff2e1126e82c58" kind="variable"><name>fy</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a8336d8a97d163993495eabc167999610" kind="variable"><name>cx</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a69378ba72a48c838cc40728334ddec0d" kind="variable"><name>cy</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a47160b94f50040bfba8acebbba732daf" kind="variable"><name>fov</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a029de8e106724a1bf13aeb0c6995f2e0" kind="variable"><name>width</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a366120f0622eff2645d7f4c40a04d1d5" kind="variable"><name>height</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1aa3d813edca56181bdebb70f1e624afb1" kind="function"><name>CameraModel</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1ab6e37317019c2f7ccf4edaa68623ae37" kind="function"><name>project</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a381c836b33a0fb6850204fcedff26700" kind="function"><name>unproject</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1a6d4eb070369e20851e9cb945e4bed747" kind="function"><name>isPointPotentiallyVisible</name></member>
+    <member refid="class_q_d_v_o_1_1_camera_model_1ab201700d70c38c258661edc838f49d81" kind="function"><name>isPixelOnImage</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_correspondence_distribution" kind="class"><name>QDVO::CorrespondenceDistribution</name>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1af2ac5765dfe50b2be430154e3ac1a2cd" kind="variable"><name>warpedPatch</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1ac4c507d87e3a84a7eec0e6a9e5c5e0cf" kind="variable"><name>framePtr</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1afa5309971a3b8d3c0d8dac5bd4d78369" kind="variable"><name>correspondenceMap</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1af7d3b5fe5fddd68fa1baba2492e2a7e2" kind="variable"><name>dormant</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a2a667a162fa7f2b840f3f30c0d1a4e84" kind="variable"><name>expScoreArray</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a670d1f9bec7ce2720e8b1b676515b0a2" kind="variable"><name>errorArray</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1aad4034fdb813631e50dbfc6455471b19" kind="variable"><name>weightedErrorArray</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a1f39479305563ae95776427650235836" kind="variable"><name>radialSearchPattern</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a9faef36fb3d528afe6fab569ab6d63d1" kind="variable"><name>patchComparer</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1ac6fb64d2894b836f0cf29707c834df49" kind="function"><name>CorrespondenceDistribution</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a4e08ecdb4906ea046d87b11aa1275e0b" kind="function"><name>initializeDistribution</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a16f8e755b1ac95074569ffb6ea5bb250" kind="function"><name>computeResidual</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1aa52619b965a4840fc7aa44aeeee7d06b" kind="function"><name>reset</name></member>
+    <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a910ad9d6548c9d057fb85afd06712e0b" kind="function"><name>search</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_dimension" kind="struct"><name>ArgMin::Dimension</name>
+  </compound>
+  <compound refid="class_epipolar_depth_estimator" kind="class"><name>EpipolarDepthEstimator</name>
+    <member refid="class_epipolar_depth_estimator_1af474639013c2c14041882779a1155991" kind="variable"><name>initialized</name></member>
+    <member refid="class_epipolar_depth_estimator_1a624e9ca2e33c746b242198fc7c1ccaae" kind="function"><name>EpipolarDepthEstimator</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_equidistant_camera_model" kind="class"><name>QDVO::EquidistantCameraModel</name>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1ad676731447269a999c0cbb0ed3d567ed" kind="variable"><name>distortionCoeffs</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1af071782c2ea7c63e1cea5b306f77b9d4" kind="variable"><name>radiusLookUpTable</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1a00c8c5d6925056e14d02a653a2e21705" kind="function"><name>EquidistantCameraModel</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1aedb09d2a00740e0f32e4436021c3cf39" kind="function"><name>project</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1aa156982ce8255a10671c5607b4d13db4" kind="function"><name>unproject</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1a8d366ac911a679b6f82274eede6beb69" kind="function"><name>distortionFn</name></member>
+    <member refid="class_q_d_v_o_1_1_equidistant_camera_model_1ae9f2a11af52985572a1a8ef2f42e809f" kind="function"><name>distortionFnDerivative</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_error_term_base" kind="class"><name>ArgMin::ErrorTermBase</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd" kind="class"><name>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a766c4b7274aab33af9a47da2b43bab6f" kind="variable"><name>variableJacobians</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a715f0bde55a3b0e9dc50b8303696b454" kind="variable"><name>variableKeys</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1acf8d4d24f8574fd61e41cb307cf65d25" kind="variable"><name>variablePointers</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ae47eb3544a9055af96f13fcfa00a3edc" kind="variable"><name>residual</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afcc06aeb70943279333e85c9477a3905" kind="function"><name>updateVariablePointers</name></member>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a8b8962bdc9719c1d2ef34386fc4f7b03" kind="function"><name>checkVariablePointerConsistency</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_error_term_container" kind="class"><name>ArgMin::ErrorTermContainer</name>
+    <member refid="class_arg_min_1_1_error_term_container_1a675a6bc072f2707ac5446283e567d76e" kind="typedef"><name>ErrorTermMap</name></member>
+    <member refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" kind="variable"><name>tupleOfErrorTermMaps</name></member>
+    <member refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" kind="function"><name>getErrorTermMap</name></member>
+    <member refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" kind="function"><name>linearize</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_error_term_group" kind="struct"><name>ArgMin::ErrorTermGroup</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_error_term_key" kind="class"><name>ArgMin::ErrorTermKey</name>
+    <member refid="class_arg_min_1_1_error_term_key_1aac2cd6da984739327a0d65c5c1fb08e8" kind="typedef"><name>errorterm_type</name></member>
+    <member refid="class_arg_min_1_1_error_term_key_1a5a638ef80820b750947f3813e6a30c19" kind="function"><name>operator&lt;</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_feature" kind="class"><name>QDVO::Feature</name>
+    <member refid="class_q_d_v_o_1_1_feature_1ae8d738b7bab2940616694d045c11f0c3" kind="variable"><name>px</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_1af10522054948863e177c217bb3e25f40" kind="function"><name>Feature</name></member>
+  </compound>
+  <compound refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate" kind="struct"><name>QDVO::FeatureDetector::FeatureCandidate</name>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ac298ad9a3030605afffbdf31dceef7f5" kind="variable"><name>x</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1adb2df83d4d0aabfea823f70217b5f925" kind="variable"><name>y</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6125912a23eae7d0ca185b87c2561a15" kind="variable"><name>dxdx</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a1b7f8cd3a5513ceeb83956b6ed75d1cb" kind="variable"><name>dxdy</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6829c6066dd4242b4809da49f66abc93" kind="variable"><name>dydy</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a15a125ea176a6821a1ac4506b9e3975c" kind="variable"><name>det</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a5469132c2f5249e68ee7f5920c845570" kind="variable"><name>trace</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1aa2c814840aac04598cb50017815b6857" kind="variable"><name>gradientNorm</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6079df49900786697c884fd723bb6230" kind="variable"><name>harris</name></member>
+    <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ad396a120e119ac50a79ad89ea61f071a" kind="variable"><name>score</name></member>
+  </compound>
+  <compound refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings" kind="struct"><name>QDVO::Settings::FeatureDetectionSettings</name>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1aa715d200b25d6319f62d88b8d1f974f4" kind="variable"><name>nFeaturesDesired</name></member>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a6736b7a5acee643ca2d274b2210d2e61" kind="variable"><name>nSections</name></member>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a156d9503df0766f7e37cd2a84df79b6d" kind="variable"><name>harrisK</name></member>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a49cefa0bb55fafc087cb77b8e5f1effd" kind="variable"><name>edgeWeight</name></member>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1ae60ec3bc26a4901c36372e1b9c03148d" kind="variable"><name>invariantThreshold</name></member>
+    <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a64769351cc76116a6aa76265c250efb3" kind="variable"><name>minimumNormalizedGradientMagnitude</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_feature_detector" kind="class"><name>QDVO::FeatureDetector</name>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a9bbd61f4fb907d03f5f33fd4174c6330" kind="variable"><name>dx</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a359919ccce419bc2b078cde4a0ad5f75" kind="variable"><name>dy</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1ae83964d1c6b0d5c2b2e76d50c892d63b" kind="variable"><name>dxdx</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a69e14221c6dbf880c08847c4b97a5171" kind="variable"><name>dydy</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1aedc2ac68deaf04190e3e51ca45f24922" kind="variable"><name>dxdy</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a3f29ee5d4a4bb03cfa8a6cb382561451" kind="variable"><name>spatialMask</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a786253ea80ac5cad7eccdd9634f0810f" kind="function"><name>FeatureDetector</name></member>
+    <member refid="class_q_d_v_o_1_1_feature_detector_1a98e882f8d96d2d5ab65be2cc651be1d6" kind="function"><name>detectFeatures</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_f_o_v_camera_model" kind="class"><name>QDVO::FOVCameraModel</name>
+    <member refid="class_q_d_v_o_1_1_f_o_v_camera_model_1ac77fcf7c775d9dd37b010e6d998b7895" kind="function"><name>FOVCameraModel</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_frame" kind="class"><name>QDVO::Frame</name>
+    <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfa" kind="enum"><name>FrameStatus</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae7f6d42861885c9d0ddbe7f40575a399" kind="enumvalue"><name>INACTIVE</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaaba9b002c9a2068cb64d09689e7c62207" kind="enumvalue"><name>ACTIVE</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a281e5dd9b962a3f2e6267485bb20cdfaae2c3f7785df3790573e89212e5389966" kind="enumvalue"><name>MARGINALIZED</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a797db60e2adc6d97a0b0e5e7de822516" kind="variable"><name>camID</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a77646f3c2fe3e99208b39c00d8609bca" kind="variable"><name>frameID</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1afcf2f56cb1a7cd9b3d6042af1ac9fec4" kind="variable"><name>imustate</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1ac7fc79ff5f5d3dd38473d3985c28667a" kind="variable"><name>imagePyr</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a1ac57507fe6cd62aec30cd48f6f1cf33" kind="variable"><name>cm</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a66e4b9fa4584c350742eb26fc002e619" kind="variable"><name>landmarks</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a2a0390d0ebec309686ca55b9de3f59c5" kind="variable"><name>initialized</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a84a1aff1da2edb1818164b4dde2e6164" kind="variable"><name>status</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a94ccc6947e862b50a268125d1a983b05" kind="variable"><name>correspondenceDistributions</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a1a313307a8ab46acc8393c9e45178e8d" kind="variable"><name>maxImageIntensity</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1af96f14f093cbe13b0fc4f41b0d48c92d" kind="function"><name>Frame</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a5a8a5947276fdb774bfc944c93edf3bc" kind="function"><name>updateImage</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1af1a1567cdc7f6e4b083d341929b3e8e8" kind="function"><name>maxIntensity</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1ac0c0587377a29792b673f2d632cd2fc0" kind="function"><name>getLandmark</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a66f0ccbfa7f2305de08f6fb7e3a9a1cd" kind="function"><name>reset</name></member>
+    <member refid="class_q_d_v_o_1_1_frame_1a95ad8da1e4f65672d32e6a97cb41b514" kind="function"><name>resetCorrespondenceDistributions</name></member>
+  </compound>
+  <compound refid="class_front_end_visual_odometry" kind="class"><name>FrontEndVisualOdometry</name>
+    <member refid="class_front_end_visual_odometry_1a40bc0478c01e064ad17972d4afe15e3c" kind="function"><name>FrontEndVisualOdometry</name></member>
+    <member refid="class_front_end_visual_odometry_1a91c0a5c005fe9fe6036aabddca4ad19c" kind="function"><name>run</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_gaussian_prior" kind="class"><name>ArgMin::GaussianPrior</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4" kind="class"><name>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1aa912bb10d93962b8ce8e753b63f6b73b" kind="typedef"><name>SBM</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9398a54e811cadc368f29752a0eb0e0f" kind="typedef"><name>BV</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1abc2f2afeda7cd15fe635218dd2d4cf5d" kind="variable"><name>DefaultInverseVariance</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1ac0c03b660e91cdd2082a909110126ee3" kind="variable"><name>A0</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a6f8b3414cf5465f888e5b78b9e60b28f" kind="variable"><name>b0</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a8832574816dc1a2c42cad72c18b324ff" kind="variable"><name>temporaryVector</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a3f9ccf958e85f7fd613e984e5f6528d4" kind="function"><name>GaussianPrior</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a561e9a2573e9133f960d4c130ad372e1" kind="function"><name>addVariable</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" kind="function"><name>removeVariable</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9370f7cbba1f7c86bf54e9550647cce8" kind="function"><name>update</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_generic_quad_tree" kind="class"><name>QDVO::GenericQuadTree</name>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a32802f286b04fa17fe54ec15019f9efd" kind="variable"><name>root</name></member>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a08c7f361f3f0cf6aacb9c79d93cd453a" kind="variable"><name>bottomLevel</name></member>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a1cfcadd16042a476f8913b8ae916ef9e" kind="function"><name>GenericQuadTree</name></member>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1ad7206df9d464ab8cfc9fdc2bea72bc27" kind="function"><name>GenericQuadTree</name></member>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a273c7d66e7c7e1d7e9522f8cf45ca706" kind="function"><name>insert</name></member>
+    <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a44da0b18d78fe7d1a4eb30fd94fa530d" kind="function"><name>clear</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_graph" kind="class"><name>QDVO::Graph</name>
+    <member refid="class_q_d_v_o_1_1_graph_1a4741fd25a014dc7683ab52bb3e279f12" kind="variable"><name>cameraModelMap</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1acc9c36efdeb37ab5d2747664fb82595d" kind="variable"><name>keyframeSet</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1aaa9c8cc6046f517a15248b21b76ca80f" kind="variable"><name>extrinsicSet</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1abf4a9ca834a8a3dca9825fbe836532c1" kind="variable"><name>currentFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ab52ecab5a726626cbe37bbdd42120ce6" kind="function"><name>Graph</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ab298f5b06e48e36e29696553f7a69a30" kind="function"><name>setCameraModel</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ac4db720e427dd58b9ed5aebfbc77e16f" kind="function"><name>setExtrinsic</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ae2b3ea51667f43e8e0ccab1985fd6094" kind="function"><name>getCurrentFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a0677cbdd2ec0aab7f0dbf9ced8f7e163" kind="function"><name>getCameraModel</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a435c3eef6d35bef3128c9770b52b3499" kind="function"><name>getExtrinsic</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1abf975991ef2c195c64bbd330d859fe8c" kind="function"><name>getKeyframe</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ab5942cf39ba6da0ac105736669085e2e" kind="function"><name>getFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1ae9ed6bdcc07a48b0bdeebead525bbfd1" kind="function"><name>getKeyframeSet</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a40371e7c0021abaf31e7b4f7521c0a7c" kind="function"><name>getNewFrameID</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1abe23c04ea36f91e74d6c469ca0ac2c36" kind="function"><name>moveCurrentFrameIntoMarginalizedKeyframePosition</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a52352c3ac11fee0b128f68e1125fd058" kind="function"><name>moveCurrentFrameIntoNewKeyframePosition</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1aaea4258715ea5c16ff3de7ea0219d73f" kind="function"><name>moveCurrentFrameIntoKeyframePosition</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1abb731789e16bc97b8aee91340f578f12" kind="function"><name>getVisibleLandmarksInCurrentFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a16469ce53eac8d31f8798ae278e4487c" kind="function"><name>projectLandmarkToCameraFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_graph_1a2d9e89678b558fd4eb4cf0378ee67f2e" kind="function"><name>projectLandmarkToPixel</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_image" kind="class"><name>QDVO::Image</name>
+    <member refid="class_q_d_v_o_1_1_image_1a6801bb6aea8d57df4f236f9caf7755af" kind="variable"><name>image</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1abeb7695ca9bbc3c0329d90343747f536" kind="function"><name>Image</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a645ebbf0a869ad413c4dc6e755fbd064" kind="function"><name>Image</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a9dbde71a8e1c246e16a9c082b8edf840" kind="function"><name>toOpenCVImage</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a0de95aa11e522877d2b401521a77517f" kind="function"><name>getImageData</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a4a7238836987061ba729ded3d06c3009" kind="function"><name>rows</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a714a8695ca7fabc0f9369990936c853d" kind="function"><name>cols</name></member>
+    <member refid="class_q_d_v_o_1_1_image_1a1f0a1144b7effeca540a3fd4b1cc0307" kind="function"><name>getSubPixelIntensity</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_image_pyramid" kind="class"><name>QDVO::ImagePyramid</name>
+    <member refid="class_q_d_v_o_1_1_image_pyramid_1aeaff6ef38383465daa68625fe0f6d1da" kind="variable"><name>imageLevels</name></member>
+    <member refid="class_q_d_v_o_1_1_image_pyramid_1aa09f2903af1f2bb4b28b087c4caa991f" kind="function"><name>ImagePyramid</name></member>
+    <member refid="class_q_d_v_o_1_1_image_pyramid_1a536fe0efa354a40cbea122641297c340" kind="function"><name>getImage</name></member>
+    <member refid="class_q_d_v_o_1_1_image_pyramid_1a64236fd07699a623d22cee3ec2d10a6f" kind="function"><name>generate</name></member>
+    <member refid="class_q_d_v_o_1_1_image_pyramid_1ac4961c7f0626ca81ef973b07e0e83592" kind="function"><name>levels</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_i_m_u_state" kind="class"><name>QDVO::IMUState</name>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1acbc920e495e7bad9ef8acd8687caab10" kind="variable"><name>dimensions</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1a17c5e06a329e53a217229a07fd0d2fba" kind="variable"><name>time</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1ad5adfe3006900dff8d376c04cc2fc436" kind="variable"><name>attitude</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1addcd790dea4c8627393f475bf4c5b96e" kind="variable"><name>pos</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1ac1053e833240e79e0baa2a5ca02c76a8" kind="variable"><name>vel</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1a5eb83a26330ccccc8f34fa26bee96319" kind="function"><name>IMUState</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1af88e6910bacb20a68cf3b6593edccd23" kind="function"><name>update</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1aded3722c8a3b1b1d788f553e13e8aec0" kind="function"><name>updatePose</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1a1c011ab9b64c53c7b4da68a533376624" kind="function"><name>updateVelocity</name></member>
+    <member refid="class_q_d_v_o_1_1_i_m_u_state_1ae8015a0b5e9b0e93f163168ab709ca90" kind="function"><name>getSE3</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_index" kind="struct"><name>ArgMin::internal::Index</name>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4" kind="struct"><name>ArgMin::internal::Index&lt; T, std::tuple&lt; T, Types... &gt; &gt;</name>
+    <member refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4_1a13852947de769e009ca7007207f22dcd" kind="variable"><name>value</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4" kind="struct"><name>ArgMin::internal::Index&lt; T, std::tuple&lt; U, Types... &gt; &gt;</name>
+    <member refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4_1aca6b080765a4b4c96c18ca8c83ecd580" kind="variable"><name>value</name></member>
+  </compound>
+  <compound refid="class_inverse_depth" kind="class"><name>InverseDepth</name>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple" kind="struct"><name>ArgMin::internal::Is_in_tuple</name>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_01_t0_00_01_t_8_8_8_01_4_01_4" kind="struct"><name>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt; T0, T... &gt; &gt;</name>
+    <member refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_01_t0_00_01_t_8_8_8_01_4_01_4_1af11c5ca527f193b46e029ece890e3cd2" kind="variable"><name>value</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_01_v_00_01_t_8_8_8_01_4_01_4" kind="struct"><name>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt; V, T... &gt; &gt;</name>
+    <member refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_01_v_00_01_t_8_8_8_01_4_01_4_1af2aad80a89cbd88932b00e4b9eb0c7b8" kind="variable"><name>value</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4" kind="struct"><name>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt;&gt; &gt;</name>
+    <member refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4_1a705f58d8cfa36e45b745613540a2e50b" kind="variable"><name>value</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_landmark" kind="class"><name>QDVO::Landmark</name>
+    <member refid="class_q_d_v_o_1_1_landmark_1a3c52d31fe2bcbf812fa4230f967c5868" kind="enum"><name>LandmarkStatus</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a3c52d31fe2bcbf812fa4230f967c5868a4bc4e1e592d535987632d564db91c2d8" kind="enumvalue"><name>INACTIVE</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a3c52d31fe2bcbf812fa4230f967c5868a10d5ff1be4cb0e9b1ae1d20cfd759c65" kind="enumvalue"><name>ACTIVE</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a3c52d31fe2bcbf812fa4230f967c5868a8ad0676febeeeab82e68e05730ea2a37" kind="enumvalue"><name>MARGINALIZED</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a232bc1e3878d64764f88b1808b963f96" kind="variable"><name>bearing</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a4ec39d6d7d4b0bb07d913ecce3d84930" kind="variable"><name>px</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1ae59addc4ca7776319fdfda2c1f70cdef" kind="variable"><name>dinv</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1ab8b9166f5831f76d42653930926b94cc" kind="variable"><name>landmarkID</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a13a63b84fe39e437761208e9ebe5f0da" kind="variable"><name>parentFrameID</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1af6d72b9d78f4a02f4d2f26c0f05321b5" kind="variable"><name>depthEstimator</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1aa88d2e2f5e65329c8129b3a99bf1d71b" kind="variable"><name>status</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a5291e5d2cf50e224b5389c956e866f56" kind="function"><name>Landmark</name></member>
+    <member refid="class_q_d_v_o_1_1_landmark_1a759597668157a517a4ba13378e8f04ff" kind="function"><name>getEuclideanPoint</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_marginalizer" kind="class"><name>ArgMin::Marginalizer</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd" kind="class"><name>ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a9f62dd76d58dbddb805040ebf9f055e2" kind="function"><name>Marginalizer</name></member>
+    <member refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a32a544dd89c67f5fbccf79a651f0dfb6" kind="function"><name>marginalizeVariable</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_optimizable_variable" kind="class"><name>ArgMin::OptimizableVariable</name>
+    <member refid="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" kind="variable"><name>dimension</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_patch" kind="class"><name>QDVO::Patch</name>
+    <member refid="class_q_d_v_o_1_1_patch_1a64f917bbc42d05c434e23a7f89e5cfd9" kind="variable"><name>level</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a1d099f725d1fc5ed62724f6b8fb8411c" kind="variable"><name>initialized</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1ad948731a8db7faef2c5fe3a5169f6a7d" kind="variable"><name>data</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1ace8481ad715d806bd8b05f4b33345672" kind="variable"><name>zeroMeanMatrix</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a32eeb23638adebf96d90e9d63f5dd1aa" kind="variable"><name>patchMean</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1ac2b0c4fb98e1d0da4050d666f2c075a9" kind="variable"><name>patchStdDev</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1ac3e0eddbd67d60a3a425cfff99b35ca7" kind="variable"><name>sumZeroMeanSquared</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a4b8f5436204cb8ff2ff0f97b80aaa0e1" kind="function"><name>Patch</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a4e35cb7c2fa54ab1e656e3b0335841df" kind="function"><name>Patch</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a70dca1ac00a8db089fcaa358080ead53" kind="function"><name>Patch</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a96cd55f748d3e796c01ce7d51df83f6f" kind="function"><name>Patch</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a4ca03fdf9808c19036fb016fd7e19bff" kind="function"><name>Patch</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1afaf32db1d9b282d9ac6a989119dac3be" kind="function"><name>getImageData</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1ab5c2bbb77808fe081b4fd2871982048a" kind="function"><name>getZeroMeanImageMatrix</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1af84694406c8ed7574605ce11219b5dd0" kind="function"><name>getStdDev</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a0cd9977324153b8a0f048825152aaa59" kind="function"><name>getSumZeroMeanSquared</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1a432dae4846019eb80cde4df2e42f66d9" kind="function"><name>getMean</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_1adf6adf73c40021c1f9fc5ef57202541c" kind="function"><name>getLevel</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_patch_comparer" kind="class"><name>QDVO::PatchComparer</name>
+    <member refid="class_q_d_v_o_1_1_patch_comparer_1a3d4cba8b2ce73827d2c8f42d4a8aec92" kind="function"><name>PatchComparer</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_comparer_1a40d3a90d99e26e930de0759e70a37fb1" kind="function"><name>compare</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_patch_warper" kind="class"><name>QDVO::PatchWarper</name>
+    <member refid="class_q_d_v_o_1_1_patch_warper_1a8d31d23c1dcc292c388d8da5d762f78a" kind="function"><name>PatchWarper</name></member>
+    <member refid="class_q_d_v_o_1_1_patch_warper_1a681c2fd452c9cc0a07ee94363e9380b8" kind="function"><name>warpPatchToTargetFrame</name></member>
+  </compound>
+  <compound refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" kind="struct"><name>QDVO::CorrespondenceDistribution::PotentialCorrespondence</name>
+    <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1ab13406a24d548b2a9864097458eb6ef3" kind="variable"><name>score</name></member>
+    <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1a7b7b252991ae9e61b8988ee54b8b2bc3" kind="variable"><name>pixel</name></member>
+    <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1aa6f0f252c48109716751a0ddeb8c00d1" kind="variable"><name>initialized</name></member>
+    <member refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence_1a35119c5c14ccab73398b2c8cc7a1a112" kind="function"><name>reset</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_p_s_d_linear_system" kind="class"><name>ArgMin::PSDLinearSystem</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415" kind="class"><name>ArgMin::PSDLinearSystem&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a60494d5a58535b27f253fa31bafa87eb" kind="typedef"><name>BVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a0474ad4840fda11c4a2d2e3f50f22539" kind="typedef"><name>DBlock</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ab891905a80e0a629f22d38ab73bb7ab4" kind="typedef"><name>DVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a05a845af22b76b193d69d63fd30f8a22" kind="variable"><name>A</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a1c60993a81aa9e35b84379d1f5f354cb" kind="variable"><name>B</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a7b017f557c8fbcf6a70c08ab0a47f790" kind="variable"><name>D</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ac15cbdee162ad8665a52de71cf0afb0b" kind="variable"><name>dx</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ade0b2504071de2593b981a4e1c5239a0" kind="variable"><name>dxBlockVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a7928f630fc8b1670c075defc52b538c7" kind="variable"><name>b</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a6693e475dda4d2d76462af6872f9f179" kind="function"><name>PSDLinearSystem</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1ab722064a5c17bba992514dfdeb8ca58e" kind="function"><name>initialize</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_linear_system_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_32efaa54028b0bbf5330d8ff751d96415_1a5c991643fe3c7156a3bef2f24f88527f" kind="function"><name>solve</name></member>
+  </compound>
+  <compound refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kind="struct"><name>QDVO::GenericQuadTree::Quad</name>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a9dca5fe55dc7c02859d9df7556e268de" kind="variable"><name>parentQuad</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a97953433aa655f044338c2adf93c9974" kind="variable"><name>quadrants</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1acf5f5d1e5d813c818704caf29a7d3983" kind="variable"><name>nChildren</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a9d93fdd6e3970d871061bd0e70f76275" kind="variable"><name>level</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a700500f16265a173a37523ed83596153" kind="variable"><name>data</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1abc027cf826e98b2adafadb85ff0ce4c0" kind="variable"><name>center</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1aa282ee74fa26d665508001f3e7c6d8c4" kind="variable"><name>dimensions</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1af8e700436d00f1953b5bb74bb891a00a" kind="function"><name>Quad</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a6feb95672edcf08855dee581eb12520e" kind="function"><name>getQuad</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a4d6c91b84673ea3a962c697bbde1e069" kind="function"><name>quadrant</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1ac0c6196b94b80bc24a4652502c2f0206" kind="function"><name>insertQuad</name></member>
+    <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a4fb877a3732a724fa94e1b95871917b7" kind="function"><name>setupChildQuad</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_quasi_direct_factor" kind="class"><name>QDVO::QuasiDirectFactor</name>
+    <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1acb75b4fafc7d54f2627d01781e9c2472" kind="variable"><name>cdPtr</name></member>
+    <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1afa156c22562a39237e96ba4e1e90b3ca" kind="variable"><name>landmarkBearing</name></member>
+    <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1a19fd31cd956d168ee95a04830ad52f84" kind="variable"><name>cmPtr_obsFrame</name></member>
+    <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1ae001bfb1bba1e47d6eaaffcb06ac640e" kind="function"><name>QuasiDirectFactor</name></member>
+    <member refid="class_q_d_v_o_1_1_quasi_direct_factor_1a59536ebfd4668f7bd001dc8e072a0285" kind="function"><name>evaluateError</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_radial_search_pattern" kind="class"><name>QDVO::RadialSearchPattern</name>
+    <member refid="class_q_d_v_o_1_1_radial_search_pattern_1a88b800314195627870c5e72017d33427" kind="variable"><name>searchPattern</name></member>
+    <member refid="class_q_d_v_o_1_1_radial_search_pattern_1a8032d8e0bf1081cf15809af0083a72ea" kind="function"><name>RadialSearchPattern</name></member>
+    <member refid="class_q_d_v_o_1_1_radial_search_pattern_1a6a7c320c4af4f660a068565ef700d2dc" kind="function"><name>RadialSearchPattern</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_scalar" kind="struct"><name>ArgMin::Scalar</name>
+  </compound>
+  <compound refid="class_s_e3" kind="class"><name>SE3</name>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_settings" kind="class"><name>QDVO::Settings</name>
+    <member refid="class_q_d_v_o_1_1_settings_1ac904536b1c419581a64413678c930dba" kind="variable"><name>nKeyframes</name></member>
+    <member refid="class_q_d_v_o_1_1_settings_1a212965ff5de2eae345fb6745298afb86" kind="variable"><name>feature_detection</name></member>
+  </compound>
+  <compound refid="class_sliding_window_estimator" kind="class"><name>SlidingWindowEstimator</name>
+    <member refid="class_sliding_window_estimator_1a109d95640e926963d92d44cd06a539fe" kind="function"><name>SlidingWindowEstimator</name></member>
+    <member refid="class_sliding_window_estimator_1a500b11445321582f7d7424b69da726e2" kind="function"><name>run</name></member>
+    <member refid="class_sliding_window_estimator_1ac8a89b05d998b159b13833a713e7d490" kind="function"><name>removeOutliers</name></member>
+    <member refid="class_sliding_window_estimator_1a91233ae318c4257f732e2e1b849bca1a" kind="function"><name>runMarginalizationStrategy</name></member>
+  </compound>
+  <compound refid="struct_slot_array_1_1_slot" kind="struct"><name>SlotArray::Slot</name>
+    <member refid="struct_slot_array_1_1_slot_1a11ef771449c7459379325f8eb31f79fc" kind="variable"><name>dataIndex</name></member>
+    <member refid="struct_slot_array_1_1_slot_1af922b44b97e19aa95b8e9e153f1b5d32" kind="variable"><name>free</name></member>
+  </compound>
+  <compound refid="struct_slot_map_1_1_slot" kind="struct"><name>SlotMap::Slot</name>
+    <member refid="struct_slot_map_1_1_slot_1a7be2d753f245ba32ed51b5175d628c2f" kind="variable"><name>dataIndex</name></member>
+    <member refid="struct_slot_map_1_1_slot_1a97e355318989b7cfac914a35da6399bd" kind="variable"><name>generation</name></member>
+    <member refid="struct_slot_map_1_1_slot_1af7af719e533ee20c013fb2ae2704229f" kind="variable"><name>free</name></member>
+  </compound>
+  <compound refid="class_slot_array" kind="class"><name>SlotArray</name>
+    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5f" kind="enum"><name>InsertResult</name></member>
+    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fadb7e770c94f0e5363b42cbee679169c1" kind="enumvalue"><name>SUCCESS_NO_OVERWRITE</name></member>
+    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fa645f52f4d70041b265d67251a8eeb157" kind="enumvalue"><name>SUCCESS_OVERWRITE</name></member>
+    <member refid="class_slot_array_1a5fa4d732ab9e25e49d4484c2e9d52d5fa803286bd3c041ebe1bea96663b9cb875" kind="enumvalue"><name>FAILURE</name></member>
+    <member refid="class_slot_array_1a4028bedfb8c772ebd9e06388c02b989c" kind="variable"><name>slots</name></member>
+    <member refid="class_slot_array_1a8b349679f37d1aeaf6c3caa148fd1fa2" kind="variable"><name>data</name></member>
+    <member refid="class_slot_array_1a8fcc545bae5717de44557edc49eee4c9" kind="variable"><name>dataToSlotIndex</name></member>
+    <member refid="class_slot_array_1a03c47676bc2c7e9f8dc9bada7f0060c8" kind="function"><name>SlotArray</name></member>
+    <member refid="class_slot_array_1a6e1113c1b12f0edb307487fd9d592aa0" kind="function"><name>insert</name></member>
+    <member refid="class_slot_array_1a475e0a1ad61a966758bceb2d01a83a0c" kind="function"><name>erase</name></member>
+    <member refid="class_slot_array_1af9f979e8e1dc1bbcaae7dca19a6d886c" kind="function"><name>at</name></member>
+    <member refid="class_slot_array_1a273af203b2f1e2ba1c04c94e75d10507" kind="function"><name>at</name></member>
+    <member refid="class_slot_array_1a856a60adcf5b3a85e6552ed59b074041" kind="function"><name>begin</name></member>
+    <member refid="class_slot_array_1a099df7ffec246e59b2a8b639d8fffd57" kind="function"><name>begin</name></member>
+    <member refid="class_slot_array_1a99d1cfa6ed02d447eeb124a72e9e1451" kind="function"><name>end</name></member>
+    <member refid="class_slot_array_1a59545645599fa4b26f871072760676aa" kind="function"><name>end</name></member>
+    <member refid="class_slot_array_1a4b6b4cae7c51d5d91ad73469f9d82416" kind="function"><name>size</name></member>
+    <member refid="class_slot_array_1ac7aa5384ff259ceba8196535c6e21a18" kind="function"><name>getKeyFromDataIndex</name></member>
+  </compound>
+  <compound refid="class_slot_map" kind="class"><name>SlotMap</name>
+    <member refid="class_slot_map_1afc39d78f08f17568af45e30bc5fd4138" kind="variable"><name>slots</name></member>
+    <member refid="class_slot_map_1a0eb048ecdbad11d4c7c0bb2f3e25f240" kind="variable"><name>freeSlots</name></member>
+    <member refid="class_slot_map_1a2c8073c971097e126a2bd97901e3042c" kind="variable"><name>data</name></member>
+    <member refid="class_slot_map_1a6673b23172d5584c3241f07aa4723741" kind="variable"><name>dataToSlotIndex</name></member>
+    <member refid="class_slot_map_1a5726c458637cb6da5d75e029e4d63ad6" kind="function"><name>SlotMap</name></member>
+    <member refid="class_slot_map_1a9f1185ff4b8462ef1a43942471f15677" kind="function"><name>insert</name></member>
+    <member refid="class_slot_map_1a1f1ca132953d33ec67d50450c4fada32" kind="function"><name>erase</name></member>
+    <member refid="class_slot_map_1acbcbc564ad5bad6e55da9b756b463eb1" kind="function"><name>at</name></member>
+    <member refid="class_slot_map_1ac0cf82289e42cb3249990f5512f4690b" kind="function"><name>at</name></member>
+    <member refid="class_slot_map_1ae75c0a24ce5e0d4dc9290d6ec7c43521" kind="function"><name>begin</name></member>
+    <member refid="class_slot_map_1aa3570359215c6fdbb0259b77745e5a1d" kind="function"><name>begin</name></member>
+    <member refid="class_slot_map_1a133119f1475d61112aeca763ccc98d1b" kind="function"><name>end</name></member>
+    <member refid="class_slot_map_1a35722d0e7e8816f776173e66dde8d330" kind="function"><name>end</name></member>
+    <member refid="class_slot_map_1a1a906d5cafee436c6db2ac739d2b8155" kind="function"><name>size</name></member>
+    <member refid="class_slot_map_1af864e5eb0258fd16b2a8ec83cf8ea1da" kind="function"><name>getKeyFromDataIndex</name></member>
+  </compound>
+  <compound refid="struct_slot_map_key_base" kind="struct"><name>SlotMapKeyBase</name>
+    <member refid="struct_slot_map_key_base_1a92c7faa62fb0c1779cca5f896afab73c" kind="typedef"><name>index_type</name></member>
+    <member refid="struct_slot_map_key_base_1a04a7d5ae4e887c4730834b7207faaa38" kind="typedef"><name>generation_type</name></member>
+    <member refid="struct_slot_map_key_base_1a17f35b16ea6c16adb9e9e4c3d9da4876" kind="variable"><name>index</name></member>
+    <member refid="struct_slot_map_key_base_1a0c6cc235a00b077544539251bf653aeb" kind="variable"><name>generation</name></member>
+    <member refid="struct_slot_map_key_base_1a5ba568d77ee39bcecfbe15a1a91620d8" kind="function"><name>setInvalid</name></member>
+    <member refid="struct_slot_map_key_base_1aba7a7e2773aeecccdb0d4b272ec41525" kind="function"><name>isInvalid</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_sparse_block_matrix" kind="class"><name>ArgMin::SparseBlockMatrix</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4" kind="class"><name>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1acb659e712d751fc48c03370b5208b5e8" kind="typedef"><name>Row</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c9408a6ab957b9ac01cc30bd6f33ca7" kind="typedef"><name>RowMap</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a1a6465c53945cdf07e3cd78c6ad0a91f" kind="variable"><name>tupleOfRowMaps</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a15a6dc7d76eb9446b0327e0df0eaf61d" kind="function"><name>SparseBlockMatrix</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a335e3e489769dce1e7ff50ed5a52933f" kind="function"><name>getRowMap</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c37bcb864e4ac7726c95d695d7206d5" kind="function"><name>addRowIfItDoesNotExist</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a89a18d009174696eef11dded3e5f8a90" kind="function"><name>setBlock</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4bb06fc5a431367b1f74bb1f8159c287" kind="function"><name>removeBlock</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4d5d7cce85c82023fcbef3ef2358d384" kind="function"><name>dot</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_sparse_block_row" kind="class"><name>ArgMin::SparseBlockRow</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68" kind="class"><name>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a143202051c420188d389ba4be04ed646" kind="typedef"><name>MatrixBlock</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1aa3b676490e49cc2e92b652e440cafe66" kind="typedef"><name>VariableColumns</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a562fc319389e22741e74c57cea093f78" kind="variable"><name>columns</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1abd5acf66ecfab34c9af25bb69319a799" kind="function"><name>SparseBlockRow</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ad204ce1c478bc43bee1d268cbe1f0171" kind="function"><name>getVariableMap</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a317ccabf7e574afdb8b4f30f76bb30b8" kind="function"><name>dot</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a6bf09350f56edeb0a63e3b7ee18d65ce" kind="function"><name>setZero</name></member>
+  </compound>
+  <compound refid="class_q_d_v_o_1_1_spatial_map" kind="class"><name>QDVO::SpatialMap</name>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a7c7364441ef03b293feeebcbc2a2757d" kind="variable"><name>mapOfMaps</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1ac04844aadf4f7c720e274870a6da8355" kind="variable"><name>maximumIndexBitCount</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a7334560e9a5ea151779d754713857a21" kind="variable"><name>topHashBitCount</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a52f7a54f35282b1e57b9cf52b5dc6284" kind="variable"><name>bottomHashBitCount</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a38e382de86f99cdd97a4d4c94872e787" kind="variable"><name>bottomHashTableSize</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1acd66b7f629d092efdc9f67300d7805a1" kind="variable"><name>topHashMask</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1af36bf614711e3d55ad77d11ccbc10c32" kind="variable"><name>bottomHashMask</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a47819fb340f7c5c99de0ec72bf19c883" kind="variable"><name>index1</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a32ebcbd521a9dade8b404a005314fc0a" kind="variable"><name>index2</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a4e83eb41d4e00e5a288164095e22a46b" kind="function"><name>SpatialMap</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a00b6e410c2176e1aae0a4d9269aa49a9" kind="function"><name>SpatialMap</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a01930cd07e219a913a3beea4b00ab5f5" kind="function"><name>reset</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a78970f719915480b6f883ffea2bc3901" kind="function"><name>get</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1a9f442a57b4d0aacd42e1010ccaf3c10e" kind="function"><name>topHash</name></member>
+    <member refid="class_q_d_v_o_1_1_spatial_map_1aa577272200dd68c17b354e6a68dc015b" kind="function"><name>bottomHash</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_s_s_e_optimizer" kind="class"><name>ArgMin::SSEOptimizer</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76" kind="class"><name>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" kind="variable"><name>variables</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" kind="variable"><name>errorTerms</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" kind="variable"><name>prior</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a53e63ff020da651b855482bcb6702d0d" kind="function"><name>addVariable</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aa33b0efe32dfea9478241c4d8b99b30a" kind="function"><name>setVariablePrior</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1afc84818e29e65201a546c75fa89a1005" kind="function"><name>marginalizeVariable</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a703bc33a786b56234bb7780506c8f460" kind="function"><name>removeVariable</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a5c3fa4ce5bc5167aa10fae07387afe1c" kind="function"><name>addErrorTerm</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aea5d5dba859722fd7bf1b468a8190332" kind="function"><name>removeErrorTerm</name></member>
+    <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a58db16a95876ba98f9204dedcc8bd44d" kind="function"><name>optimize</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_typed_index" kind="struct"><name>ArgMin::TypedIndex</name>
+    <member refid="struct_arg_min_1_1_typed_index_1ad1e2deb3fe8be3c5f301074520553288" kind="variable"><name>index</name></member>
+  </compound>
+  <compound refid="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table" kind="struct"><name>QDVO::EquidistantCameraModel::UniformRadiusLookUpTable</name>
+    <member refid="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table_1a769abdb4b6a01e17659c47cd6b056e8f" kind="variable"><name>umap</name></member>
+    <member refid="struct_q_d_v_o_1_1_equidistant_camera_model_1_1_uniform_radius_look_up_table_1a29eccf13847e156ed000fd5f5d37b1e4" kind="variable"><name>resolution</name></member>
+  </compound>
+  <compound refid="class_arg_min_1_1_variable_container" kind="class"><name>ArgMin::VariableContainer</name>
+    <member refid="class_arg_min_1_1_variable_container_1aef9325aa87da6c80e5dc68e2b2c5097d" kind="typedef"><name>VariableMap</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1a5fc7874e55bbeabe28d7628491294a3a" kind="variable"><name>tupleOfVariableMaps</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" kind="function"><name>getVariableMap</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kind="function"><name>variableIndex</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" kind="function"><name>totalDimensions</name></member>
+  </compound>
+  <compound refid="struct_arg_min_1_1_variable_group" kind="struct"><name>ArgMin::VariableGroup</name>
+  </compound>
+  <compound refid="class_arg_min_1_1_variable_key" kind="class"><name>ArgMin::VariableKey</name>
+    <member refid="class_arg_min_1_1_variable_key_1a27cecfb4d121bd763d6a0453053b38e0" kind="typedef"><name>variable_type</name></member>
+    <member refid="class_arg_min_1_1_variable_key_1a7667c7fcac259f8a66f57bb5f8cb693f" kind="function"><name>operator&lt;</name></member>
+  </compound>
+  <compound refid="namespace_arg_min" kind="namespace"><name>ArgMin</name>
+  </compound>
+  <compound refid="namespace_arg_min_1_1internal" kind="namespace"><name>ArgMin::internal</name>
+    <member refid="_meta_helpers_8h_1ab7e3838428e807a91defa6565f111713" kind="function"><name>static_for_impl</name></member>
+    <member refid="_meta_helpers_8h_1ad597542cfc99259d3c47f6dcef6e87c0" kind="function"><name>static_for</name></member>
+  </compound>
+  <compound refid="namespace_q_d_v_o" kind="namespace"><name>QDVO</name>
+    <member refid="_graph_8h_1a64a1d0fe6aff802e0b23ad9eb80af443" kind="typedef"><name>KeyframeSetType</name></member>
+    <member refid="_graph_8h_1a80b779b08c576e9c10d2da988d6d4892" kind="typedef"><name>ExtrinsicSetType</name></member>
+    <member refid="_graph_8h_1a1ae4fb69a4a7d3e1b8a6866896244a80" kind="typedef"><name>CameraModelMapType</name></member>
+    <member refid="_image_8h_1a58ad47e9b89be2260983b7d7b0c12d1f" kind="typedef"><name>ImageIntensityType</name></member>
+    <member refid="_image_8h_1aaa519dd5512568b38342fcd09fb40d70" kind="typedef"><name>ImageType</name></member>
+    <member refid="_types_8h_1a81f84252582a515bef9677c51c41e579" kind="typedef"><name>ID</name></member>
+    <member refid="_types_8h_1afac8eb69b9c060f1295b82784a48293c" kind="typedef"><name>Scalar</name></member>
+    <member refid="_types_8h_1ac2472037cf9d64b3a26d972a2622b601" kind="typedef"><name>SE3</name></member>
+    <member refid="_types_8h_1a7bd071f41d8bb8f10474122cdd6ba68d" kind="typedef"><name>SO3</name></member>
+    <member refid="_types_8h_1a9a904d81b47f14dde370f4a5f2f6a0d0" kind="typedef"><name>Vector3</name></member>
+    <member refid="_types_8h_1a8c63adc55566c351b8010558c547ea9d" kind="typedef"><name>Vector2</name></member>
+    <member refid="_types_8h_1a427bfabf27fdd3444da4c39421b54b63" kind="typedef"><name>Matrix2</name></member>
+    <member refid="_types_8h_1a658790863139c0a122f035e85dea7860" kind="typedef"><name>Result</name></member>
+  </compound>
+  <compound refid="namespace_q_d_v_o_1_1_parallel_algorithms" kind="namespace"><name>QDVO::ParallelAlgorithms</name>
+    <member refid="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90" kind="enum"><name>ExecutionType</name></member>
+    <member refid="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90a08f9398804e239a1af821f68215ae7c5" kind="enumvalue"><name>SEQUENTIAL</name></member>
+    <member refid="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90ab22f9b7b25752735b65dca7e9865abad" kind="enumvalue"><name>PARALLEL_CPU</name></member>
+    <member refid="_parallel_algorithms_8h_1ab660246938aa3a92290299791334ad90ae2fc5112117769dc5253629e4951c92a" kind="enumvalue"><name>PARALLEL_CUDA</name></member>
+    <member refid="_parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144" kind="function"><name>transform</name></member>
+    <member refid="_parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b" kind="function"><name>transform</name></member>
+    <member refid="_parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7" kind="function"><name>for_each</name></member>
+    <member refid="_threading_helpers_8h_1a08260634f488dd444692cda98dcdd8ca" kind="function"><name>getSuggestedThreadCount</name></member>
+    <member refid="_threading_helpers_8h_1a0085469dd3786f59213263d179a652d6" kind="function"><name>splitProblem</name></member>
+    <member refid="_threading_helpers_8h_1aea45d50cb6eb4967c0efd7b8bb86a8b4" kind="function"><name>createListDividers</name></member>
+    <member refid="_threading_helpers_8h_1a8eb6e9129e87e5c9f4ce807805f18eae" kind="function"><name>joinThreads</name></member>
+  </compound>
+  <compound refid="_camera_model_8cpp" kind="file"><name>CameraModel.cpp</name>
+  </compound>
+  <compound refid="_camera_model_8hpp" kind="file"><name>CameraModel.hpp</name>
+  </compound>
+  <compound refid="_equidistant_camera_model_8cpp" kind="file"><name>EquidistantCameraModel.cpp</name>
+  </compound>
+  <compound refid="_equidistant_camera_model_8h" kind="file"><name>EquidistantCameraModel.h</name>
+  </compound>
+  <compound refid="_f_o_v_camera_model_8cpp" kind="file"><name>FOVCameraModel.cpp</name>
+  </compound>
+  <compound refid="_f_o_v_camera_model_8hpp" kind="file"><name>FOVCameraModel.hpp</name>
+  </compound>
+  <compound refid="_correspondence_distribution_8cpp" kind="file"><name>CorrespondenceDistribution.cpp</name>
+  </compound>
+  <compound refid="_correspondence_distribution_8h" kind="file"><name>CorrespondenceDistribution.h</name>
+  </compound>
+  <compound refid="_feature_8cpp" kind="file"><name>Feature.cpp</name>
+  </compound>
+  <compound refid="_feature_8h" kind="file"><name>Feature.h</name>
+  </compound>
+  <compound refid="_frame_8cpp" kind="file"><name>Frame.cpp</name>
+  </compound>
+  <compound refid="_frame_8h" kind="file"><name>Frame.h</name>
+  </compound>
+  <compound refid="_generic_quad_tree_8h" kind="file"><name>GenericQuadTree.h</name>
+    <member refid="_generic_quad_tree_8h_1abfa713d7e820c70b3922c36965188fde" kind="define"><name>DEFAULT_BIN_WIDTH</name></member>
+  </compound>
+  <compound refid="_graph_8cpp" kind="file"><name>Graph.cpp</name>
+  </compound>
+  <compound refid="_graph_8h" kind="file"><name>Graph.h</name>
+  </compound>
+  <compound refid="_image_8cpp" kind="file"><name>Image.cpp</name>
+  </compound>
+  <compound refid="_image_8h" kind="file"><name>Image.h</name>
+  </compound>
+  <compound refid="_image_pyramid_8cpp" kind="file"><name>ImagePyramid.cpp</name>
+  </compound>
+  <compound refid="_image_pyramid_8h" kind="file"><name>ImagePyramid.h</name>
+  </compound>
+  <compound refid="_i_m_u_state_8cpp" kind="file"><name>IMUState.cpp</name>
+  </compound>
+  <compound refid="_i_m_u_state_8h" kind="file"><name>IMUState.h</name>
+  </compound>
+  <compound refid="_landmark_8cpp" kind="file"><name>Landmark.cpp</name>
+  </compound>
+  <compound refid="_landmark_8h" kind="file"><name>Landmark.h</name>
+  </compound>
+  <compound refid="_patch_8cpp" kind="file"><name>Patch.cpp</name>
+  </compound>
+  <compound refid="_patch_8h" kind="file"><name>Patch.h</name>
+  </compound>
+  <compound refid="_radial_search_pattern_8cpp" kind="file"><name>RadialSearchPattern.cpp</name>
+  </compound>
+  <compound refid="_radial_search_pattern_8h" kind="file"><name>RadialSearchPattern.h</name>
+  </compound>
+  <compound refid="_spatial_map_8h" kind="file"><name>SpatialMap.h</name>
+    <member refid="_spatial_map_8h_1ada82d664d485cc7ab73d879016990a9f" kind="define"><name>TOP_HASH_BIT_COUNT</name></member>
+  </compound>
+  <compound refid="_quasi_direct_error_term_8h" kind="file"><name>QuasiDirectErrorTerm.h</name>
+  </compound>
+  <compound refid="_epipolar_depth_estimator_8h" kind="file"><name>EpipolarDepthEstimator.h</name>
+  </compound>
+  <compound refid="_epipolar_eepth_estimator_8cpp" kind="file"><name>EpipolarEepthEstimator.cpp</name>
+  </compound>
+  <compound refid="_front_end_visual_odometry_8cpp" kind="file"><name>FrontEndVisualOdometry.cpp</name>
+  </compound>
+  <compound refid="_front_fnd_visual_odometry_8h" kind="file"><name>FrontFndVisualOdometry.h</name>
+  </compound>
+  <compound refid="_sliding_window_estimator_8cpp" kind="file"><name>SlidingWindowEstimator.cpp</name>
+  </compound>
+  <compound refid="_sliding_window_estimator_8h" kind="file"><name>SlidingWindowEstimator.h</name>
+  </compound>
+  <compound refid="_feature_detector_8cpp" kind="file"><name>FeatureDetector.cpp</name>
+  </compound>
+  <compound refid="_feature_detector_8h" kind="file"><name>FeatureDetector.h</name>
+    <member refid="_feature_detector_8h_1a42c43c43ddaa38d61089fcb328aec404" kind="define"><name>N_SECTIONS</name></member>
+    <member refid="_feature_detector_8h_1a12f83d460ec467034d853b2ebaf3e182" kind="define"><name>HARRIS_K</name></member>
+    <member refid="_feature_detector_8h_1a6269ba973177f8976185429d8ce53940" kind="define"><name>HARRIS_WIDTH</name></member>
+    <member refid="_feature_detector_8h_1a2ff06c778076f4b3bc0944fb4f6e4032" kind="define"><name>EDGE_WEIGHT</name></member>
+    <member refid="_feature_detector_8h_1acbdb5d8dffc68d9117ec1977a63d9164" kind="define"><name>INVARIANT_THRESHOLD</name></member>
+    <member refid="_feature_detector_8h_1aac0b6fa574ec3157da05b94444508702" kind="define"><name>MINIMUM_NORMALIZED_GRADIENT_MAG</name></member>
+    <member refid="_feature_detector_8h_1a4a3a2ee18540aa447464950b86800be9" kind="define"><name>USE_SPATIAL_MASK</name></member>
+    <member refid="_feature_detector_8h_1ae2f2c303161078b920dbfb1863736226" kind="define"><name>SPATIAL_MASK_RADIUS</name></member>
+  </compound>
+  <compound refid="_patch_comparer_8cpp" kind="file"><name>PatchComparer.cpp</name>
+  </compound>
+  <compound refid="_patch_comparer_8h" kind="file"><name>PatchComparer.h</name>
+  </compound>
+  <compound refid="_patch_warper_8cpp" kind="file"><name>PatchWarper.cpp</name>
+  </compound>
+  <compound refid="_patch_warper_8h" kind="file"><name>PatchWarper.h</name>
+  </compound>
+  <compound refid="_global_definitions_8h" kind="file"><name>GlobalDefinitions.h</name>
+    <member refid="_global_definitions_8h_1ad4d790352c3126b534f489fcfe1ab979" kind="define"><name>SCALAR_TYPE</name></member>
+    <member refid="_global_definitions_8h_1a4b9c2c17b44d318829df5e1bd7e50f1d" kind="define"><name>SMALL_NUMBER</name></member>
+    <member refid="_global_definitions_8h_1a598a3330b3c21701223ee0ca14316eca" kind="define"><name>PI</name></member>
+    <member refid="_global_definitions_8h_1aee019848f6eff7eb3711734671c5f1d6" kind="define"><name>TIK</name></member>
+    <member refid="_global_definitions_8h_1a1b51cc7dda6df543664af07e475f60ee" kind="define"><name>TOK</name></member>
+    <member refid="_global_definitions_8h_1ac803dd169f5cb219cd68e1f83b5aabc5" kind="define"><name>RETIK</name></member>
+    <member refid="_global_definitions_8h_1ac00921c55a1cce6c82cd56cbbee27831" kind="define"><name>RETOK</name></member>
+    <member refid="_global_definitions_8h_1ad036ff1f84c7a4758be729230f1f4d98" kind="define"><name>ID_TYPE</name></member>
+    <member refid="_global_definitions_8h_1a4a86c25d060a5568a208323bab919e45" kind="define"><name>N_KEYFRAMES</name></member>
+    <member refid="_global_definitions_8h_1a13bf64f6739cfc3c4584fca6415bf7f5" kind="define"><name>PATCH_RADIUS</name></member>
+    <member refid="_global_definitions_8h_1a40f7fa822ed3ba3381239031af20c26a" kind="define"><name>PATCH_WIDTH</name></member>
+    <member refid="_global_definitions_8h_1a65f425b26eb17d29d5eda1b795cce774" kind="define"><name>ZNCC_PATCH_COMPARISON</name></member>
+    <member refid="_global_definitions_8h_1a1a55cd810b248442cfadbb8b4646ed6f" kind="define"><name>POTENTIAL_CORRESPONDENCE_THRESHOLD</name></member>
+    <member refid="_global_definitions_8h_1a516e382dc18558f8ffeca081323210ac" kind="define"><name>N_FEATURES_DESIRED</name></member>
+    <member refid="_global_definitions_8h_1a8afdbeffca25c5e7badaacb2b427ff83" kind="define"><name>MINUMUM_ACTIVE_LANDMARKS</name></member>
+    <member refid="_global_definitions_8h_1ad46743f54d9cf21a2613b7d336946fa6" kind="define"><name>MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS</name></member>
+    <member refid="_global_definitions_8h_1a35e1a071e318ae7b4a636de4a12b00e9" kind="define"><name>SEARCH_RADIUS_PADDING</name></member>
+    <member refid="_global_definitions_8h_1a762024f42de3c36920d0b0d4df286994" kind="define"><name>IMAGE_PYRAMID_LEVELS</name></member>
+    <member refid="_global_definitions_8h_1a7a49fa746f53f0103790f05e21c5e991" kind="define"><name>DEFAULT_LANDMARK_DINV</name></member>
+    <member refid="_global_definitions_8h_1a0885a37842f1bac24cfb0259f09faeb9" kind="define"><name>IMAGE_STDDEV_RESOLUTION</name></member>
+    <member refid="_global_definitions_8h_1a8029edf869757f2e261a6423fa9627ee" kind="define"><name>EQUIDISTANT_CAMERA_MODEL_RADIUS_MAP_RESOLUTION</name></member>
+  </compound>
+  <compound refid="_block_vector_8h" kind="file"><name>BlockVector.h</name>
+  </compound>
+  <compound refid="_containers_8h" kind="file"><name>Containers.h</name>
+  </compound>
+  <compound refid="_error_term_base_8h" kind="file"><name>ErrorTermBase.h</name>
+  </compound>
+  <compound refid="_gaussian_prior_8h" kind="file"><name>GaussianPrior.h</name>
+  </compound>
+  <compound refid="_key_8h" kind="file"><name>Key.h</name>
+  </compound>
+  <compound refid="_marginalizer_8h" kind="file"><name>Marginalizer.h</name>
+  </compound>
+  <compound refid="_meta_helpers_8h" kind="file"><name>MetaHelpers.h</name>
+  </compound>
+  <compound refid="_optimizable_variable_8h" kind="file"><name>OptimizableVariable.h</name>
+  </compound>
+  <compound refid="_macros_8h" kind="file"><name>Macros.h</name>
+  </compound>
+  <compound refid="_parallel_algorithms_8h" kind="file"><name>ParallelAlgorithms.h</name>
+  </compound>
+  <compound refid="_threading_helpers_8h" kind="file"><name>ThreadingHelpers.h</name>
+    <member refid="_threading_helpers_8h_1ac9e94064e8ce15d44ef2b94289b1548b" kind="define"><name>DEFAULT_THREAD_COUNT</name></member>
+  </compound>
+  <compound refid="_p_s_d_linear_system_8h" kind="file"><name>PSDLinearSystem.h</name>
+  </compound>
+  <compound refid="_slot_array_8h" kind="file"><name>SlotArray.h</name>
+  </compound>
+  <compound refid="_slot_map_8h" kind="file"><name>SlotMap.h</name>
+  </compound>
+  <compound refid="_sparse_block_matrix_8h" kind="file"><name>SparseBlockMatrix.h</name>
+  </compound>
+  <compound refid="_sparse_block_row_8h" kind="file"><name>SparseBlockRow.h</name>
+  </compound>
+  <compound refid="_s_s_e_optimizer_8h" kind="file"><name>SSEOptimizer.h</name>
+  </compound>
+  <compound refid="_inverse_depth_8h" kind="file"><name>InverseDepth.h</name>
+  </compound>
+  <compound refid="_s_e3_8h" kind="file"><name>SE3.h</name>
+  </compound>
+  <compound refid="_basic_pipeline_8cpp" kind="file"><name>BasicPipeline.cpp</name>
+  </compound>
+  <compound refid="_basic_pipeline_8h" kind="file"><name>BasicPipeline.h</name>
+  </compound>
+  <compound refid="_settings_8h" kind="file"><name>Settings.h</name>
+  </compound>
+  <compound refid="_types_8h" kind="file"><name>Types.h</name>
+  </compound>
+  <compound refid="dir_4510c287d9a3aa79e92aa3264febc4a2" kind="dir"><name>src/CameraModels</name>
+  </compound>
+  <compound refid="dir_74490131f5eb8b002814b2d1d0fe25a3" kind="dir"><name>src/DataStructures</name>
+  </compound>
+  <compound refid="dir_f2c42189119f6cb9a631c1a2a212ddf4" kind="dir"><name>src/ErrorTerms</name>
+  </compound>
+  <compound refid="dir_788b83bd7d58330e883f02346fb7cb41" kind="dir"><name>src/Estimation</name>
+  </compound>
+  <compound refid="dir_ee2446f96c139fd87707c1907e067eea" kind="dir"><name>src/FeatureDetection</name>
+  </compound>
+  <compound refid="dir_b18c32434c6e0e7e42f188f30d3fbe7d" kind="dir"><name>src/FeatureMatching</name>
+  </compound>
+  <compound refid="dir_6f39057b3b439f65f91e82b8fddf8441" kind="dir"><name>src/Optimizer</name>
+  </compound>
+  <compound refid="dir_917d0e0dbab3185063e811e3632def67" kind="dir"><name>src/Optimizer/ParallelAlgorithms</name>
+  </compound>
+  <compound refid="dir_b69994b7a953c3f7aa0627a9d5a0f653" kind="dir"><name>src/Pipeline</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+  <compound refid="dir_e6a179be5d587a1efc17659821c626a7" kind="dir"><name>src/Optimizer/Variables</name>
+  </compound>
+</doxygenindex>

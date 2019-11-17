@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_types_8h" kind="file" language="C++">
+    <compoundname>Types.h</compoundname>
+    <includes refid="_global_definitions_8h" local="yes">GlobalDefinitions.h</includes>
+    <includes local="no">sophus/se3.hpp</includes>
+    <includes local="no">optional</includes>
+    <includedby refid="_camera_model_8hpp" local="yes">src/CameraModels/CameraModel.hpp</includedby>
+    <includedby refid="_patch_8h" local="yes">src/DataStructures/Patch.h</includedby>
+    <includedby refid="_i_m_u_state_8h" local="yes">src/DataStructures/IMUState.h</includedby>
+    <includedby refid="_image_8h" local="yes">src/DataStructures/Image.h</includedby>
+    <includedby refid="_graph_8h" local="yes">src/DataStructures/Graph.h</includedby>
+    <includedby refid="_quasi_direct_error_term_8h" local="yes">src/ErrorTerms/QuasiDirectErrorTerm.h</includedby>
+    <includedby refid="_patch_comparer_8h" local="yes">src/FeatureMatching/PatchComparer.h</includedby>
+    <includedby refid="_patch_warper_8h" local="yes">src/FeatureMatching/PatchWarper.h</includedby>
+    <includedby refid="_key_8h" local="yes">src/Optimizer/Key.h</includedby>
+    <includedby refid="_optimizable_variable_8h" local="yes">src/Optimizer/OptimizableVariable.h</includedby>
+    <includedby refid="_basic_pipeline_8h" local="yes">src/Pipeline/BasicPipeline.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Types.h</label>
+        <link refid="_types_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>ctime</label>
+      </node>
+      <node id="6">
+        <label>optional</label>
+      </node>
+      <node id="5">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="3">
+        <label>chrono</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/CameraModels/CameraModel.hpp</label>
+        <link refid="_camera_model_8hpp_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>src/Optimizer/ErrorTermBase.h</label>
+        <link refid="_error_term_base_8h_source"/>
+      </node>
+      <node id="28">
+        <label>src/Optimizer/SparseBlockMatrix.h</label>
+        <link refid="_sparse_block_matrix_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>src/DataStructures/IMUState.h</label>
+        <link refid="_i_m_u_state_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>src/ErrorTerms/QuasiDirectErrorTerm.h</label>
+        <link refid="_quasi_direct_error_term_8h_source"/>
+      </node>
+      <node id="20">
+        <label>src/Optimizer/BlockVector.h</label>
+        <link refid="_block_vector_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>src/Optimizer/Variables/InverseDepth.h</label>
+        <link refid="_inverse_depth_8h_source"/>
+      </node>
+      <node id="10">
+        <label>src/FeatureMatching/PatchWarper.h</label>
+        <link refid="_patch_warper_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>src/FeatureDetection/FeatureDetector.h</label>
+        <link refid="_feature_detector_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Types.h</label>
+        <link refid="_types_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>src/DataStructures/CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>src/Optimizer/SSEOptimizer.h</label>
+        <link refid="_s_s_e_optimizer_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>src/DataStructures/Graph.h</label>
+        <link refid="_graph_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>src/Optimizer/Variables/SE3.h</label>
+        <link refid="_s_e3_8h_source"/>
+      </node>
+      <node id="22">
+        <label>src/Optimizer/Marginalizer.h</label>
+        <link refid="_marginalizer_8h_source"/>
+      </node>
+      <node id="12">
+        <label>src/FeatureMatching/PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>src/Optimizer/Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>src/DataStructures/Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/CameraModels/EquidistantCameraModel.h</label>
+        <link refid="_equidistant_camera_model_8h_source"/>
+      </node>
+      <node id="13">
+        <label>src/DataStructures/Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>src/Optimizer/PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h_source"/>
+      </node>
+      <node id="8">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+      <node id="21">
+        <label>src/Optimizer/GaussianPrior.h</label>
+        <link refid="_gaussian_prior_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/CameraModels/FOVCameraModel.hpp</label>
+        <link refid="_f_o_v_camera_model_8hpp_source"/>
+      </node>
+      <node id="17">
+        <label>src/DataStructures/Image.h</label>
+        <link refid="_image_8h_source"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="29">
+        <label>src/Optimizer/OptimizableVariable.h</label>
+        <link refid="_optimizable_variable_8h_source"/>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>src/Optimizer/Containers.h</label>
+        <link refid="_containers_8h_source"/>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>src/Optimizer/SparseBlockRow.h</label>
+        <link refid="_sparse_block_row_8h_source"/>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>src/DataStructures/ImagePyramid.h</label>
+        <link refid="_image_pyramid_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_q_d_v_o">QDVO</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;GlobalDefinitions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;sophus/se3.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;optional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>ID<sp/>=<sp/>ID_TYPE;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Scalar<sp/>=<sp/>SCALAR_TYPE;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_s_e3" kindref="compound">SE3</ref><sp/>=<sp/>Sophus::SE3&lt;Scalar&gt;;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>SO3<sp/>=<sp/>Sophus::SO3&lt;Scalar&gt;;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Vector3<sp/>=<sp/>Eigen::Matrix&lt;Scalar,<sp/>3,<sp/>1&gt;;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Vector2<sp/>=<sp/>Eigen::Matrix&lt;Scalar,<sp/>2,<sp/>1&gt;;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Matrix2<sp/>=<sp/>Eigen::Matrix&lt;Scalar,<sp/>2,<sp/>2&gt;;</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Result<sp/>=<sp/>std::optional&lt;T&gt;;</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/Types.h"/>
+  </compounddef>
+</doxygen>

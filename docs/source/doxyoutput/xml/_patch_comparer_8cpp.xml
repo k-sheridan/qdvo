@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_patch_comparer_8cpp" kind="file" language="C++">
+    <compoundname>PatchComparer.cpp</compoundname>
+    <includes refid="_patch_comparer_8h" local="yes">PatchComparer.h</includes>
+    <incdepgraph>
+      <node id="15">
+        <label>CameraModel.hpp</label>
+        <link refid="_camera_model_8hpp_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>IMUState.h</label>
+        <link refid="_i_m_u_state_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Landmark.h</label>
+        <link refid="_landmark_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="7">
+        <label>opencv2/imgproc.hpp</label>
+      </node>
+      <node id="21">
+        <label>CorrespondenceDistribution.h</label>
+        <link refid="_correspondence_distribution_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>unordered_set</label>
+      </node>
+      <node id="2">
+        <label>PatchComparer.h</label>
+        <link refid="_patch_comparer_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="27">
+        <label>SpatialMap.h</label>
+        <link refid="_spatial_map_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/FeatureMatching/PatchComparer.cpp</label>
+        <link refid="_patch_comparer_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>DataStructures/Frame.h</label>
+        <link refid="_frame_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>sophus/types.hpp</label>
+      </node>
+      <node id="5">
+        <label>ctime</label>
+      </node>
+      <node id="10">
+        <label>sophus/common.hpp</label>
+      </node>
+      <node id="6">
+        <label>opencv2/core.hpp</label>
+      </node>
+      <node id="14">
+        <label>optional</label>
+      </node>
+      <node id="28">
+        <label>vector</label>
+      </node>
+      <node id="29">
+        <label>Patch.h</label>
+        <link refid="_patch_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>RadialSearchPattern.h</label>
+        <link refid="_radial_search_pattern_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>EpipolarDepthEstimator.h</label>
+        <link refid="_epipolar_depth_estimator_8h_source"/>
+      </node>
+      <node id="26">
+        <label>iostream</label>
+      </node>
+      <node id="12">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="4">
+        <label>chrono</label>
+      </node>
+      <node id="20">
+        <label>Image.h</label>
+        <link refid="_image_8h_source"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="23">
+        <label>boost/geometry.hpp</label>
+      </node>
+      <node id="24">
+        <label>algorithm</label>
+      </node>
+      <node id="19">
+        <label>ImagePyramid.h</label>
+        <link refid="_image_pyramid_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;PatchComparer.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal">QDVO::PatchComparer::PatchComparer(){</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">QDVO::Result&lt;SCALAR_TYPE&gt;<sp/>QDVO::PatchComparer::compare(<ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref>&amp;<sp/>patch,<sp/>Frame&amp;<sp/>targetFrame,<sp/>Eigen::Vector2i&amp;<sp/>pixel)</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>cv::Rect<sp/>roi(cv::Point2i(pixel(0),<sp/>pixel(1))<sp/>-<sp/>cv::Point2i(PATCH_RADIUS,<sp/>PATCH_RADIUS),<sp/>cv::Size2i(PATCH_WIDTH,<sp/>PATCH_WIDTH));</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Vector2i<sp/>shift(PATCH_RADIUS,<sp/>PATCH_RADIUS);</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Vector2i<sp/>tl<sp/>=<sp/>pixel<sp/>-<sp/>shift;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Vector2i<sp/>br<sp/>=<sp/>pixel<sp/>+<sp/>shift;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(patch.getStdDev()<sp/>&gt;<sp/>1e-8);</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/>assert(PATCH_WIDTH<sp/>==<sp/>2*PATCH_RADIUS<sp/>+<sp/>1);</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::ImageType&amp;<sp/>targetImage<sp/>=<sp/>targetFrame.imagePyr.getImage().getImageData();</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(tl(0)<sp/>&lt;<sp/>0<sp/>||<sp/>tl(1)<sp/>&lt;<sp/>0<sp/>||<sp/>br(0)<sp/>&gt;=<sp/>targetImage.cols()<sp/>||<sp/>br(1)<sp/>&gt;=<sp/>targetImage.rows())</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{};</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>get<sp/>the<sp/>test<sp/>patch<sp/>from<sp/>the<sp/>image<sp/>and<sp/>compute<sp/>its<sp/>zero<sp/>mean<sp/>self.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;QDVO::ImageIntensityType,<sp/>PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;<sp/>patchData<sp/>=<sp/>targetImage.block&lt;PATCH_WIDTH,<sp/>PATCH_WIDTH&gt;(tl(1),<sp/>tl(0));</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref><sp/>testPatch<sp/>=<sp/><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref>(patchData);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>SCALAR_TYPE<sp/>resultingScore<sp/>=<sp/>(patch.getZeroMeanImageMatrix().array()<sp/>*<sp/>testPatch.getZeroMeanImageMatrix().array()).sum()</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>/<sp/>sqrt(patch.getSumZeroMeanSquared()<sp/>*<sp/>testPatch.getSumZeroMeanSquared());</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>resultingScore<sp/>=<sp/>((resultingScore<sp/>+<sp/>1)<sp/>/<sp/>2);</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>resultingScore;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="src/FeatureMatching/PatchComparer.cpp"/>
+  </compounddef>
+</doxygen>

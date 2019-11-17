@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename ScalarType</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1acb659e712d751fc48c03370b5208b5e8" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_sparse_block_row" kindref="compound">SparseBlockRow</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>&lt; VariableType::dimension &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
+        <definition>using ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::Row =  SparseBlockRow&lt;Scalar&lt;ScalarType&gt;, Dimension&lt;VariableType::dimension&gt;, VariableGroup&lt;Variables...&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>Row</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="18" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c9408a6ab957b9ac01cc30bd6f33ca7" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>std::map&lt; <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;, <ref refid="class_arg_min_1_1_sparse_block_row" kindref="compound">Row</ref>&lt; VariableType &gt; &gt;</type>
+        <definition>using ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::RowMap =  std::map&lt;VariableKey&lt;VariableType&gt;, Row&lt;VariableType&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>RowMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="21" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a1a6465c53945cdf07e3cd78c6ad0a91f" prot="private" static="no" mutable="no">
+        <type>std::tuple&lt; RowMap&lt; Variables &gt;... &gt;</type>
+        <definition>std::tuple&lt;RowMap&lt;Variables&gt;...&gt; ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::tupleOfRowMaps</definition>
+        <argsstring></argsstring>
+        <name>tupleOfRowMaps</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="117" column="16" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a15a6dc7d76eb9446b0327e0df0eaf61d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::SparseBlockMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>SparseBlockMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="23" column="5" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a335e3e489769dce1e7ff50ed5a52933f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>RowMap&lt; VariableType &gt; &amp;</type>
+        <definition>RowMap&lt;VariableType&gt;&amp; ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::getRowMap</definition>
+        <argsstring>()</argsstring>
+        <name>getRowMap</name>
+        <briefdescription>
+<para>Gets the map of rows for a given variable type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="27" column="12" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="27" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c37bcb864e4ac7726c95d695d7206d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>auto &amp;</type>
+        <definition>auto&amp; ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::addRowIfItDoesNotExist</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key)</argsstring>
+        <name>addRowIfItDoesNotExist</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Inserts a row into the matrix and return its reference. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="34" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="34" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a89a18d009174696eef11dded3e5f8a90" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename RowType</type>
+          </param>
+          <param>
+            <type>typename ColType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::setBlock</definition>
+        <argsstring>(VariableKey&lt; RowType &gt; rowKey, VariableKey&lt; ColType &gt; colKey, const Eigen::Matrix&lt; ScalarType, RowType::dimension, ColType::dimension &gt; &amp;blockMatrix)</argsstring>
+        <name>setBlock</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; RowType &gt;</type>
+          <declname>rowKey</declname>
+        </param>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; ColType &gt;</type>
+          <declname>colKey</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; ScalarType, RowType::dimension, ColType::dimension &gt; &amp;</type>
+          <declname>blockMatrix</declname>
+        </param>
+        <briefdescription>
+<para>Inserts or assigns a block at the given keys. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="49" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="49" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4bb06fc5a431367b1f74bb1f8159c287" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename RowType</type>
+          </param>
+          <param>
+            <type>typename ColType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::removeBlock</definition>
+        <argsstring>(VariableKey&lt; RowType &gt; rowKey, VariableKey&lt; ColType &gt; colKey)</argsstring>
+        <name>removeBlock</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; RowType &gt;</type>
+          <declname>rowKey</declname>
+        </param>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; ColType &gt;</type>
+          <declname>colKey</declname>
+        </param>
+        <briefdescription>
+<para>Removes a block using the keys. Essentially, sets the block to zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="60" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="60" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4d5d7cce85c82023fcbef3ef2358d384" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>DenseMatrixColumns</declname>
+            <defname>DenseMatrixColumns</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::dot</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variableOrder, const Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, DenseMatrixColumns &gt; &amp;v, Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, DenseMatrixColumns &gt; &amp;result)</argsstring>
+        <name>dot</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variableOrder</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, DenseMatrixColumns &gt; &amp;</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, DenseMatrixColumns &gt; &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the dot product of this Matrix with a dense column vector. The variable container is used to determine the indices of each block. a.k.a. A * v = result </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockMatrix.h" line="79" column="10" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="79" bodyend="113"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/SparseBlockMatrix.h" line="15" column="1" bodyfile="src/Optimizer/SparseBlockMatrix.h" bodystart="14" bodyend="118"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c37bcb864e4ac7726c95d695d7206d5" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addRowIfItDoesNotExist</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4d5d7cce85c82023fcbef3ef2358d384" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>dot</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a335e3e489769dce1e7ff50ed5a52933f" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getRowMap</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a4bb06fc5a431367b1f74bb1f8159c287" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeBlock</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1acb659e712d751fc48c03370b5208b5e8" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>Row</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a5c9408a6ab957b9ac01cc30bd6f33ca7" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>RowMap</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a89a18d009174696eef11dded3e5f8a90" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>setBlock</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a15a6dc7d76eb9446b0327e0df0eaf61d" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>SparseBlockMatrix</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_matrix_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a1a6465c53945cdf07e3cd78c6ad0a91f" prot="private" virt="non-virtual"><scope>ArgMin::SparseBlockMatrix&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>tupleOfRowMaps</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

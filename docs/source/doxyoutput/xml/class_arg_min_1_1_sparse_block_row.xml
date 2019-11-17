@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_sparse_block_row" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::SparseBlockRow</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename...</type>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/SparseBlockRow.h" line="14" column="1" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="14" bodyend="-1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

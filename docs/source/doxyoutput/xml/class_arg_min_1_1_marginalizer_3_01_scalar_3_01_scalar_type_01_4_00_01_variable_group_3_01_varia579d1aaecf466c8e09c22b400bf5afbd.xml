@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename ScalarType</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>ErrorTerms</declname>
+        <defname>ErrorTerms</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a9f62dd76d58dbddb805040ebf9f055e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::Marginalizer</definition>
+        <argsstring>()</argsstring>
+        <name>Marginalizer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Marginalizer.h" line="18" column="5" bodyfile="src/Optimizer/Marginalizer.h" bodystart="18" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a32a544dd89c67f5fbccf79a651f0dfb6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::marginalizeVariable</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; &amp;marginalizedKey, GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;&gt; ErrorTermContainer&lt; ErrorTerms... &gt; &amp;linearizedErrorTerms)</argsstring>
+        <name>marginalizeVariable</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &amp;</type>
+          <declname>marginalizedKey</declname>
+        </param>
+        <param>
+          <type><ref refid="class_arg_min_1_1_gaussian_prior" kindref="compound">GaussianPrior</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt;&gt; <ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt; ErrorTerms... &gt; &amp;</type>
+          <declname>linearizedErrorTerms</declname>
+        </param>
+        <briefdescription>
+<para>Marginalizes the variable requested using a set of linearized error terms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Marginalizer.h" line="22" column="10" bodyfile="src/Optimizer/Marginalizer.h" bodystart="22" bodyend="25"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/Marginalizer.h" line="14" column="23" bodyfile="src/Optimizer/Marginalizer.h" bodystart="14" bodyend="27"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a9f62dd76d58dbddb805040ebf9f055e2" prot="public" virt="non-virtual"><scope>ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>Marginalizer</name></member>
+      <member refid="class_arg_min_1_1_marginalizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_varia579d1aaecf466c8e09c22b400bf5afbd_1a32a544dd89c67f5fbccf79a651f0dfb6" prot="public" virt="non-virtual"><scope>ArgMin::Marginalizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>marginalizeVariable</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

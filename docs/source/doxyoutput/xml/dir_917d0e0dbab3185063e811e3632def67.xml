@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="dir_917d0e0dbab3185063e811e3632def67" kind="dir">
+    <compoundname>src/Optimizer/ParallelAlgorithms</compoundname>
+    <innerfile refid="_macros_8h">Macros.h</innerfile>
+    <innerfile refid="_parallel_algorithms_8h">ParallelAlgorithms.h</innerfile>
+    <innerfile refid="_threading_helpers_8h">ThreadingHelpers.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/ParallelAlgorithms/"/>
+  </compounddef>
+</doxygen>

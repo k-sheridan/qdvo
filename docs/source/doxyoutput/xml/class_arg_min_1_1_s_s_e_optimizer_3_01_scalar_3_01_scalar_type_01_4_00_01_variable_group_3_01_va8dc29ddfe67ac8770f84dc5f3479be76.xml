@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename ScalarType</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>ErrorTerms</declname>
+        <defname>ErrorTerms</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="private" static="no" mutable="no">
+        <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt;</type>
+        <definition>VariableContainer&lt;Variables...&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::variables</definition>
+        <argsstring></argsstring>
+        <name>variables</name>
+        <briefdescription>
+<para>Containers for both variables and error terms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="71" column="23" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="private" static="no" mutable="no">
+        <type><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt; ErrorTerms... &gt;</type>
+        <definition>ErrorTermContainer&lt;ErrorTerms...&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::errorTerms</definition>
+        <argsstring></argsstring>
+        <name>errorTerms</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="72" column="24" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="private" static="no" mutable="no">
+        <type><ref refid="class_arg_min_1_1_gaussian_prior" kindref="compound">GaussianPrior</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
+        <definition>GaussianPrior&lt;Scalar&lt;ScalarType&gt;, VariableGroup&lt;Variables...&gt; &gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::prior</definition>
+        <argsstring></argsstring>
+        <name>prior</name>
+        <briefdescription>
+<para>Gaussian Prior. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="75" column="19" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a53e63ff020da651b855482bcb6702d0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+        <definition>VariableKey&lt;VariableType&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::addVariable</definition>
+        <argsstring>(VariableType &amp;optimizableVariable)</argsstring>
+        <name>addVariable</name>
+        <param>
+          <type>VariableType &amp;</type>
+          <declname>optimizableVariable</declname>
+        </param>
+        <briefdescription>
+<para>Inserts a variable into the optimizer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="20" column="17" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="20" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aa33b0efe32dfea9478241c4d8b99b30a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::setVariablePrior</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; &amp;variableKey, Eigen::Matrix&lt; ScalarType, VariableType::dimension, VariableType::dimension &gt; &amp;covariance)</argsstring>
+        <name>setVariablePrior</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &amp;</type>
+          <declname>variableKey</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; ScalarType, VariableType::dimension, VariableType::dimension &gt; &amp;</type>
+          <declname>covariance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="27" column="10" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="27" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1afc84818e29e65201a546c75fa89a1005" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::marginalizeVariable</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; &amp;key)</argsstring>
+        <name>marginalizeVariable</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Removes a variable and it&apos;s associated error terms, while approximating the information they provided to the remaining variables with a gaussian prior. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="35" column="10" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="35" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a703bc33a786b56234bb7780506c8f460" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::removeVariable</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; &amp;key)</argsstring>
+        <name>removeVariable</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Removes a variable from the problem without marginalizing it. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="42" column="10" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="42" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a5c3fa4ce5bc5167aa10fae07387afe1c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ErrorTermType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_error_term_key" kindref="compound">ErrorTermKey</ref>&lt; ErrorTermType &gt;</type>
+        <definition>ErrorTermKey&lt;ErrorTermType&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::addErrorTerm</definition>
+        <argsstring>(ErrorTermType &amp;errorTerm)</argsstring>
+        <name>addErrorTerm</name>
+        <param>
+          <type>ErrorTermType &amp;</type>
+          <declname>errorTerm</declname>
+        </param>
+        <briefdescription>
+<para>Adds error term to the problem. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="51" column="18" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="51" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aea5d5dba859722fd7bf1b468a8190332" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ErrorTermType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::removeErrorTerm</definition>
+        <argsstring>(ErrorTermKey&lt; ErrorTermType &gt; &amp;errorTermKey)</argsstring>
+        <name>removeErrorTerm</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_error_term_key" kindref="compound">ErrorTermKey</ref>&lt; ErrorTermType &gt; &amp;</type>
+          <declname>errorTermKey</declname>
+        </param>
+        <briefdescription>
+<para>Removes error term from the problem. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="58" column="10" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="58" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a58db16a95876ba98f9204dedcc8bd44d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::optimize</definition>
+        <argsstring>()</argsstring>
+        <name>optimize</name>
+        <briefdescription>
+<para>Iteratively refines the variables until the SSE of the error terms is minimized. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SSEOptimizer.h" line="64" column="10" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="64" bodyend="67"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/SSEOptimizer.h" line="16" column="1" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="15" bodyend="76"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a5c3fa4ce5bc5167aa10fae07387afe1c" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addErrorTerm</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a53e63ff020da651b855482bcb6702d0d" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addVariable</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>errorTerms</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1afc84818e29e65201a546c75fa89a1005" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>marginalizeVariable</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a58db16a95876ba98f9204dedcc8bd44d" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>optimize</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>prior</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aea5d5dba859722fd7bf1b468a8190332" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>removeErrorTerm</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a703bc33a786b56234bb7780506c8f460" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>removeVariable</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aa33b0efe32dfea9478241c4d8b99b30a" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>setVariablePrior</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>variables</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

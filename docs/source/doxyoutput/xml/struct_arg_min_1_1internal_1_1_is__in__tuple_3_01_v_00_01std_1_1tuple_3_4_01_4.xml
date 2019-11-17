@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt;&gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename V</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4_1a705f58d8cfa36e45b745613540a2e50b" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt;&gt; &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/MetaHelpers.h" line="85" column="27" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/MetaHelpers.h" line="84" column="1" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="83" bodyend="86"/>
+    <listofallmembers>
+      <member refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4_1a705f58d8cfa36e45b745613540a2e50b" prot="public" virt="non-virtual"><scope>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt;&gt; &gt;</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

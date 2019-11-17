@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_spatial_map" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::SpatialMap</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename</type>
+        <declname>T</declname>
+        <defname>T</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a7c7364441ef03b293feeebcbc2a2757d" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::unique_ptr&lt; std::vector&lt; T &gt; &gt; &gt;</type>
+        <definition>std::vector&lt;std::unique_ptr&lt;std::vector&lt;T&gt; &gt; &gt; QDVO::SpatialMap&lt; T &gt;::mapOfMaps</definition>
+        <argsstring></argsstring>
+        <name>mapOfMaps</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="92" column="17" bodyfile="src/DataStructures/SpatialMap.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1ac04844aadf4f7c720e274870a6da8355" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::SpatialMap&lt; T &gt;::maximumIndexBitCount</definition>
+        <argsstring></argsstring>
+        <name>maximumIndexBitCount</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="94" column="14" bodyfile="src/DataStructures/SpatialMap.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a7334560e9a5ea151779d754713857a21" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::SpatialMap&lt; T &gt;::topHashBitCount</definition>
+        <argsstring></argsstring>
+        <name>topHashBitCount</name>
+        <initializer>=  4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="96" column="14" bodyfile="src/DataStructures/SpatialMap.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a52f7a54f35282b1e57b9cf52b5dc6284" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::SpatialMap&lt; T &gt;::bottomHashBitCount</definition>
+        <argsstring></argsstring>
+        <name>bottomHashBitCount</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="97" column="14" bodyfile="src/DataStructures/SpatialMap.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a38e382de86f99cdd97a4d4c94872e787" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t QDVO::SpatialMap&lt; T &gt;::bottomHashTableSize</definition>
+        <argsstring></argsstring>
+        <name>bottomHashTableSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="98" column="12" bodyfile="src/DataStructures/SpatialMap.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1acd66b7f629d092efdc9f67300d7805a1" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::SpatialMap&lt; T &gt;::topHashMask</definition>
+        <argsstring></argsstring>
+        <name>topHashMask</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="101" column="14" bodyfile="src/DataStructures/SpatialMap.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1af36bf614711e3d55ad77d11ccbc10c32" prot="private" static="no" mutable="no">
+        <type>unsigned</type>
+        <definition>unsigned QDVO::SpatialMap&lt; T &gt;::bottomHashMask</definition>
+        <argsstring></argsstring>
+        <name>bottomHashMask</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="102" column="14" bodyfile="src/DataStructures/SpatialMap.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a47819fb340f7c5c99de0ec72bf19c883" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t QDVO::SpatialMap&lt; T &gt;::index1</definition>
+        <argsstring></argsstring>
+        <name>index1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="106" column="12" bodyfile="src/DataStructures/SpatialMap.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_spatial_map_1a32ebcbd521a9dade8b404a005314fc0a" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t QDVO::SpatialMap&lt; T &gt;::index2</definition>
+        <argsstring></argsstring>
+        <name>index2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="106" column="19" bodyfile="src/DataStructures/SpatialMap.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1a4e83eb41d4e00e5a288164095e22a46b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::SpatialMap&lt; T &gt;::SpatialMap</definition>
+        <argsstring>()</argsstring>
+        <name>SpatialMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="29" column="5" bodyfile="src/DataStructures/SpatialMap.h" bodystart="110" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1a00b6e410c2176e1aae0a4d9269aa49a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::SpatialMap&lt; T &gt;::SpatialMap</definition>
+        <argsstring>(const unsigned width)</argsstring>
+        <name>SpatialMap</name>
+        <param>
+          <type>const unsigned</type>
+          <declname>width</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="31" column="5" bodyfile="src/DataStructures/SpatialMap.h" bodystart="115" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1a01930cd07e219a913a3beea4b00ab5f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::SpatialMap&lt; T &gt;::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="33" column="10" bodyfile="src/DataStructures/SpatialMap.h" bodystart="33" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1a78970f719915480b6f883ffea2bc3901" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T&amp; QDVO::SpatialMap&lt; T &gt;::get</definition>
+        <argsstring>(const Eigen::Vector2i &amp;pixel)</argsstring>
+        <name>get</name>
+        <param>
+          <type>const Eigen::Vector2i &amp;</type>
+          <declname>pixel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="48" column="7" bodyfile="src/DataStructures/SpatialMap.h" bodystart="48" bodyend="66"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1a9f442a57b4d0aacd42e1010ccaf3c10e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t QDVO::SpatialMap&lt; T &gt;::topHash</definition>
+        <argsstring>(const int x, const int y)</argsstring>
+        <name>topHash</name>
+        <param>
+          <type>const int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="74" column="12" bodyfile="src/DataStructures/SpatialMap.h" bodystart="74" bodyend="78"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_spatial_map_1aa577272200dd68c17b354e6a68dc015b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t QDVO::SpatialMap&lt; T &gt;::bottomHash</definition>
+        <argsstring>(const int x, const int y)</argsstring>
+        <name>bottomHash</name>
+        <param>
+          <type>const int</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/SpatialMap.h" line="84" column="12" bodyfile="src/DataStructures/SpatialMap.h" bodystart="84" bodyend="88"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/DataStructures/SpatialMap.h" line="26" column="17" bodyfile="src/DataStructures/SpatialMap.h" bodystart="26" bodyend="108"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1aa577272200dd68c17b354e6a68dc015b" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>bottomHash</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a52f7a54f35282b1e57b9cf52b5dc6284" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>bottomHashBitCount</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1af36bf614711e3d55ad77d11ccbc10c32" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>bottomHashMask</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a38e382de86f99cdd97a4d4c94872e787" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>bottomHashTableSize</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a78970f719915480b6f883ffea2bc3901" prot="public" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>get</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a47819fb340f7c5c99de0ec72bf19c883" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>index1</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a32ebcbd521a9dade8b404a005314fc0a" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>index2</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a7c7364441ef03b293feeebcbc2a2757d" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>mapOfMaps</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1ac04844aadf4f7c720e274870a6da8355" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>maximumIndexBitCount</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a01930cd07e219a913a3beea4b00ab5f5" prot="public" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>reset</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a4e83eb41d4e00e5a288164095e22a46b" prot="public" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>SpatialMap</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a00b6e410c2176e1aae0a4d9269aa49a9" prot="public" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>SpatialMap</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a9f442a57b4d0aacd42e1010ccaf3c10e" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>topHash</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1a7334560e9a5ea151779d754713857a21" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>topHashBitCount</name></member>
+      <member refid="class_q_d_v_o_1_1_spatial_map_1acd66b7f629d092efdc9f67300d7805a1" prot="private" virt="non-virtual"><scope>QDVO::SpatialMap</scope><name>topHashMask</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

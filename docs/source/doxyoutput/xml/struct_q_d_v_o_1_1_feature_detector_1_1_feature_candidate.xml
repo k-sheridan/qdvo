@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate" kind="struct" language="C++" prot="public">
+    <compoundname>QDVO::FeatureDetector::FeatureCandidate</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ac298ad9a3030605afffbdf31dceef7f5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::FeatureDetector::FeatureCandidate::x</definition>
+        <argsstring></argsstring>
+        <name>x</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="35" column="13" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1adb2df83d4d0aabfea823f70217b5f925" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::FeatureDetector::FeatureCandidate::y</definition>
+        <argsstring></argsstring>
+        <name>y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="35" column="15" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6125912a23eae7d0ca185b87c2561a15" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::dxdx</definition>
+        <argsstring></argsstring>
+        <name>dxdx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="36" column="21" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a1b7f8cd3a5513ceeb83956b6ed75d1cb" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::dxdy</definition>
+        <argsstring></argsstring>
+        <name>dxdy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="36" column="26" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6829c6066dd4242b4809da49f66abc93" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::dydy</definition>
+        <argsstring></argsstring>
+        <name>dydy</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="36" column="31" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a15a125ea176a6821a1ac4506b9e3975c" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::det</definition>
+        <argsstring></argsstring>
+        <name>det</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="37" column="21" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a5469132c2f5249e68ee7f5920c845570" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::trace</definition>
+        <argsstring></argsstring>
+        <name>trace</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="37" column="25" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1aa2c814840aac04598cb50017815b6857" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::gradientNorm</definition>
+        <argsstring></argsstring>
+        <name>gradientNorm</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="38" column="21" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6079df49900786697c884fd723bb6230" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::harris</definition>
+        <argsstring></argsstring>
+        <name>harris</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="39" column="21" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ad396a120e119ac50a79ad89ea61f071a" prot="public" static="no" mutable="no">
+        <type>SCALAR_TYPE</type>
+        <definition>SCALAR_TYPE QDVO::FeatureDetector::FeatureCandidate::score</definition>
+        <argsstring></argsstring>
+        <name>score</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/FeatureDetection/FeatureDetector.h" line="40" column="21" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/FeatureDetection/FeatureDetector.h" line="34" column="27" bodyfile="src/FeatureDetection/FeatureDetector.h" bodystart="34" bodyend="41"/>
+    <listofallmembers>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a15a125ea176a6821a1ac4506b9e3975c" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>det</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6125912a23eae7d0ca185b87c2561a15" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>dxdx</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a1b7f8cd3a5513ceeb83956b6ed75d1cb" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>dxdy</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6829c6066dd4242b4809da49f66abc93" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>dydy</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1aa2c814840aac04598cb50017815b6857" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>gradientNorm</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a6079df49900786697c884fd723bb6230" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>harris</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ad396a120e119ac50a79ad89ea61f071a" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>score</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1a5469132c2f5249e68ee7f5920c845570" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>trace</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1ac298ad9a3030605afffbdf31dceef7f5" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>x</name></member>
+      <member refid="struct_q_d_v_o_1_1_feature_detector_1_1_feature_candidate_1adb2df83d4d0aabfea823f70217b5f925" prot="public" virt="non-virtual"><scope>QDVO::FeatureDetector::FeatureCandidate</scope><name>y</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

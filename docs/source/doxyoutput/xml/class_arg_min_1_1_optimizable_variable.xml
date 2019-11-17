@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_optimizable_variable" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::OptimizableVariable</compoundname>
+    <templateparamlist>
+      <param>
+        <type>size_t</type>
+        <declname>Dimension</declname>
+        <defname>Dimension</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" prot="public" static="yes" mutable="no">
+        <type>const size_t</type>
+        <definition>const size_t ArgMin::OptimizableVariable&lt; Dimension &gt;::dimension</definition>
+        <argsstring></argsstring>
+        <name>dimension</name>
+        <initializer>= <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/OptimizableVariable.h" line="11" column="25" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/OptimizableVariable.h" line="8" column="26" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="8" bodyend="13"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_optimizable_variable_1aec986ae48ee5518b4a6013bd89c42e67" prot="public" virt="non-virtual"><scope>ArgMin::OptimizableVariable</scope><name>dimension</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

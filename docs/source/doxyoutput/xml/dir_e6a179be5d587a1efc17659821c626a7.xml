@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="dir_e6a179be5d587a1efc17659821c626a7" kind="dir">
+    <compoundname>src/Optimizer/Variables</compoundname>
+    <innerfile refid="_inverse_depth_8h">InverseDepth.h</innerfile>
+    <innerfile refid="_s_e3_8h">SE3.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Optimizer/Variables/"/>
+  </compounddef>
+</doxygen>

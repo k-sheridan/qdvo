@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_i_m_u_state" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::IMUState</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_i_m_u_state_1acbc920e495e7bad9ef8acd8687caab10" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::IMUState::dimensions</definition>
+        <argsstring></argsstring>
+        <name>dimensions</name>
+        <initializer>= 9</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="15" column="9" bodyfile="src/DataStructures/IMUState.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_i_m_u_state_1a17c5e06a329e53a217229a07fd0d2fba" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double QDVO::IMUState::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="17" column="12" bodyfile="src/DataStructures/IMUState.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_i_m_u_state_1ad5adfe3006900dff8d376c04cc2fc436" prot="public" static="no" mutable="no">
+        <type>QDVO::SO3</type>
+        <definition>QDVO::SO3 QDVO::IMUState::attitude</definition>
+        <argsstring></argsstring>
+        <name>attitude</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="19" column="15" bodyfile="src/DataStructures/IMUState.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_i_m_u_state_1addcd790dea4c8627393f475bf4c5b96e" prot="public" static="no" mutable="no">
+        <type>QDVO::Vector3</type>
+        <definition>QDVO::Vector3 QDVO::IMUState::pos</definition>
+        <argsstring></argsstring>
+        <name>pos</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="20" column="19" bodyfile="src/DataStructures/IMUState.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_i_m_u_state_1ac1053e833240e79e0baa2a5ca02c76a8" prot="public" static="no" mutable="no">
+        <type>QDVO::Vector3</type>
+        <definition>QDVO::Vector3 QDVO::IMUState::vel</definition>
+        <argsstring></argsstring>
+        <name>vel</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="21" column="19" bodyfile="src/DataStructures/IMUState.h" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_i_m_u_state_1a5eb83a26330ccccc8f34fa26bee96319" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::IMUState::IMUState</definition>
+        <argsstring>()</argsstring>
+        <name>IMUState</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="13" column="5" bodyfile="src/DataStructures/IMUState.cpp" bodystart="3" bodyend="6"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_i_m_u_state_1af88e6910bacb20a68cf3b6593edccd23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::IMUState::update</definition>
+        <argsstring>(const Eigen::Matrix&lt; SCALAR_TYPE, 9, 1 &gt; &amp;dx)</argsstring>
+        <name>update</name>
+        <param>
+          <type>const Eigen::Matrix&lt; SCALAR_TYPE, 9, 1 &gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+<para>update the imustate (imu pose and velocity) with a generalized addition operator. Order: [dp, dphi, dv]; </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="29" column="10" bodyfile="src/DataStructures/IMUState.cpp" bodystart="8" bodyend="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_i_m_u_state_1aded3722c8a3b1b1d788f553e13e8aec0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::IMUState::updatePose</definition>
+        <argsstring>(const Eigen::Matrix&lt; SCALAR_TYPE, 6, 1 &gt; &amp;dx)</argsstring>
+        <name>updatePose</name>
+        <param>
+          <type>const Eigen::Matrix&lt; SCALAR_TYPE, 6, 1 &gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+<para>order: [dp, dphi] </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="33" column="10" bodyfile="src/DataStructures/IMUState.cpp" bodystart="14" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_i_m_u_state_1a1c011ab9b64c53c7b4da68a533376624" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::IMUState::updateVelocity</definition>
+        <argsstring>(const Eigen::Matrix&lt; SCALAR_TYPE, 3, 1 &gt; &amp;dx)</argsstring>
+        <name>updateVelocity</name>
+        <param>
+          <type>const Eigen::Matrix&lt; SCALAR_TYPE, 3, 1 &gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+<para>order: [dv] </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="37" column="10" bodyfile="src/DataStructures/IMUState.cpp" bodystart="20" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_i_m_u_state_1ae8015a0b5e9b0e93f163168ab709ca90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>QDVO::SE3</type>
+        <definition>QDVO::SE3 QDVO::IMUState::getSE3</definition>
+        <argsstring>()</argsstring>
+        <name>getSE3</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>creates a sophus se3 type representing the imu pose </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/IMUState.h" line="42" column="15" bodyfile="src/DataStructures/IMUState.cpp" bodystart="25" bodyend="28"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/DataStructures/IMUState.h" line="11" column="1" bodyfile="src/DataStructures/IMUState.h" bodystart="10" bodyend="43"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1ad5adfe3006900dff8d376c04cc2fc436" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>attitude</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1acbc920e495e7bad9ef8acd8687caab10" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>dimensions</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1ae8015a0b5e9b0e93f163168ab709ca90" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>getSE3</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1a5eb83a26330ccccc8f34fa26bee96319" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>IMUState</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1addcd790dea4c8627393f475bf4c5b96e" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>pos</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1a17c5e06a329e53a217229a07fd0d2fba" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>time</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1af88e6910bacb20a68cf3b6593edccd23" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>update</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1aded3722c8a3b1b1d788f553e13e8aec0" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>updatePose</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1a1c011ab9b64c53c7b4da68a533376624" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>updateVelocity</name></member>
+      <member refid="class_q_d_v_o_1_1_i_m_u_state_1ac1053e833240e79e0baa2a5ca02c76a8" prot="public" virt="non-virtual"><scope>QDVO::IMUState</scope><name>vel</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

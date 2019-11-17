@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_slot_map_key_base" kind="struct" language="C++" prot="public">
+    <compoundname>SlotMapKeyBase</compoundname>
+    <derivedcompoundref refid="class_arg_min_1_1_error_term_key" prot="public" virt="non-virtual">ArgMin::ErrorTermKey&lt; T &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_arg_min_1_1_variable_key" prot="public" virt="non-virtual">ArgMin::VariableKey&lt; T &gt;</derivedcompoundref>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_slot_map_key_base_1a92c7faa62fb0c1779cca5f896afab73c" prot="public" static="no">
+        <type>size_t</type>
+        <definition>using SlotMapKeyBase::index_type =  size_t</definition>
+        <argsstring></argsstring>
+        <name>index_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="9" column="5" bodyfile="src/Optimizer/SlotMap.h" bodystart="9" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_slot_map_key_base_1a04a7d5ae4e887c4730834b7207faaa38" prot="public" static="no">
+        <type>size_t</type>
+        <definition>using SlotMapKeyBase::generation_type =  size_t</definition>
+        <argsstring></argsstring>
+        <name>generation_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="10" column="5" bodyfile="src/Optimizer/SlotMap.h" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_slot_map_key_base_1a17f35b16ea6c16adb9e9e4c3d9da4876" prot="public" static="no" mutable="no">
+        <type>index_type</type>
+        <definition>index_type SlotMapKeyBase::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="12" column="16" bodyfile="src/Optimizer/SlotMap.h" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_slot_map_key_base_1a0c6cc235a00b077544539251bf653aeb" prot="public" static="no" mutable="no">
+        <type>generation_type</type>
+        <definition>generation_type SlotMapKeyBase::generation</definition>
+        <argsstring></argsstring>
+        <name>generation</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="13" column="21" bodyfile="src/Optimizer/SlotMap.h" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_slot_map_key_base_1a5ba568d77ee39bcecfbe15a1a91620d8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void SlotMapKeyBase::setInvalid</definition>
+        <argsstring>()</argsstring>
+        <name>setInvalid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="15" column="10" bodyfile="src/Optimizer/SlotMap.h" bodystart="15" bodyend="18"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_slot_map_key_base_1aba7a7e2773aeecccdb0d4b272ec41525" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool SlotMapKeyBase::isInvalid</definition>
+        <argsstring>()</argsstring>
+        <name>isInvalid</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotMap.h" line="20" column="10" bodyfile="src/Optimizer/SlotMap.h" bodystart="20" bodyend="23"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>SlotMapKeyBase</label>
+        <link refid="struct_slot_map_key_base"/>
+      </node>
+      <node id="3">
+        <label>ArgMin::VariableKey&lt; T &gt;</label>
+        <link refid="class_arg_min_1_1_variable_key"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ArgMin::ErrorTermKey&lt; T &gt;</label>
+        <link refid="class_arg_min_1_1_error_term_key"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="src/Optimizer/SlotMap.h" line="7" column="1" bodyfile="src/Optimizer/SlotMap.h" bodystart="6" bodyend="24"/>
+    <listofallmembers>
+      <member refid="struct_slot_map_key_base_1a0c6cc235a00b077544539251bf653aeb" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>generation</name></member>
+      <member refid="struct_slot_map_key_base_1a04a7d5ae4e887c4730834b7207faaa38" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>generation_type</name></member>
+      <member refid="struct_slot_map_key_base_1a17f35b16ea6c16adb9e9e4c3d9da4876" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>index</name></member>
+      <member refid="struct_slot_map_key_base_1a92c7faa62fb0c1779cca5f896afab73c" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>index_type</name></member>
+      <member refid="struct_slot_map_key_base_1aba7a7e2773aeecccdb0d4b272ec41525" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>isInvalid</name></member>
+      <member refid="struct_slot_map_key_base_1a5ba568d77ee39bcecfbe15a1a91620d8" prot="public" virt="non-virtual"><scope>SlotMapKeyBase</scope><name>setInvalid</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

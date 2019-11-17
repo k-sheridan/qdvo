@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="_containers_8h" kind="file" language="C++">
+    <compoundname>Containers.h</compoundname>
+    <includes refid="_meta_helpers_8h" local="yes">MetaHelpers.h</includes>
+    <includes refid="_slot_map_8h" local="yes">SlotMap.h</includes>
+    <includes refid="_key_8h" local="yes">Key.h</includes>
+    <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
+    <includedby refid="_gaussian_prior_8h" local="yes">src/Optimizer/GaussianPrior.h</includedby>
+    <includedby refid="_marginalizer_8h" local="yes">src/Optimizer/Marginalizer.h</includedby>
+    <includedby refid="_p_s_d_linear_system_8h" local="yes">src/Optimizer/PSDLinearSystem.h</includedby>
+    <includedby refid="_sparse_block_row_8h" local="yes">src/Optimizer/SparseBlockRow.h</includedby>
+    <includedby refid="_s_s_e_optimizer_8h" local="yes">src/Optimizer/SSEOptimizer.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>GlobalDefinitions.h</label>
+        <link refid="_global_definitions_8h_source"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MetaHelpers.h</label>
+        <link refid="_meta_helpers_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>SlotMap.h</label>
+        <link refid="_slot_map_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>tuple</label>
+      </node>
+      <node id="11">
+        <label>ctime</label>
+      </node>
+      <node id="13">
+        <label>optional</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+      <node id="12">
+        <label>sophus/se3.hpp</label>
+      </node>
+      <node id="10">
+        <label>chrono</label>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/Containers.h</label>
+        <link refid="_containers_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>set</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/Optimizer/ErrorTermBase.h</label>
+        <link refid="_error_term_base_8h_source"/>
+      </node>
+      <node id="10">
+        <label>src/Optimizer/SparseBlockMatrix.h</label>
+        <link refid="_sparse_block_matrix_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>src/Optimizer/SSEOptimizer.h</label>
+        <link refid="_s_s_e_optimizer_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>src/Optimizer/Marginalizer.h</label>
+        <link refid="_marginalizer_8h_source"/>
+      </node>
+      <node id="5">
+        <label>src/Optimizer/PSDLinearSystem.h</label>
+        <link refid="_p_s_d_linear_system_8h_source"/>
+      </node>
+      <node id="8">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+      <node id="3">
+        <label>src/Optimizer/GaussianPrior.h</label>
+        <link refid="_gaussian_prior_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/Containers.h</label>
+        <link refid="_containers_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>src/Optimizer/SparseBlockRow.h</label>
+        <link refid="_sparse_block_row_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_arg_min_1_1_variable_container" prot="public">ArgMin::VariableContainer</innerclass>
+    <innerclass refid="class_arg_min_1_1_error_term_container" prot="public">ArgMin::ErrorTermContainer</innerclass>
+    <innernamespace refid="namespace_arg_min">ArgMin</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;MetaHelpers.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;SlotMap.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Key.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ArgMin</highlight></codeline>
+<codeline lineno="8"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>Variables&gt;</highlight></codeline>
+<codeline lineno="11" refid="class_arg_min_1_1_variable_container" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_slot_map" kindref="compound">VariableMap</ref><sp/>=<sp/><ref refid="class_slot_map" kindref="compound">SlotMap&lt;VariableType, VariableKey&lt;VariableType&gt;</ref>&gt;;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
+<codeline lineno="19" refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_slot_map" kindref="compound">VariableMap&lt;VariableType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" kindref="member">getVariableMap</ref>()</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;VariableMap&lt;VariableType&gt;&gt;(tupleOfVariableMaps);</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>VariableType&gt;</highlight></codeline>
+<codeline lineno="28" refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kindref="member">variableIndex</ref>(<ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey&lt;VariableType&gt;</ref><sp/>&amp;key)</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kindref="member">variableIndex</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>tupleIndexOfVariable<sp/>=<sp/><ref refid="struct_arg_min_1_1internal_1_1_index" kindref="compound">internal::Index</ref>&lt;VariableType,<sp/>std::tuple&lt;Variables...&gt;&gt;::value;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>internal::static_for(tupleOfVariableMaps,<sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>i,<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;v)<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>constexpr<sp/>(i<sp/>&lt;<sp/>tupleIndexOfVariable)</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kindref="member">variableIndex</ref><sp/>+=<sp/>v.size()<sp/>*<sp/>std::tuple_element&lt;i,<sp/>std::tuple&lt;Variables...&gt;&gt;::type::dimension;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>constexpr<sp/>(i<sp/>==<sp/>tupleIndexOfVariable)</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>it<sp/>=<sp/>v.at(key);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(it<sp/>!=<sp/>v.end());</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kindref="member">variableIndex</ref><sp/>+=<sp/>(it<sp/>-<sp/>v.begin())<sp/>*<sp/>std::tuple_element&lt;i,<sp/>std::tuple&lt;Variables...&gt;&gt;::type::dimension;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kindref="member">variableIndex</ref>;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" kindref="member">totalDimensions</ref>()</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dims<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>internal::static_for(tupleOfVariableMaps,<sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>i,<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;v)<sp/>{<sp/>dims<sp/>+=<sp/>v.size()<sp/>*<sp/>std::tuple_element&lt;i,<sp/>std::tuple&lt;Variables...&gt;&gt;::type::dimension;<sp/>});</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dims;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stores<sp/>the<sp/>variables.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/>std::tuple&lt;VariableMap&lt;Variables&gt;...&gt;<sp/>tupleOfVariableMaps;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>ErrorTerms&gt;</highlight></codeline>
+<codeline lineno="68" refid="class_arg_min_1_1_error_term_container" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ErrorTermType&gt;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="class_slot_map" kindref="compound">ErrorTermMap</ref><sp/>=<sp/><ref refid="class_slot_map" kindref="compound">SlotMap&lt;ErrorTermType, ErrorTermKey&lt;ErrorTermType&gt;</ref>&gt;;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>ErrorTermType&gt;</highlight></codeline>
+<codeline lineno="76" refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" refkind="member"><highlight class="normal"><sp/><sp/><sp/><ref refid="class_slot_map" kindref="compound">ErrorTermMap&lt;ErrorTermType&gt;</ref><sp/>&amp;<ref refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" kindref="member">getErrorTermMap</ref>()</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;ErrorTermMap&lt;ErrorTermType&gt;&gt;(tupleOfErrorTermMaps);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" refkind="member"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_arg_min_1_1_error_term_container_1af1ee178d94e1ff17d193eae94e119fea" kindref="member">linearize</ref>()<sp/>{</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal"><sp/>&amp;&amp;<sp/></highlight><highlight class="stringliteral">&quot;not<sp/>ready&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Stores<sp/>the<sp/>error<sp/>terms.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/>std::tuple&lt;ErrorTermMap&lt;ErrorTerms&gt;...&gt;<sp/>tupleOfErrorTermMaps;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ArgMin</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/Optimizer/Containers.h"/>
+  </compounddef>
+</doxygen>

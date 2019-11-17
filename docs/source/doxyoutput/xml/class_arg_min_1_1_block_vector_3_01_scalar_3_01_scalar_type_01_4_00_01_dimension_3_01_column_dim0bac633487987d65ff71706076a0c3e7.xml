@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7" kind="class" language="C++" prot="public">
+    <compoundname>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</compoundname>
+    <includes refid="_block_vector_8h" local="no">BlockVector.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename ScalarType</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>ColumnDimension</declname>
+        <defname>ColumnDimension</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Variables</declname>
+        <defname>Variables</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a50d984520400f1dfb34e42636cdde21c" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; ScalarType, VariableType::dimension, ColumnDimension &gt;</type>
+        <definition>using ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::MatrixBlock =  Eigen::Matrix&lt;ScalarType, VariableType::dimension, ColumnDimension&gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixBlock</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="24" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac3288df5419d8131d54844c0c27a828e" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_slot_array" kindref="compound">SlotArray</ref>&lt; MatrixBlock&lt; VariableType &gt;, <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &gt;</type>
+        <definition>using ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::RowMap =  SlotArray&lt;MatrixBlock&lt;VariableType&gt;, VariableKey&lt;VariableType&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>RowMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="26" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ae3404c9244c35dae1a0ee0247afec60c" prot="private" static="no" mutable="no">
+        <type>std::tuple&lt; <ref refid="class_slot_array" kindref="compound">RowMap</ref>&lt; Variables &gt;... &gt;</type>
+        <definition>std::tuple&lt;RowMap&lt;Variables&gt;...&gt; ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::tupleOfRowMaps</definition>
+        <argsstring></argsstring>
+        <name>tupleOfRowMaps</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="107" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a0755baa1dc753a3f02ddef8baf2e24b2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::BlockVector</definition>
+        <argsstring>()</argsstring>
+        <name>BlockVector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="28" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_slot_array" kindref="compound">RowMap</ref>&lt; VariableType &gt;::InsertResult</type>
+        <definition>RowMap&lt;VariableType&gt;::InsertResult ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::addRowBlock</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key, MatrixBlock&lt; VariableType &gt; &amp;value)</argsstring>
+        <name>addRowBlock</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <param>
+          <type>MatrixBlock&lt; VariableType &gt; &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inserts a key value pair into the slot map. This should never need overwrite an element. <linebreak/>
+ </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="33" column="36" bodyfile="src/Optimizer/BlockVector.h" bodystart="33" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::removeRowBlock</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key)</argsstring>
+        <name>removeRowBlock</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Removes the row block. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="42" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="42" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>MatrixBlock&lt; VariableType &gt; &amp;</type>
+        <definition>MatrixBlock&lt;VariableType&gt;&amp; ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::getRowBlock</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key)</argsstring>
+        <name>getRowBlock</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Gets a reference to the block matrix at the key. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="52" column="17" bodyfile="src/Optimizer/BlockVector.h" bodystart="52" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::blockExists</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key)</argsstring>
+        <name>blockExists</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates if the key exists in the block vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="60" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="60" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a31bc69bd9f12604c9112664a75e6897a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::subtractVector</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variableOrder, const Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, ColumnDimension &gt; &amp;v)</argsstring>
+        <name>subtractVector</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variableOrder</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, ColumnDimension &gt; &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+<para>Computes <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> -= v. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="66" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="66" bodyend="103"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Unlike the Sparse Block Row, the <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> is assumed to be dense and can then achieve constant time insert, lookup, and erase via the slot map. This class uses a slightly different variant of the slot map. One which allows us to choose a key value pair. </para>
+    </detaileddescription>
+    <location file="src/Optimizer/BlockVector.h" line="21" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="21" bodyend="109"/>
+    <listofallmembers>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addRowBlock</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>blockExists</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a0755baa1dc753a3f02ddef8baf2e24b2" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>BlockVector</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getRowBlock</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a50d984520400f1dfb34e42636cdde21c" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>MatrixBlock</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeRowBlock</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac3288df5419d8131d54844c0c27a828e" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>RowMap</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a31bc69bd9f12604c9112664a75e6897a" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>subtractVector</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ae3404c9244c35dae1a0ee0247afec60c" prot="private" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>tupleOfRowMaps</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

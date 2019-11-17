@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir">
+    <compoundname>src</compoundname>
+    <innerdir refid="dir_4510c287d9a3aa79e92aa3264febc4a2">src/CameraModels</innerdir>
+    <innerdir refid="dir_74490131f5eb8b002814b2d1d0fe25a3">src/DataStructures</innerdir>
+    <innerdir refid="dir_f2c42189119f6cb9a631c1a2a212ddf4">src/ErrorTerms</innerdir>
+    <innerdir refid="dir_788b83bd7d58330e883f02346fb7cb41">src/Estimation</innerdir>
+    <innerdir refid="dir_ee2446f96c139fd87707c1907e067eea">src/FeatureDetection</innerdir>
+    <innerdir refid="dir_b18c32434c6e0e7e42f188f30d3fbe7d">src/FeatureMatching</innerdir>
+    <innerdir refid="dir_6f39057b3b439f65f91e82b8fddf8441">src/Optimizer</innerdir>
+    <innerdir refid="dir_b69994b7a953c3f7aa0627a9d5a0f653">src/Pipeline</innerdir>
+    <innerfile refid="_global_definitions_8h">GlobalDefinitions.h</innerfile>
+    <innerfile refid="_settings_8h">Settings.h</innerfile>
+    <innerfile refid="_types_8h">Types.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/"/>
+  </compounddef>
+</doxygen>

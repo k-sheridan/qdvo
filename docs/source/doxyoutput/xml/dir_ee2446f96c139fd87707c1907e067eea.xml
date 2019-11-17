@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="dir_ee2446f96c139fd87707c1907e067eea" kind="dir">
+    <compoundname>src/FeatureDetection</compoundname>
+    <innerfile refid="_feature_detector_8cpp">FeatureDetector.cpp</innerfile>
+    <innerfile refid="_feature_detector_8h">FeatureDetector.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/FeatureDetection/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings" kind="struct" language="C++" prot="public">
+    <compoundname>QDVO::Settings::FeatureDetectionSettings</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1aa715d200b25d6319f62d88b8d1f974f4" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::Settings::FeatureDetectionSettings::nFeaturesDesired</definition>
+        <argsstring></argsstring>
+        <name>nFeaturesDesired</name>
+        <initializer>= 400</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="15" column="13" bodyfile="src/Settings.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a6736b7a5acee643ca2d274b2210d2e61" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::Settings::FeatureDetectionSettings::nSections</definition>
+        <argsstring></argsstring>
+        <name>nSections</name>
+        <initializer>= 100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="16" column="13" bodyfile="src/Settings.h" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a156d9503df0766f7e37cd2a84df79b6d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double QDVO::Settings::FeatureDetectionSettings::harrisK</definition>
+        <argsstring></argsstring>
+        <name>harrisK</name>
+        <initializer>= 0.05</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="17" column="18" bodyfile="src/Settings.h" bodystart="17" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a49cefa0bb55fafc087cb77b8e5f1effd" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double QDVO::Settings::FeatureDetectionSettings::edgeWeight</definition>
+        <argsstring></argsstring>
+        <name>edgeWeight</name>
+        <initializer>= 0.1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="18" column="18" bodyfile="src/Settings.h" bodystart="18" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1ae60ec3bc26a4901c36372e1b9c03148d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double QDVO::Settings::FeatureDetectionSettings::invariantThreshold</definition>
+        <argsstring></argsstring>
+        <name>invariantThreshold</name>
+        <initializer>= 0.1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="19" column="18" bodyfile="src/Settings.h" bodystart="19" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a64769351cc76116a6aa76265c250efb3" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double QDVO::Settings::FeatureDetectionSettings::minimumNormalizedGradientMagnitude</definition>
+        <argsstring></argsstring>
+        <name>minimumNormalizedGradientMagnitude</name>
+        <initializer>= 0.0306</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Settings.h" line="20" column="18" bodyfile="src/Settings.h" bodystart="20" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/Settings.h" line="14" column="35" bodyfile="src/Settings.h" bodystart="14" bodyend="21"/>
+    <listofallmembers>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a49cefa0bb55fafc087cb77b8e5f1effd" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>edgeWeight</name></member>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a156d9503df0766f7e37cd2a84df79b6d" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>harrisK</name></member>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1ae60ec3bc26a4901c36372e1b9c03148d" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>invariantThreshold</name></member>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a64769351cc76116a6aa76265c250efb3" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>minimumNormalizedGradientMagnitude</name></member>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1aa715d200b25d6319f62d88b8d1f974f4" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>nFeaturesDesired</name></member>
+      <member refid="struct_q_d_v_o_1_1_settings_1_1_feature_detection_settings_1a6736b7a5acee643ca2d274b2210d2e61" prot="public" virt="non-virtual"><scope>QDVO::Settings::FeatureDetectionSettings</scope><name>nSections</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

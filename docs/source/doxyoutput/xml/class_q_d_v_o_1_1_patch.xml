@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_patch" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::Patch</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1a64f917bbc42d05c434e23a7f89e5cfd9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int QDVO::Patch::level</definition>
+        <argsstring></argsstring>
+        <name>level</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="41" column="9" bodyfile="src/DataStructures/Patch.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1a1d099f725d1fc5ed62724f6b8fb8411c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool QDVO::Patch::initialized</definition>
+        <argsstring></argsstring>
+        <name>initialized</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="42" column="10" bodyfile="src/DataStructures/Patch.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1ad948731a8db7faef2c5fe3a5169f6a7d" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt;</type>
+        <definition>Eigen::Matrix&lt;float, PATCH_WIDTH, PATCH_WIDTH&gt; QDVO::Patch::data</definition>
+        <argsstring></argsstring>
+        <name>data</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="43" column="19" bodyfile="src/DataStructures/Patch.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1ace8481ad715d806bd8b05f4b33345672" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt;</type>
+        <definition>Eigen::Matrix&lt;float, PATCH_WIDTH, PATCH_WIDTH&gt; QDVO::Patch::zeroMeanMatrix</definition>
+        <argsstring></argsstring>
+        <name>zeroMeanMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="45" column="19" bodyfile="src/DataStructures/Patch.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1a32eeb23638adebf96d90e9d63f5dd1aa" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float QDVO::Patch::patchMean</definition>
+        <argsstring></argsstring>
+        <name>patchMean</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="46" column="11" bodyfile="src/DataStructures/Patch.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1ac2b0c4fb98e1d0da4050d666f2c075a9" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float QDVO::Patch::patchStdDev</definition>
+        <argsstring></argsstring>
+        <name>patchStdDev</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="46" column="21" bodyfile="src/DataStructures/Patch.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_patch_1ac3e0eddbd67d60a3a425cfff99b35ca7" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float QDVO::Patch::sumZeroMeanSquared</definition>
+        <argsstring></argsstring>
+        <name>sumZeroMeanSquared</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="46" column="33" bodyfile="src/DataStructures/Patch.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a4b8f5436204cb8ff2ff0f97b80aaa0e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Patch::Patch</definition>
+        <argsstring>()</argsstring>
+        <name>Patch</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="17" column="5" bodyfile="src/DataStructures/Patch.cpp" bodystart="5" bodyend="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a4e35cb7c2fa54ab1e656e3b0335841df" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Patch::Patch</definition>
+        <argsstring>(cv::Mat &amp;rawPatchData, float patchMean, float patchStdDev)</argsstring>
+        <name>Patch</name>
+        <param>
+          <type>cv::Mat &amp;</type>
+          <declname>rawPatchData</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>patchMean</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>patchStdDev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="19" column="5" bodyfile="src/DataStructures/Patch.cpp" bodystart="25" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a70dca1ac00a8db089fcaa358080ead53" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Patch::Patch</definition>
+        <argsstring>(cv::Mat &amp;rawPatchData, float patchMean)</argsstring>
+        <name>Patch</name>
+        <param>
+          <type>cv::Mat &amp;</type>
+          <declname>rawPatchData</declname>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>patchMean</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="21" column="5" bodyfile="src/DataStructures/Patch.cpp" bodystart="47" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a96cd55f748d3e796c01ce7d51df83f6f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Patch::Patch</definition>
+        <argsstring>(cv::Mat &amp;rawPatchData)</argsstring>
+        <name>Patch</name>
+        <param>
+          <type>cv::Mat &amp;</type>
+          <declname>rawPatchData</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="23" column="5" bodyfile="src/DataStructures/Patch.cpp" bodystart="70" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a4ca03fdf9808c19036fb016fd7e19bff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::Patch::Patch</definition>
+        <argsstring>(Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt; &amp;rawPatchData)</argsstring>
+        <name>Patch</name>
+        <param>
+          <type>Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt; &amp;</type>
+          <declname>rawPatchData</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="25" column="5" bodyfile="src/DataStructures/Patch.cpp" bodystart="10" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1afaf32db1d9b282d9ac6a989119dac3be" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt; &amp;</type>
+        <definition>Eigen::Matrix&lt;float, PATCH_WIDTH, PATCH_WIDTH&gt;&amp; QDVO::Patch::getImageData</definition>
+        <argsstring>()</argsstring>
+        <name>getImageData</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="27" column="19" bodyfile="src/DataStructures/Patch.h" bodystart="27" bodyend="27"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1ab5c2bbb77808fe081b4fd2871982048a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix&lt; float, PATCH_WIDTH, PATCH_WIDTH &gt; &amp;</type>
+        <definition>Eigen::Matrix&lt;float, PATCH_WIDTH, PATCH_WIDTH&gt;&amp; QDVO::Patch::getZeroMeanImageMatrix</definition>
+        <argsstring>()</argsstring>
+        <name>getZeroMeanImageMatrix</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="29" column="19" bodyfile="src/DataStructures/Patch.h" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1af84694406c8ed7574605ce11219b5dd0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float &amp;</type>
+        <definition>float&amp; QDVO::Patch::getStdDev</definition>
+        <argsstring>()</argsstring>
+        <name>getStdDev</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="31" column="11" bodyfile="src/DataStructures/Patch.h" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a0cd9977324153b8a0f048825152aaa59" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float &amp;</type>
+        <definition>float&amp; QDVO::Patch::getSumZeroMeanSquared</definition>
+        <argsstring>()</argsstring>
+        <name>getSumZeroMeanSquared</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="33" column="11" bodyfile="src/DataStructures/Patch.h" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1a432dae4846019eb80cde4df2e42f66d9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>float &amp;</type>
+        <definition>float&amp; QDVO::Patch::getMean</definition>
+        <argsstring>()</argsstring>
+        <name>getMean</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="35" column="11" bodyfile="src/DataStructures/Patch.h" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_patch_1adf6adf73c40021c1f9fc5ef57202541c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int &amp;</type>
+        <definition>int&amp; QDVO::Patch::getLevel</definition>
+        <argsstring>()</argsstring>
+        <name>getLevel</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/Patch.h" line="37" column="9" bodyfile="src/DataStructures/Patch.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/DataStructures/Patch.h" line="15" column="1" bodyfile="src/DataStructures/Patch.h" bodystart="14" bodyend="47"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_patch_1ad948731a8db7faef2c5fe3a5169f6a7d" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>data</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1afaf32db1d9b282d9ac6a989119dac3be" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getImageData</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1adf6adf73c40021c1f9fc5ef57202541c" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getLevel</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a432dae4846019eb80cde4df2e42f66d9" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getMean</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1af84694406c8ed7574605ce11219b5dd0" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getStdDev</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a0cd9977324153b8a0f048825152aaa59" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getSumZeroMeanSquared</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1ab5c2bbb77808fe081b4fd2871982048a" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>getZeroMeanImageMatrix</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a1d099f725d1fc5ed62724f6b8fb8411c" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>initialized</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a64f917bbc42d05c434e23a7f89e5cfd9" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>level</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a4b8f5436204cb8ff2ff0f97b80aaa0e1" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>Patch</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a4e35cb7c2fa54ab1e656e3b0335841df" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>Patch</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a70dca1ac00a8db089fcaa358080ead53" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>Patch</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a96cd55f748d3e796c01ce7d51df83f6f" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>Patch</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a4ca03fdf9808c19036fb016fd7e19bff" prot="public" virt="non-virtual"><scope>QDVO::Patch</scope><name>Patch</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1a32eeb23638adebf96d90e9d63f5dd1aa" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>patchMean</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1ac2b0c4fb98e1d0da4050d666f2c075a9" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>patchStdDev</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1ac3e0eddbd67d60a3a425cfff99b35ca7" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>sumZeroMeanSquared</name></member>
+      <member refid="class_q_d_v_o_1_1_patch_1ace8481ad715d806bd8b05f4b33345672" prot="private" virt="non-virtual"><scope>QDVO::Patch</scope><name>zeroMeanMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

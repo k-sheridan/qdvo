@@ -1,0 +1,316 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="class_q_d_v_o_1_1_correspondence_distribution" kind="class" language="C++" prot="public">
+    <compoundname>QDVO::CorrespondenceDistribution</compoundname>
+    <innerclass refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" prot="public">QDVO::CorrespondenceDistribution::PotentialCorrespondence</innerclass>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1af2ac5765dfe50b2be430154e3ac1a2cd" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">Patch</ref></type>
+        <definition>Patch QDVO::CorrespondenceDistribution::warpedPatch</definition>
+        <argsstring></argsstring>
+        <name>warpedPatch</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="34" column="11" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1ac4c507d87e3a84a7eec0e6a9e5c5e0cf" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_frame" kindref="compound">QDVO::Frame</ref> *</type>
+        <definition>QDVO::Frame* QDVO::CorrespondenceDistribution::framePtr</definition>
+        <argsstring></argsstring>
+        <name>framePtr</name>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="35" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1afa5309971a3b8d3c0d8dac5bd4d78369" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_spatial_map" kindref="compound">SpatialMap</ref>&lt; <ref refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" kindref="compound">PotentialCorrespondence</ref> &gt;</type>
+        <definition>SpatialMap&lt;PotentialCorrespondence&gt; QDVO::CorrespondenceDistribution::correspondenceMap</definition>
+        <argsstring></argsstring>
+        <name>correspondenceMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="38" column="16" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1af7d3b5fe5fddd68fa1baba2492e2a7e2" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool QDVO::CorrespondenceDistribution::dormant</definition>
+        <argsstring></argsstring>
+        <name>dormant</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="39" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a2a667a162fa7f2b840f3f30c0d1a4e84" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; SCALAR_TYPE &gt;</type>
+        <definition>std::vector&lt;SCALAR_TYPE&gt; QDVO::CorrespondenceDistribution::expScoreArray</definition>
+        <argsstring></argsstring>
+        <name>expScoreArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="69" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a670d1f9bec7ce2720e8b1b676515b0a2" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; QDVO::Vector2 &gt;</type>
+        <definition>std::vector&lt;QDVO::Vector2&gt; QDVO::CorrespondenceDistribution::errorArray</definition>
+        <argsstring></argsstring>
+        <name>errorArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="70" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1aad4034fdb813631e50dbfc6455471b19" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; QDVO::Vector2 &gt;</type>
+        <definition>std::vector&lt;QDVO::Vector2&gt; QDVO::CorrespondenceDistribution::weightedErrorArray</definition>
+        <argsstring></argsstring>
+        <name>weightedErrorArray</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="70" column="28" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a1f39479305563ae95776427650235836" prot="private" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">QDVO::RadialSearchPattern</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;QDVO::RadialSearchPattern&gt; QDVO::CorrespondenceDistribution::radialSearchPattern</definition>
+        <argsstring></argsstring>
+        <name>radialSearchPattern</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="72" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a9faef36fb3d528afe6fab569ab6d63d1" prot="private" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_comparer" kindref="compound">QDVO::PatchComparer</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;QDVO::PatchComparer&gt; QDVO::CorrespondenceDistribution::patchComparer</definition>
+        <argsstring></argsstring>
+        <name>patchComparer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="73" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1ac6fb64d2894b836f0cf29707c834df49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>QDVO::CorrespondenceDistribution::CorrespondenceDistribution</definition>
+        <argsstring>(unsigned width, unsigned height, std::shared_ptr&lt; RadialSearchPattern &gt; patternPtr, QDVO::Frame *framePtr)</argsstring>
+        <name>CorrespondenceDistribution</name>
+        <param>
+          <type>unsigned</type>
+          <declname>width</declname>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>height</declname>
+        </param>
+        <param>
+          <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">RadialSearchPattern</ref> &gt;</type>
+          <declname>patternPtr</declname>
+        </param>
+        <param>
+          <type><ref refid="class_q_d_v_o_1_1_frame" kindref="compound">QDVO::Frame</ref> *</type>
+          <declname>framePtr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="43" column="5" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="5" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1a4e08ecdb4906ea046d87b11aa1275e0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::CorrespondenceDistribution::initializeDistribution</definition>
+        <argsstring>(const Eigen::Vector2i &amp;centerPixel, const int floodRadius, std::shared_ptr&lt; QDVO::PatchComparer &gt; patchComparerPtr, QDVO::Patch warpedPatch)</argsstring>
+        <name>initializeDistribution</name>
+        <param>
+          <type>const Eigen::Vector2i &amp;</type>
+          <declname>centerPixel</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>floodRadius</declname>
+        </param>
+        <param>
+          <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_comparer" kindref="compound">QDVO::PatchComparer</ref> &gt;</type>
+          <declname>patchComparerPtr</declname>
+        </param>
+        <param>
+          <type><ref refid="class_q_d_v_o_1_1_patch" kindref="compound">QDVO::Patch</ref></type>
+          <declname>warpedPatch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="48" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="54" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1a16f8e755b1ac95074569ffb6ea5bb250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix&lt; SCALAR_TYPE, 2, 1 &gt;</type>
+        <definition>QDVO::Vector2 QDVO::CorrespondenceDistribution::computeResidual</definition>
+        <argsstring>(const Eigen::Matrix&lt; SCALAR_TYPE, 2, 1 &gt; &amp;px_0)</argsstring>
+        <name>computeResidual</name>
+        <param>
+          <type>const Eigen::Matrix&lt; SCALAR_TYPE, 2, 1 &gt; &amp;</type>
+          <declname>px_0</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="53" column="19" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="12" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1aa52619b965a4840fc7aa44aeeee7d06b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void QDVO::CorrespondenceDistribution::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="58" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="47" bodyend="52"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1a910ad9d6548c9d057fb85afd06712e0b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" kindref="compound">PotentialCorrespondence</ref> * &gt;</type>
+        <definition>std::vector&lt; QDVO::CorrespondenceDistribution::PotentialCorrespondence * &gt; QDVO::CorrespondenceDistribution::search</definition>
+        <argsstring>(const Eigen::Vector2i &amp;centerPixel, const unsigned searchRadius, bool minimalSearch)</argsstring>
+        <name>search</name>
+        <param>
+          <type>const Eigen::Vector2i &amp;</type>
+          <declname>centerPixel</declname>
+        </param>
+        <param>
+          <type>const unsigned</type>
+          <declname>searchRadius</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>minimalSearch</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="66" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="66" bodyend="124"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>QDVO::SpatialMap&lt; QDVO::CorrespondenceDistribution::PotentialCorrespondence &gt;</label>
+        <link refid="class_q_d_v_o_1_1_spatial_map"/>
+      </node>
+      <node id="7">
+        <label>QDVO::IMUState</label>
+        <link refid="class_q_d_v_o_1_1_i_m_u_state"/>
+      </node>
+      <node id="6">
+        <label>QDVO::CameraModel</label>
+        <link refid="class_q_d_v_o_1_1_camera_model"/>
+      </node>
+      <node id="5">
+        <label>QDVO::ImagePyramid</label>
+        <link refid="class_q_d_v_o_1_1_image_pyramid"/>
+      </node>
+      <node id="4">
+        <label>QDVO::Frame</label>
+        <link refid="class_q_d_v_o_1_1_frame"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>imagePyr</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>cm</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>imustate</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>QDVO::Patch</label>
+        <link refid="class_q_d_v_o_1_1_patch"/>
+      </node>
+      <node id="1">
+        <label>QDVO::CorrespondenceDistribution</label>
+        <link refid="class_q_d_v_o_1_1_correspondence_distribution"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>correspondenceMap</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>warpedPatch</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>framePtr</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/DataStructures/CorrespondenceDistribution.h" line="23" column="1" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="22" bodyend="76"/>
+    <listofallmembers>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a16f8e755b1ac95074569ffb6ea5bb250" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>computeResidual</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1ac6fb64d2894b836f0cf29707c834df49" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>CorrespondenceDistribution</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1afa5309971a3b8d3c0d8dac5bd4d78369" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>correspondenceMap</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1af7d3b5fe5fddd68fa1baba2492e2a7e2" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>dormant</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a670d1f9bec7ce2720e8b1b676515b0a2" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>errorArray</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a2a667a162fa7f2b840f3f30c0d1a4e84" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>expScoreArray</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1ac4c507d87e3a84a7eec0e6a9e5c5e0cf" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>framePtr</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a4e08ecdb4906ea046d87b11aa1275e0b" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>initializeDistribution</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a9faef36fb3d528afe6fab569ab6d63d1" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>patchComparer</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a1f39479305563ae95776427650235836" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>radialSearchPattern</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1aa52619b965a4840fc7aa44aeeee7d06b" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>reset</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a910ad9d6548c9d057fb85afd06712e0b" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>search</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1af2ac5765dfe50b2be430154e3ac1a2cd" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>warpedPatch</name></member>
+      <member refid="class_q_d_v_o_1_1_correspondence_distribution_1aad4034fdb813631e50dbfc6455471b19" prot="private" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>weightedErrorArray</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
