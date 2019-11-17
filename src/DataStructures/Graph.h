@@ -20,6 +20,10 @@ using KeyframeSetType = std::unordered_map<ID_TYPE, std::unique_ptr<Frame> >;
 using ExtrinsicSetType = std::unordered_map<ID_TYPE, QDVO::SE3 >;
 using CameraModelMapType = std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> >;
 
+
+/**
+ * The core datastructure for QDVO.
+ */
 class Graph
 {
 public:

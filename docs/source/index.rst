@@ -7,10 +7,12 @@ Welcome to QDVO's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-
+   about
+   CoreDataStructures
+   api/library_root
 
 Indices and tables
 ==================

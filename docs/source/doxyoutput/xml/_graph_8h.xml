@@ -346,78 +346,79 @@
 <codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>ExtrinsicSetType<sp/>=<sp/>std::unordered_map&lt;ID_TYPE,<sp/>QDVO::SE3<sp/>&gt;;</highlight></codeline>
 <codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>CameraModelMapType<sp/>=<sp/>std::unordered_map&lt;ID_TYPE,<sp/>std::unique_ptr&lt;CameraModel&gt;<sp/>&gt;;</highlight></codeline>
 <codeline lineno="22"><highlight class="normal"></highlight></codeline>
-<codeline lineno="23" refid="class_q_d_v_o_1_1_graph" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref></highlight></codeline>
-<codeline lineno="24"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref>();</highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sets<sp/>the<sp/>camera<sp/>model<sp/>for<sp/>the<sp/>given<sp/>cam<sp/>ID.<sp/>NOTE:<sp/>QDVO<sp/>creates<sp/>its<sp/>own<sp/>local<sp/>copy.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setCameraModel(std::unique_ptr&lt;QDVO::CameraModel&gt;&amp;<sp/>cameraModelPtr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;cameraModelMap.insert(std::pair&lt;ID_TYPE,<sp/>std::unique_ptr&lt;CameraModel&gt;<sp/>&gt;(cameraID,<sp/>std::unique_ptr&lt;QDVO::CameraModel&gt;()));</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>give<sp/>ownership<sp/>to<sp/>the<sp/>unique<sp/>pointer<sp/>in<sp/>the<sp/>table.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;cameraModelMap.at(cameraID).swap(cameraModelPtr);</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sets<sp/>the<sp/>transformation<sp/>from<sp/>the<sp/>imu<sp/>to<sp/>camera<sp/>for<sp/>the<sp/>given<sp/>cam<sp/>id</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setExtrinsic(QDVO::SE3&amp;<sp/>T_imu_cam,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;extrinsicSet.insert_or_assign(cameraID,<sp/>T_imu_cam);</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getCurrentFrame();</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;CameraModel&gt;&amp;<sp/>getCameraModel(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27" refid="class_q_d_v_o_1_1_graph" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref></highlight></codeline>
+<codeline lineno="28"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref>();</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Sets<sp/>the<sp/>camera<sp/>model<sp/>for<sp/>the<sp/>given<sp/>cam<sp/>ID.<sp/>NOTE:<sp/>QDVO<sp/>creates<sp/>its<sp/>own<sp/>local<sp/>copy.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setCameraModel(std::unique_ptr&lt;QDVO::CameraModel&gt;&amp;<sp/>cameraModelPtr,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;cameraModelMap.insert(std::pair&lt;ID_TYPE,<sp/>std::unique_ptr&lt;CameraModel&gt;<sp/>&gt;(cameraID,<sp/>std::unique_ptr&lt;QDVO::CameraModel&gt;()));</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>give<sp/>ownership<sp/>to<sp/>the<sp/>unique<sp/>pointer<sp/>in<sp/>the<sp/>table.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;cameraModelMap.at(cameraID).swap(cameraModelPtr);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sets<sp/>the<sp/>transformation<sp/>from<sp/>the<sp/>imu<sp/>to<sp/>camera<sp/>for<sp/>the<sp/>given<sp/>cam<sp/>id</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>setExtrinsic(QDVO::SE3&amp;<sp/>T_imu_cam,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;extrinsicSet.insert_or_assign(cameraID,<sp/>T_imu_cam);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>getExtrinsic(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getCurrentFrame();</highlight></codeline>
 <codeline lineno="47"><highlight class="normal"></highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getKeyframe(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>keyframeID);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;CameraModel&gt;&amp;<sp/>getCameraModel(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generalized<sp/>version<sp/>of<sp/>the<sp/>getKeyframe<sp/>function</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getFrame(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>frameID);</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyframeSetType&amp;<sp/>getKeyframeSet(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;keyframeSet;}</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="56"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Looks<sp/>across<sp/>the<sp/>keyframe<sp/>set<sp/>and<sp/>current<sp/>frame<sp/>for<sp/>the<sp/>highest<sp/>frame<sp/>ID<sp/>and<sp/>returns<sp/>one<sp/>id<sp/>higher</highlight></codeline>
-<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>ID_TYPE<sp/>getNewFrameID();</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"></highlight></codeline>
-<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>function<sp/>will<sp/>swap<sp/>the<sp/>current<sp/>frame<sp/>and<sp/>the<sp/>marginalized<sp/>keyframe<sp/>and<sp/>update<sp/>the<sp/>hash<sp/>table<sp/>key<sp/>to<sp/>reflect<sp/>the<sp/>new<sp/>keyframe<sp/>id.</highlight></codeline>
-<codeline lineno="62"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>The<sp/>current<sp/>frame<sp/>is<sp/>now<sp/>equal<sp/>to<sp/>the<sp/>marginalized<sp/>keyframe.<sp/>For<sp/>safety,<sp/>you<sp/>should<sp/>always<sp/>check<sp/>that<sp/>a<sp/>frame<sp/>is<sp/>not<sp/>marginalized<sp/>when<sp/>using<sp/>it.</highlight></codeline>
-<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
-<codeline lineno="64"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoMarginalizedKeyframePosition(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>marginalizedKeyframeID);</highlight></codeline>
-<codeline lineno="66"><highlight class="normal"></highlight></codeline>
-<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>assuming<sp/>there<sp/>is<sp/>enough<sp/>room<sp/>in<sp/>the<sp/>keyframe<sp/>set,<sp/>the<sp/>current<sp/>frame<sp/>is<sp/>moved<sp/>to<sp/>a<sp/>new<sp/>spot<sp/>in<sp/>the<sp/>keyframe<sp/>set.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoNewKeyframePosition();</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generalized<sp/>version<sp/>of<sp/>the<sp/>two<sp/>above<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoKeyframePosition();</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"></highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Projects<sp/>all<sp/>landmarks<sp/>in<sp/>all<sp/>keyframes<sp/>into<sp/>the<sp/>current<sp/>frame<sp/>to<sp/>determin<sp/>if<sp/>they<sp/>are<sp/>visible.<sp/>will<sp/>NOT<sp/>project<sp/>marginalized<sp/>landmarks.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::tuple&lt;QDVO::Landmark*,<sp/>QDVO::Vector2&gt;&gt;<sp/>getVisibleLandmarksInCurrentFrame(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>activeLandmarksOnly,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>includeCurrentFrameLandmarks<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>transforms<sp/>the<sp/>landmark<sp/>into<sp/>a<sp/>euclidean<sp/>point<sp/>in<sp/>the<sp/>target<sp/>frame.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>projectLandmarkToCameraFrame(ID_TYPE<sp/>targetFrameID,<sp/>ID_TYPE<sp/>sourceFrameID,<sp/>ID_TYPE<sp/>landmarkID);</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Result&lt;QDVO::Vector2&gt;<sp/>projectLandmarkToPixel(ID_TYPE<sp/>targetFrameID,<sp/>ID_TYPE<sp/>sourceFrameID,<sp/>ID_TYPE<sp/>landmarkID);</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Members,<sp/>nodes,<sp/>and<sp/>edges<sp/>of<sp/>the<sp/>graph.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::SE3<sp/>getExtrinsic(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getKeyframe(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>keyframeID);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generalized<sp/>version<sp/>of<sp/>the<sp/>getKeyframe<sp/>function</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;&amp;<sp/>getFrame(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>frameID);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyframeSetType&amp;<sp/>getKeyframeSet(){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>this-&gt;keyframeSet;}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Looks<sp/>across<sp/>the<sp/>keyframe<sp/>set<sp/>and<sp/>current<sp/>frame<sp/>for<sp/>the<sp/>highest<sp/>frame<sp/>ID<sp/>and<sp/>returns<sp/>one<sp/>id<sp/>higher</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/>ID_TYPE<sp/>getNewFrameID();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>function<sp/>will<sp/>swap<sp/>the<sp/>current<sp/>frame<sp/>and<sp/>the<sp/>marginalized<sp/>keyframe<sp/>and<sp/>update<sp/>the<sp/>hash<sp/>table<sp/>key<sp/>to<sp/>reflect<sp/>the<sp/>new<sp/>keyframe<sp/>id.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>The<sp/>current<sp/>frame<sp/>is<sp/>now<sp/>equal<sp/>to<sp/>the<sp/>marginalized<sp/>keyframe.<sp/>For<sp/>safety,<sp/>you<sp/>should<sp/>always<sp/>check<sp/>that<sp/>a<sp/>frame<sp/>is<sp/>not<sp/>marginalized<sp/>when<sp/>using<sp/>it.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoMarginalizedKeyframePosition(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>marginalizedKeyframeID);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>assuming<sp/>there<sp/>is<sp/>enough<sp/>room<sp/>in<sp/>the<sp/>keyframe<sp/>set,<sp/>the<sp/>current<sp/>frame<sp/>is<sp/>moved<sp/>to<sp/>a<sp/>new<sp/>spot<sp/>in<sp/>the<sp/>keyframe<sp/>set.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoNewKeyframePosition();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>generalized<sp/>version<sp/>of<sp/>the<sp/>two<sp/>above<sp/>functions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>moveCurrentFrameIntoKeyframePosition();</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Projects<sp/>all<sp/>landmarks<sp/>in<sp/>all<sp/>keyframes<sp/>into<sp/>the<sp/>current<sp/>frame<sp/>to<sp/>determin<sp/>if<sp/>they<sp/>are<sp/>visible.<sp/>will<sp/>NOT<sp/>project<sp/>marginalized<sp/>landmarks.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::tuple&lt;QDVO::Landmark*,<sp/>QDVO::Vector2&gt;&gt;<sp/>getVisibleLandmarksInCurrentFrame(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>activeLandmarksOnly,<sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>includeCurrentFrameLandmarks<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>transforms<sp/>the<sp/>landmark<sp/>into<sp/>a<sp/>euclidean<sp/>point<sp/>in<sp/>the<sp/>target<sp/>frame.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Vector3<sp/>projectLandmarkToCameraFrame(ID_TYPE<sp/>targetFrameID,<sp/>ID_TYPE<sp/>sourceFrameID,<sp/>ID_TYPE<sp/>landmarkID);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>QDVO::Result&lt;QDVO::Vector2&gt;<sp/>projectLandmarkToPixel(ID_TYPE<sp/>targetFrameID,<sp/>ID_TYPE<sp/>sourceFrameID,<sp/>ID_TYPE<sp/>landmarkID);</highlight></codeline>
 <codeline lineno="84"><highlight class="normal"></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/>CameraModelMapType<sp/>cameraModelMap;<sp/></highlight><highlight class="comment">//<sp/>camID<sp/>to<sp/>camera<sp/>model<sp/>mapping.<sp/>Done<sp/>this<sp/>way<sp/>for<sp/>memory/compute<sp/>efficiency.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyframeSetType<sp/>keyframeSet;<sp/></highlight><highlight class="comment">//<sp/>gives<sp/>mapping<sp/>from<sp/>keyframe<sp/>ids<sp/>to<sp/>keyframes.<sp/>bounds<sp/>the<sp/>memory<sp/>consumption.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Members,<sp/>nodes,<sp/>and<sp/>edges<sp/>of<sp/>the<sp/>graph.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>ExtrinsicSetType<sp/>extrinsicSet;<sp/></highlight><highlight class="comment">//<sp/>maps<sp/>camera<sp/>id<sp/>to<sp/>an<sp/>imu2camera<sp/>transform.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>CameraModelMapType<sp/>cameraModelMap;<sp/></highlight><highlight class="comment">//<sp/>camID<sp/>to<sp/>camera<sp/>model<sp/>mapping.<sp/>Done<sp/>this<sp/>way<sp/>for<sp/>memory/compute<sp/>efficiency.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="90"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;<sp/>currentFrame;</highlight></codeline>
-<codeline lineno="92"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyframeSetType<sp/>keyframeSet;<sp/></highlight><highlight class="comment">//<sp/>gives<sp/>mapping<sp/>from<sp/>keyframe<sp/>ids<sp/>to<sp/>keyframes.<sp/>bounds<sp/>the<sp/>memory<sp/>consumption.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>ExtrinsicSetType<sp/>extrinsicSet;<sp/></highlight><highlight class="comment">//<sp/>maps<sp/>camera<sp/>id<sp/>to<sp/>an<sp/>imu2camera<sp/>transform.</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;Frame&gt;<sp/>currentFrame;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="97"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/DataStructures/Graph.h"/>
   </compounddef>

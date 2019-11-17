@@ -32,6 +32,7 @@ Program Listing for File Graph.h
    using ExtrinsicSetType = std::unordered_map<ID_TYPE, QDVO::SE3 >;
    using CameraModelMapType = std::unordered_map<ID_TYPE, std::unique_ptr<CameraModel> >;
    
+   
    class Graph
    {
    public:
