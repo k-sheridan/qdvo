@@ -334,7 +334,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
 
     using ErrorTermSet = ArgMin::ErrorTermGroup<DifferenceErrorTerm>;
 
-    using LS = ArgMin::PSDSchurSolver<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>, ArgMin::VariableGroup<InverseDepth>>;
+    using LS = ArgMin::PSDSchurSolver<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>, ArgMin::VariableGroup<SimpleScalar>>;
 
     LS solver;
 
@@ -357,4 +357,37 @@ TEST(ArgMin, PSDSchurSolverSimple)
 
     // Test that initialize runs
     solver.initialize(variableContainer, errorTermContainer);
+
+    // verify that the B matrices are the correct size.
+    EXPECT_NE(std::get<0>(solver.B).at(ssKey1), std::get<0>(solver.B).end());
+    EXPECT_NE(std::get<0>(solver.B).at(ssKey2), std::get<0>(solver.B).end());
+    EXPECT_EQ(std::get<0>(solver.B).at(ssKey1)->rows(), 1);
+    EXPECT_EQ(std::get<0>(solver.B).at(ssKey2)->rows(), 1);
+
+    // verify that there are blocks in D
+    EXPECT_NE(std::get<0>(solver.D).at(ssKey1), std::get<0>(solver.D).end());
+    EXPECT_NE(std::get<0>(solver.D).at(ssKey2), std::get<0>(solver.D).end());
+
+    if constexpr((internal::Is_in_tuple<SimpleScalar, std::tuple<SimpleScalar, DifferentSimpleScalar>>::value)) {
+        EXPECT_TRUE(true);
+    } else {
+        EXPECT_TRUE(false);
+    }
+
+    if constexpr(!(internal::Is_in_tuple<SimpleScalar, std::tuple<DifferentSimpleScalar>>::value)) {
+        EXPECT_TRUE(true);
+    } else {
+        EXPECT_TRUE(false);
+    }
+
+    EXPECT_EQ(solver.dimensionOfA, 1);
+
+    // Test that linearize runs.
+    solver.linearize(variableContainer, errorTermContainer);
+
+    // The error terms should have been linearized.
+    EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey1)->linearizationValid);
+    EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
+
+
 }

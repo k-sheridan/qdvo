@@ -216,7 +216,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="59" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="59" bodyend="62"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="59" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="59" bodyend="61"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a1f9f30945cf53c34c1e880ddce2d412b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -238,7 +238,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="67" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="67" bodyend="70"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="66" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="66" bodyend="73"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a76309543da9f0a4afed9c3c2f7228867" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -261,7 +261,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="78" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="78" bodyend="80"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="81" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="81" bodyend="83"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a9078bf869b37db43d5f6d55b8066b5fd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -283,7 +283,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="83" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="83" bodyend="92"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="86" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="86" bodyend="95"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1afb67b674bdb8c5c6f1505009c4798501" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -297,26 +297,66 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="95" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="95" bodyend="112"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="98" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="98" bodyend="118"/>
       </memberdef>
-      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1aa02cddad0217fafbdefdcaf10add9d96" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a3a29eb7d7b399adc3d9a1a5dbb3083aa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::precomputeIndexMapAndResizeA</definition>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::precomputeIndexMapAndResizeMatrices</definition>
         <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variables)</argsstring>
-        <name>precomputeIndexMapAndResizeA</name>
+        <name>precomputeIndexMapAndResizeMatrices</name>
         <param>
           <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
           <declname>variables</declname>
         </param>
         <briefdescription>
+<para>Precomputes the map bewteen correlated variable keys and their index in A. </para>
         </briefdescription>
         <detaileddescription>
-<para>Precomputes the map bewteen correlated variable keys and their index in A. Resizes A if too small <linebreak/>
- </para>
+        </detaileddescription>
+        <inbodydescription>
+<para>compute the index map.</para>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="121" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="121" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a41fd74df09d37776f8a13b200226f232" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::addNewVariablesToSlotArrays</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variables)</argsstring>
+        <name>addNewVariablesToSlotArrays</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+<para>Ensures that the slot arrays stored in the solver are in sync with the current variable set. </para>
+        </briefdescription>
+        <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="116" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="116" bodyend="144"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="165" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="165" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a434a80f5d9cd4a9070b1187837a3d88c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::updateVariablePointers</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variables, ErrorTermContainer&lt; ErrorTerms... &gt; &amp;errorTerms)</argsstring>
+        <name>updateVariablePointers</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <param>
+          <type><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt; ErrorTerms... &gt; &amp;</type>
+          <declname>errorTerms</declname>
+        </param>
+        <briefdescription>
+<para>Updates the pointers to variables inside the error terms. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="192" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="192" bodyend="201"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -341,9 +381,10 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/Optimizer/PSDSchurSolver.h" line="36" column="1" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="35" bodyend="145"/>
+    <location file="src/Optimizer/PSDSchurSolver.h" line="36" column="1" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="35" bodyend="202"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a09dd6d7309824efe86f787e41985d7c0" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>A</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a41fd74df09d37776f8a13b200226f232" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>addNewVariablesToSlotArrays</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a3dcf93cacfe15d9b2efef617a8534e6a" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>b</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a7514fda9a0c9c7b261437a2344d3ef8c" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>B</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a1b24a11e39cdffacab1313141f4551fc" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>BVector</name></member>
@@ -356,10 +397,11 @@
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1adcc01e0dc877dcc8c812bec4af541ca3" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>IndexMap</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a1f9f30945cf53c34c1e880ddce2d412b" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>initialize</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a9078bf869b37db43d5f6d55b8066b5fd" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>linearize</name></member>
-      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1aa02cddad0217fafbdefdcaf10add9d96" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>precomputeIndexMapAndResizeA</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a3a29eb7d7b399adc3d9a1a5dbb3083aa" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>precomputeIndexMapAndResizeMatrices</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a311fa383900c504f73baba6bca028d99" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>PSDSchurSolver</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1afb67b674bdb8c5c6f1505009c4798501" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>reset</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a76309543da9f0a4afed9c3c2f7228867" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>solve</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a434a80f5d9cd4a9070b1187837a3d88c" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>updateVariablePointers</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a566a1f1bae6e58ad61418810b06e1fb0" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>variableToIndexMaps</name></member>
     </listofallmembers>
   </compounddef>

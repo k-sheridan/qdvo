@@ -47,16 +47,19 @@ Program Listing for File PSDSchurSolver.h
        Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b; // Preallocated rhs vector.
    
        std::tuple<IndexMap<Variables>...> variableToIndexMaps; // Tuple of slot arrays which store the current index of a given variable in A.
-       size_t dimensionOfA = 0; // The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
+       size_t dimensionOfA = 0;                                // The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
    
        PSDSchurSolver()
        {
-   
        }
    
        void initialize(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
        {
-           precomputeIndexMapAndResizeA(variables);
+           addNewVariablesToSlotArrays(variables);
+   
+           precomputeIndexMapAndResizeMatrices(variables);
+   
+           updateVariablePointers(variables, errorTerms);
        }
    
        void solve(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
@@ -74,53 +77,105 @@ Program Listing for File PSDSchurSolver.h
            });
        }
    
-       void reset() {
+       void reset()
+       {
            A.setZero();
            b.setZero();
    
            // iterate over all tuple elements and zero them.
            internal::static_for(B, [&](auto i, auto &array) {
-               for (auto& matrix : array) {
+               for (auto &matrix : array)
+               {
                    matrix.setZero();
                }
            });
    
            // iterate over all tuple elements and zero them.
            internal::static_for(D, [&](auto i, auto &array) {
-               for (auto& matrix : array) {
+               for (auto &matrix : array)
+               {
                    matrix.setZero();
                }
            });
        }
    
-       void precomputeIndexMapAndResizeA(VariableContainer<Variables...> &variables) {
+       void precomputeIndexMapAndResizeMatrices(VariableContainer<Variables...> &variables)
+       {
+   
            dimensionOfA = 0;
    
            internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
                typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
    
                // Only set the dimensions if this variable is not part of the uncorrelated set.
-               if constexpr(internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value) {
-   
-               } else {
-                   for (size_t i = 0; i < variableMap.size(); ++i) 
+               if constexpr (!(internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value))
+               {
+                   for (size_t idx = 0; idx < variableMap.size(); ++idx)
                    {
-                       auto key = variableMap.getKeyFromDataIndex(i);
+                       auto key = variableMap.getKeyFromDataIndex(idx);
    
                        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).insert(key, dimensionOfA);
    
                        dimensionOfA += ThisVariable::dimension;
                    }
                }
-   
            });
    
            // Resize A if necessary.
            assert(A.rows() == A.cols());
            if (A.rows() < dimensionOfA)
-           {  
+           {
                A.resize(dimensionOfA, dimensionOfA);
            }
+   
+           // Resize the matrices of B if necessary
+           internal::static_for(B, [&](auto i, auto &array) {
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
+               for (auto &matrix : array)
+               {
+                   if (matrix.rows() < dimensionOfA)
+                   {
+                       matrix.resize(dimensionOfA, ThisVariable::dimension);
+                   }
+               }
+           });
+       }
+   
+       void addNewVariablesToSlotArrays(VariableContainer<Variables...> &variables)
+       {
+           // Insert variables if they do not exist.
+           internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+               // Only do this for uncorrelated variables.
+               if constexpr ((internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value))
+               {
+                   for (size_t idx = 0; idx < variableMap.size(); ++idx)
+                   {
+                       auto key = variableMap.getKeyFromDataIndex(idx);
+   
+                       // Check if the key exists in B
+                       if (std::get<BVector<ThisVariable>>(B).at(key) == std::get<BVector<ThisVariable>>(B).end()) {
+                           std::get<BVector<ThisVariable>>(B).insert(key, Eigen::Matrix<ScalarType, Eigen::Dynamic, ThisVariable::dimension>::Zero(dimensionOfA));
+                       }
+   
+                       // Check if the key exists in D
+                       if (std::get<DVector<ThisVariable>>(D).at(key) == std::get<DVector<ThisVariable>>(D).end()) {
+                           std::get<DVector<ThisVariable>>(D).insert(key, DBlock<ThisVariable>::Zero());
+                       }
+                   }
+               }
+           });
+       }
+   
+       void updateVariablePointers(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
+       {
+           // iterate over all error term maps
+           internal::static_for(errorTerms.tupleOfErrorTermMaps, [&](auto i, auto &errorTermMap) {
+               for (auto &errorTerm : errorTermMap)
+               {
+                   errorTerm.updateVariablePointers(variables);
+               }
+           });
        }
    };
    

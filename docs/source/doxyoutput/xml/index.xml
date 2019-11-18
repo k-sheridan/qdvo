@@ -337,7 +337,9 @@
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a76309543da9f0a4afed9c3c2f7228867" kind="function"><name>solve</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a9078bf869b37db43d5f6d55b8066b5fd" kind="function"><name>linearize</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1afb67b674bdb8c5c6f1505009c4798501" kind="function"><name>reset</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1aa02cddad0217fafbdefdcaf10add9d96" kind="function"><name>precomputeIndexMapAndResizeA</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a3a29eb7d7b399adc3d9a1a5dbb3083aa" kind="function"><name>precomputeIndexMapAndResizeMatrices</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a41fd74df09d37776f8a13b200226f232" kind="function"><name>addNewVariablesToSlotArrays</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f_1a434a80f5d9cd4a9070b1187837a3d88c" kind="function"><name>updateVariablePointers</name></member>
   </compound>
   <compound refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kind="struct"><name>QDVO::GenericQuadTree::Quad</name>
     <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a9dca5fe55dc7c02859d9df7556e268de" kind="variable"><name>parentQuad</name></member>
