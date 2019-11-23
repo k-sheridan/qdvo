@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include "GlobalDefinitions.h"
 #include <algorithm>
+#include <memory>
 #include <deque>
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"

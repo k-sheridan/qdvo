@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <Eigen/Core>
+#include <memory>
 
 #define TOP_HASH_BIT_COUNT 4
 
