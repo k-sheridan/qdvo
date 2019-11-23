@@ -12,9 +12,11 @@ jobs:
     - name: dependencies
       run: |
         git clone https://github.com/strasdat/Sophus
-        cd Sophus && mkdir build && cd build && cmake .. && make install
-        sudo apt install libeigen3-dev
-        sudo apt-get install libopencv-dev
+        cd Sophus && sudo sh scripts/install_linux_deps.sh
+        mkdir build && cd build && cmake .. && make install
+        sudo apt-get install libeigen3-dev
+        sudo apt-get install libgtest-dev
+        sudo apt-get install libbenchmark-dev
     - name: configure
       run: mkdir build && cd build && cmake -DCMAKE_CXX_FLAGS="-Werror" ..
     - name: build
