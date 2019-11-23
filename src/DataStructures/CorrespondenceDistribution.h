@@ -3,8 +3,8 @@
 
 #include <unordered_set>
 #include "GlobalDefinitions.h"
-#include <boost/geometry.hpp>
 #include <algorithm>
+#include <deque>
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
 #include "Patch.h"
