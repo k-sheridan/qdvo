@@ -3,7 +3,7 @@ name: C/C++ CI
 on: [push]
 
 jobs:
-  build-ubuntu:
+  build-ubuntu-clang:
 
     runs-on: ubuntu-latest
     
@@ -27,19 +27,39 @@ jobs:
     - name: Configure Clang
       run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
     - name: Build Clang
-      run: cmake --build build
+      run: make
     - name: Test
-      run: cd build && ctest
+      run: ./test/test_qdvo
     - name: Benchmark
       run: ./bench/benchmark_qdvo
-    - name: Clean up
-      run: cd .. && rm -r build
-    - name: Configure GCC
+      
+  build-ubuntu-gcc:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: action-cpp-lint
+      uses: CyberZHG/github-action-cpp-lint@0.0.2
+    - name: Dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y ccache
+        sudo apt-get install gfortran libc++-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
+        sudo apt-get install libbenchmark-dev
+        sudo apt-get install libeigen3-dev
+        sudo apt-get install libopencv-dev
+        git clone https://github.com/strasdat/Sophus
+        cd Sophus && mkdir build && cd build && cmake .. && make -j16 && sudo make install
+        git clone https://github.com/google/googletest
+        cd googletest && mkdir build && cd build
+        cmake .. && make && sudo make install
+    - name: Configure Clang
       run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CC_COMPILER=gcc ..
-    - name: Build GCC
-      run: cmake --build build
-    - name: Test 
-      run: cd build && ctest
+    - name: Build Clang
+      run: make
+    - name: Test
+      run: ./test/test_qdvo
     - name: Benchmark
       run: ./bench/benchmark_qdvo
       
