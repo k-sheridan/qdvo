@@ -25,6 +25,8 @@ jobs:
         cd googletest && mkdir build && cd build
         cmake .. && make && sudo make install
     - name: configure
+      env:
+        CC: clang
       run: mkdir build && cd build && cmake ..
     - name: build
       run: cmake --build build
