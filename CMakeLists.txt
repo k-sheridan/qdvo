@@ -13,7 +13,6 @@ find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
 find_package(GTest)
 find_package(GoogleBenchmark)
-find_package(Boost REQUIRED)
 
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
