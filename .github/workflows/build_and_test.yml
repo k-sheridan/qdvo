@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Generate Make and Build
       run: |
-        cmake..
+        cmake ..
         make
     - name: Unit Tests
       run: make test
