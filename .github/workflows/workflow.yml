@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build-ubuntu-clang:
 
-    runs-on: [ubuntu-latest, ubuntu-16.04]
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v1
@@ -36,7 +36,7 @@ jobs:
         cd Sophus && mkdir build && cd build && cmake .. && make -j16
     
     - name: Install Sophus
-      run: cd Sophus && sudo make install
+      run: cd Sophus/build && sudo make install
         
     - name: Cache GTest
       id: cache-gtest
@@ -53,7 +53,7 @@ jobs:
         cmake .. && make
         
     - name: Install GTest
-      run: cd googletest && sudo make install
+      run: cd googletest/build && sudo make install
         
     - name: Configure Clang
       run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
