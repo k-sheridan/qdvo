@@ -11,10 +11,11 @@ jobs:
     - uses: actions/checkout@v1
     - name: dependencies
       run: |
+        sudo apt-get -qq update
         sudo apt-get install -y ccache
+        sudo apt-get install gfortran libc++-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
         git clone https://github.com/strasdat/Sophus
-        cd Sophus && sudo sh scripts/install_linux_deps.sh
-        mkdir build && cd build && cmake .. && sudo make install
+        cd Sophus && mkdir build && cd build && cmake .. && sudo make install
         git clone https://github.com/google/googletest
         cd googletest && mkdir build && cd build
         cmake .. && make && sudo make install
