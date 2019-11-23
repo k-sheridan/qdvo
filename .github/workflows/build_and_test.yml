@@ -25,9 +25,7 @@ jobs:
         cd googletest && mkdir build && cd build
         cmake .. && make && sudo make install
     - name: configure
-      env:
-        CC: clang
-      run: mkdir build && cd build && cmake ..
+      run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
     - name: build
       run: cmake --build build
     - name: test
