@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build-ubuntu-clang:
 
-    runs-on: ARM32
+    runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v1
@@ -33,7 +33,10 @@ jobs:
       if: steps.cache-sophus.outputs.cache-hit != 'true'
       run: |
         git clone https://github.com/strasdat/Sophus
-        cd Sophus && mkdir build && cd build && cmake .. && make -j16 && sudo make install
+        cd Sophus && mkdir build && cd build && cmake .. && make -j16
+    
+    - name: Install Sophus
+      run: cd Sophus && sudo make install
         
     - name: Cache GTest
       id: cache-gtest
@@ -47,7 +50,10 @@ jobs:
       run: |
         git clone https://github.com/google/googletest
         cd googletest && mkdir build && cd build
-        cmake .. && make && sudo make install
+        cmake .. && make
+        
+    - name: Install GTest
+      run: cd googletest && sudo make install
         
     - name: Configure Clang
       run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
