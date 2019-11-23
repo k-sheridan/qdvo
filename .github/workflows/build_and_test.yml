@@ -1,0 +1,20 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Generate Make and Build
+      run: |
+        cmake..
+        make
+    - name: Unit Tests
+      run: make test
+    - name: Benchmarks
+      run: ./bench/benchmark_qdvo
+      
