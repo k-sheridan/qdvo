@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "Optimizer/MetaHelpers.h"
 #include "Optimizer/SSEOptimizer.h"
 #include "Optimizer/SparseBlockRow.h"
 #include "Optimizer/SparseBlockMatrix.h"
