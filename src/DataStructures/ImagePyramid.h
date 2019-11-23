@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GlobalDefinitions.h"
-#include "Image.h"
+#include "DataStructures/Image.h"
 
 namespace QDVO {
 class ImagePyramid

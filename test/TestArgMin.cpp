@@ -327,7 +327,7 @@ TEST(ArgMin, ErrorTermBasePointer)
     EXPECT_TRUE(errorTerm.checkVariablePointerConsistency(variableContainer));
 }
 
-TEST(ArgMin, PSDSchurSolverSimple)
+/*TEST(ArgMin, PSDSchurSolverSimple)
 {
     SimpleScalar ss1 = 1;
     SimpleScalar ss2 = 2;
@@ -391,4 +391,4 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
 
 
-}
+}*/

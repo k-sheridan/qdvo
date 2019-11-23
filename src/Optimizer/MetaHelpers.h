@@ -10,7 +10,7 @@ struct VariableGroup {};
 template <typename... T>
 struct ErrorTermGroup {};
 
-template <size_t T>
+template <int T>
 struct Dimension {};
 
 template <typename T>

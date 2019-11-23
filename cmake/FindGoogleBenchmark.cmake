@@ -31,6 +31,7 @@ find_package_handle_standard_args(benchmark FOUND_VAR benchmark_FOUND
   benchmark_INCLUDE_DIR)
 
 if(benchmark_FOUND)
+  message("Found Google Benchmark!")
   set(benchmark_LIBRARIES ${benchmark_LIBRARY})
   set(benchmark_INCLUDE_DIRS ${benchmark_INCLUDE_DIR})
 endif()
