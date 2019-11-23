@@ -10,27 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: dependencies
-      run: apt install libeigen3-dev
+      run: sudo apt install libeigen3-dev
     - name: configure
       run: mkdir build && cd build && cmake -DCMAKE_CXX_FLAGS="-Werror" ..
     - name: build
       run: cmake --build build
-    - name: test
-      run: cd build && ctest
-
-  build-windows:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, windows-2016]
-    
-    steps:
-    - uses: actions/checkout@v1
-    - name: configure
-      run: mkdir build && cd build && cmake ..
-    - name: build
-      run: cmake --build build --config Debug
     - name: test
       run: cd build && ctest
       
