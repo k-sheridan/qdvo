@@ -9,6 +9,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: action-cpp-lint
+      uses: CyberZHG/github-action-cpp-lint@0.0.2
     - name: dependencies
       run: |
         sudo apt-get -qq update
