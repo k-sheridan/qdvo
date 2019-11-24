@@ -56,7 +56,7 @@ jobs:
       run: cd googletest/build && sudo make install
         
     - name: Configure Clang
-      run: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
+      run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
       
     - name: Build Clang
       run: pwd && cd build && make
