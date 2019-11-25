@@ -12,7 +12,9 @@ class HuberLossFunction
 {
 public:
 
-    HuberLossFunction(ScalarType c) c(c) {} 
+    HuberLossFunction(ScalarType c_) {
+        c = c_;
+    } 
 
     ScalarType c;
 

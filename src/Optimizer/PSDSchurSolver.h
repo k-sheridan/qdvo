@@ -6,6 +6,7 @@
 #include "SlotMap.h"
 #include "SlotArray.h"
 #include "BlockVector.h"
+#include "HuberLossFunction.h"
 #include <cassert>
 
 namespace ArgMin
@@ -46,6 +47,9 @@ public:
     using DVector = SlotArray<DBlock<VariableType>, VariableKey<VariableType>>;
     template <typename VariableType>
     using IndexMap = SlotArray<size_t, VariableKey<VariableType>>;
+    using LossFunction = HuberLossFunction<ScalarType>;
+
+    LossFunction lossFunction;
 
     Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A; // Dense matrix in the upper right corner
     std::tuple<BVector<UncorrelatedVariables>...> B;             // Top right block matrix. Equal to bottom left transposed.
@@ -61,7 +65,7 @@ public:
     std::tuple<IndexMap<Variables>...> variableToIndexMaps; // Tuple of slot arrays which store the current index of a given variable in A.
     size_t dimensionOfA = 0;                                // The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
 
-    PSDSchurSolver()
+    PSDSchurSolver() : lossFunction(1e-6)
     {
     }
 
@@ -163,7 +167,9 @@ public:
                     internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
                         internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
                             // TODO Compute pJtJ and pJte for this error term.
-                            
+                            double sqError = errorTerm.residual.squaredNorm();
+                            double error = sqrt(sqError);
+                            double loss = lossFunction.loss(error, sqError);
                         }); 
                     });
                 }

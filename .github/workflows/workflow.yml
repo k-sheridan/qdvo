@@ -1,0 +1,68 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build-ubuntu-clang:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: action-cpp-lint
+      uses: CyberZHG/github-action-cpp-lint@0.0.2
+      
+    - name: Apt-Get Dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y ccache
+        sudo apt-get install gfortran libc++-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
+        sudo apt-get install libbenchmark-dev
+        sudo apt-get install libeigen3-dev
+        sudo apt-get install libopencv-dev
+        
+    - name: Cache Sophus 
+      id: cache-sophus
+      uses: actions/cache@v1
+      with:
+        path: Sophus
+        key: ${{ runner.os }}-sophus
+      
+    - name: Build Sophus
+      if: steps.cache-sophus.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/strasdat/Sophus
+        cd Sophus && mkdir build && cd build && cmake .. && make -j16
+    
+    - name: Install Sophus
+      run: cd Sophus/build && sudo make install
+        
+    - name: Cache GTest
+      id: cache-gtest
+      uses: actions/cache@v1
+      with:
+        path: googletest
+        key: ${{ runner.os }}-gtest
+        
+    - name: Build GTest
+      if: steps.cache-gtest.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/google/googletest
+        cd googletest && mkdir build && cd build
+        cmake .. && make
+        
+    - name: Install GTest
+      run: cd googletest/build && sudo make install
+        
+    - name: Configure Clang
+      run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
+      
+    - name: Build Clang
+      run: pwd && cd build && make
+      
+    - name: Test
+      run: cd build && ./test/test_qdvo
+      
+    - name: Benchmark
+      run: cd build && ./bench/benchmark_qdvo
