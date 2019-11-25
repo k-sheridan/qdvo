@@ -58,6 +58,8 @@ public:
         {
             linearizationValid = false;
         }
+
+        information.setIdentity();
     }
 };
 
@@ -367,6 +369,10 @@ TEST(ArgMin, PSDSchurSolverSimple)
     // Add an off diagonal term to the prior
     prior.A0.getRowMap<DifferentSimpleScalar>().at(dssKey1).getVariableMap<SimpleScalar>().insert(std::make_pair(ssKey2, Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
 
+    // Add to the rhs of the prior.
+    prior.b0.getRowBlock(ssKey1) = Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(1);
+    prior.b0.getRowBlock(dssKey1) = Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(2);
+
     // Test that initialize runs
     solver.initialize(variableContainer, errorTermContainer);
 
@@ -378,9 +384,15 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey2))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(2)));
     EXPECT_TRUE(solver.A.block(0, 0, DifferentSimpleScalar::dimension, DifferentSimpleScalar::dimension).isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(3)));
     EXPECT_TRUE((std::get<LS::BVector<SimpleScalar>>(solver.B).at(ssKey2))->block(0, 0, DifferentSimpleScalar::dimension, SimpleScalar::dimension).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
+    EXPECT_TRUE(solver.b_correlated.block(0, 0, DifferentSimpleScalar::dimension, 1).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(2)));
+    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey1).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(1)));
 
     // Reset the off diagonal component of the prior.
     prior.A0.getRowMap<DifferentSimpleScalar>().at(dssKey1).getVariableMap<SimpleScalar>().at(ssKey2).setZero();
+
+    // Zero the rhs.
+    prior.b0.getRowBlock(ssKey1) = Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(0);
+    prior.b0.getRowBlock(dssKey1) = Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(0);
 
     // Test that reset runs
     solver.setZero();

@@ -40,6 +40,9 @@ public:
     /// This is the most recent residual computed for the error term.
     Eigen::Matrix<ScalarType, ResidualDimension, 1> residual;
 
+    /// This is the information matrix for this error term.
+    Eigen::Matrix<ScalarType, ResidualDimension, ResidualDimension> information;
+
     /// This flag is used to let the user know if the error term was linearized successfully.
     bool linearizationValid = false;
 

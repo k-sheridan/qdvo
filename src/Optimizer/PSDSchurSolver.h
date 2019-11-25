@@ -149,9 +149,26 @@ public:
     template <typename GaussianPriorType>
     void buildProblem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
     {
-
         // Initialize the current problem to the prior.
         setProblemToPrior(prior);
+
+        // iterate through all error terms
+        internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
+            for (auto& errorTerm : errorTermMap)
+            {
+                // Check if the linearization is valid for this error term.
+                if (errorTerm.linearizationValid)
+                {
+                    // Iterate through all independent variables.
+                    internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
+                        internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
+                            // TODO Compute pJtJ and pJte for this error term.
+                            
+                        }); 
+                    });
+                }
+            }
+        });
     }
 
     /**
