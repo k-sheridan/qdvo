@@ -31,6 +31,16 @@ Includes
 
 - ``DataStructures/Graph.h`` (:ref:`file_src_DataStructures_Graph.h`)
 
+- ``Optimizer/Containers.h`` (:ref:`file_src_Optimizer_Containers.h`)
+
+- ``Optimizer/Key.h`` (:ref:`file_src_Optimizer_Key.h`)
+
+- ``Optimizer/MetaHelpers.h`` (:ref:`file_src_Optimizer_MetaHelpers.h`)
+
+- ``Optimizer/SSEOptimizer.h`` (:ref:`file_src_Optimizer_SSEOptimizer.h`)
+
+- ``Optimizer/Variables/SE3.h`` (:ref:`file_src_Optimizer_Variables_SE3.h`)
+
 
 
 Included By

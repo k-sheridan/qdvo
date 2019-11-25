@@ -14,6 +14,7 @@ Program Listing for File ThreadingHelpers.h
    
    #include <vector>
    #include <thread>
+   #include <cassert>
    
    #define DEFAULT_THREAD_COUNT 4
    

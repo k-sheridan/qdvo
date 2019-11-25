@@ -13,6 +13,7 @@ Program Listing for File SlotArray.h
    #pragma once
    
    #include <vector>
+   #include <cassert>
    
    namespace ArgMin
    {

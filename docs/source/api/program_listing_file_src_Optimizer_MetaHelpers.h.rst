@@ -22,7 +22,7 @@ Program Listing for File MetaHelpers.h
    template <typename... T>
    struct ErrorTermGroup {};
    
-   template <size_t T>
+   template <int T>
    struct Dimension {};
    
    template <typename T>

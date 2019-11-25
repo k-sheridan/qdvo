@@ -70,32 +70,42 @@
         <label>Eigen/Core</label>
       </node>
       <node id="18">
+        <label>opencv2/core/core.hpp</label>
+      </node>
+      <node id="20">
         <label>CorrespondenceDistribution.h</label>
         <link refid="_correspondence_distribution_8h_source"/>
-        <childnode refid="19" relation="include">
+        <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="20" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
         <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
         </childnode>
         <childnode refid="24" relation="include">
         </childnode>
-        <childnode refid="26" relation="include">
-        </childnode>
-      </node>
-      <node id="19">
-        <label>unordered_set</label>
-      </node>
-      <node id="24">
-        <label>SpatialMap.h</label>
-        <link refid="_spatial_map_8h_source"/>
         <childnode refid="25" relation="include">
         </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>unordered_set</label>
+      </node>
+      <node id="19">
+        <label>opencv2/core/eigen.hpp</label>
+      </node>
+      <node id="27">
+        <label>SpatialMap.h</label>
+        <link refid="_spatial_map_8h_source"/>
+        <childnode refid="28" relation="include">
+        </childnode>
         <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -111,7 +121,7 @@
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
-        <childnode refid="18" relation="include">
+        <childnode refid="20" relation="include">
         </childnode>
       </node>
       <node id="5">
@@ -129,10 +139,10 @@
       <node id="11">
         <label>optional</label>
       </node>
-      <node id="25">
+      <node id="28">
         <label>vector</label>
       </node>
-      <node id="26">
+      <node id="29">
         <label>Patch.h</label>
         <link refid="_patch_8h_source"/>
         <childnode refid="2" relation="include">
@@ -144,7 +154,7 @@
         <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="22">
+      <node id="25">
         <label>RadialSearchPattern.h</label>
         <link refid="_radial_search_pattern_8h_source"/>
         <childnode refid="2" relation="include">
@@ -153,15 +163,18 @@
         </childnode>
         <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="23" relation="include">
+        <childnode refid="26" relation="include">
         </childnode>
       </node>
       <node id="15">
         <label>EpipolarDepthEstimator.h</label>
         <link refid="_epipolar_depth_estimator_8h_source"/>
       </node>
-      <node id="23">
+      <node id="26">
         <label>iostream</label>
+      </node>
+      <node id="24">
+        <label>deque</label>
       </node>
       <node id="6">
         <label>sophus/se3.hpp</label>
@@ -170,22 +183,24 @@
         <label>chrono</label>
       </node>
       <node id="17">
-        <label>Image.h</label>
+        <label>DataStructures/Image.h</label>
         <link refid="_image_8h_source"/>
         <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="2" relation="include">
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="10" relation="include">
         </childnode>
       </node>
-      <node id="20">
-        <label>boost/geometry.hpp</label>
-      </node>
-      <node id="21">
+      <node id="22">
         <label>algorithm</label>
+      </node>
+      <node id="23">
+        <label>memory</label>
       </node>
       <node id="16">
         <label>ImagePyramid.h</label>

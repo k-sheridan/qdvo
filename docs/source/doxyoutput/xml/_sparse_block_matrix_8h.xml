@@ -17,22 +17,22 @@
         <childnode refid="5" relation="include">
         </childnode>
       </node>
-      <node id="13">
+      <node id="14">
         <label>GlobalDefinitions.h</label>
         <link refid="_global_definitions_8h_source"/>
-        <childnode refid="14" relation="include">
-        </childnode>
         <childnode refid="15" relation="include">
-        </childnode>
-      </node>
-      <node id="12">
-        <label>Types.h</label>
-        <link refid="_types_8h_source"/>
-        <childnode refid="13" relation="include">
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
+      </node>
+      <node id="13">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="14" relation="include">
+        </childnode>
         <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
         </childnode>
       </node>
       <node id="3">
@@ -40,6 +40,9 @@
         <link refid="_meta_helpers_8h_source"/>
         <childnode refid="4" relation="include">
         </childnode>
+      </node>
+      <node id="10">
+        <label>cassert</label>
       </node>
       <node id="6">
         <label>Eigen/Core</label>
@@ -54,11 +57,13 @@
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
       </node>
-      <node id="11">
+      <node id="12">
         <label>Key.h</label>
         <link refid="_key_8h_source"/>
-        <childnode refid="12" relation="include">
+        <childnode refid="13" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
@@ -66,29 +71,29 @@
       <node id="4">
         <label>tuple</label>
       </node>
-      <node id="15">
+      <node id="16">
         <label>ctime</label>
       </node>
-      <node id="17">
+      <node id="18">
         <label>optional</label>
       </node>
       <node id="8">
         <label>vector</label>
       </node>
-      <node id="16">
+      <node id="17">
         <label>sophus/se3.hpp</label>
       </node>
-      <node id="14">
+      <node id="15">
         <label>chrono</label>
       </node>
-      <node id="10">
+      <node id="11">
         <label>Optimizer/Containers.h</label>
         <link refid="_containers_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="11" relation="include">
+        <childnode refid="12" relation="include">
         </childnode>
       </node>
       <node id="9">
@@ -107,7 +112,7 @@
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="10" relation="include">
+        <childnode refid="11" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -116,6 +121,12 @@
         <label>src/Optimizer/SparseBlockMatrix.h</label>
         <link refid="_sparse_block_matrix_8h"/>
         <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="7" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -132,6 +143,8 @@
         <label>src/Optimizer/SSEOptimizer.h</label>
         <link refid="_s_s_e_optimizer_8h_source"/>
         <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
         </childnode>
       </node>
       <node id="3">

@@ -1,7 +1,9 @@
-#include "gtest/gtest.h"
+
 #include "Optimizer/SlotMap.h"
 #include "Optimizer/SlotArray.h"
 #include <numeric>
+
+#include <gtest/gtest.h>
 
 using namespace ArgMin;
 

@@ -7,27 +7,28 @@
     <includes refid="_containers_8h" local="yes">Containers.h</includes>
     <includes refid="_gaussian_prior_8h" local="yes">GaussianPrior.h</includes>
     <includedby refid="_front_fnd_visual_odometry_8h" local="yes">src/Estimation/FrontFndVisualOdometry.h</includedby>
+    <includedby refid="_sliding_window_estimator_8h" local="yes">src/Estimation/SlidingWindowEstimator.h</includedby>
     <incdepgraph>
-      <node id="17">
+      <node id="18">
         <label>Optimizer/SparseBlockMatrix.h</label>
         <link refid="_sparse_block_matrix_8h_source"/>
-        <childnode refid="18" relation="include">
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="20" relation="include">
         </childnode>
       </node>
-      <node id="20">
+      <node id="21">
         <label>Optimizer/BlockVector.h</label>
         <link refid="_block_vector_8h_source"/>
-        <childnode refid="21" relation="include">
+        <childnode refid="22" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="16" relation="include">
+        <childnode refid="17" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
@@ -56,10 +57,13 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="16">
+      <node id="14">
+        <label>cassert</label>
+      </node>
+      <node id="17">
         <label>Eigen/Core</label>
       </node>
-      <node id="18">
+      <node id="19">
         <label>map</label>
       </node>
       <node id="1">
@@ -69,9 +73,9 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
         <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
         </childnode>
       </node>
       <node id="11">
@@ -80,6 +84,8 @@
         <childnode refid="12" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -105,18 +111,18 @@
       <node id="9">
         <label>sophus/se3.hpp</label>
       </node>
-      <node id="15">
+      <node id="16">
         <label>GaussianPrior.h</label>
         <link refid="_gaussian_prior_8h_source"/>
-        <childnode refid="16" relation="include">
-        </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
         <childnode refid="17" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
         </childnode>
         <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
@@ -126,7 +132,7 @@
       <node id="7">
         <label>chrono</label>
       </node>
-      <node id="14">
+      <node id="15">
         <label>Containers.h</label>
         <link refid="_containers_8h_source"/>
         <childnode refid="2" relation="include">
@@ -139,30 +145,38 @@
       <node id="13">
         <label>set</label>
       </node>
-      <node id="19">
+      <node id="20">
         <label>Optimizer/SparseBlockRow.h</label>
         <link refid="_sparse_block_row_8h_source"/>
-        <childnode refid="18" relation="include">
+        <childnode refid="19" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="16" relation="include">
+        <childnode refid="17" relation="include">
         </childnode>
         <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
+        <childnode refid="15" relation="include">
         </childnode>
       </node>
-      <node id="21">
+      <node id="22">
         <label>Optimizer/SlotArray.h</label>
         <link refid="_slot_array_8h_source"/>
         <childnode refid="12" relation="include">
         </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
       </node>
     </incdepgraph>
     <invincdepgraph>
+      <node id="4">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
       <node id="2">
         <label>src/Estimation/FrontFndVisualOdometry.h</label>
         <link refid="_front_fnd_visual_odometry_8h_source"/>
@@ -173,6 +187,8 @@
         <label>src/Optimizer/SSEOptimizer.h</label>
         <link refid="_s_s_e_optimizer_8h"/>
         <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
       <node id="3">
@@ -249,14 +265,13 @@
 <codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(</highlight><highlight class="keyword">false</highlight><highlight class="normal">);</highlight></codeline>
 <codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="68"><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt;Variables...&gt;<sp/>variables;</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt;ErrorTerms...&gt;<sp/>errorTerms;</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_gaussian_prior" kindref="compound">GaussianPrior&lt;Scalar&lt;ScalarType&gt;</ref>,<sp/><ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt;Variables...&gt;&gt;<sp/>prior;</highlight></codeline>
-<codeline lineno="76"><highlight class="normal">};</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"></highlight></codeline>
-<codeline lineno="78"><highlight class="normal">}<sp/></highlight><highlight class="comment">//namespace<sp/>ArgMin</highlight></codeline>
+<codeline lineno="70" refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt;Variables...&gt;<sp/><ref refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" kindref="member">variables</ref>;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt;ErrorTerms...&gt;<sp/>errorTerms;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_arg_min_1_1_gaussian_prior" kindref="compound">GaussianPrior&lt;Scalar&lt;ScalarType&gt;</ref>,<sp/><ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt;Variables...&gt;&gt;<sp/><ref refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" kindref="member">prior</ref>;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}<sp/></highlight><highlight class="comment">//namespace<sp/>ArgMin</highlight></codeline>
     </programlisting>
     <location file="src/Optimizer/SSEOptimizer.h"/>
   </compounddef>

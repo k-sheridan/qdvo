@@ -31,6 +31,8 @@ Includes
 
 - ``Eigen/Core``
 
+- ``memory``
+
 - ``vector``
 
 

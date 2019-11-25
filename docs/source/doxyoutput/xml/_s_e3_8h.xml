@@ -3,6 +3,7 @@
   <compounddef id="_s_e3_8h" kind="file" language="C++">
     <compoundname>SE3.h</compoundname>
     <includes refid="_optimizable_variable_8h" local="yes">Optimizer/OptimizableVariable.h</includes>
+    <includedby refid="_sliding_window_estimator_8h" local="yes">src/Estimation/SlidingWindowEstimator.h</includedby>
     <incdepgraph>
       <node id="3">
         <label>Eigen/Core</label>
@@ -20,6 +21,24 @@
         </childnode>
       </node>
     </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>src/Optimizer/Variables/SE3.h</label>
+        <link refid="_s_e3_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+    </invincdepgraph>
     <innerclass refid="class_arg_min_1_1_s_e3" prot="public">ArgMin::SE3</innerclass>
     <innernamespace refid="namespace_arg_min">ArgMin</innernamespace>
     <briefdescription>

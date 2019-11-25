@@ -292,9 +292,16 @@
           <edgelabel>swe</edgelabel>
         </childnode>
       </node>
+      <node id="5">
+        <label>ArgMin::SSEOptimizer&lt; ArgMin::Scalar&lt; double &gt;, ArgMin::VariableGroup&lt; ArgMin::SE3 &gt;, ArgMin::ErrorTermGroup&lt; ArgMin::SE3 &gt; &gt;</label>
+        <link refid="class_arg_min_1_1_s_s_e_optimizer"/>
+      </node>
       <node id="4">
         <label>QDVO::SlidingWindowEstimator</label>
         <link refid="class_q_d_v_o_1_1_sliding_window_estimator"/>
+        <childnode refid="5" relation="usage">
+          <edgelabel>optimizer</edgelabel>
+        </childnode>
       </node>
       <node id="3">
         <label>QDVO::FrontEndVisualOdometry</label>

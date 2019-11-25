@@ -34,6 +34,6 @@ Functions
 
 - :ref:`exhale_function__threading_helpers_8h_1a0085469dd3786f59213263d179a652d6`
 
-- :ref:`exhale_function__parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144`
-
 - :ref:`exhale_function__parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b`
+
+- :ref:`exhale_function__parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144`

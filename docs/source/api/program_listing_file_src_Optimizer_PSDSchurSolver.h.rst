@@ -99,6 +99,11 @@ Program Listing for File PSDSchurSolver.h
            });
        }
    
+       template <typename GaussianPriorType>
+       void buildProblem(GaussianPriorType& prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms) {
+   
+       }
+   
        void precomputeIndexMapAndResizeMatrices(VariableContainer<Variables...> &variables)
        {
    
@@ -147,7 +152,7 @@ Program Listing for File PSDSchurSolver.h
            internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
                typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
                // Only do this for uncorrelated variables.
-               if constexpr ((internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value))
+               if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
                {
                    for (size_t idx = 0; idx < variableMap.size(); ++idx)
                    {

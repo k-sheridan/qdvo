@@ -57,9 +57,9 @@ Included By
 
 - :ref:`file_src_DataStructures_ImagePyramid.h`
 
-- :ref:`file_src_DataStructures_Image.h`
-
 - :ref:`file_src_DataStructures_Graph.h`
+
+- :ref:`file_src_DataStructures_Image.h`
 
 - :ref:`file_src_FeatureDetection_FeatureDetector.h`
 

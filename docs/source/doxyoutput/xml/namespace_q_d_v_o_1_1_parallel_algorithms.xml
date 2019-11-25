@@ -33,7 +33,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="14" column="1" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="13" bodyend="18"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="15" column="1" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="14" bodyend="19"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="func">
@@ -79,7 +79,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="21" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="21" bodyend="43"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="22" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="22" bodyend="44"/>
       </memberdef>
       <memberdef kind="function" id="_parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -130,7 +130,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="47" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="47" bodyend="71"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="48" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="48" bodyend="72"/>
       </memberdef>
       <memberdef kind="function" id="_parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -167,7 +167,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="74" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="74" bodyend="96"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="75" column="6" bodyfile="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" bodystart="75" bodyend="97"/>
       </memberdef>
       <memberdef kind="function" id="_threading_helpers_8h_1a08260634f488dd444692cda98dcdd8ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned</type>
@@ -180,7 +180,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="12" column="17" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="12" bodyend="23"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="13" column="17" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="13" bodyend="24"/>
       </memberdef>
       <memberdef kind="function" id="_threading_helpers_8h_1a0085469dd3786f59213263d179a652d6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>std::vector&lt; int &gt;</type>
@@ -201,7 +201,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="26" column="20" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="26" bodyend="40"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="27" column="20" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="27" bodyend="41"/>
       </memberdef>
       <memberdef kind="function" id="_threading_helpers_8h_1aea45d50cb6eb4967c0efd7b8bb86a8b4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>std::vector&lt; std::tuple&lt; int, int &gt; &gt;</type>
@@ -218,7 +218,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="43" column="20" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="43" bodyend="54"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="44" column="20" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="44" bodyend="55"/>
       </memberdef>
       <memberdef kind="function" id="_threading_helpers_8h_1a8eb6e9129e87e5c9f4ce807805f18eae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -235,13 +235,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="56" column="13" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="56" bodyend="63"/>
+        <location file="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" line="57" column="13" bodyfile="src/Optimizer/ParallelAlgorithms/ThreadingHelpers.h" bodystart="57" bodyend="64"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="12" column="1"/>
+    <location file="src/Optimizer/ParallelAlgorithms/ParallelAlgorithms.h" line="13" column="1"/>
   </compounddef>
 </doxygen>

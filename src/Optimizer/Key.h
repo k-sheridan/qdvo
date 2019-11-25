@@ -16,6 +16,12 @@ public:
     {
         return this->index < other.index;
     }
+
+    /// Compares two keys by their index, but not generation.
+    bool operator==(const VariableKey<T> &other) const
+    {
+        return this->index == other.index;
+    }
 };
 
 template <typename T>

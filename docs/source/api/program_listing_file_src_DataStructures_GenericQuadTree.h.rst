@@ -16,7 +16,6 @@ Program Listing for File GenericQuadTree.h
    #include <vector>
    #include <Eigen/Core>
    #include <iostream>
-   #include <boost/multi_array.hpp>
    
    #define DEFAULT_BIN_WIDTH 1
    

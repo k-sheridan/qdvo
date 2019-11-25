@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cassert>
 
 namespace ArgMin
 {
@@ -184,7 +185,7 @@ public:
      * constructs a variable key index and generation from a data index.
      * Asserts that the data index is valid.
      */
-    KeyType getKeyFromDataIndex(size_t dataIndex)
+    KeyType getKeyFromDataIndex(size_t dataIndex) const 
     {
         assert(dataIndex < dataToSlotIndex.size());
         size_t slotIndex = dataToSlotIndex.at(dataIndex);

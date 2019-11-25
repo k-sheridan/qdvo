@@ -15,8 +15,9 @@ Program Listing for File CorrespondenceDistribution.h
    
    #include <unordered_set>
    #include "GlobalDefinitions.h"
-   #include <boost/geometry.hpp>
    #include <algorithm>
+   #include <memory>
+   #include <deque>
    #include "RadialSearchPattern.h"
    #include "SpatialMap.h"
    #include "Patch.h"

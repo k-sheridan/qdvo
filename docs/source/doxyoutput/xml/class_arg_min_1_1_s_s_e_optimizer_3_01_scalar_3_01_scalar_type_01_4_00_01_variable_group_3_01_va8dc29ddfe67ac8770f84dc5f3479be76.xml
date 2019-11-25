@@ -17,8 +17,8 @@
         <defname>ErrorTerms</defname>
       </param>
     </templateparamlist>
-      <sectiondef kind="private-attrib">
-      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="private" static="no" mutable="no">
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="public" static="no" mutable="no">
         <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt;</type>
         <definition>VariableContainer&lt;Variables...&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::variables</definition>
         <argsstring></argsstring>
@@ -30,9 +30,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SSEOptimizer.h" line="71" column="23" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="71" bodyend="-1"/>
+        <location file="src/Optimizer/SSEOptimizer.h" line="70" column="23" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="70" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="public" static="no" mutable="no">
         <type><ref refid="class_arg_min_1_1_error_term_container" kindref="compound">ErrorTermContainer</ref>&lt; ErrorTerms... &gt;</type>
         <definition>ErrorTermContainer&lt;ErrorTerms...&gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::errorTerms</definition>
         <argsstring></argsstring>
@@ -43,9 +43,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SSEOptimizer.h" line="72" column="24" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="72" bodyend="-1"/>
+        <location file="src/Optimizer/SSEOptimizer.h" line="71" column="24" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="71" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="private" static="no" mutable="no">
+      <memberdef kind="variable" id="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="public" static="no" mutable="no">
         <type><ref refid="class_arg_min_1_1_gaussian_prior" kindref="compound">GaussianPrior</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
         <definition>GaussianPrior&lt;Scalar&lt;ScalarType&gt;, VariableGroup&lt;Variables...&gt; &gt; ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;::prior</definition>
         <argsstring></argsstring>
@@ -57,7 +57,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SSEOptimizer.h" line="75" column="19" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="75" bodyend="-1"/>
+        <location file="src/Optimizer/SSEOptimizer.h" line="74" column="19" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="74" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -221,18 +221,45 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/SSEOptimizer.h" line="16" column="1" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="15" bodyend="76"/>
+    <collaborationgraph>
+      <node id="3">
+        <label>ArgMin::ErrorTermContainer&lt; ErrorTerms... &gt;</label>
+        <link refid="class_arg_min_1_1_error_term_container"/>
+      </node>
+      <node id="1">
+        <label>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</label>
+        <link refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>variables</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>errorTerms</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>prior</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>ArgMin::VariableContainer&lt; Variables... &gt;</label>
+        <link refid="class_arg_min_1_1_variable_container"/>
+      </node>
+      <node id="4">
+        <label>ArgMin::GaussianPrior&lt; ArgMin::Scalar&lt; ScalarType &gt;, ArgMin::VariableGroup&lt; Variables... &gt; &gt;</label>
+        <link refid="class_arg_min_1_1_gaussian_prior"/>
+      </node>
+    </collaborationgraph>
+    <location file="src/Optimizer/SSEOptimizer.h" line="16" column="1" bodyfile="src/Optimizer/SSEOptimizer.h" bodystart="15" bodyend="75"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a5c3fa4ce5bc5167aa10fae07387afe1c" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addErrorTerm</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a53e63ff020da651b855482bcb6702d0d" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>addVariable</name></member>
-      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>errorTerms</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1acbd742c9164d67abc739418ff9877623" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>errorTerms</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1afc84818e29e65201a546c75fa89a1005" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>marginalizeVariable</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a58db16a95876ba98f9204dedcc8bd44d" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>optimize</name></member>
-      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>prior</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a320fa61f2d2ead5efa38f0b049ffc568" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>prior</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aea5d5dba859722fd7bf1b468a8190332" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>removeErrorTerm</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a703bc33a786b56234bb7780506c8f460" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>removeVariable</name></member>
       <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1aa33b0efe32dfea9478241c4d8b99b30a" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>setVariablePrior</name></member>
-      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="private" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>variables</name></member>
+      <member refid="class_arg_min_1_1_s_s_e_optimizer_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_va8dc29ddfe67ac8770f84dc5f3479be76_1a2b5831396301b48f5a22c7067f52bb3c" prot="public" virt="non-virtual"><scope>ArgMin::SSEOptimizer&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt;, ErrorTermGroup&lt; ErrorTerms... &gt; &gt;</scope><name>variables</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

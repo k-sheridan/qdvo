@@ -45,6 +45,8 @@ Included By
 
 - :ref:`file_src_Estimation_FrontFndVisualOdometry.h`
 
+- :ref:`file_src_Estimation_SlidingWindowEstimator.h`
+
 
 
 

@@ -14,83 +14,90 @@
         <link refid="_block_vector_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
-        <childnode refid="13" relation="include">
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
       </node>
-      <node id="6">
+      <node id="7">
         <label>GlobalDefinitions.h</label>
         <link refid="_global_definitions_8h_source"/>
-        <childnode refid="7" relation="include">
-        </childnode>
         <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>Types.h</label>
-        <link refid="_types_8h_source"/>
-        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
+      </node>
+      <node id="6">
+        <label>Types.h</label>
+        <link refid="_types_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
         <childnode refid="10" relation="include">
-        </childnode>
-      </node>
-      <node id="13">
-        <label>Optimizer/MetaHelpers.h</label>
-        <link refid="_meta_helpers_8h_source"/>
-        <childnode refid="14" relation="include">
-        </childnode>
-      </node>
-      <node id="15">
-        <label>Eigen/Core</label>
-      </node>
-      <node id="11">
-        <label>SlotMap.h</label>
-        <link refid="_slot_map_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
-      </node>
-      <node id="4">
-        <label>Optimizer/Key.h</label>
-        <link refid="_key_8h_source"/>
-        <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
       </node>
       <node id="14">
+        <label>Optimizer/MetaHelpers.h</label>
+        <link refid="_meta_helpers_8h_source"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>cassert</label>
+      </node>
+      <node id="16">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="12">
+        <label>SlotMap.h</label>
+        <link refid="_slot_map_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Optimizer/Key.h</label>
+        <link refid="_key_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
         <label>tuple</label>
       </node>
-      <node id="8">
+      <node id="9">
         <label>ctime</label>
       </node>
-      <node id="10">
+      <node id="11">
         <label>optional</label>
       </node>
       <node id="3">
         <label>vector</label>
       </node>
-      <node id="9">
+      <node id="10">
         <label>sophus/se3.hpp</label>
       </node>
-      <node id="7">
+      <node id="8">
         <label>chrono</label>
       </node>
-      <node id="12">
+      <node id="13">
         <label>set</label>
       </node>
       <node id="2">
         <label>Optimizer/SlotArray.h</label>
         <link refid="_slot_array_8h_source"/>
         <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
     </incdepgraph>
@@ -99,6 +106,12 @@
         <label>src/Optimizer/BlockVector.h</label>
         <link refid="_block_vector_8h"/>
         <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="7" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -115,6 +128,8 @@
         <label>src/Optimizer/SSEOptimizer.h</label>
         <link refid="_s_s_e_optimizer_8h_source"/>
         <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
         </childnode>
       </node>
       <node id="3">

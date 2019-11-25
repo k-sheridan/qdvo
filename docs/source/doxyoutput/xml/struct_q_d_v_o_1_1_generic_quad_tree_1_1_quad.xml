@@ -15,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="19" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="19" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="18" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="18" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a97953433aa655f044338c2adf93c9974" prot="public" static="no" mutable="no">
         <type>std::vector&lt; std::unique_ptr&lt; <ref refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kindref="compound">Quad</ref> &gt; &gt;</type>
@@ -28,7 +28,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="22" column="21" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="22" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="21" column="21" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="21" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1acf5f5d1e5d813c818704caf29a7d3983" prot="public" static="no" mutable="no">
         <type>unsigned</type>
@@ -42,7 +42,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="24" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="24" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="23" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="23" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a9d93fdd6e3970d871061bd0e70f76275" prot="public" static="no" mutable="no">
         <type>unsigned</type>
@@ -56,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="26" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="26" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="25" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="25" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a700500f16265a173a37523ed83596153" prot="public" static="no" mutable="no">
         <type>T</type>
@@ -69,7 +69,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="28" column="11" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="28" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="27" column="11" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="27" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1abc027cf826e98b2adafadb85ff0ce4c0" prot="public" static="no" mutable="no">
         <type>Eigen::Vector2i</type>
@@ -82,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="30" column="25" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="30" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="29" column="25" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="29" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1aa282ee74fa26d665508001f3e7c6d8c4" prot="public" static="no" mutable="no">
         <type>Eigen::Vector2i</type>
@@ -95,7 +95,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="30" column="32" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="30" bodyend="-1"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="29" column="32" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="29" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -110,7 +110,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="32" column="9" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="32" bodyend="38"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="31" column="9" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="31" bodyend="37"/>
       </memberdef>
       <memberdef kind="function" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a6feb95672edcf08855dee581eb12520e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kindref="compound">Quad</ref> *</type>
@@ -127,7 +127,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="43" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="43" bodyend="72"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="42" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="42" bodyend="71"/>
       </memberdef>
       <memberdef kind="function" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a4d6c91b84673ea3a962c697bbde1e069" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>unsigned</type>
@@ -144,7 +144,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="77" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="77" bodyend="101"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="76" column="18" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="76" bodyend="100"/>
       </memberdef>
       <memberdef kind="function" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1ac0c6196b94b80bc24a4652502c2f0206" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad" kindref="compound">Quad</ref> *</type>
@@ -161,7 +161,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="106" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="106" bodyend="125"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="105" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="105" bodyend="124"/>
       </memberdef>
       <memberdef kind="function" id="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a4fb877a3732a724fa94e1b95871917b7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -182,7 +182,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/GenericQuadTree.h" line="130" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="130" bodyend="156"/>
+        <location file="src/DataStructures/GenericQuadTree.h" line="129" column="14" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="129" bodyend="155"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -198,7 +198,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/DataStructures/GenericQuadTree.h" line="18" column="1" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="17" bodyend="157"/>
+    <location file="src/DataStructures/GenericQuadTree.h" line="17" column="1" bodyfile="src/DataStructures/GenericQuadTree.h" bodystart="16" bodyend="156"/>
     <listofallmembers>
       <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1abc027cf826e98b2adafadb85ff0ce4c0" prot="public" virt="non-virtual"><scope>QDVO::GenericQuadTree::Quad</scope><name>center</name></member>
       <member refid="struct_q_d_v_o_1_1_generic_quad_tree_1_1_quad_1a700500f16265a173a37523ed83596153" prot="public" virt="non-virtual"><scope>QDVO::GenericQuadTree::Quad</scope><name>data</name></member>

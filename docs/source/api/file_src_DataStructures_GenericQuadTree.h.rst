@@ -31,8 +31,6 @@ Includes
 
 - ``Eigen/Core``
 
-- ``boost/multi_array.hpp``
-
 - ``iostream``
 
 - ``vector``

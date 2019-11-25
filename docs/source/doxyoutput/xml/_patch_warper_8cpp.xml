@@ -37,9 +37,9 @@
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="28" relation="include">
+        <childnode refid="31" relation="include">
         </childnode>
-        <childnode refid="29" relation="include">
+        <childnode refid="32" relation="include">
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
@@ -52,20 +52,20 @@
         <childnode refid="5" relation="include">
         </childnode>
       </node>
-      <node id="35">
+      <node id="37">
         <label>FeatureDetector.h</label>
         <link refid="_feature_detector_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="36" relation="include">
+        <childnode refid="38" relation="include">
         </childnode>
-        <childnode refid="37" relation="include">
+        <childnode refid="39" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
-        <childnode refid="23" relation="include">
+        <childnode refid="24" relation="include">
         </childnode>
       </node>
       <node id="12">
@@ -91,72 +91,82 @@
       <node id="15">
         <label>Eigen/Core</label>
       </node>
-      <node id="36">
+      <node id="20">
+        <label>opencv2/core/core.hpp</label>
+      </node>
+      <node id="38">
         <label>opencv2/imgproc.hpp</label>
       </node>
-      <node id="20">
+      <node id="22">
         <label>CorrespondenceDistribution.h</label>
         <link refid="_correspondence_distribution_8h_source"/>
-        <childnode refid="21" relation="include">
+        <childnode refid="23" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="22" relation="include">
-        </childnode>
-        <childnode refid="23" relation="include">
-        </childnode>
         <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
         </childnode>
         <childnode refid="26" relation="include">
         </childnode>
-        <childnode refid="28" relation="include">
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
         </childnode>
       </node>
-      <node id="21">
+      <node id="23">
         <label>unordered_set</label>
       </node>
-      <node id="29">
+      <node id="21">
+        <label>opencv2/core/eigen.hpp</label>
+      </node>
+      <node id="32">
         <label>DataStructures/Graph.h</label>
         <link refid="_graph_8h_source"/>
         <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="30" relation="include">
-        </childnode>
-        <childnode refid="31" relation="include">
-        </childnode>
-        <childnode refid="32" relation="include">
-        </childnode>
-        <childnode refid="23" relation="include">
-        </childnode>
         <childnode refid="33" relation="include">
         </childnode>
-        <childnode refid="3" relation="include">
+        <childnode refid="25" relation="include">
         </childnode>
         <childnode refid="34" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
+        <childnode refid="24" relation="include">
         </childnode>
         <childnode refid="35" relation="include">
         </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
         <childnode refid="12" relation="include">
         </childnode>
-        <childnode refid="38" relation="include">
+        <childnode refid="40" relation="include">
         </childnode>
       </node>
-      <node id="34">
+      <node id="36">
         <label>Settings.h</label>
         <link refid="_settings_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="26">
+      <node id="29">
         <label>SpatialMap.h</label>
         <link refid="_spatial_map_8h_source"/>
-        <childnode refid="27" relation="include">
+        <childnode refid="30" relation="include">
         </childnode>
         <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
         </childnode>
       </node>
       <node id="7">
@@ -172,13 +182,13 @@
         </childnode>
         <childnode refid="18" relation="include">
         </childnode>
-        <childnode refid="20" relation="include">
+        <childnode refid="22" relation="include">
         </childnode>
       </node>
       <node id="10">
         <label>sophus/types.hpp</label>
       </node>
-      <node id="38">
+      <node id="40">
         <label>tuple</label>
       </node>
       <node id="5">
@@ -193,10 +203,10 @@
       <node id="13">
         <label>optional</label>
       </node>
-      <node id="27">
+      <node id="30">
         <label>vector</label>
       </node>
-      <node id="28">
+      <node id="31">
         <label>Patch.h</label>
         <link refid="_patch_8h_source"/>
         <childnode refid="6" relation="include">
@@ -208,7 +218,7 @@
         <childnode refid="12" relation="include">
         </childnode>
       </node>
-      <node id="24">
+      <node id="27">
         <label>RadialSearchPattern.h</label>
         <link refid="_radial_search_pattern_8h_source"/>
         <childnode refid="6" relation="include">
@@ -217,41 +227,46 @@
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
-        <childnode refid="25" relation="include">
+        <childnode refid="28" relation="include">
         </childnode>
       </node>
       <node id="17">
         <label>EpipolarDepthEstimator.h</label>
         <link refid="_epipolar_depth_estimator_8h_source"/>
       </node>
-      <node id="25">
+      <node id="28">
         <label>iostream</label>
       </node>
-      <node id="30">
+      <node id="26">
+        <label>deque</label>
+      </node>
+      <node id="33">
         <label>unordered_map</label>
       </node>
       <node id="11">
         <label>sophus/se3.hpp</label>
       </node>
-      <node id="32">
+      <node id="34">
         <label>mutex</label>
       </node>
       <node id="4">
         <label>chrono</label>
       </node>
       <node id="19">
-        <label>Image.h</label>
+        <label>DataStructures/Image.h</label>
         <link refid="_image_8h_source"/>
         <childnode refid="15" relation="include">
         </childnode>
-        <childnode refid="6" relation="include">
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
       </node>
-      <node id="37">
+      <node id="39">
         <label>DataStructures/Feature.h</label>
         <link refid="_feature_8h_source"/>
         <childnode refid="6" relation="include">
@@ -259,16 +274,13 @@
         <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="33">
+      <node id="35">
         <label>thread</label>
       </node>
-      <node id="22">
-        <label>boost/geometry.hpp</label>
-      </node>
-      <node id="23">
+      <node id="24">
         <label>algorithm</label>
       </node>
-      <node id="31">
+      <node id="25">
         <label>memory</label>
       </node>
       <node id="18">

@@ -26,6 +26,24 @@ public:
     using RowMap = SlotArray<MatrixBlock<VariableType>, VariableKey<VariableType>>;
 
     BlockVector() {}
+    
+    /**
+     * Gets a reference to the internal row map for a given variable type.
+     */
+    template <typename VariableType>
+    RowMap<VariableType>& getRowMap()
+    {
+        return std::get<RowMap<VariableType>>(tupleOfRowMaps);
+    }
+
+    /**
+     * Gets a const reference to the internal row map for a given variable type.
+     */
+    template <typename VariableType>
+    const RowMap<VariableType>& getRowMap() const
+    {
+        return std::get<RowMap<VariableType>>(tupleOfRowMaps);
+    }
 
     /// Inserts a key value pair into the slot map.
     /// This should never need overwrite an element. 

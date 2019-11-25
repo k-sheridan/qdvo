@@ -15,7 +15,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="34" column="11" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="34" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="35" column="11" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="35" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1ac4c507d87e3a84a7eec0e6a9e5c5e0cf" prot="public" static="no" mutable="no">
         <type><ref refid="class_q_d_v_o_1_1_frame" kindref="compound">QDVO::Frame</ref> *</type>
@@ -29,7 +29,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="35" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="35" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="36" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="36" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1afa5309971a3b8d3c0d8dac5bd4d78369" prot="public" static="no" mutable="no">
         <type><ref refid="class_q_d_v_o_1_1_spatial_map" kindref="compound">SpatialMap</ref>&lt; <ref refid="struct_q_d_v_o_1_1_correspondence_distribution_1_1_potential_correspondence" kindref="compound">PotentialCorrespondence</ref> &gt;</type>
@@ -42,7 +42,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="38" column="16" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="38" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="39" column="16" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="39" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1af7d3b5fe5fddd68fa1baba2492e2a7e2" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -56,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="39" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="39" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="40" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -71,7 +71,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="69" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="69" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="70" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="70" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a670d1f9bec7ce2720e8b1b676515b0a2" prot="private" static="no" mutable="no">
         <type>std::vector&lt; QDVO::Vector2 &gt;</type>
@@ -84,7 +84,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="70" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="70" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="71" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="71" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1aad4034fdb813631e50dbfc6455471b19" prot="private" static="no" mutable="no">
         <type>std::vector&lt; QDVO::Vector2 &gt;</type>
@@ -97,7 +97,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="70" column="28" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="70" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="71" column="28" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="71" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a1f39479305563ae95776427650235836" prot="private" static="no" mutable="no">
         <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">QDVO::RadialSearchPattern</ref> &gt;</type>
@@ -110,7 +110,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="72" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="72" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="73" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="73" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_correspondence_distribution_1a9faef36fb3d528afe6fab569ab6d63d1" prot="private" static="no" mutable="no">
         <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_comparer" kindref="compound">QDVO::PatchComparer</ref> &gt;</type>
@@ -123,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="73" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="73" bodyend="-1"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="74" column="21" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="74" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -154,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="43" column="5" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="5" bodyend="10"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="44" column="5" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="5" bodyend="10"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1a4e08ecdb4906ea046d87b11aa1275e0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -183,7 +183,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="48" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="54" bodyend="64"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="49" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="54" bodyend="64"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1a16f8e755b1ac95074569ffb6ea5bb250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix&lt; SCALAR_TYPE, 2, 1 &gt;</type>
@@ -200,7 +200,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="53" column="19" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="12" bodyend="45"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="54" column="19" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="12" bodyend="45"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_correspondence_distribution_1aa52619b965a4840fc7aa44aeeee7d06b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -213,7 +213,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="58" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="47" bodyend="52"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="59" column="10" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="47" bodyend="52"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-func">
@@ -240,7 +240,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/CorrespondenceDistribution.h" line="66" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="66" bodyend="124"/>
+        <location file="src/DataStructures/CorrespondenceDistribution.h" line="67" column="17" bodyfile="src/DataStructures/CorrespondenceDistribution.cpp" bodystart="66" bodyend="124"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -295,7 +295,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/DataStructures/CorrespondenceDistribution.h" line="23" column="1" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="22" bodyend="76"/>
+    <location file="src/DataStructures/CorrespondenceDistribution.h" line="24" column="1" bodyfile="src/DataStructures/CorrespondenceDistribution.h" bodystart="23" bodyend="77"/>
     <listofallmembers>
       <member refid="class_q_d_v_o_1_1_correspondence_distribution_1a16f8e755b1ac95074569ffb6ea5bb250" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>computeResidual</name></member>
       <member refid="class_q_d_v_o_1_1_correspondence_distribution_1ac6fb64d2894b836f0cf29707c834df49" prot="public" virt="non-virtual"><scope>QDVO::CorrespondenceDistribution</scope><name>CorrespondenceDistribution</name></member>

@@ -66,7 +66,6 @@ public:
         assert(false);
     }
 
-private:
     /// Containers for both variables and error terms.
     VariableContainer<Variables...> variables;
     ErrorTermContainer<ErrorTerms...> errorTerms;

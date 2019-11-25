@@ -4,6 +4,7 @@
     <compoundname>Key.h</compoundname>
     <includes refid="_types_8h" local="yes">Types.h</includes>
     <includes refid="_slot_map_8h" local="yes">SlotMap.h</includes>
+    <includedby refid="_sliding_window_estimator_8h" local="yes">src/Estimation/SlidingWindowEstimator.h</includedby>
     <includedby refid="_block_vector_8h" local="yes">src/Optimizer/BlockVector.h</includedby>
     <includedby refid="_containers_8h" local="yes">src/Optimizer/Containers.h</includedby>
     <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
@@ -29,12 +30,17 @@
         <childnode refid="7" relation="include">
         </childnode>
       </node>
+      <node id="11">
+        <label>cassert</label>
+      </node>
       <node id="8">
         <label>SlotMap.h</label>
         <link refid="_slot_map_8h_source"/>
         <childnode refid="9" relation="include">
         </childnode>
         <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -65,39 +71,47 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="10">
+      <node id="11">
         <label>src/Optimizer/ErrorTermBase.h</label>
         <link refid="_error_term_base_8h_source"/>
       </node>
-      <node id="12">
+      <node id="13">
         <label>src/Optimizer/SparseBlockMatrix.h</label>
         <link refid="_sparse_block_matrix_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-      </node>
-      <node id="2">
-        <label>src/Optimizer/BlockVector.h</label>
-        <link refid="_block_vector_8h_source"/>
-        <childnode refid="3" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>src/Optimizer/PSDSchurSolver.h</label>
-        <link refid="_p_s_d_schur_solver_8h_source"/>
-      </node>
-      <node id="7">
-        <label>src/Estimation/FrontFndVisualOdometry.h</label>
-        <link refid="_front_fnd_visual_odometry_8h_source"/>
-        <childnode refid="8" relation="include">
-        </childnode>
-      </node>
-      <node id="6">
-        <label>src/Optimizer/SSEOptimizer.h</label>
-        <link refid="_s_s_e_optimizer_8h_source"/>
-        <childnode refid="7" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="4">
+        <label>src/Optimizer/BlockVector.h</label>
+        <link refid="_block_vector_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
+      <node id="9">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/Optimizer/SSEOptimizer.h</label>
+        <link refid="_s_s_e_optimizer_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
       </node>
@@ -106,53 +120,57 @@
         <link refid="_key_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="8">
-        <label>src/Pipeline/BasicPipeline.h</label>
-        <link refid="_basic_pipeline_8h_source"/>
-      </node>
-      <node id="3">
-        <label>src/Optimizer/GaussianPrior.h</label>
-        <link refid="_gaussian_prior_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="6" relation="include">
-        </childnode>
-      </node>
-      <node id="9">
-        <label>src/Optimizer/Containers.h</label>
-        <link refid="_containers_8h_source"/>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
         <childnode refid="6" relation="include">
         </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
       </node>
-      <node id="11">
-        <label>src/Optimizer/SparseBlockRow.h</label>
-        <link refid="_sparse_block_row_8h_source"/>
-        <childnode refid="3" relation="include">
+      <node id="3">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
+      </node>
+      <node id="5">
+        <label>src/Optimizer/GaussianPrior.h</label>
+        <link refid="_gaussian_prior_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>src/Optimizer/Containers.h</label>
+        <link refid="_containers_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>src/Optimizer/SparseBlockRow.h</label>
+        <link refid="_sparse_block_row_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

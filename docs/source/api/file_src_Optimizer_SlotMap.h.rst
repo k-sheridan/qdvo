@@ -29,6 +29,8 @@ Includes
 --------
 
 
+- ``cassert``
+
 - ``set``
 
 - ``vector``

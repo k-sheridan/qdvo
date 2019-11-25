@@ -14,7 +14,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SlotMap.h" line="41" column="16" bodyfile="src/Optimizer/SlotMap.h" bodystart="41" bodyend="-1"/>
+        <location file="src/Optimizer/SlotMap.h" line="42" column="16" bodyfile="src/Optimizer/SlotMap.h" bodystart="42" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_arg_min_1_1_slot_map_1_1_slot_1a31d0efb393433ebded29d74e449c5f5f" prot="public" static="no" mutable="no">
         <type>KeyType::generation_type</type>
@@ -28,7 +28,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SlotMap.h" line="42" column="43" bodyfile="src/Optimizer/SlotMap.h" bodystart="42" bodyend="-1"/>
+        <location file="src/Optimizer/SlotMap.h" line="43" column="43" bodyfile="src/Optimizer/SlotMap.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_arg_min_1_1_slot_map_1_1_slot_1ab25e7ba374c3ca9944dbfdef0bd50b6a" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -42,14 +42,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SlotMap.h" line="43" column="14" bodyfile="src/Optimizer/SlotMap.h" bodystart="43" bodyend="-1"/>
+        <location file="src/Optimizer/SlotMap.h" line="44" column="14" bodyfile="src/Optimizer/SlotMap.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/SlotMap.h" line="40" column="1" bodyfile="src/Optimizer/SlotMap.h" bodystart="39" bodyend="44"/>
+    <location file="src/Optimizer/SlotMap.h" line="41" column="1" bodyfile="src/Optimizer/SlotMap.h" bodystart="40" bodyend="45"/>
     <listofallmembers>
       <member refid="struct_arg_min_1_1_slot_map_1_1_slot_1adbe77fc5d7bf620e9bda9420c008ddc9" prot="public" virt="non-virtual"><scope>ArgMin::SlotMap::Slot</scope><name>dataIndex</name></member>
       <member refid="struct_arg_min_1_1_slot_map_1_1_slot_1ab25e7ba374c3ca9944dbfdef0bd50b6a" prot="public" virt="non-virtual"><scope>ArgMin::SlotMap::Slot</scope><name>free</name></member>

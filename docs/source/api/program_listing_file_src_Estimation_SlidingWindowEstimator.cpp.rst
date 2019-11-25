@@ -16,7 +16,8 @@ Program Listing for File SlidingWindowEstimator.cpp
    
    SlidingWindowEstimator::SlidingWindowEstimator()
    {
-   
+       // verify this compiles.
+       optimizer.prior.A0.getRowMap<ArgMin::SE3>().begin()->second.getVariableMap<ArgMin::SE3>().begin();
    }
    
    

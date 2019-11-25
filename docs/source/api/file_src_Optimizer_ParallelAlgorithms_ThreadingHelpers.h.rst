@@ -29,6 +29,8 @@ Includes
 --------
 
 
+- ``cassert``
+
 - ``thread``
 
 - ``vector``

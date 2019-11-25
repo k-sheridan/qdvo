@@ -14,6 +14,7 @@ Program Listing for File SlotMap.h
    
    #include <vector>
    #include <set>
+   #include <cassert>
    
    namespace ArgMin
    {

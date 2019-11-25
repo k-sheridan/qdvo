@@ -39,7 +39,9 @@ Includes
 
 - ``algorithm``
 
-- ``boost/geometry.hpp``
+- ``deque``
+
+- ``memory``
 
 - ``unordered_set``
 

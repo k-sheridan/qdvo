@@ -18,7 +18,7 @@ Program Listing for File BasicPipeline.h
    #include "SlidingWindowEstimator.h"
    #include "PatchComparer.h"
    #include "PatchWarper.h"
-   #include "RadialSearchPattern.h"
+   #include "DataStructures/RadialSearchPattern.h"
    #include <opencv2/core.hpp>
    #include <opencv2/highgui.hpp>
    #include "Types.h"

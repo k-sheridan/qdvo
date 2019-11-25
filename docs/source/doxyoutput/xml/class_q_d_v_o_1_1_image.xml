@@ -14,11 +14,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="28" column="19" bodyfile="src/DataStructures/Image.h" bodystart="28" bodyend="-1"/>
+        <location file="src/DataStructures/Image.h" line="35" column="19" bodyfile="src/DataStructures/Image.h" bodystart="35" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="class_q_d_v_o_1_1_image_1abeb7695ca9bbc3c0329d90343747f536" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_image_1abeb7695ca9bbc3c0329d90343747f536" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
         <definition>QDVO::Image::Image</definition>
         <argsstring>(cv::Mat &amp;cvImage)</argsstring>
@@ -33,7 +33,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="15" column="9" bodyfile="src/DataStructures/Image.cpp" bodystart="4" bodyend="7"/>
+        <location file="src/DataStructures/Image.h" line="16" column="9" bodyfile="src/DataStructures/Image.h" bodystart="16" bodyend="18"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a645ebbf0a869ad413c4dc6e755fbd064" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -46,9 +46,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="16" column="9" bodyfile="src/DataStructures/Image.h" bodystart="16" bodyend="16"/>
+        <location file="src/DataStructures/Image.h" line="19" column="9" bodyfile="src/DataStructures/Image.h" bodystart="19" bodyend="19"/>
       </memberdef>
-      <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a9dbde71a8e1c246e16a9c082b8edf840" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a9dbde71a8e1c246e16a9c082b8edf840" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>cv::Mat</type>
         <definition>cv::Mat QDVO::Image::toOpenCVImage</definition>
         <argsstring>()</argsstring>
@@ -59,7 +59,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="18" column="17" bodyfile="src/DataStructures/Image.cpp" bodystart="9" bodyend="14"/>
+        <location file="src/DataStructures/Image.h" line="21" column="17" bodyfile="src/DataStructures/Image.h" bodystart="21" bodyend="25"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a0de95aa11e522877d2b401521a77517f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>ImageType &amp;</type>
@@ -72,7 +72,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="20" column="19" bodyfile="src/DataStructures/Image.h" bodystart="20" bodyend="20"/>
+        <location file="src/DataStructures/Image.h" line="27" column="19" bodyfile="src/DataStructures/Image.h" bodystart="27" bodyend="27"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a4a7238836987061ba729ded3d06c3009" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -85,7 +85,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="22" column="13" bodyfile="src/DataStructures/Image.h" bodystart="22" bodyend="22"/>
+        <location file="src/DataStructures/Image.h" line="29" column="13" bodyfile="src/DataStructures/Image.h" bodystart="29" bodyend="29"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a714a8695ca7fabc0f9369990936c853d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -98,7 +98,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="23" column="13" bodyfile="src/DataStructures/Image.h" bodystart="23" bodyend="23"/>
+        <location file="src/DataStructures/Image.h" line="30" column="13" bodyfile="src/DataStructures/Image.h" bodystart="30" bodyend="30"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_image_1a1f0a1144b7effeca540a3fd4b1cc0307" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>QDVO::Result&lt; ImageIntensityType &gt;</type>
@@ -115,14 +115,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/DataStructures/Image.h" line="25" column="22" bodyfile="src/DataStructures/Image.cpp" bodystart="16" bodyend="34"/>
+        <location file="src/DataStructures/Image.h" line="32" column="22" bodyfile="src/DataStructures/Image.cpp" bodystart="5" bodyend="23"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/DataStructures/Image.h" line="13" column="16" bodyfile="src/DataStructures/Image.h" bodystart="13" bodyend="29"/>
+    <location file="src/DataStructures/Image.h" line="14" column="16" bodyfile="src/DataStructures/Image.h" bodystart="14" bodyend="36"/>
     <listofallmembers>
       <member refid="class_q_d_v_o_1_1_image_1a714a8695ca7fabc0f9369990936c853d" prot="public" virt="non-virtual"><scope>QDVO::Image</scope><name>cols</name></member>
       <member refid="class_q_d_v_o_1_1_image_1a0de95aa11e522877d2b401521a77517f" prot="public" virt="non-virtual"><scope>QDVO::Image</scope><name>getImageData</name></member>

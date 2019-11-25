@@ -22,13 +22,25 @@
         <label>src/Optimizer/Variables/InverseDepth.h</label>
         <link refid="_inverse_depth_8h_source"/>
       </node>
+      <node id="4">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
       <node id="3">
         <label>src/Optimizer/Variables/SE3.h</label>
         <link refid="_s_e3_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
       </node>
-      <node id="4">
+      <node id="6">
         <label>src/Optimizer/Variables/SimpleScalar.h</label>
         <link refid="_simple_scalar_8h_source"/>
+      </node>
+      <node id="5">
+        <label>src/Pipeline/BasicPipeline.h</label>
+        <link refid="_basic_pipeline_8h_source"/>
       </node>
       <node id="1">
         <label>src/Optimizer/OptimizableVariable.h</label>
@@ -37,7 +49,7 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
       </node>
     </invincdepgraph>

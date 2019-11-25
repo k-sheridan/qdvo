@@ -6,7 +6,7 @@
     <includes refid="_correspondence_distribution_8h" local="yes">CorrespondenceDistribution.h</includes>
     <includes local="yes">CameraModel.h</includes>
     <incdepgraph>
-      <node id="19">
+      <node id="20">
         <label>CameraModel.h</label>
       </node>
       <node id="1">
@@ -16,7 +16,7 @@
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="20" relation="include">
         </childnode>
       </node>
       <node id="3">
@@ -37,7 +37,7 @@
         <childnode refid="7" relation="include">
         </childnode>
       </node>
-      <node id="14">
+      <node id="15">
         <label>Eigen/Core</label>
       </node>
       <node id="8">
@@ -53,60 +53,67 @@
         </childnode>
         <childnode refid="12" relation="include">
         </childnode>
-        <childnode refid="16" relation="include">
+        <childnode refid="13" relation="include">
         </childnode>
-        <childnode refid="18" relation="include">
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
         </childnode>
       </node>
       <node id="9">
         <label>unordered_set</label>
       </node>
-      <node id="16">
+      <node id="17">
         <label>SpatialMap.h</label>
         <link refid="_spatial_map_8h_source"/>
-        <childnode refid="17" relation="include">
+        <childnode refid="18" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
         </childnode>
       </node>
       <node id="5">
         <label>ctime</label>
       </node>
-      <node id="13">
+      <node id="14">
         <label>opencv2/core.hpp</label>
       </node>
       <node id="7">
         <label>optional</label>
       </node>
-      <node id="17">
+      <node id="18">
         <label>vector</label>
       </node>
-      <node id="18">
+      <node id="19">
         <label>Patch.h</label>
         <link refid="_patch_8h_source"/>
-        <childnode refid="13" relation="include">
-        </childnode>
         <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="2" relation="include">
         </childnode>
       </node>
-      <node id="12">
+      <node id="13">
         <label>RadialSearchPattern.h</label>
         <link refid="_radial_search_pattern_8h_source"/>
-        <childnode refid="13" relation="include">
+        <childnode refid="14" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="14" relation="include">
-        </childnode>
         <childnode refid="15" relation="include">
         </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
       </node>
-      <node id="15">
+      <node id="16">
         <label>iostream</label>
+      </node>
+      <node id="12">
+        <label>deque</label>
       </node>
       <node id="6">
         <label>sophus/se3.hpp</label>
@@ -115,10 +122,10 @@
         <label>chrono</label>
       </node>
       <node id="10">
-        <label>boost/geometry.hpp</label>
+        <label>algorithm</label>
       </node>
       <node id="11">
-        <label>algorithm</label>
+        <label>memory</label>
       </node>
     </incdepgraph>
     <innerclass refid="class_q_d_v_o_1_1_quasi_direct_factor" prot="public">QDVO::QuasiDirectFactor</innerclass>

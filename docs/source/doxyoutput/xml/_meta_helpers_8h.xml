@@ -3,6 +3,7 @@
   <compounddef id="_meta_helpers_8h" kind="file" language="C++">
     <compoundname>MetaHelpers.h</compoundname>
     <includes local="no">tuple</includes>
+    <includedby refid="_sliding_window_estimator_8h" local="yes">src/Estimation/SlidingWindowEstimator.h</includedby>
     <includedby refid="_block_vector_8h" local="yes">src/Optimizer/BlockVector.h</includedby>
     <includedby refid="_containers_8h" local="yes">src/Optimizer/Containers.h</includedby>
     <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
@@ -24,20 +25,20 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="10">
+      <node id="11">
         <label>src/Optimizer/ErrorTermBase.h</label>
         <link refid="_error_term_base_8h_source"/>
       </node>
-      <node id="12">
+      <node id="13">
         <label>src/Optimizer/SparseBlockMatrix.h</label>
         <link refid="_sparse_block_matrix_8h_source"/>
-        <childnode refid="3" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
-      <node id="2">
+      <node id="4">
         <label>src/Optimizer/BlockVector.h</label>
         <link refid="_block_vector_8h_source"/>
-        <childnode refid="3" relation="include">
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -45,79 +46,91 @@
         <link refid="_meta_helpers_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="10" relation="include">
         </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="11" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
-        <childnode refid="11" relation="include">
-        </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-      </node>
-      <node id="5">
-        <label>src/Optimizer/PSDSchurSolver.h</label>
-        <link refid="_p_s_d_schur_solver_8h_source"/>
-      </node>
-      <node id="7">
-        <label>src/Estimation/FrontFndVisualOdometry.h</label>
-        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
         <childnode refid="8" relation="include">
         </childnode>
       </node>
-      <node id="6">
-        <label>src/Optimizer/SSEOptimizer.h</label>
-        <link refid="_s_s_e_optimizer_8h_source"/>
-        <childnode refid="7" relation="include">
+      <node id="2">
+        <label>src/Estimation/SlidingWindowEstimator.h</label>
+        <link refid="_sliding_window_estimator_8h_source"/>
+        <childnode refid="3" relation="include">
         </childnode>
       </node>
-      <node id="4">
+      <node id="7">
+        <label>src/Optimizer/PSDSchurSolver.h</label>
+        <link refid="_p_s_d_schur_solver_8h_source"/>
+      </node>
+      <node id="9">
+        <label>src/Estimation/FrontFndVisualOdometry.h</label>
+        <link refid="_front_fnd_visual_odometry_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>src/Optimizer/SSEOptimizer.h</label>
+        <link refid="_s_s_e_optimizer_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
       </node>
-      <node id="8">
+      <node id="3">
         <label>src/Pipeline/BasicPipeline.h</label>
         <link refid="_basic_pipeline_8h_source"/>
       </node>
-      <node id="3">
+      <node id="5">
         <label>src/Optimizer/GaussianPrior.h</label>
         <link refid="_gaussian_prior_8h_source"/>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
         <childnode refid="6" relation="include">
         </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
       </node>
-      <node id="9">
+      <node id="10">
         <label>src/Optimizer/Containers.h</label>
         <link refid="_containers_8h_source"/>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="3" relation="include">
-        </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
-        <childnode refid="5" relation="include">
+        <childnode refid="2" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-      </node>
-      <node id="11">
-        <label>src/Optimizer/SparseBlockRow.h</label>
-        <link refid="_sparse_block_row_8h_source"/>
-        <childnode refid="3" relation="include">
+        <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>src/Optimizer/SparseBlockRow.h</label>
+        <link refid="_sparse_block_row_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
     </invincdepgraph>
@@ -152,7 +165,7 @@
 <codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal">...<sp/>T&gt;</highlight></codeline>
 <codeline lineno="11" refid="struct_arg_min_1_1_error_term_group" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_arg_min_1_1_error_term_group" kindref="compound">ErrorTermGroup</ref><sp/>{};</highlight></codeline>
 <codeline lineno="12"><highlight class="normal"></highlight></codeline>
-<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
 <codeline lineno="14" refid="struct_arg_min_1_1_dimension" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref><sp/>{};</highlight></codeline>
 <codeline lineno="15"><highlight class="normal"></highlight></codeline>
 <codeline lineno="16"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>

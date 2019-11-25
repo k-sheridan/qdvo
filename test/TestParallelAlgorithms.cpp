@@ -1,9 +1,11 @@
-#include "gtest/gtest.h"
+
 #include "Optimizer/ParallelAlgorithms/ParallelAlgorithms.h"
 #include <random>
 #include "GlobalDefinitions.h"
 
-TEST(ParallelAlgorithms, parallel_transform)
+#include <gtest/gtest.h>
+
+TEST(ParallelAlgorithmsTest, parallel_transform)
 {
     std::vector<int> numbers(500);
     //std::generate(numbers.begin(), numbers.end(), std::rand);
@@ -32,7 +34,7 @@ TEST(ParallelAlgorithms, parallel_transform)
     }
 }
 
-TEST(ParallelAlgorithms, parallel_transform_binary)
+TEST(ParallelAlgorithmsTest, parallel_transform_binary)
 {
     std::vector<int> numbers(500);
      std::vector<int> numbers2(500);
@@ -63,7 +65,7 @@ TEST(ParallelAlgorithms, parallel_transform_binary)
     }
 }
 
-TEST(ParallelAlgorithms, parallel_for_each)
+TEST(ParallelAlgorithmsTest, parallel_for_each)
 {
     std::vector<int> numbers(500);
     std::iota(numbers.begin(), numbers.end(), 1);

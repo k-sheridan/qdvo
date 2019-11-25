@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+
 #include "Optimizer/MetaHelpers.h"
 #include "Optimizer/SSEOptimizer.h"
 #include "Optimizer/SparseBlockRow.h"
@@ -12,6 +12,8 @@
 #include "Optimizer/Variables/SimpleScalar.h"
 #include "Optimizer/ErrorTermBase.h"
 #include <type_traits>
+
+#include <gtest/gtest.h>
 
 using namespace ArgMin;
 
@@ -327,7 +329,7 @@ TEST(ArgMin, ErrorTermBasePointer)
     EXPECT_TRUE(errorTerm.checkVariablePointerConsistency(variableContainer));
 }
 
-/*TEST(ArgMin, PSDSchurSolverSimple)
+TEST(ArgMin, PSDSchurSolverSimple)
 {
     SimpleScalar ss1 = 1;
     SimpleScalar ss2 = 2;
@@ -353,11 +355,35 @@ TEST(ArgMin, ErrorTermBasePointer)
     auto errorTermKey1 = errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().insert(DifferenceErrorTerm(ssKey1, dssKey1));
     auto errorTermKey2 = errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().insert(DifferenceErrorTerm(ssKey2, dssKey1));
 
-    // Test that reset runs
-    solver.reset();
+    using Prior = ArgMin::GaussianPrior<Scalar<double>, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>>;
+    Prior prior;
+
+    // Insert the variables into the prior.
+    prior.addVariable(ssKey1, Prior::BV::MatrixBlock<SimpleScalar>::Constant(1));
+    prior.addVariable(ssKey2, Prior::BV::MatrixBlock<SimpleScalar>::Constant(2));
+
+    prior.addVariable(dssKey1, Prior::BV::MatrixBlock<DifferentSimpleScalar>::Constant(3));
+
+    // Add an off diagonal term to the prior
+    prior.A0.getRowMap<DifferentSimpleScalar>().at(dssKey1).getVariableMap<SimpleScalar>().insert(std::make_pair(ssKey2, Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
 
     // Test that initialize runs
     solver.initialize(variableContainer, errorTermContainer);
+
+    // Verify that the prior is added the problem
+    solver.setProblemToPrior(prior);
+
+    // Verify that the prior has been added.
+    EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey1))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(1)));
+    EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey2))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(2)));
+    EXPECT_TRUE(solver.A.block(0, 0, DifferentSimpleScalar::dimension, DifferentSimpleScalar::dimension).isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(3)));
+    EXPECT_TRUE((std::get<LS::BVector<SimpleScalar>>(solver.B).at(ssKey2))->block(0, 0, DifferentSimpleScalar::dimension, SimpleScalar::dimension).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
+
+    // Reset the off diagonal component of the prior.
+    prior.A0.getRowMap<DifferentSimpleScalar>().at(dssKey1).getVariableMap<SimpleScalar>().at(ssKey2).setZero();
+
+    // Test that reset runs
+    solver.setZero();
 
     // verify that the B matrices are the correct size.
     EXPECT_NE(std::get<0>(solver.B).at(ssKey1), std::get<0>(solver.B).end());
@@ -369,15 +395,21 @@ TEST(ArgMin, ErrorTermBasePointer)
     EXPECT_NE(std::get<0>(solver.D).at(ssKey1), std::get<0>(solver.D).end());
     EXPECT_NE(std::get<0>(solver.D).at(ssKey2), std::get<0>(solver.D).end());
 
-    if constexpr((internal::Is_in_tuple<SimpleScalar, std::tuple<SimpleScalar, DifferentSimpleScalar>>::value)) {
+    if constexpr ((internal::Is_in_tuple<SimpleScalar, std::tuple<SimpleScalar, DifferentSimpleScalar>>::value))
+    {
         EXPECT_TRUE(true);
-    } else {
+    }
+    else
+    {
         EXPECT_TRUE(false);
     }
 
-    if constexpr(!(internal::Is_in_tuple<SimpleScalar, std::tuple<DifferentSimpleScalar>>::value)) {
+    if constexpr (!(internal::Is_in_tuple<SimpleScalar, std::tuple<DifferentSimpleScalar>>::value))
+    {
         EXPECT_TRUE(true);
-    } else {
+    }
+    else
+    {
         EXPECT_TRUE(false);
     }
 
@@ -389,6 +421,4 @@ TEST(ArgMin, ErrorTermBasePointer)
     // The error terms should have been linearized.
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey1)->linearizationValid);
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
-
-
-}*/
+}

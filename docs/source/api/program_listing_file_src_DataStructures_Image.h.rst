@@ -13,7 +13,8 @@ Program Listing for File Image.h
    #pragma once
    
    #include <Eigen/Core>
-   #include <opencv2/core.hpp>
+   #include <opencv2/core/core.hpp>
+   #include <opencv2/core/eigen.hpp>
    #include "GlobalDefinitions.h"
    #include "Types.h"
    
@@ -24,10 +25,16 @@ Program Listing for File Image.h
    
        class Image {
            public:
-           Image(cv::Mat& cvImage);
+           Image(cv::Mat& cvImage){
+               cv::cv2eigen(cvImage, this->image);
+           }
            Image(){}
    
-           cv::Mat toOpenCVImage();
+           cv::Mat toOpenCVImage(){
+               cv::Mat img;
+               cv::eigen2cv(this->image, img);
+               return img;
+           }
    
            ImageType& getImageData(){return image;}
    

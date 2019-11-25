@@ -35,7 +35,9 @@ Includes
 
 - ``Types.h`` (:ref:`file_src_Types.h`)
 
-- ``opencv2/core.hpp``
+- ``opencv2/core/core.hpp``
+
+- ``opencv2/core/eigen.hpp``
 
 
 

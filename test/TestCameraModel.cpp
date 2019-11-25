@@ -1,6 +1,8 @@
-#include "gtest/gtest.h"
+
 #include "CameraModel.hpp"
 #include "EquidistantCameraModel.h"
+
+#include <gtest/gtest.h>
 
 TEST(CameraModel, Basic)
 {

@@ -8,8 +8,8 @@
     <includedby refid="_camera_model_8hpp" local="yes">src/CameraModels/CameraModel.hpp</includedby>
     <includedby refid="_patch_8h" local="yes">src/DataStructures/Patch.h</includedby>
     <includedby refid="_i_m_u_state_8h" local="yes">src/DataStructures/IMUState.h</includedby>
-    <includedby refid="_image_8h" local="yes">src/DataStructures/Image.h</includedby>
     <includedby refid="_graph_8h" local="yes">src/DataStructures/Graph.h</includedby>
+    <includedby refid="_image_8h" local="yes">src/DataStructures/Image.h</includedby>
     <includedby refid="_quasi_direct_error_term_8h" local="yes">src/ErrorTerms/QuasiDirectErrorTerm.h</includedby>
     <includedby refid="_patch_comparer_8h" local="yes">src/FeatureMatching/PatchComparer.h</includedby>
     <includedby refid="_patch_warper_8h" local="yes">src/FeatureMatching/PatchWarper.h</includedby>
@@ -107,9 +107,9 @@
         </childnode>
         <childnode refid="16" relation="include">
         </childnode>
-        <childnode refid="17" relation="include">
-        </childnode>
         <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
         </childnode>
         <childnode refid="15" relation="include">
         </childnode>
@@ -151,6 +151,8 @@
         <link refid="_s_s_e_optimizer_8h_source"/>
         <childnode refid="7" relation="include">
         </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
       </node>
       <node id="6">
         <label>src/DataStructures/Graph.h</label>
@@ -177,6 +179,8 @@
       <node id="19">
         <label>src/Optimizer/Key.h</label>
         <link refid="_key_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
         <childnode refid="20" relation="include">
         </childnode>
         <childnode refid="25" relation="include">
@@ -243,6 +247,8 @@
       <node id="25">
         <label>src/Optimizer/Containers.h</label>
         <link refid="_containers_8h_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
         <childnode refid="26" relation="include">
         </childnode>
         <childnode refid="21" relation="include">

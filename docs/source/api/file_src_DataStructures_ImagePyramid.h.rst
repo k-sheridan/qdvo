@@ -29,9 +29,9 @@ Includes
 --------
 
 
-- ``GlobalDefinitions.h`` (:ref:`file_src_GlobalDefinitions.h`)
+- ``DataStructures/Image.h`` (:ref:`file_src_DataStructures_Image.h`)
 
-- ``Image.h`` (:ref:`file_src_DataStructures_Image.h`)
+- ``GlobalDefinitions.h`` (:ref:`file_src_GlobalDefinitions.h`)
 
 
 

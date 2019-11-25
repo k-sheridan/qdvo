@@ -4,7 +4,7 @@
     <compoundname>ArgMin::Dimension</compoundname>
     <templateparamlist>
       <param>
-        <type>size_t</type>
+        <type>int</type>
         <declname>T</declname>
         <defname>T</defname>
       </param>

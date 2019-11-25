@@ -71,7 +71,6 @@ Program Listing for File SSEOptimizer.h
            assert(false);
        }
    
-   private:
        VariableContainer<Variables...> variables;
        ErrorTermContainer<ErrorTerms...> errorTerms;
    

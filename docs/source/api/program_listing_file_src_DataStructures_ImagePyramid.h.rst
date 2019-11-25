@@ -13,7 +13,7 @@ Program Listing for File ImagePyramid.h
    #pragma once
    
    #include "GlobalDefinitions.h"
-   #include "Image.h"
+   #include "DataStructures/Image.h"
    
    namespace QDVO {
    class ImagePyramid

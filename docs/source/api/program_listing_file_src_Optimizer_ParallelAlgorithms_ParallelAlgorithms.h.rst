@@ -15,12 +15,13 @@ Program Listing for File ParallelAlgorithms.h
    #include <algorithm>
    #include <mutex>
    #include <thread>
+   #include <cassert>
    #include <vector>
    #include <math.h>
    #include "ThreadingHelpers.h"
    //#include <thrust>
-   
-   namespace QDVO::ParallelAlgorithms
+   namespace QDVO {
+   namespace ParallelAlgorithms
    {
    enum ExecutionType
    {
@@ -108,3 +109,4 @@ Program Listing for File ParallelAlgorithms.h
    }
    
    } // namespace QDVO::ParallelAlgorithms
+   } // ns qdvo
