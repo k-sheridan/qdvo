@@ -8,6 +8,7 @@
 #include "BlockVector.h"
 #include "HuberLossFunction.h"
 #include <cassert>
+#include <type_traits>
 
 namespace ArgMin
 {
@@ -34,8 +35,8 @@ class PSDSchurSolver;
  * Uncorrelated variables are variables which share no off diagonal elements.
  * The uncorrelated variable set must be a subset of all variables.
  */
-template <typename ScalarType, typename... ErrorTerms, typename... Variables, typename... UncorrelatedVariables>
-class PSDSchurSolver<Scalar<ScalarType>, ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>, VariableGroup<UncorrelatedVariables...>>
+template <typename ScalarType, typename LossFunctionType, typename... ErrorTerms, typename... Variables, typename... UncorrelatedVariables>
+class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>, ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>, VariableGroup<UncorrelatedVariables...>>
 {
 public:
     using RHSBlockVector = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<UncorrelatedVariables...>>;
@@ -49,23 +50,33 @@ public:
     using IndexMap = SlotArray<size_t, VariableKey<VariableType>>;
     using LossFunction = HuberLossFunction<ScalarType>;
 
-    LossFunction lossFunction;
+    /// Loss function used to weight the error for each error term.
+    LossFunctionType lossFunction;
 
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A; // Dense matrix in the upper right corner
-    std::tuple<BVector<UncorrelatedVariables>...> B;             // Top right block matrix. Equal to bottom left transposed.
-    std::tuple<DVector<UncorrelatedVariables>...> D;             // Block diagonal matrix in the bottom right. Each block is invertible.
+    /// Dense matrix in the upper right corner
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A;
+    /// Inverse Schur Complement of D.
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD; 
+    /// Top right block matrix. Equal to bottom left transposed.
+    std::tuple<BVector<UncorrelatedVariables>...> B; 
+    /// Used during the schur solve to store a precomputed: \f$ -B D^{-1} \f$ 
+    std::tuple<BVector<UncorrelatedVariables>...> negativeBDinv;      
+    /// Block diagonal matrix in the bottom right. Each block is invertible.       
+    std::tuple<DVector<UncorrelatedVariables>...> D;
+     /// Pre allocated solution vector.
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;    
+    /// Block vector form of the dx vector. Used to solve ordering issues.                                     
+    BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>> dxBlockVector; 
+    /// Preallocated rhs vector.
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated; 
+    /// preallocated uncorreleted part of the b vector.
+    RHSBlockVector b_uncorrelated;                             
+    /// Tuple of slot arrays which store the current index of a given variable in A.
+    std::tuple<IndexMap<Variables>...> variableToIndexMaps; 
+    /// The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
+    size_t dimensionOfA = 0;                                
 
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;                                          // Pre allocated solution vector.
-    BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>> dxBlockVector; // Block vector form of the dx vector. Used to solve ordering issues.
-
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated; // Preallocated rhs vector.
-    RHSBlockVector b_uncorrelated; // preallocated uncorreleted part of the b vector.
-
-
-    std::tuple<IndexMap<Variables>...> variableToIndexMaps; // Tuple of slot arrays which store the current index of a given variable in A.
-    size_t dimensionOfA = 0;                                // The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
-
-    PSDSchurSolver() : lossFunction(1e-6)
+    PSDSchurSolver(LossFunctionType &lossFunction) : lossFunction(lossFunction)
     {
     }
 
@@ -90,6 +101,76 @@ public:
     template <typename GaussianPriorType>
     void solve(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
     {
+    }
+
+    /**
+     * Builds a linear system using a prior and errorterm set and solves it.
+     * It is assumed that the error terms are linearized, and their variable pointers are valid.
+     * 
+     * From: https://en.wikipedia.org/wiki/Schur_complement
+     * 
+     * \f$ {\displaystyle M=\left[{\begin{matrix}A&B\\C&D\end{matrix}}\right]} \f$
+     * 
+     * \f$ {\displaystyle M/D:=A-BD^{-1}C\,} \f$
+     * 
+     * \f$ {\displaystyle M/A:=D-CA^{-1}B.} \f$
+     * 
+     * \f$ {\displaystyle {\begin{aligned}&{\begin{bmatrix}A&B\\C&D\end{bmatrix}}^{-1}={\begin{bmatrix}I_{p}&0\\-D^{-1}C&I_{q}\end{bmatrix}}{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&0\\0&D^{-1}\end{bmatrix}}{\begin{bmatrix}I_{p}&-BD^{-1}\\0&I_{q}\end{bmatrix}}\\[4pt]={}&{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&D^{-1}+D^{-1}C\left(A-BD^{-1}C\right)^{-1}BD^{-1}\end{bmatrix}}\\[4pt]={}&{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&\left(D-CA^{-1}B\right)^{-1}\end{bmatrix}}\\[4pt]={}&{\begin{bmatrix}\left(M/D\right)^{-1}&-\left(M/D\right)^{-1}BD^{-1}\\-D^{-1}C\left(M/D\right)^{-1}&\left(M/A\right)^{-1}\end{bmatrix}}.\end{aligned}}} \f$
+     * 
+     */
+    template <typename GaussianPriorType>
+    void iterate(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
+    {
+        // Build the problem.
+        buildProblem(prior, linearizedErrorTerms);
+
+        // Solve for the deltas using the Schur Complement.
+        // First invert the D matrix
+        internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
+            // Get the variable for this section of the matrix.
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+            
+            for (auto& matrix : matrixSlotArray) {
+                // TODO Maybe avoid the copy.
+                matrix = matrix.inverse();
+            }
+        });
+
+        // Compute -B Dinv, and compute the inverse Schur Complement of D.
+        // This will use A to store the schur complement before inversion.
+        internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
+            // Get the variable for this section of the matrix.
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++) 
+            {
+                // The original b matrix.
+                const auto& bMatrix = *(it);
+
+                auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+
+                // At this point Dinv should have been computed.
+                auto dinvIt = std::get<DVector<RowVariable>>(D).at(key);
+                assert(dinvIt != std::get<DVector<RowVariable>>(D).end());
+                auto& dinv = *(dinvIt);
+                // Get the matrix we are going to compute.
+                auto negativeBDinvMatrixIt = std::get<BVector<RowVariable>>(negativeBDinv).at(key);
+                assert(negativeBDinvMatrixIt != std::get<BVector<RowVariable>>(negativeBDinv).end());
+                auto& negativeBDinvMatrix = *(negativeBDinvMatrixIt);
+
+                // It is possible that this matrix has more rows than needed.
+                negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv;
+
+                // Add BDinvB' to A.
+                A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix;
+            }
+        });
+
+        // Compute the inverse of the schur complement of D.
+        inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.inverse();
+
+        // At this point we have computed the inverse of the LHS.
+        // Now we just have to multiply our results with the RHS.
+
     }
 
     /// Linearizes all error terms stored in this container.
@@ -127,13 +208,13 @@ public:
         });
 
         // Hacky way of iterating over variables.
-        std::tuple<UncorrelatedVariables*...> uncorrelatedVariablesTuple;
+        std::tuple<UncorrelatedVariables *...> uncorrelatedVariablesTuple;
         internal::static_for(uncorrelatedVariablesTuple, [&](auto i, auto &temp) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
 
-            auto& rowMap = b_uncorrelated.template getRowMap<RowVariable>();
+            auto &rowMap = b_uncorrelated.template getRowMap<RowVariable>();
 
-            for (auto& block : rowMap)
+            for (auto &block : rowMap)
             {
                 block.setZero();
             }
@@ -143,9 +224,9 @@ public:
     /**
      * Using the set of linearized error terms, Build up a linear system by computing
      * 
-     * \f$ A = A_{0} + \sum_{i=0}^n J_{i}^{\top} J_{i} \f$
+     * \f$ A = A_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} J_{i} \rho \f$
      * 
-     * \f$ b = b_{0} + \sum_{i=0}^n J_{i}^{\top} e_{i} \f$
+     * \f$ b = b_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} e_{i} \rho \f$
      * 
      * Where \f$ e_{i} \f$ is the residual and \f$ J_{i} \f$ is the jacobian of error w.r.t to
      * all variables.
@@ -158,20 +239,47 @@ public:
 
         // iterate through all error terms
         internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
-            for (auto& errorTerm : errorTermMap)
+            for (auto &errorTerm : errorTermMap)
             {
                 // Check if the linearization is valid for this error term.
                 if (errorTerm.linearizationValid)
                 {
+                    double sqError = errorTerm.residual.squaredNorm();
+                    double error = sqrt(sqError);
+                    double weight = lossFunction.computeWeight(error, sqError);
+
                     // Iterate through all independent variables.
                     internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
+                        // Cache the error transformation.
+                        auto rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
+
+                        // Add to rhs.
+                        addBlockToRHS(outerVariableKey, rhoJtW * errorTerm.residual);
+
                         internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
-                            // TODO Compute pJtJ and pJte for this error term.
-                            double sqError = errorTerm.residual.squaredNorm();
-                            double error = sqrt(sqError);
-                            double loss = lossFunction.loss(error, sqError);
-                        }); 
+                            // Extract the variable types from the keys.
+                            // These keys must be of type VariableKey<VariableType>.
+                            typedef typename std::remove_reference<decltype(innerVariableKey)>::type InnerVariableKeyType;
+                            typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
+
+                            constexpr bool is_inner_variable_uncorrelated = internal::Is_in_tuple<typename InnerVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;
+                            constexpr bool is_outer_variable_uncorrelated = internal::Is_in_tuple<typename OuterVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;
+
+                            //Compute pJtJ and pJte for this error term.
+                            // The block is computed as: outer^T * inner.
+                            // outer = row. inner = column.
+                            // Do not compute uncorrelated x correlated.
+                            if constexpr (!(is_outer_variable_uncorrelated && !is_inner_variable_uncorrelated))
+                            {
+                                // Add to lhs.
+                                addBlockToLHS(outerVariableKey, innerVariableKey, rhoJtW * std::get<j>(errorTerm.variableJacobians));
+                            }
+                        });
                     });
+                }
+                else
+                {
+                    std::cout << "linearization invalid for error term." << std::endl;
                 }
             }
         });
@@ -220,7 +328,6 @@ public:
                         // Add the block matrix to the problem.
                         const auto &blockMatrix = keyColumnMatrixPair.second;
                         addBlockToLHS(rowKey, columnKey, blockMatrix);
-
                     }
                 });
             }
@@ -230,7 +337,7 @@ public:
         internal::static_for(variableTuple, [&](auto i, auto &temp) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
 
-            auto& priorRHSRowMap = prior.b0.template getRowMap<RowVariable>();
+            auto &priorRHSRowMap = prior.b0.template getRowMap<RowVariable>();
 
             for (auto it = priorRHSRowMap.begin(); it != priorRHSRowMap.end(); it++)
             {
@@ -240,7 +347,6 @@ public:
                 // add the block to b.
                 addBlockToRHS(key, *(it));
             }
-            
         });
     }
 
@@ -253,19 +359,19 @@ public:
     {
         constexpr bool variable_is_uncorrelated = internal::Is_in_tuple<RowVariable, std::tuple<UncorrelatedVariables...>>::value;
 
-        if constexpr(!variable_is_uncorrelated)
+        if constexpr (!variable_is_uncorrelated)
         {
-            auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+            auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
 
             auto indexIt = indexMap.at(rowKey);
 
             assert(indexIt != indexMap.end());
 
-            b_correlated.template block<RowVariable::dimension, 1>(*(indexIt), 0) += block;
-        } 
-        if constexpr(variable_is_uncorrelated)
+            b_correlated.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += block;
+        }
+        if constexpr (variable_is_uncorrelated)
         {
-            b_uncorrelated.getRowBlock(rowKey) += block;
+            b_uncorrelated.getRowBlock(rowKey).noalias() += block;
         }
     }
 
@@ -284,7 +390,8 @@ public:
         constexpr bool column_variable_is_uncorrelated = internal::Is_in_tuple<ColumnVariable, std::tuple<UncorrelatedVariables...>>::value;
 
         // Compile time if statements used to determin where the block matrix should be added to.
-        if constexpr(row_variable_is_uncorrelated && column_variable_is_uncorrelated) {
+        if constexpr (row_variable_is_uncorrelated && column_variable_is_uncorrelated)
+        {
             // Add this block to D.
             // These keys should be the same type.
             static_assert(std::is_same<RowVariable, ColumnVariable>::value);
@@ -292,33 +399,36 @@ public:
             assert(rowKey == columnKey);
 
             // Add the block to D.
-            auto& slotArray = std::get<DVector<RowVariable>>(D);
+            auto &slotArray = std::get<DVector<RowVariable>>(D);
             auto it = slotArray.at(rowKey);
 
             // The matrix should exist.
             assert(it != slotArray.end());
 
-            *(it) += block;
+            auto& lhs = *(it);
+            lhs.noalias() += block;
         }
 
-        if constexpr(!row_variable_is_uncorrelated && !column_variable_is_uncorrelated) {
+        if constexpr (!row_variable_is_uncorrelated && !column_variable_is_uncorrelated)
+        {
             // Add this block to A.
             const size_t rowIdx = *(std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey));
             const size_t colIdx = *(std::get<IndexMap<ColumnVariable>>(variableToIndexMaps).at(columnKey));
 
-            A.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, colIdx) += block;
+            A.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, colIdx).noalias() += block;
         }
 
-        if constexpr(!row_variable_is_uncorrelated && column_variable_is_uncorrelated) {
+        if constexpr (!row_variable_is_uncorrelated && column_variable_is_uncorrelated)
+        {
             // Add this block to B.
             const size_t rowIdx = *(std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey));
 
-            auto& slotArray = std::get<BVector<ColumnVariable>>(B);
+            auto &slotArray = std::get<BVector<ColumnVariable>>(B);
             auto it = slotArray.at(columnKey);
 
             assert(it != slotArray.end());
-            auto& bMatrix = *(it);
-            bMatrix.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, 0) += block;
+            auto &bMatrix = *(it);
+            bMatrix.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, 0).noalias() += block;
         }
     }
 
@@ -353,6 +463,13 @@ public:
             A.resize(dimensionOfA, dimensionOfA);
         }
 
+        // Resize inverseSchurComplementOfD if necessary.
+        assert(inverseSchurComplementOfD.rows() == inverseSchurComplementOfD.cols());
+        if (inverseSchurComplementOfD.rows() < dimensionOfA)
+        {
+            inverseSchurComplementOfD.resize(dimensionOfA, dimensionOfA);
+        }
+
         // Resize b_correlated if necessary
         if (b_correlated.rows() < dimensionOfA)
         {
@@ -370,6 +487,20 @@ public:
                 }
             }
         });
+
+        // Resize the matrices of negativeBDinv if necessary
+        internal::static_for(negativeBDinv, [&](auto i, auto &array) {
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
+            for (auto &matrix : array)
+            {
+                if (matrix.rows() < dimensionOfA)
+                {
+                    matrix.resize(dimensionOfA, ThisVariable::dimension);
+                }
+            }
+        });
+
+        
     }
 
     /// Ensures that the slot arrays stored in the solver are in sync with the current variable set.
@@ -392,6 +523,12 @@ public:
                     if (std::get<BVector<ThisVariable>>(B).at(key) == std::get<BVector<ThisVariable>>(B).end())
                     {
                         std::get<BVector<ThisVariable>>(B).insert(key, Eigen::Matrix<ScalarType, Eigen::Dynamic, ThisVariable::dimension>::Zero(dimensionOfA));
+                    }
+
+                    // Check if the key exists in negativeBDinv
+                    if (std::get<BVector<ThisVariable>>(negativeBDinv).at(key) == std::get<BVector<ThisVariable>>(negativeBDinv).end())
+                    {
+                        std::get<BVector<ThisVariable>>(negativeBDinv).insert(key, Eigen::Matrix<ScalarType, Eigen::Dynamic, ThisVariable::dimension>::Zero(dimensionOfA));
                     }
 
                     // Check if the key exists in D

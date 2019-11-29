@@ -25,14 +25,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/MetaHelpers.h" line="79" column="27" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="79" bodyend="-1"/>
+        <location file="src/Optimizer/MetaHelpers.h" line="82" column="27" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="82" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/MetaHelpers.h" line="78" column="1" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="77" bodyend="80"/>
+    <location file="src/Optimizer/MetaHelpers.h" line="81" column="1" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="80" bodyend="83"/>
     <listofallmembers>
       <member refid="struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_01_v_00_01_t_8_8_8_01_4_01_4_1af2aad80a89cbd88932b00e4b9eb0c7b8" prot="public" virt="non-virtual"><scope>ArgMin::internal::Is_in_tuple&lt; V, std::tuple&lt; V, T... &gt; &gt;</scope><name>value</name></member>
     </listofallmembers>

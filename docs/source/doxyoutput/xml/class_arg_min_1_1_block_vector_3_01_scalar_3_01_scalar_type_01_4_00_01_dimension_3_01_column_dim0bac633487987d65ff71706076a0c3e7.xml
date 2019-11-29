@@ -68,7 +68,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="107" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="107" bodyend="-1"/>
+        <location file="src/Optimizer/BlockVector.h" line="125" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="125" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -84,6 +84,44 @@
         <inbodydescription>
         </inbodydescription>
         <location file="src/Optimizer/BlockVector.h" line="28" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a44ac052c3268fcdd0b465dfcebb56988" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_slot_array" kindref="compound">RowMap</ref>&lt; VariableType &gt; &amp;</type>
+        <definition>RowMap&lt;VariableType&gt;&amp; ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::getRowMap</definition>
+        <argsstring>()</argsstring>
+        <name>getRowMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a reference to the internal row map for a given variable type. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="34" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="34" bodyend="37"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1af00f687a4296ed0038083b43794c1a17" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>const <ref refid="class_arg_min_1_1_slot_array" kindref="compound">RowMap</ref>&lt; VariableType &gt; &amp;</type>
+        <definition>const RowMap&lt;VariableType&gt;&amp; ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::getRowMap</definition>
+        <argsstring>() const</argsstring>
+        <name>getRowMap</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets a const reference to the internal row map for a given variable type. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/BlockVector.h" line="43" column="18" bodyfile="src/Optimizer/BlockVector.h" bodystart="43" bodyend="46"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -111,7 +149,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="33" column="36" bodyfile="src/Optimizer/BlockVector.h" bodystart="33" bodyend="38"/>
+        <location file="src/Optimizer/BlockVector.h" line="51" column="36" bodyfile="src/Optimizer/BlockVector.h" bodystart="51" bodyend="56"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -134,7 +172,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="42" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="42" bodyend="48"/>
+        <location file="src/Optimizer/BlockVector.h" line="60" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="60" bodyend="66"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -157,7 +195,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="52" column="17" bodyfile="src/Optimizer/BlockVector.h" bodystart="52" bodyend="56"/>
+        <location file="src/Optimizer/BlockVector.h" line="70" column="17" bodyfile="src/Optimizer/BlockVector.h" bodystart="70" bodyend="74"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -180,7 +218,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="60" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="60" bodyend="63"/>
+        <location file="src/Optimizer/BlockVector.h" line="78" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="78" bodyend="81"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a31bc69bd9f12604c9112664a75e6897a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -202,7 +240,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="66" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="66" bodyend="103"/>
+        <location file="src/Optimizer/BlockVector.h" line="84" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="84" bodyend="121"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -210,12 +248,14 @@
     <detaileddescription>
 <para>Unlike the <ref refid="class_arg_min_1_1_sparse_block_row" kindref="compound">SparseBlockRow</ref>, the <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> is assumed to be dense and can then achieve constant time insert, lookup, and erase via the slot map. This class uses a slightly different variant of the slot map. One which allows us to choose a key value pair. </para>
     </detaileddescription>
-    <location file="src/Optimizer/BlockVector.h" line="21" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="21" bodyend="109"/>
+    <location file="src/Optimizer/BlockVector.h" line="21" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="21" bodyend="127"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addRowBlock</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>blockExists</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a0755baa1dc753a3f02ddef8baf2e24b2" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>BlockVector</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getRowBlock</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a44ac052c3268fcdd0b465dfcebb56988" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getRowMap</name></member>
+      <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1af00f687a4296ed0038083b43794c1a17" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getRowMap</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a50d984520400f1dfb34e42636cdde21c" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>MatrixBlock</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeRowBlock</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac3288df5419d8131d54844c0c27a828e" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>RowMap</name></member>

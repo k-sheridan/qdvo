@@ -29,15 +29,23 @@ Includes
 --------
 
 
+- ``BlockVector.h`` (:ref:`file_src_Optimizer_BlockVector.h`)
+
 - ``Containers.h`` (:ref:`file_src_Optimizer_Containers.h`)
 
 - ``GaussianPrior.h`` (:ref:`file_src_Optimizer_GaussianPrior.h`)
+
+- ``HuberLossFunction.h`` (:ref:`file_src_Optimizer_HuberLossFunction.h`)
 
 - ``MetaHelpers.h`` (:ref:`file_src_Optimizer_MetaHelpers.h`)
 
 - ``SlotArray.h`` (:ref:`file_src_Optimizer_SlotArray.h`)
 
 - ``SlotMap.h`` (:ref:`file_src_Optimizer_SlotMap.h`)
+
+- ``cassert``
+
+- ``type_traits``
 
 
 
@@ -57,5 +65,5 @@ Classes
 
 - :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver`
 
-- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f`
+- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc`
 

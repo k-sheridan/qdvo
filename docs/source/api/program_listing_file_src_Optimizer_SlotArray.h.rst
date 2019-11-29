@@ -163,7 +163,7 @@ Program Listing for File SlotArray.h
            return data.size();
        }
    
-       KeyType getKeyFromDataIndex(size_t dataIndex)
+       KeyType getKeyFromDataIndex(size_t dataIndex) const 
        {
            assert(dataIndex < dataToSlotIndex.size());
            size_t slotIndex = dataToSlotIndex.at(dataIndex);

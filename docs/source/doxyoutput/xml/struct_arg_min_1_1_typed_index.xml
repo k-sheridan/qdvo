@@ -19,14 +19,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/MetaHelpers.h" line="21" column="12" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="21" bodyend="-1"/>
+        <location file="src/Optimizer/MetaHelpers.h" line="24" column="12" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="24" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/MetaHelpers.h" line="20" column="17" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="20" bodyend="22"/>
+    <location file="src/Optimizer/MetaHelpers.h" line="23" column="17" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="23" bodyend="25"/>
     <listofallmembers>
       <member refid="struct_arg_min_1_1_typed_index_1ad1e2deb3fe8be3c5f301074520553288" prot="public" virt="non-virtual"><scope>ArgMin::TypedIndex</scope><name>index</name></member>
     </listofallmembers>

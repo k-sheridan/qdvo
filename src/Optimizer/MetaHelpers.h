@@ -17,6 +17,9 @@ template <typename T>
 struct Scalar {};
 
 template <typename T>
+struct LossFunction {};
+
+template <typename T>
 struct TypedIndex {
     size_t index;
 };

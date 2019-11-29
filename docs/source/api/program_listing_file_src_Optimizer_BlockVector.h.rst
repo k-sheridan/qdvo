@@ -32,6 +32,18 @@ Program Listing for File BlockVector.h
        using RowMap = SlotArray<MatrixBlock<VariableType>, VariableKey<VariableType>>;
    
        BlockVector() {}
+       
+       template <typename VariableType>
+       RowMap<VariableType>& getRowMap()
+       {
+           return std::get<RowMap<VariableType>>(tupleOfRowMaps);
+       }
+   
+       template <typename VariableType>
+       const RowMap<VariableType>& getRowMap() const
+       {
+           return std::get<RowMap<VariableType>>(tupleOfRowMaps);
+       }
    
        template <typename VariableType>
        typename RowMap<VariableType>::InsertResult addRowBlock(VariableKey<VariableType> key, MatrixBlock<VariableType>& value)

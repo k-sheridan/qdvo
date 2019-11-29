@@ -28,6 +28,8 @@
         <link refid="_block_vector_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
       <node id="9">
         <label>src/Estimation/SlidingWindowEstimator.h</label>
@@ -241,8 +243,8 @@
 <codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>data.size();</highlight></codeline>
 <codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="182"><highlight class="normal"></highlight></codeline>
-<codeline lineno="188" refid="class_arg_min_1_1_slot_array_1ab622ecfe5eee7b66f3e88701f4cfa712" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyType<sp/><ref refid="class_arg_min_1_1_slot_array_1ab622ecfe5eee7b66f3e88701f4cfa712" kindref="member">getKeyFromDataIndex</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dataIndex)</highlight></codeline>
-<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="188" refid="class_arg_min_1_1_slot_array_1aa52649e71538d6b14ce94afef0dd8543" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>KeyType<sp/><ref refid="class_arg_min_1_1_slot_array_1aa52649e71538d6b14ce94afef0dd8543" kindref="member">getKeyFromDataIndex</ref>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dataIndex)</highlight><highlight class="keyword"><sp/>const<sp/></highlight></codeline>
+<codeline lineno="189"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
 <codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>assert(dataIndex<sp/>&lt;<sp/>dataToSlotIndex.size());</highlight></codeline>
 <codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>slotIndex<sp/>=<sp/>dataToSlotIndex.at(dataIndex);</highlight></codeline>
 <codeline lineno="192"><highlight class="normal"></highlight></codeline>

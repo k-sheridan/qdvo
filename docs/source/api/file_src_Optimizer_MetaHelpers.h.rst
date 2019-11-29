@@ -91,6 +91,8 @@ Classes
 
 - :ref:`exhale_struct_struct_arg_min_1_1internal_1_1_is__in__tuple_3_01_v_00_01std_1_1tuple_3_4_01_4`
 
+- :ref:`exhale_struct_struct_arg_min_1_1_loss_function`
+
 - :ref:`exhale_struct_struct_arg_min_1_1_scalar`
 
 - :ref:`exhale_struct_struct_arg_min_1_1_typed_index`

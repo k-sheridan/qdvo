@@ -45,7 +45,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/MetaHelpers.h" line="41" column="20" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="41" bodyend="44"/>
+        <location file="src/Optimizer/MetaHelpers.h" line="44" column="20" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="44" bodyend="47"/>
       </memberdef>
       <memberdef kind="function" id="_meta_helpers_8h_1ad597542cfc99259d3c47f6dcef6e87c0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -76,13 +76,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/MetaHelpers.h" line="47" column="20" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="47" bodyend="50"/>
+        <location file="src/Optimizer/MetaHelpers.h" line="50" column="20" bodyfile="src/Optimizer/MetaHelpers.h" bodystart="50" bodyend="53"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/MetaHelpers.h" line="24" column="18"/>
+    <location file="src/Optimizer/MetaHelpers.h" line="27" column="18"/>
   </compounddef>
 </doxygen>

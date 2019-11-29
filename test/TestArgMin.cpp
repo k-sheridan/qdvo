@@ -11,6 +11,7 @@
 #include "Optimizer/Variables/InverseDepth.h"
 #include "Optimizer/Variables/SimpleScalar.h"
 #include "Optimizer/ErrorTermBase.h"
+#include "Optimizer/HuberLossFunction.h"
 #include <type_traits>
 
 #include <gtest/gtest.h>
@@ -331,6 +332,9 @@ TEST(ArgMin, ErrorTermBasePointer)
     EXPECT_TRUE(errorTerm.checkVariablePointerConsistency(variableContainer));
 }
 
+/**
+ * This is a large test. It basically sets up a simple linear problem with uncorrelated variables, and solves it.
+ */
 TEST(ArgMin, PSDSchurSolverSimple)
 {
     SimpleScalar ss1 = 1;
@@ -339,9 +343,11 @@ TEST(ArgMin, PSDSchurSolverSimple)
 
     using ErrorTermSet = ArgMin::ErrorTermGroup<DifferenceErrorTerm>;
 
-    using LS = ArgMin::PSDSchurSolver<Scalar<double>, ErrorTermSet, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>, ArgMin::VariableGroup<SimpleScalar>>;
+    using LS = ArgMin::PSDSchurSolver<Scalar<double>, ArgMin::LossFunction<ArgMin::HuberLossFunction<double>>, ErrorTermSet, ArgMin::VariableGroup<SimpleScalar, DifferentSimpleScalar>, ArgMin::VariableGroup<SimpleScalar>>;
 
-    LS solver;
+    ArgMin::HuberLossFunction<double> lossFunction(1000); // set the huber width to much higher than any residuals.
+
+    LS solver(lossFunction);
 
     VariableContainer<SimpleScalar, DifferentSimpleScalar> variableContainer;
 
@@ -433,4 +439,44 @@ TEST(ArgMin, PSDSchurSolverSimple)
     // The error terms should have been linearized.
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey1)->linearizationValid);
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
+
+    // Build the problem.
+    solver.buildProblem(prior, errorTermContainer);
+
+    // Our LHS is computed as:
+    //A0 = [3, 0, 0;
+    //      0, 1, 0;
+    //      0, 0, 2]
+    // J_0'J_0 = [1, -1, 0;
+    //            -1, 1, 0;
+    //            0,  0, 0]
+    // J_1'J_1 =  [1, 0, -1;
+    //            0, 0, 0;
+    //            -1,0, 1]
+    // A = [5, -1, -1;
+    //      -1, 2, 0;
+    //      -1, 0, 3]
+    // Verify that A is correct.
+    EXPECT_TRUE(solver.A.block(0, 0, DifferentSimpleScalar::dimension, DifferentSimpleScalar::dimension).isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(5)));
+    EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey1))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(2)));
+    EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey2))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(3)));
+    EXPECT_TRUE((std::get<LS::BVector<SimpleScalar>>(solver.B).at(ssKey1))->block(0, 0, DifferentSimpleScalar::dimension, SimpleScalar::dimension).isApprox(-Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
+    EXPECT_TRUE((std::get<LS::BVector<SimpleScalar>>(solver.B).at(ssKey2))->block(0, 0, DifferentSimpleScalar::dimension, SimpleScalar::dimension).isApprox(-Eigen::Matrix<double, DifferentSimpleScalar::dimension, SimpleScalar::dimension>::Ones()));
+
+    // The RHS is computed as
+    // b0 = [0;0;0]
+    // J_0'e = [1, -1, 0] * (5-1)
+    // J_1'e = [1, 0, -1] * (5 - 2)
+    // b = [7, -4, -3]'
+    EXPECT_TRUE(solver.b_correlated.block(0, 0, DifferentSimpleScalar::dimension, 1).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(7)));
+    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey1).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(-4)));
+    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey2).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(-3)));
+
+    // Test if the linear system is solved correctly.
+    solver.initialize(variableContainer, errorTermContainer);
+    solver.linearize(variableContainer, errorTermContainer);
+    solver.iterate(variableContainer, errorTermContainer, prior);
+
+    // At this point the variables should be updated to the correct solution.
+    
 }

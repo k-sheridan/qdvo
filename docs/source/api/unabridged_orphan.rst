@@ -210,6 +210,11 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_src_Optimizer_HuberLossFunction.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_src_DataStructures_Image.cpp.rst
 
 .. toctree::

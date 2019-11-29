@@ -28,6 +28,8 @@ Classes
 
 - :ref:`exhale_struct_struct_arg_min_1_1_error_term_group`
 
+- :ref:`exhale_struct_struct_arg_min_1_1_loss_function`
+
 - :ref:`exhale_struct_struct_arg_min_1_1_scalar`
 
 - :ref:`exhale_struct_struct_arg_min_1_1_slot_array_1_1_slot`
@@ -56,6 +58,8 @@ Classes
 
 - :ref:`exhale_class_class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4`
 
+- :ref:`exhale_class_class_arg_min_1_1_huber_loss_function`
+
 - :ref:`exhale_class_class_arg_min_1_1_inverse_depth`
 
 - :ref:`exhale_class_class_arg_min_1_1_marginalizer`
@@ -66,7 +70,7 @@ Classes
 
 - :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver`
 
-- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f`
+- :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc`
 
 - :ref:`exhale_class_class_arg_min_1_1_s_e3`
 

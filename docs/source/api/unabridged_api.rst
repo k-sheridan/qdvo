@@ -78,6 +78,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   struct_arg_min_1_1_loss_function.rst
+
+.. toctree::
+   :maxdepth: 5
+
    struct_arg_min_1_1_scalar.rst
 
 .. toctree::
@@ -173,6 +178,11 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   class_arg_min_1_1_huber_loss_function.rst
+
+.. toctree::
+   :maxdepth: 5
+
    class_arg_min_1_1_inverse_depth.rst
 
 .. toctree::
@@ -198,7 +208,7 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
-   class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_error_term_group_3_2a49c4a0c99a681e78307b5f67da962f.rst
+   class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc.rst
 
 .. toctree::
    :maxdepth: 5

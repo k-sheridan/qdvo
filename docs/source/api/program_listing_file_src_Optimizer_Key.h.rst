@@ -22,11 +22,17 @@ Program Listing for File Key.h
    class VariableKey : public SlotMapKeyBase
    {
    public:
+       // This can be used to extract the type of the key variable at compile time.
        typedef T variable_type;
        // Slot Map key (index, generation).
        bool operator<(const VariableKey<T> &other) const
        {
            return this->index < other.index;
+       }
+   
+       bool operator==(const VariableKey<T> &other) const
+       {
+           return this->index == other.index;
        }
    };
    
