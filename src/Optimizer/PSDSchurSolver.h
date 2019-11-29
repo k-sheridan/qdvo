@@ -130,7 +130,7 @@ public:
             // Get the variable for this section of the matrix.
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
 
-            for (auto &matrix : matrixSlotArray)
+            for (Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension> &matrix : matrixSlotArray)
             {
                 // TODO Maybe avoid the copy.
                 matrix = matrix.inverse();
@@ -145,7 +145,7 @@ public:
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
                 // The original b matrix.
-                const auto &bMatrix = *(it);
+                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension> &bMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
@@ -153,48 +153,45 @@ public:
                 // At this point Dinv should have been computed.
                 auto dinvIt = std::get<DVector<RowVariable>>(D).at(key);
                 assert(dinvIt != std::get<DVector<RowVariable>>(D).end());
-                const auto &dinv = *(dinvIt);
-
-                std::cout << "Dinv: " << dinv << std::endl;
+                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension> &dinv = *(dinvIt);
 
                 // Get the matrix we are going to compute.
                 auto negativeBDinvMatrixIt = std::get<BVector<RowVariable>>(negativeBDinv).at(key);
                 assert(negativeBDinvMatrixIt != std::get<BVector<RowVariable>>(negativeBDinv).end());
-                auto &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
+                Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
 
                 // It is possible that this matrix has more rows than needed.
-                negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv;
+                negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv).eval();
 
                 // Add BDinvB' to A.
-                A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix;
+                A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix).eval();
             }
         });
 
         // Compute the inverse of the schur complement of D.
-        inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.inverse();
-
-        std::cout << "inverse schur complement " << inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) << std::endl;
+        inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.block(0, 0, dimensionOfA, dimensionOfA).inverse();
 
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
 
         // Multiply -BDinv * b_uncorrelated.
         internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
-                const auto& negativeBDinvMatrix = *(it);
+                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& negativeBDinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
 
-                const auto& rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
+                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, 1>& rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
 
-                b_correlated.block(0, 0, dimensionOfA, 1).noalias() += negativeBDinvMatrix * rhsBlockMatrix;
+                b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
             }
         });
 
         // Multiply the inverse schur complement of D by the correlated b vector.
-        dx.block(0, 0, dimensionOfA, 1).noalias() += inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
+        dx.block(0, 0, dimensionOfA, 1).noalias() = inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
 
         // Multiply Dinv by the b_uncorrelated vector.
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -202,18 +199,18 @@ public:
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
                 // D should be inverted at this point.
-                const auto& DinvMatrix = *(it);
+                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension>& DinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
 
-                auto& bMatrixBlock = b_uncorrelated.getRowBlock(key);
+                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& bMatrixBlock = b_uncorrelated.getRowBlock(key);
 
                 auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
-                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() = DinvMatrix * bMatrixBlock;
+                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() = (DinvMatrix * bMatrixBlock).eval();
             }
         });
 
@@ -224,7 +221,7 @@ public:
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
-                const auto& negativeBDinvMatrix = *(it);
+                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& negativeBDinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
@@ -233,7 +230,7 @@ public:
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
-                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1);
+                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
             }
         });
 
@@ -318,8 +315,11 @@ public:
 
                     // Iterate through all independent variables.
                     internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
+                        typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
+                        typedef typename std::remove_reference<decltype(errorTerm)>::type ErrorTermType;
+
                         // Cache the error transformation.
-                        auto rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
+                        Eigen::Matrix<SCALAR_TYPE, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
 
                         // Add to rhs.
                         addBlockToRHS(outerVariableKey, rhoJtW * errorTerm.residual);
@@ -328,7 +328,6 @@ public:
                             // Extract the variable types from the keys.
                             // These keys must be of type VariableKey<VariableType>.
                             typedef typename std::remove_reference<decltype(innerVariableKey)>::type InnerVariableKeyType;
-                            typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
 
                             constexpr bool is_inner_variable_uncorrelated = internal::Is_in_tuple<typename InnerVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;
                             constexpr bool is_outer_variable_uncorrelated = internal::Is_in_tuple<typename OuterVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;

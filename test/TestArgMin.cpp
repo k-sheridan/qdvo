@@ -478,5 +478,5 @@ TEST(ArgMin, PSDSchurSolverSimple)
     solver.iterate(variableContainer, errorTermContainer, prior);
 
     // At this point the variables should be updated to the correct solution.
-    
+
 }

@@ -28,6 +28,9 @@ class ErrorTermBase<Scalar<ScalarType>, Dimension<ResidualDimension>, VariableGr
 {
 public:
 
+    /// Compile time acces to the error term's dimension.
+    static const int residual_dimension = ResidualDimension;
+
     /// These jacobians are from the most recent linearization.
     std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...> variableJacobians;
     /// These are the keys used to access the variables over time.
