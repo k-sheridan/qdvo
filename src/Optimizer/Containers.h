@@ -21,6 +21,13 @@ public:
       return std::get<VariableMap<VariableType>>(tupleOfVariableMaps);
    }
 
+   /// Checks if a key is a valid variable key.
+   template <typename VariableType>
+   bool variableExists(VariableKey<VariableType> key)
+   {
+      return getVariableMap<VariableType>().at(key) != getVariableMap<VariableType>().end();
+   }
+
    /// Gets the index of the first scalar of the given variable.
    /// This is used to build and operate on a matrix.
    /// O(N) with number of variable types.

@@ -56,25 +56,25 @@ public:
     /// Dense matrix in the upper right corner
     Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A;
     /// Inverse Schur Complement of D.
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD; 
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD;
     /// Top right block matrix. Equal to bottom left transposed.
-    std::tuple<BVector<UncorrelatedVariables>...> B; 
-    /// Used during the schur solve to store a precomputed: \f$ -B D^{-1} \f$ 
-    std::tuple<BVector<UncorrelatedVariables>...> negativeBDinv;      
-    /// Block diagonal matrix in the bottom right. Each block is invertible.       
+    std::tuple<BVector<UncorrelatedVariables>...> B;
+    /// Used during the schur solve to store a precomputed: \f$ -B D^{-1} \f$
+    std::tuple<BVector<UncorrelatedVariables>...> negativeBDinv;
+    /// Block diagonal matrix in the bottom right. Each block is invertible.
     std::tuple<DVector<UncorrelatedVariables>...> D;
-     /// Pre allocated solution vector.
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;    
-    /// Block vector form of the dx vector. Used to solve ordering issues.                                     
-    BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>> dxBlockVector; 
+    /// Pre allocated solution vector.
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;
     /// Preallocated rhs vector.
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated; 
+    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated;
     /// preallocated uncorreleted part of the b vector.
-    RHSBlockVector b_uncorrelated;                             
+    RHSBlockVector b_uncorrelated;
     /// Tuple of slot arrays which store the current index of a given variable in A.
-    std::tuple<IndexMap<Variables>...> variableToIndexMaps; 
+    std::tuple<IndexMap<Variables>...> variableToIndexMaps;
     /// The current dimension of the A matrix. This exists because we do not need to reduce the size of A.
-    size_t dimensionOfA = 0;                                
+    size_t dimensionOfA = 0;
+    /// The current total problem dimension.
+    size_t totalDimension = 0;
 
     PSDSchurSolver(LossFunctionType &lossFunction) : lossFunction(lossFunction)
     {
@@ -129,8 +129,9 @@ public:
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
             // Get the variable for this section of the matrix.
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
-            
-            for (auto& matrix : matrixSlotArray) {
+
+            for (auto &matrix : matrixSlotArray)
+            {
                 // TODO Maybe avoid the copy.
                 matrix = matrix.inverse();
             }
@@ -141,21 +142,25 @@ public:
         internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
             // Get the variable for this section of the matrix.
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
-            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++) 
+            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
                 // The original b matrix.
-                const auto& bMatrix = *(it);
+                const auto &bMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                assert(variables.variableExists(key));
 
                 // At this point Dinv should have been computed.
                 auto dinvIt = std::get<DVector<RowVariable>>(D).at(key);
                 assert(dinvIt != std::get<DVector<RowVariable>>(D).end());
-                auto& dinv = *(dinvIt);
+                const auto &dinv = *(dinvIt);
+
+                std::cout << "Dinv: " << dinv << std::endl;
+
                 // Get the matrix we are going to compute.
                 auto negativeBDinvMatrixIt = std::get<BVector<RowVariable>>(negativeBDinv).at(key);
                 assert(negativeBDinvMatrixIt != std::get<BVector<RowVariable>>(negativeBDinv).end());
-                auto& negativeBDinvMatrix = *(negativeBDinvMatrixIt);
+                auto &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
 
                 // It is possible that this matrix has more rows than needed.
                 negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv;
@@ -168,8 +173,71 @@ public:
         // Compute the inverse of the schur complement of D.
         inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.inverse();
 
+        std::cout << "inverse schur complement " << inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) << std::endl;
+
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
+
+        // Multiply -BDinv * b_uncorrelated.
+        internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
+            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+            {
+                const auto& negativeBDinvMatrix = *(it);
+
+                auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                assert(variables.variableExists(key));
+
+                const auto& rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
+
+                b_correlated.block(0, 0, dimensionOfA, 1).noalias() += negativeBDinvMatrix * rhsBlockMatrix;
+            }
+        });
+
+        // Multiply the inverse schur complement of D by the correlated b vector.
+        dx.block(0, 0, dimensionOfA, 1).noalias() += inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
+
+        // Multiply Dinv by the b_uncorrelated vector.
+        internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+            {
+                // D should be inverted at this point.
+                const auto& DinvMatrix = *(it);
+
+                auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                assert(variables.variableExists(key));
+
+                auto& bMatrixBlock = b_uncorrelated.getRowBlock(key);
+
+                auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                auto indexIt = indexMap.at(key);
+                assert(indexIt != indexMap.end());
+
+                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() = DinvMatrix * bMatrixBlock;
+            }
+        });
+
+        // At this point the partial solution is stored in the dx vector.
+        // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
+        // This is correct  because Dinv is symmetric, and C = B^T
+        internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
+            typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+            for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+            {
+                const auto& negativeBDinvMatrix = *(it);
+
+                auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                assert(variables.variableExists(key));
+
+                auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                auto indexIt = indexMap.at(key);
+                assert(indexIt != indexMap.end());
+
+                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1);
+            }
+        });
+
+        std::cout << dx << std::endl;
 
     }
 
@@ -405,7 +473,7 @@ public:
             // The matrix should exist.
             assert(it != slotArray.end());
 
-            auto& lhs = *(it);
+            auto &lhs = *(it);
             lhs.noalias() += block;
         }
 
@@ -438,7 +506,7 @@ public:
 
         dimensionOfA = 0;
 
-        /// compute the index map.
+        /// compute the index map starting with only the correlated variables.
         internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
 
@@ -448,6 +516,7 @@ public:
                 for (size_t idx = 0; idx < variableMap.size(); ++idx)
                 {
                     auto key = variableMap.getKeyFromDataIndex(idx);
+                    assert(variables.variableExists(key));
 
                     std::get<IndexMap<ThisVariable>>(variableToIndexMaps).insert(key, dimensionOfA);
 
@@ -455,6 +524,33 @@ public:
                 }
             }
         });
+
+        totalDimension = dimensionOfA;
+
+        /// Compute the remaining variables in the index map (uncorrelated set).
+        internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+
+            // Only set the dimensions if this variable is part of the uncorrelated set.
+            if constexpr ((internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value))
+            {
+                for (size_t idx = 0; idx < variableMap.size(); ++idx)
+                {
+                    auto key = variableMap.getKeyFromDataIndex(idx);
+                    assert(variables.variableExists(key));
+
+                    std::get<IndexMap<ThisVariable>>(variableToIndexMaps).insert(key, totalDimension);
+
+                    totalDimension += ThisVariable::dimension;
+                }
+            }
+        });
+
+        // Resize the dense portion of dx.
+        if (dx.rows() < totalDimension)
+        {
+            dx.resize(totalDimension, 1);
+        }
 
         // Resize A if necessary.
         assert(A.rows() == A.cols());
@@ -499,8 +595,6 @@ public:
                 }
             }
         });
-
-        
     }
 
     /// Ensures that the slot arrays stored in the solver are in sync with the current variable set.
@@ -518,6 +612,7 @@ public:
                 for (size_t idx = 0; idx < variableMap.size(); ++idx)
                 {
                     auto key = variableMap.getKeyFromDataIndex(idx);
+                    assert(variables.variableExists(key));
 
                     // Check if the key exists in B
                     if (std::get<BVector<ThisVariable>>(B).at(key) == std::get<BVector<ThisVariable>>(B).end())
