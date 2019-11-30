@@ -20,6 +20,13 @@ public:
    {
       return std::get<VariableMap<VariableType>>(tupleOfVariableMaps);
    }
+   /// Inserts a variable into the container.
+   /// @return The key to the variable is returned.
+   template <typename VariableType>
+   VariableKey<VariableType> insert(const VariableType& value)
+   {
+      return getVariableMap<VariableType>().insert(value);
+   }
 
    /// Checks if a key is a valid variable key.
    template <typename VariableType>
