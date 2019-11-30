@@ -438,19 +438,26 @@ public:
                 const VariableKey<RowVariable> &rowKey = keySparseBlockRowPair.first;
                 auto &sparseBlockRow = keySparseBlockRowPair.second;
 
-                internal::static_for(variableTuple, [&](auto i, auto &temp) {
-                    typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ColumnVariable;
+                internal::static_for(variableTuple, [&](auto j, auto &temp) {
+                    typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
 
-                    auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
+                    constexpr bool row_variable_is_uncorrelated = internal::Is_in_tuple<RowVariable, std::tuple<UncorrelatedVariables...>>::value;
+                    constexpr bool column_variable_is_uncorrelated = internal::Is_in_tuple<ColumnVariable, std::tuple<UncorrelatedVariables...>>::value;
 
-                    for (auto &keyColumnMatrixPair : variableMap)
+                    // Skip if the variables are both uncorrelated and different.
+                    if constexpr (!(row_variable_is_uncorrelated && column_variable_is_uncorrelated && !std::is_same<RowVariable, ColumnVariable>::value))
                     {
-                        // Get the key for this column.
-                        const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+                        auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
 
-                        // Add the block matrix to the problem.
-                        const auto &blockMatrix = keyColumnMatrixPair.second;
-                        addBlockToLHS(rowKey, columnKey, blockMatrix);
+                        for (auto &keyColumnMatrixPair : variableMap)
+                        {
+                            // Get the key for this column.
+                            const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+
+                            // Add the block matrix to the problem.
+                            const auto &blockMatrix = keyColumnMatrixPair.second;
+                            addBlockToLHS(rowKey, columnKey, blockMatrix);
+                        }
                     }
                 });
             }
