@@ -104,8 +104,48 @@ public:
     }
 
     /**
-     * Builds a linear system using a prior and errorterm set and solves it.
-     * It is assumed that the error terms are linearized, and their variable pointers are valid.
+     * Applies the perturbation to all variables using their box plus operator.
+     * Assumes that the linear system has just been solved.
+     * 
+     * @param revert If true, this will apply the reverse update to the variables. This can be used to revert a negative update.
+     */
+    template <bool Revert = false>
+    void applyUpdateToVariables(VariableContainer<Variables...> &variables)
+    {
+        Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, 1> temporary;
+
+        internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+
+            if constexpr(Revert) {
+                temporary.resize(ThisVariable::dimension, 1);
+            }
+
+            for (auto it = variableMap.begin(); it != variableMap.end(); it++)
+            {
+                auto& variable = *(it);
+
+                auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+
+                auto& indexMap = std::get<IndexMap<ThisVariable>>(variableToIndexMaps);
+                auto indexIt = indexMap.at(key);
+                assert(indexIt != indexMap.end());
+
+                if constexpr(Revert) {
+                    temporary = -dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0);
+                    variable.update(temporary);
+                } else {
+                    variable.update(dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0));
+                }
+
+            }
+        });
+    }
+
+    /**
+     * Solves the linear system currently setup.
+     * Warning the linear system is invalidated after this runs.
+     * It is assumed that the error terms are linearized.
      * 
      * From: https://en.wikipedia.org/wiki/Schur_complement
      * 
@@ -119,10 +159,8 @@ public:
      * 
      */
     template <typename GaussianPriorType>
-    void iterate(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
+    void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
     {
-        // Build the problem.
-        buildProblem(prior, linearizedErrorTerms);
 
         // Solve for the deltas using the Schur Complement.
         // First invert the D matrix
@@ -234,8 +272,6 @@ public:
             }
         });
 
-        std::cout << dx << std::endl;
-
     }
 
     /// Linearizes all error terms stored in this container.
@@ -297,7 +333,7 @@ public:
      * all variables.
      */
     template <typename GaussianPriorType>
-    void buildProblem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
+    void buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
     {
         // Initialize the current problem to the prior.
         setProblemToPrior(prior);
@@ -322,7 +358,7 @@ public:
                         Eigen::Matrix<SCALAR_TYPE, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
 
                         // Add to rhs.
-                        addBlockToRHS(outerVariableKey, rhoJtW * errorTerm.residual);
+                        addBlockToRHS(outerVariableKey, rhoJtW * -errorTerm.residual);
 
                         internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
                             // Extract the variable types from the keys.

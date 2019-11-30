@@ -288,8 +288,6 @@ TEST(ArgMin, GaussianPrior)
     prior.update(variableContainer, dx);
 
     EXPECT_TRUE(prior.b0.blockExists(se3Key1));
-    std::cout << prior.A0.getRowMap<SE3>().at(se3Key1).getVariableMap<SE3>().at(se3Key1) << std::endl;
-    std::cout << prior.b0.getRowBlock(se3Key1) << std::endl;
     EXPECT_TRUE(prior.b0.getRowBlock(se3Key1).isApprox(Prior::BV::MatrixBlock<SE3>::Constant(-Prior::DefaultInverseVariance)));
 
     EXPECT_TRUE(prior.b0.blockExists(se3Key2));
@@ -441,7 +439,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
 
     // Build the problem.
-    solver.buildProblem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer);
 
     // Our LHS is computed as:
     //A0 = [3, 0, 0;
@@ -468,15 +466,50 @@ TEST(ArgMin, PSDSchurSolverSimple)
     // J_0'e = [1, -1, 0] * (5-1)
     // J_1'e = [1, 0, -1] * (5 - 2)
     // b = [7, -4, -3]'
-    EXPECT_TRUE(solver.b_correlated.block(0, 0, DifferentSimpleScalar::dimension, 1).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(7)));
-    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey1).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(-4)));
-    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey2).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(-3)));
+    EXPECT_TRUE(solver.b_correlated.block(0, 0, DifferentSimpleScalar::dimension, 1).isApprox(Eigen::Matrix<double, DifferentSimpleScalar::dimension, 1>::Constant(-7)));
+    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey1).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(4)));
+    EXPECT_TRUE(solver.b_uncorrelated.getRowBlock(ssKey2).isApprox(Eigen::Matrix<double, SimpleScalar::dimension, 1>::Constant(3)));
 
     // Test if the linear system is solved correctly.
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.iterate(variableContainer, errorTermContainer, prior);
+    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
-    // At this point the variables should be updated to the correct solution.
+    // Verify the perturbation is correct.
+    EXPECT_TRUE(solver.dx.block(0, 0, 3, 1).isApprox(Eigen::Vector3d(-0.96000,1.52000,0.68000)));
+
+    // Apply the update.
+    solver.applyUpdateToVariables<false>(variableContainer);
+
+    // Verify that the variables are updated.
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey1)->value, ss1.value + 1.52, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, ss2.value + 0.68, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, dss1.value - 0.96, 1e-6);
+
+    solver.applyUpdateToVariables<true>(variableContainer);
+
+    // Verify the update was reverted.
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey1)->value, ss1.value, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, ss2.value, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, dss1.value, 1e-6);
+
+    // Reapply the update and verify that another solve results in a zero delta vector.
+    solver.applyUpdateToVariables<false>(variableContainer);
+
+     // Verify that the variables are updated.
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey1)->value, 1 + 1.52, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, 2 + 0.68, 1e-6);
+    EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, 5 - 0.96, 1e-6);
+
+    // Run one iteration to verify that the variables are updated properly.
+    solver.initialize(variableContainer, errorTermContainer);
+    solver.linearize(variableContainer, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
+
+    // Verify that the delta is zero.
+    std::cout << solver.dx.block(0, 0, 3, 1) << std::endl;
+    EXPECT_TRUE(solver.dx.block(0, 0, 3, 1).isApprox(Eigen::Vector3d(0, 0, 0)));
 
 }
