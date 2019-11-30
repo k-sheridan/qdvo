@@ -51,7 +51,8 @@ public:
         assert(false);
     }
 
-    // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
+    /// Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
+    /// Assumes that the dx vector has the same variable order as the variable container.
     void update(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
     {
         
@@ -70,6 +71,42 @@ public:
 
         // Move the mean.
         b0.subtractVector(variableOrder, temporaryVector);
+    }
+
+    /// Updates the prior with a block vector.
+    /// The block vector must contain at least a subset of the variables contained in the b0 vector.
+    /// This is the most efficient variant of this operation and is agnostic to ordering.
+    void update(BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>& dx)
+    {
+        // This tuple is used to iterate over all variable types.
+        std::tuple<Variables*...> tupleOfVariables;
+
+        // Compute b0 = b0 - A0*dx
+        internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
+
+            auto& rowMap = A0.template getRowMap<RowVariable>();
+
+            // Stores the dot product of a row and dx vector.
+            Eigen::Matrix<ScalarType, RowVariable::dimension, 1> temporary;
+
+            // Iterate over all rows of the SBM.
+            for (auto& keyRowPair : rowMap)
+            {
+                const VariableKey<RowVariable>& key = keyRowPair.first;
+                auto& sparseBlockRow = keyRowPair.second;
+
+                // Compute the dot product of the sparse block row with the dx vector.
+                sparseBlockRow.dot(dx, temporary);
+
+                // The b0 block must exist for this key.
+                assert(b0.blockExists(key));
+
+                auto& bBlock = b0.getRowBlock(key);
+
+                bBlock.noalias() -= temporary;
+            }
+        });
     }
 };
 

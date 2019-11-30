@@ -40,6 +40,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>, ErrorTe
 {
 public:
     using RHSBlockVector = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<UncorrelatedVariables...>>;
+    using DxBlockVector = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>;
     template <typename VariableType>
     using BVector = SlotArray<Eigen::Matrix<ScalarType, Eigen::Dynamic, VariableType::dimension>, VariableKey<VariableType>>;
     template <typename VariableType>
@@ -65,6 +66,7 @@ public:
     std::tuple<DVector<UncorrelatedVariables>...> D;
     /// Pre allocated solution vector.
     Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;
+    DxBlockVector dxBlockVector;
     /// Preallocated rhs vector.
     Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated;
     /// preallocated uncorreleted part of the b vector.
@@ -112,32 +114,35 @@ public:
     template <bool Revert = false>
     void applyUpdateToVariables(VariableContainer<Variables...> &variables)
     {
-        Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, 1> temporary;
+        Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> temporary;
 
         internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
 
-            if constexpr(Revert) {
+            if constexpr (Revert)
+            {
                 temporary.resize(ThisVariable::dimension, 1);
             }
 
             for (auto it = variableMap.begin(); it != variableMap.end(); it++)
             {
-                auto& variable = *(it);
+                auto &variable = *(it);
 
                 auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
 
-                auto& indexMap = std::get<IndexMap<ThisVariable>>(variableToIndexMaps);
+                auto &indexMap = std::get<IndexMap<ThisVariable>>(variableToIndexMaps);
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
-                if constexpr(Revert) {
+                if constexpr (Revert)
+                {
                     temporary = -dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0);
                     variable.update(temporary);
-                } else {
+                }
+                else
+                {
                     variable.update(dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0));
                 }
-
             }
         });
     }
@@ -168,7 +173,7 @@ public:
             // Get the variable for this section of the matrix.
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
 
-            for (Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension> &matrix : matrixSlotArray)
+            for (Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &matrix : matrixSlotArray)
             {
                 // TODO Maybe avoid the copy.
                 matrix = matrix.inverse();
@@ -183,7 +188,7 @@ public:
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
                 // The original b matrix.
-                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension> &bMatrix = *(it);
+                const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &bMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
@@ -191,12 +196,12 @@ public:
                 // At this point Dinv should have been computed.
                 auto dinvIt = std::get<DVector<RowVariable>>(D).at(key);
                 assert(dinvIt != std::get<DVector<RowVariable>>(D).end());
-                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension> &dinv = *(dinvIt);
+                const Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &dinv = *(dinvIt);
 
                 // Get the matrix we are going to compute.
                 auto negativeBDinvMatrixIt = std::get<BVector<RowVariable>>(negativeBDinv).at(key);
                 assert(negativeBDinvMatrixIt != std::get<BVector<RowVariable>>(negativeBDinv).end());
-                Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
+                Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
 
                 // It is possible that this matrix has more rows than needed.
                 negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv).eval();
@@ -217,12 +222,12 @@ public:
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
-                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& negativeBDinvMatrix = *(it);
+                const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
 
-                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, 1>& rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
+                const Eigen::Matrix<ScalarType, RowVariable::dimension, 1> &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
 
                 b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
             }
@@ -237,14 +242,14 @@ public:
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
                 // D should be inverted at this point.
-                const Eigen::Matrix<SCALAR_TYPE, RowVariable::dimension, RowVariable::dimension>& DinvMatrix = *(it);
+                const Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &DinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
 
-                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& bMatrixBlock = b_uncorrelated.getRowBlock(key);
+                const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &bMatrixBlock = b_uncorrelated.getRowBlock(key);
 
-                auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
@@ -259,12 +264,12 @@ public:
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
             for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
             {
-                const Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, RowVariable::dimension>& negativeBDinvMatrix = *(it);
+                const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(it);
 
                 auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
                 assert(variables.variableExists(key));
 
-                auto& indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
@@ -272,6 +277,21 @@ public:
             }
         });
 
+        // Set the dx block vector from the index map and dx vector
+        internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+
+            for (auto it = indexMap.begin(); it != indexMap.end(); it++)
+            {
+                auto key = indexMap.getKeyFromDataIndex(it - indexMap.begin());
+
+                assert(dxBlockVector.blockExists(key));
+
+                Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> &block = dxBlockVector.getRowBlock(key);
+
+                block = dx.template block<ThisVariable::dimension, 1>(*(it), 0);
+            }
+        });
     }
 
     /// Linearizes all error terms stored in this container.
@@ -355,7 +375,7 @@ public:
                         typedef typename std::remove_reference<decltype(errorTerm)>::type ErrorTermType;
 
                         // Cache the error transformation.
-                        Eigen::Matrix<SCALAR_TYPE, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
+                        Eigen::Matrix<ScalarType, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
 
                         // Add to rhs.
                         addBlockToRHS(outerVariableKey, rhoJtW * -errorTerm.residual);
@@ -639,15 +659,15 @@ public:
         internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
 
-            // Only do this for uncorrelated variables.
-            if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
-            {
-                Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> zeroRHSMatrix = RHSBlockVector::template MatrixBlock<ThisVariable>::Zero();
+            Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> zeroRHSMatrix = RHSBlockVector::template MatrixBlock<ThisVariable>::Zero();
 
-                for (size_t idx = 0; idx < variableMap.size(); ++idx)
+            for (size_t idx = 0; idx < variableMap.size(); ++idx)
+            {
+                auto key = variableMap.getKeyFromDataIndex(idx);
+                assert(variables.variableExists(key));
+                // Only do this for uncorrelated variables.
+                if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
                 {
-                    auto key = variableMap.getKeyFromDataIndex(idx);
-                    assert(variables.variableExists(key));
 
                     // Check if the key exists in B
                     if (std::get<BVector<ThisVariable>>(B).at(key) == std::get<BVector<ThisVariable>>(B).end())
@@ -672,6 +692,12 @@ public:
                     {
                         b_uncorrelated.addRowBlock(key, zeroRHSMatrix);
                     }
+                }
+
+                // Add an elements to the dx block vector.
+                if (!dxBlockVector.blockExists(key))
+                {
+                    dxBlockVector.addRowBlock(key, zeroRHSMatrix);
                 }
             }
         });

@@ -3,6 +3,7 @@
 #include "Optimizer/SlotArray.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/MetaHelpers.h"
+#include "Optimizer/Containers.h"
 #include <Eigen/Core>
 #include <tuple>
 

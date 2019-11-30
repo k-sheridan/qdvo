@@ -6,6 +6,7 @@
 #include "Optimizer/MetaHelpers.h"
 #include "Optimizer/SlotMap.h"
 #include "Optimizer/Containers.h"
+#include "Optimizer/BlockVector.h"
 
 namespace ArgMin
 {
@@ -61,6 +62,31 @@ public:
                 }
             }
         });
+    }
+
+    /// Block vector variant of the sparse dot product.
+    /// It is assumed that he block vector contains keys for at least all variables in this row.
+    /// a.k.a. Row * v = result
+    template <int DenseMatrixColumns>
+    void dot(BlockVector<Scalar<ScalarType>, Dimension<DenseMatrixColumns>, VariableGroup<Variables...>> &v, Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& result)
+    {
+        result = Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>::Zero();
+
+        internal::static_for(columns, [&](auto i, auto &matrixMap) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+            for (const auto& keyBlockPair : matrixMap)
+            {
+                const VariableKey<ThisVariable>& key = keyBlockPair.first;
+
+                // The block must exist.
+                assert(v.blockExists(key));
+
+                const Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
+
+                result.noalias() += keyBlockPair.second * vBlock;
+            }
+        });
+
     }
 
     /// Sets all current non zero blocks to zero.

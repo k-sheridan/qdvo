@@ -229,9 +229,7 @@ TEST(ArgMin, BlockVector)
     EXPECT_EQ(vec.getRowBlock(se3Key1), mat2);
 
     vec.getRowBlock(se3Key1) = mat;
-
     EXPECT_TRUE(vec.blockExists(se3Key1));
-
     Eigen::Matrix<double, Eigen::Dynamic, 1> dx;
     dx.setOnes(14, 1);
 
@@ -254,8 +252,9 @@ TEST(ArgMin, BlockVector)
     vec.removeRowBlock(se3Key1);
 
     EXPECT_FALSE(vec.blockExists(se3Key1));
-
-    ASSERT_DEATH(vec.getRowBlock(se3Key1), "");
+    
+    // Not safe to assume death will occur. 
+    //ASSERT_DEATH(vec.getRowBlock(se3Key1), "");
 }
 
 TEST(ArgMin, GaussianPrior)
@@ -480,7 +479,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_TRUE(solver.dx.block(0, 0, 3, 1).isApprox(Eigen::Vector3d(-0.96000,1.52000,0.68000)));
 
     // Apply the update.
-    solver.applyUpdateToVariables<false>(variableContainer);
+    solver.applyUpdateToVariables(variableContainer);
 
     // Verify that the variables are updated.
     EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey1)->value, ss1.value + 1.52, 1e-6);
@@ -494,14 +493,31 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, ss2.value, 1e-6);
     EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, dss1.value, 1e-6);
 
-    // Reapply the update and verify that another solve results in a zero delta vector.
-    solver.applyUpdateToVariables<false>(variableContainer);
+    // Reapply the update
+    solver.applyUpdateToVariables(variableContainer);
 
-     // Verify that the variables are updated.
-    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey1)->value, 1 + 1.52, 1e-6);
-    EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, 2 + 0.68, 1e-6);
-    EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, 5 - 0.96, 1e-6);
+    // verify that the delta has not changed.
+    EXPECT_TRUE(solver.dx.block(0, 0, 3, 1).isApprox(Eigen::Vector3d(-0.96000,1.52000,0.68000)));
 
-    
+    // Update the prior
+    prior.update(solver.dxBlockVector);
+
+    EXPECT_TRUE(prior.b0.blockExists(ssKey1));
+    EXPECT_NEAR(prior.b0.getRowBlock(ssKey1)(0, 0), -1 * 1.52, 1e-6);
+
+    EXPECT_TRUE(prior.b0.blockExists(ssKey2));
+    EXPECT_NEAR(prior.b0.getRowBlock(ssKey2)(0, 0), -2 * 0.68, 1e-6);
+
+    EXPECT_TRUE(prior.b0.blockExists(dssKey1));
+    EXPECT_NEAR(prior.b0.getRowBlock(dssKey1)(0, 0), 3 * 0.96, 1e-6);
+
+    // Solve another iteration and make sure that the delta vector is zero.
+    solver.initialize(variableContainer, errorTermContainer);
+    solver.linearize(variableContainer, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
+
+    // Verify the perturbation is correct.
+    EXPECT_NEAR(solver.dx.block(0, 0, 3, 1).norm(), 0, 1e-6);
 
 }
