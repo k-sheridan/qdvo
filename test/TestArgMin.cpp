@@ -502,14 +502,6 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_NEAR(variableContainer.getVariableMap<SimpleScalar>().at(ssKey2)->value, 2 + 0.68, 1e-6);
     EXPECT_NEAR(variableContainer.getVariableMap<DifferentSimpleScalar>().at(dssKey1)->value, 5 - 0.96, 1e-6);
 
-    // Run one iteration to verify that the variables are updated properly.
-    solver.initialize(variableContainer, errorTermContainer);
-    solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
-    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
-
-    // Verify that the delta is zero.
-    std::cout << solver.dx.block(0, 0, 3, 1) << std::endl;
-    EXPECT_TRUE(solver.dx.block(0, 0, 3, 1).isApprox(Eigen::Vector3d(0, 0, 0)));
+    
 
 }
