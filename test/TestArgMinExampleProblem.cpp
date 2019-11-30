@@ -171,5 +171,10 @@ TEST_F(PSDSchurSolverTest, IterateWithOnlyPrior) {
     solver.buildLinearSystem(prior, errorTermContainer);
     solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
+    // Since the prior is the only constraint, the dx vector should be ~0;
+    EXPECT_NEAR(solver.dx.block(0, 0, solver.totalDimension, 1).norm(), 0, 1e-9);
+    int previousDimension = solver.totalDimension;
 
+    //TODO Remove a variable and compute another iteration.
+    
 }

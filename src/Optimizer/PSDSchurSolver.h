@@ -166,7 +166,8 @@ public:
     template <typename GaussianPriorType>
     void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
     {
-
+        std::cout << "Starting Schur Solve with problem dimension: " << totalDimension << " and a correlated dimension of: " << dimensionOfA << std::endl;
+        std::cout << "Computing D^{-1}" << std::endl;
         // Solve for the deltas using the Schur Complement.
         // First invert the D matrix
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -180,6 +181,7 @@ public:
             }
         });
 
+        std::cout << "Computing -B D^{-1}" << std::endl;
         // Compute -B Dinv, and compute the inverse Schur Complement of D.
         // This will use A to store the schur complement before inversion.
         internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
@@ -207,16 +209,18 @@ public:
                 negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv).eval();
 
                 // Add BDinvB' to A.
-                A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix).eval();
+                A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).transpose()).eval();
             }
         });
 
+        std::cout << "Computing The Inverse Schur Complement of D" << std::endl;
         // Compute the inverse of the schur complement of D.
         inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.block(0, 0, dimensionOfA, dimensionOfA).inverse();
 
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
 
+        std::cout << "Computing -B D^{-1} b_{uncorrelated}" << std::endl;
         // Multiply -BDinv * b_uncorrelated.
         internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -233,9 +237,11 @@ public:
             }
         });
 
+        std::cout << "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}" << std::endl;
         // Multiply the inverse schur complement of D by the correlated b vector.
         dx.block(0, 0, dimensionOfA, 1).noalias() = inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
 
+        std::cout << "Computing D^{-1} b_{uncorrelated}" << std::endl;
         // Multiply Dinv by the b_uncorrelated vector.
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -257,6 +263,7 @@ public:
             }
         });
 
+        std::cout << "Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}" << std::endl;
         // At this point the partial solution is stored in the dx vector.
         // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
         // This is correct  because Dinv is symmetric, and C = B^T
@@ -277,6 +284,7 @@ public:
             }
         });
 
+        std::cout << "Setting the dx block vector" << std::endl;
         // Set the dx block vector from the index map and dx vector
         internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
@@ -292,6 +300,8 @@ public:
                 block = dx.template block<ThisVariable::dimension, 1>(*(it), 0);
             }
         });
+
+        std::cout << "Schur Solve complete. " << std::endl;
     }
 
     /// Linearizes all error terms stored in this container.
