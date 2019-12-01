@@ -13,6 +13,7 @@ Program Listing for File InverseDepth.h
    #pragma once
    
    #include "Optimizer/OptimizableVariable.h"
+   #include <limits>
    
    namespace ArgMin
    {
@@ -20,12 +21,21 @@ Program Listing for File InverseDepth.h
    class InverseDepth : public ArgMin::OptimizableVariable<double, 1>
    {
    public:
-       InverseDepth()
-       {
-       }
+       double value;
+   
+       InverseDepth() = default;
+   
+       InverseDepth(double dinv) : value(dinv) {}
    
        void update(const Eigen::Matrix<double, 1, 1> &dx)
        {
+           // The inverse depth must come in as a valid 
+           assert(value >= 0 && value <= std::numeric_limits<double>::max());
+           value += dx(0,0);
+   
+           if (value < 0) {
+               value = std::numeric_limits<double>::min();
+           }
        }
    };
    

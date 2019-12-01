@@ -31,6 +31,17 @@ Program Listing for File Containers.h
       {
          return std::get<VariableMap<VariableType>>(tupleOfVariableMaps);
       }
+      template <typename VariableType>
+      VariableKey<VariableType> insert(const VariableType& value)
+      {
+         return getVariableMap<VariableType>().insert(value);
+      }
+   
+      template <typename VariableType>
+      bool variableExists(VariableKey<VariableType> key)
+      {
+         return getVariableMap<VariableType>().at(key) != getVariableMap<VariableType>().end();
+      }
    
       template <typename VariableType>
       size_t variableIndex(VariableKey<VariableType> &key)

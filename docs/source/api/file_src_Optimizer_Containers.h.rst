@@ -43,6 +43,8 @@ Included By
 
 - :ref:`file_src_Estimation_SlidingWindowEstimator.h`
 
+- :ref:`file_src_Optimizer_BlockVector.h`
+
 - :ref:`file_src_Optimizer_ErrorTermBase.h`
 
 - :ref:`file_src_Optimizer_GaussianPrior.h`

@@ -34,7 +34,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="21" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="21" bodyend="-1"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="22" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="22" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1aa3b676490e49cc2e92b652e440cafe66" prot="public" static="no">
         <templateparamlist>
@@ -52,7 +52,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="24" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="24" bodyend="-1"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="25" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="25" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -67,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="78" column="16" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="78" bodyend="-1"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="105" column="16" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="105" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -82,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="26" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="26" bodyend="26"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="27" column="5" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="27" bodyend="27"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ad204ce1c478bc43bee1d268cbe1f0171" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -101,7 +101,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="30" column="21" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="30" bodyend="33"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="31" column="21" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="31" bodyend="34"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a317ccabf7e574afdb8b4f30f76bb30b8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -134,7 +134,36 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="39" column="10" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="39" bodyend="64"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="40" column="10" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="40" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ae8b970cdea62597549e710769f0f7633" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>DenseMatrixColumns</declname>
+            <defname>DenseMatrixColumns</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;::dot</definition>
+        <argsstring>(BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; DenseMatrixColumns &gt;, VariableGroup&lt; Variables... &gt;&gt; &amp;v, Eigen::Matrix&lt; ScalarType, RowDimension, DenseMatrixColumns &gt; &amp;result)</argsstring>
+        <name>dot</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>&lt; DenseMatrixColumns &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt;&gt; &amp;</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; ScalarType, RowDimension, DenseMatrixColumns &gt; &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Block vector variant of the sparse dot product. If the the block vector does not contain an element in the sparse block row, it is assumed to be 0. a.k.a. Row * v = result </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SparseBlockRow.h" line="71" column="10" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="71" bodyend="91"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a6bf09350f56edeb0a63e3b7ee18d65ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -148,17 +177,18 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SparseBlockRow.h" line="67" column="10" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="67" bodyend="75"/>
+        <location file="src/Optimizer/SparseBlockRow.h" line="94" column="10" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="94" bodyend="102"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/SparseBlockRow.h" line="18" column="1" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="17" bodyend="79"/>
+    <location file="src/Optimizer/SparseBlockRow.h" line="19" column="1" bodyfile="src/Optimizer/SparseBlockRow.h" bodystart="18" bodyend="106"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a562fc319389e22741e74c57cea093f78" prot="private" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>columns</name></member>
       <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a317ccabf7e574afdb8b4f30f76bb30b8" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>dot</name></member>
+      <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ae8b970cdea62597549e710769f0f7633" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>dot</name></member>
       <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ad204ce1c478bc43bee1d268cbe1f0171" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>getVariableMap</name></member>
       <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a143202051c420188d389ba4be04ed646" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>MatrixBlock</name></member>
       <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a6bf09350f56edeb0a63e3b7ee18d65ce" prot="public" virt="non-virtual"><scope>ArgMin::SparseBlockRow&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; RowDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>setZero</name></member>

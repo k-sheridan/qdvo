@@ -44,11 +44,50 @@ public:
         b0.addRowBlock(key, zeroVec);
     }
 
-    /// Removes a variable from the
-    template <typename VariableType>
-    void removeVariable(VariableKey<VariableType> &removedKey)
+    /// Remove all variables from the gaussian prior which are not part of the given set of variables.
+    /// This operation has a complexity of N^2 where N is the number of elements in a row. This is the worst case
+    /// and will typically be much lower since the prior is typically very sparse.
+    void removeUnsedVariables(VariableContainer<Variables...> &variableContainer)
     {
-        assert(false);
+        // This tuple is used to iterate over all variable types.
+        std::tuple<Variables*...> tupleOfVariables;
+
+        // Iterate through all sparse block rows.
+        internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
+            auto& rowMap = A0.template getRowMap<RowVariable>();
+
+            for (auto rowIt = rowMap.begin(); rowIt != rowMap.end();)
+            {   
+                // Get the key for this row.
+                const VariableKey<RowVariable>& rowKey = rowIt->first;
+                // Check if the key exists in the variable set.
+                if (variableContainer.variableExists(rowKey))
+                { 
+                    // Search the sparse block row for invalid elements.
+                    internal::static_for(tupleOfVariables, [&](auto j, auto &do_not_use_me) {
+                        typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
+                        auto& columnMap = rowIt->second.template getVariableMap<ColumnVariable>();
+
+                        for (auto colIt = columnMap.begin(); colIt != columnMap.end();){
+                            // Get the key for this block matrix.
+                            const VariableKey<ColumnVariable>& colKey = colIt->first;
+
+                            // Check if this key exists.
+                            if (variableContainer.variableExists(colKey)) {
+                                colIt++;
+                            } else {
+                                colIt = columnMap.erase(colIt);
+                            }
+                        }
+                    });
+                    rowIt++; // increment the iterator.
+                } else {
+                    // Delete this row.
+                    rowIt = rowMap.erase(rowIt);
+                }
+            }
+        });
     }
 
     /// Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;

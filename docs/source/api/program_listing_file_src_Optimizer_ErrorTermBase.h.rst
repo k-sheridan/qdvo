@@ -28,6 +28,8 @@ Program Listing for File ErrorTermBase.h
    {
    public:
    
+       static const int residual_dimension = ResidualDimension;
+   
        std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...> variableJacobians;
        std::tuple<VariableKey<IndependentVariables>...> variableKeys;
        std::tuple<IndependentVariables*...> variablePointers;

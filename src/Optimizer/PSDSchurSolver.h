@@ -233,7 +233,7 @@ public:
 
                 const Eigen::Matrix<ScalarType, RowVariable::dimension, 1> &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
 
-                b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
+                b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * rhsBlockMatrix).eval();
             }
         });
 
@@ -280,7 +280,7 @@ public:
                 auto indexIt = indexMap.at(key);
                 assert(indexIt != indexMap.end());
 
-                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
+                dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
             }
         });
 

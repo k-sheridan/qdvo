@@ -41,6 +41,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/BlockVector.h" line="9" column="16"/>
+    <location file="src/Optimizer/BlockVector.h" line="10" column="16"/>
   </compounddef>
 </doxygen>

@@ -83,6 +83,7 @@
   <compound refid="class_arg_min_1_1_error_term_base" kind="class"><name>ArgMin::ErrorTermBase</name>
   </compound>
   <compound refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd" kind="class"><name>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</name>
+    <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afdfe20172281c680f42a0915ac1ac044" kind="variable"><name>residual_dimension</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a766c4b7274aab33af9a47da2b43bab6f" kind="variable"><name>variableJacobians</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a715f0bde55a3b0e9dc50b8303696b454" kind="variable"><name>variableKeys</name></member>
     <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1acf8d4d24f8574fd61e41cb307cf65d25" kind="variable"><name>variablePointers</name></member>
@@ -179,6 +180,7 @@
     <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a561e9a2573e9133f960d4c130ad372e1" kind="function"><name>addVariable</name></member>
     <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" kind="function"><name>removeVariable</name></member>
     <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9370f7cbba1f7c86bf54e9550647cce8" kind="function"><name>update</name></member>
+    <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a7cb82718b4f1d670bbd478960f7d9ecd" kind="function"><name>update</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_generic_quad_tree" kind="class"><name>QDVO::GenericQuadTree</name>
     <member refid="class_q_d_v_o_1_1_generic_quad_tree_1a32802f286b04fa17fe54ec15019f9efd" kind="variable"><name>root</name></member>
@@ -253,7 +255,9 @@
     <member refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4_1aca6b080765a4b4c96c18ca8c83ecd580" kind="variable"><name>value</name></member>
   </compound>
   <compound refid="class_arg_min_1_1_inverse_depth" kind="class"><name>ArgMin::InverseDepth</name>
-    <member refid="class_arg_min_1_1_inverse_depth_1a53b1b29ff40054752760b31a839b48a4" kind="function"><name>InverseDepth</name></member>
+    <member refid="class_arg_min_1_1_inverse_depth_1aa7700b06c68c4b3fbaa2dc6dfecd7c59" kind="variable"><name>value</name></member>
+    <member refid="class_arg_min_1_1_inverse_depth_1a4eb545cd07f445474ffe7143618652f6" kind="function"><name>InverseDepth</name></member>
+    <member refid="class_arg_min_1_1_inverse_depth_1a1ac3352e6dfed2181dc86063962ef8d1" kind="function"><name>InverseDepth</name></member>
     <member refid="class_arg_min_1_1_inverse_depth_1a0c56fd319a3195b1a47e5dc19fe88ad0" kind="function"><name>update</name></member>
   </compound>
   <compound refid="struct_arg_min_1_1internal_1_1_is__in__tuple" kind="struct"><name>ArgMin::internal::Is_in_tuple</name>
@@ -331,6 +335,7 @@
   </compound>
   <compound refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc" kind="class"><name>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</name>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a76c85085c2dd32e6ff3634244d2fd491" kind="typedef"><name>RHSBlockVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a63666cd7086a8e85c27199878d19111f" kind="typedef"><name>DxBlockVector</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af29de7cb7bb6a624ae8e742dffa7dc5a" kind="typedef"><name>BVector</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aa1f5c15cf0c45c9a62c69f69b7643488" kind="typedef"><name>DBlock</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a81cfaec9660d6dc3ceff98c31b83ba" kind="typedef"><name>DVector</name></member>
@@ -338,21 +343,25 @@
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5e69eb2ff6fb18b2ea7e0f3de595f7f2" kind="typedef"><name>LossFunction</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a69e0ff6e1d76d2f7f0bac1d1b9b7a406" kind="variable"><name>lossFunction</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a46d3e3b63f0d474b021fc3cd8797b086" kind="variable"><name>A</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af94e57639664988d3e425492227f6805" kind="variable"><name>inverseSchurComplementOfD</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac85e934320f9d12046db4479589995b8" kind="variable"><name>B</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aff9a0ac6f7797f5c56d8dc9b78006761" kind="variable"><name>negativeBDinv</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a95e0f4ba3af2455be7f8ca8b03e7a1d9" kind="variable"><name>D</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a4bc925f5facfba5399bf438d85fd617c" kind="variable"><name>dx</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a101394ed64c21ece8c4c4026491691f0" kind="variable"><name>dxBlockVector</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a854f364bc5f56057a0ca2c6b3533af71" kind="variable"><name>dxBlockVector</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a98ca7f89beb5c4585fc08d466b4c5a3b" kind="variable"><name>b_correlated</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a6e170372680d83853bf30686a436f29e" kind="variable"><name>b_uncorrelated</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ade1da82db7dcc7ab91f21332c477c7e4" kind="variable"><name>variableToIndexMaps</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a9794a4c783e9ec2a48d416a0e12180" kind="variable"><name>dimensionOfA</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a7f1dd7951eab1728bb19070178febab0" kind="variable"><name>totalDimension</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aca8f12cb82a9144a91a55504813ff089" kind="function"><name>PSDSchurSolver</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a72239cba214691743f2bbb944a42d80d" kind="function"><name>initialize</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a210e17730a96519e7899f68fed1bfe75" kind="function"><name>solve</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a36cb1ef84241b9b4ab2a809324892578" kind="function"><name>iterate</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a9fd9b31344f6bd44065c718346ca06d5" kind="function"><name>applyUpdateToVariables</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae11fcc2f8e7c5411c85d8d52197b1e9c" kind="function"><name>solveLinearSystem</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a0c26a4d0e58d96433da5c1a1c7b49e77" kind="function"><name>linearize</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a03ece8262ff5fa096db0dcebcb3f56" kind="function"><name>setZero</name></member>
-    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a911689060ff5fdd5bf4a98d1317ae275" kind="function"><name>buildProblem</name></member>
+    <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac385baed534f823fbcc8996d6a52beb2" kind="function"><name>buildLinearSystem</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a48c7bd960097621b7bac0e743cb5ef15" kind="function"><name>setProblemToPrior</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1abef2f76859098bd86fe659d6b2da5cc2" kind="function"><name>addBlockToRHS</name></member>
     <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae2ea433485d5fc1d302a8bf74d022fe3" kind="function"><name>addBlockToLHS</name></member>
@@ -389,7 +398,10 @@
   <compound refid="struct_arg_min_1_1_scalar" kind="struct"><name>ArgMin::Scalar</name>
   </compound>
   <compound refid="class_arg_min_1_1_s_e3" kind="class"><name>ArgMin::SE3</name>
-    <member refid="class_arg_min_1_1_s_e3_1ac8d4caa79dfb667d9554bc3b610f9243" kind="function"><name>SE3</name></member>
+    <member refid="class_arg_min_1_1_s_e3_1a09c5dc0cafc6499f9eda669bd274c79b" kind="variable"><name>value</name></member>
+    <member refid="class_arg_min_1_1_s_e3_1a0cdf67dd8f0e27c0293f728b072b2df6" kind="function"><name>SE3</name></member>
+    <member refid="class_arg_min_1_1_s_e3_1a1c02f980190aab3d6e55ff8378b371a1" kind="function"><name>SE3</name></member>
+    <member refid="class_arg_min_1_1_s_e3_1a83b5b339a2beca6e286abb309608ef1e" kind="function"><name>SE3</name></member>
     <member refid="class_arg_min_1_1_s_e3_1a81a923430e717bd823a0a4fe5ab4b24b" kind="function"><name>update</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_settings" kind="class"><name>QDVO::Settings</name>
@@ -485,6 +497,7 @@
     <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1abd5acf66ecfab34c9af25bb69319a799" kind="function"><name>SparseBlockRow</name></member>
     <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ad204ce1c478bc43bee1d268cbe1f0171" kind="function"><name>getVariableMap</name></member>
     <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a317ccabf7e574afdb8b4f30f76bb30b8" kind="function"><name>dot</name></member>
+    <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1ae8b970cdea62597549e710769f0f7633" kind="function"><name>dot</name></member>
     <member refid="class_arg_min_1_1_sparse_block_row_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_row_di448e01618e944e45c36eaff030845b68_1a6bf09350f56edeb0a63e3b7ee18d65ce" kind="function"><name>setZero</name></member>
   </compound>
   <compound refid="class_q_d_v_o_1_1_spatial_map" kind="class"><name>QDVO::SpatialMap</name>
@@ -529,6 +542,8 @@
     <member refid="class_arg_min_1_1_variable_container_1aef9325aa87da6c80e5dc68e2b2c5097d" kind="typedef"><name>VariableMap</name></member>
     <member refid="class_arg_min_1_1_variable_container_1a5fc7874e55bbeabe28d7628491294a3a" kind="variable"><name>tupleOfVariableMaps</name></member>
     <member refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" kind="function"><name>getVariableMap</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1a49b2289574431ee38db8cbf32c03db9e" kind="function"><name>insert</name></member>
+    <member refid="class_arg_min_1_1_variable_container_1aaaaf992d6c9c4343465247b991c026cb" kind="function"><name>variableExists</name></member>
     <member refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" kind="function"><name>variableIndex</name></member>
     <member refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" kind="function"><name>totalDimensions</name></member>
   </compound>

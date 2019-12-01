@@ -33,6 +33,7 @@ Program Listing for File PSDSchurSolver.h
    {
    public:
        using RHSBlockVector = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<UncorrelatedVariables...>>;
+       using DxBlockVector = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>;
        template <typename VariableType>
        using BVector = SlotArray<Eigen::Matrix<ScalarType, Eigen::Dynamic, VariableType::dimension>, VariableKey<VariableType>>;
        template <typename VariableType>
@@ -45,15 +46,18 @@ Program Listing for File PSDSchurSolver.h
    
        LossFunctionType lossFunction;
    
-       Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A; 
-       std::tuple<BVector<UncorrelatedVariables>...> B;      
-       std::tuple<DVector<UncorrelatedVariables>...> D;             
-       Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;    
-       BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>> dxBlockVector; 
-       Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated; 
-       RHSBlockVector b_uncorrelated;                             
-       std::tuple<IndexMap<Variables>...> variableToIndexMaps; 
-       size_t dimensionOfA = 0;                                
+       Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A;
+       Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD;
+       std::tuple<BVector<UncorrelatedVariables>...> B;
+       std::tuple<BVector<UncorrelatedVariables>...> negativeBDinv;
+       std::tuple<DVector<UncorrelatedVariables>...> D;
+       Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> dx;
+       DxBlockVector dxBlockVector;
+       Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> b_correlated;
+       RHSBlockVector b_uncorrelated;
+       std::tuple<IndexMap<Variables>...> variableToIndexMaps;
+       size_t dimensionOfA = 0;
+       size_t totalDimension = 0;
    
        PSDSchurSolver(LossFunctionType &lossFunction) : lossFunction(lossFunction)
        {
@@ -73,13 +77,181 @@ Program Listing for File PSDSchurSolver.h
        {
        }
    
-       template <typename GaussianPriorType>
-       void iterate(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
+       template <bool Revert = false>
+       void applyUpdateToVariables(VariableContainer<Variables...> &variables)
        {
-           // Build the problem.
-           buildProblem(prior, linearizedErrorTerms);
+           Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> temporary;
    
+           internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+   
+               if constexpr (Revert)
+               {
+                   temporary.resize(ThisVariable::dimension, 1);
+               }
+   
+               for (auto it = variableMap.begin(); it != variableMap.end(); it++)
+               {
+                   auto &variable = *(it);
+   
+                   auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+   
+                   auto &indexMap = std::get<IndexMap<ThisVariable>>(variableToIndexMaps);
+                   auto indexIt = indexMap.at(key);
+                   assert(indexIt != indexMap.end());
+   
+                   if constexpr (Revert)
+                   {
+                       temporary = -dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0);
+                       variable.update(temporary);
+                   }
+                   else
+                   {
+                       variable.update(dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0));
+                   }
+               }
+           });
+       }
+   
+       template <typename GaussianPriorType>
+       void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
+       {
+           std::cout << "Starting Schur Solve with problem dimension: " << totalDimension << " and a correlated dimension of: " << dimensionOfA << std::endl;
+           std::cout << "Computing D^{-1}" << std::endl;
            // Solve for the deltas using the Schur Complement.
+           // First invert the D matrix
+           internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
+               // Get the variable for this section of the matrix.
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+   
+               for (Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &matrix : matrixSlotArray)
+               {
+                   // TODO Maybe avoid the copy.
+                   matrix = matrix.inverse();
+               }
+           });
+   
+           std::cout << "Computing -B D^{-1}" << std::endl;
+           // Compute -B Dinv, and compute the inverse Schur Complement of D.
+           // This will use A to store the schur complement before inversion.
+           internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
+               // Get the variable for this section of the matrix.
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+               for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+               {
+                   // The original b matrix.
+                   const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &bMatrix = *(it);
+   
+                   auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                   assert(variables.variableExists(key));
+   
+                   // At this point Dinv should have been computed.
+                   auto dinvIt = std::get<DVector<RowVariable>>(D).at(key);
+                   assert(dinvIt != std::get<DVector<RowVariable>>(D).end());
+                   const Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &dinv = *(dinvIt);
+   
+                   // Get the matrix we are going to compute.
+                   auto negativeBDinvMatrixIt = std::get<BVector<RowVariable>>(negativeBDinv).at(key);
+                   assert(negativeBDinvMatrixIt != std::get<BVector<RowVariable>>(negativeBDinv).end());
+                   Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
+   
+                   // It is possible that this matrix has more rows than needed.
+                   negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).noalias() = (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv).eval();
+   
+                   // Add BDinvB' to A.
+                   A.block(0, 0, dimensionOfA, dimensionOfA).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).transpose()).eval();
+               }
+           });
+   
+           std::cout << "Computing The Inverse Schur Complement of D" << std::endl;
+           // Compute the inverse of the schur complement of D.
+           inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.block(0, 0, dimensionOfA, dimensionOfA).inverse();
+   
+           // At this point we have computed the inverse of the LHS.
+           // Now we just have to multiply our results with the RHS.
+   
+           std::cout << "Computing -B D^{-1} b_{uncorrelated}" << std::endl;
+           // Multiply -BDinv * b_uncorrelated.
+           internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+               for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+               {
+                   const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(it);
+   
+                   auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                   assert(variables.variableExists(key));
+   
+                   const Eigen::Matrix<ScalarType, RowVariable::dimension, 1> &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
+   
+                   b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
+               }
+           });
+   
+           std::cout << "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}" << std::endl;
+           // Multiply the inverse schur complement of D by the correlated b vector.
+           dx.block(0, 0, dimensionOfA, 1).noalias() = inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
+   
+           std::cout << "Computing D^{-1} b_{uncorrelated}" << std::endl;
+           // Multiply Dinv by the b_uncorrelated vector.
+           internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+               for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+               {
+                   // D should be inverted at this point.
+                   const Eigen::Matrix<ScalarType, RowVariable::dimension, RowVariable::dimension> &DinvMatrix = *(it);
+   
+                   auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                   assert(variables.variableExists(key));
+   
+                   const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &bMatrixBlock = b_uncorrelated.getRowBlock(key);
+   
+                   auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                   auto indexIt = indexMap.at(key);
+                   assert(indexIt != indexMap.end());
+   
+                   dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() = (DinvMatrix * bMatrixBlock).eval();
+               }
+           });
+   
+           std::cout << "Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}" << std::endl;
+           // At this point the partial solution is stored in the dx vector.
+           // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
+           // This is correct  because Dinv is symmetric, and C = B^T
+           internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
+               for (auto it = matrixSlotArray.begin(); it != matrixSlotArray.end(); it++)
+               {
+                   const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension> &negativeBDinvMatrix = *(it);
+   
+                   auto key = matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+                   assert(variables.variableExists(key));
+   
+                   auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
+                   auto indexIt = indexMap.at(key);
+                   assert(indexIt != indexMap.end());
+   
+                   dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
+               }
+           });
+   
+           std::cout << "Setting the dx block vector" << std::endl;
+           // Set the dx block vector from the index map and dx vector
+           internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+   
+               for (auto it = indexMap.begin(); it != indexMap.end(); it++)
+               {
+                   auto key = indexMap.getKeyFromDataIndex(it - indexMap.begin());
+   
+                   assert(dxBlockVector.blockExists(key));
+   
+                   Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> &block = dxBlockVector.getRowBlock(key);
+   
+                   block = dx.template block<ThisVariable::dimension, 1>(*(it), 0);
+               }
+           });
+   
+           std::cout << "Schur Solve complete. " << std::endl;
        }
    
        void linearize(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
@@ -129,7 +301,7 @@ Program Listing for File PSDSchurSolver.h
        }
    
        template <typename GaussianPriorType>
-       void buildProblem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
+       void buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
        {
            // Initialize the current problem to the prior.
            setProblemToPrior(prior);
@@ -147,17 +319,19 @@ Program Listing for File PSDSchurSolver.h
    
                        // Iterate through all independent variables.
                        internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
+                           typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
+                           typedef typename std::remove_reference<decltype(errorTerm)>::type ErrorTermType;
+   
                            // Cache the error transformation.
-                           auto rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
+                           Eigen::Matrix<ScalarType, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information * weight).eval();
    
                            // Add to rhs.
-                           addBlockToRHS(outerVariableKey, rhoJtW * errorTerm.residual);
+                           addBlockToRHS(outerVariableKey, rhoJtW * -errorTerm.residual);
    
                            internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
                                // Extract the variable types from the keys.
                                // These keys must be of type VariableKey<VariableType>.
                                typedef typename std::remove_reference<decltype(innerVariableKey)>::type InnerVariableKeyType;
-                               typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
    
                                constexpr bool is_inner_variable_uncorrelated = internal::Is_in_tuple<typename InnerVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;
                                constexpr bool is_outer_variable_uncorrelated = internal::Is_in_tuple<typename OuterVariableKeyType::variable_type, std::tuple<UncorrelatedVariables...>>::value;
@@ -205,19 +379,26 @@ Program Listing for File PSDSchurSolver.h
                    const VariableKey<RowVariable> &rowKey = keySparseBlockRowPair.first;
                    auto &sparseBlockRow = keySparseBlockRowPair.second;
    
-                   internal::static_for(variableTuple, [&](auto i, auto &temp) {
-                       typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ColumnVariable;
+                   internal::static_for(variableTuple, [&](auto j, auto &temp) {
+                       typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
    
-                       auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
+                       constexpr bool row_variable_is_uncorrelated = internal::Is_in_tuple<RowVariable, std::tuple<UncorrelatedVariables...>>::value;
+                       constexpr bool column_variable_is_uncorrelated = internal::Is_in_tuple<ColumnVariable, std::tuple<UncorrelatedVariables...>>::value;
    
-                       for (auto &keyColumnMatrixPair : variableMap)
+                       // Skip if the variables are both uncorrelated and different.
+                       if constexpr (!(row_variable_is_uncorrelated && column_variable_is_uncorrelated && !std::is_same<RowVariable, ColumnVariable>::value))
                        {
-                           // Get the key for this column.
-                           const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+                           auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
    
-                           // Add the block matrix to the problem.
-                           const auto &blockMatrix = keyColumnMatrixPair.second;
-                           addBlockToLHS(rowKey, columnKey, blockMatrix);
+                           for (auto &keyColumnMatrixPair : variableMap)
+                           {
+                               // Get the key for this column.
+                               const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+   
+                               // Add the block matrix to the problem.
+                               const auto &blockMatrix = keyColumnMatrixPair.second;
+                               addBlockToLHS(rowKey, columnKey, blockMatrix);
+                           }
                        }
                    });
                }
@@ -253,11 +434,11 @@ Program Listing for File PSDSchurSolver.h
    
                assert(indexIt != indexMap.end());
    
-               b_correlated.template block<RowVariable::dimension, 1>(*(indexIt), 0) += block;
+               b_correlated.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += block;
            }
            if constexpr (variable_is_uncorrelated)
            {
-               b_uncorrelated.getRowBlock(rowKey) += block;
+               b_uncorrelated.getRowBlock(rowKey).noalias() += block;
            }
        }
    
@@ -287,7 +468,8 @@ Program Listing for File PSDSchurSolver.h
                // The matrix should exist.
                assert(it != slotArray.end());
    
-               *(it) += block;
+               auto &lhs = *(it);
+               lhs.noalias() += block;
            }
    
            if constexpr (!row_variable_is_uncorrelated && !column_variable_is_uncorrelated)
@@ -296,7 +478,7 @@ Program Listing for File PSDSchurSolver.h
                const size_t rowIdx = *(std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey));
                const size_t colIdx = *(std::get<IndexMap<ColumnVariable>>(variableToIndexMaps).at(columnKey));
    
-               A.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, colIdx) += block;
+               A.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, colIdx).noalias() += block;
            }
    
            if constexpr (!row_variable_is_uncorrelated && column_variable_is_uncorrelated)
@@ -309,7 +491,7 @@ Program Listing for File PSDSchurSolver.h
    
                assert(it != slotArray.end());
                auto &bMatrix = *(it);
-               bMatrix.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, 0) += block;
+               bMatrix.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, 0).noalias() += block;
            }
        }
    
@@ -327,6 +509,7 @@ Program Listing for File PSDSchurSolver.h
                    for (size_t idx = 0; idx < variableMap.size(); ++idx)
                    {
                        auto key = variableMap.getKeyFromDataIndex(idx);
+                       assert(variables.variableExists(key));
    
                        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).insert(key, dimensionOfA);
    
@@ -335,11 +518,44 @@ Program Listing for File PSDSchurSolver.h
                }
            });
    
+           totalDimension = dimensionOfA;
+   
+           internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+   
+               // Only set the dimensions if this variable is part of the uncorrelated set.
+               if constexpr ((internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value))
+               {
+                   for (size_t idx = 0; idx < variableMap.size(); ++idx)
+                   {
+                       auto key = variableMap.getKeyFromDataIndex(idx);
+                       assert(variables.variableExists(key));
+   
+                       std::get<IndexMap<ThisVariable>>(variableToIndexMaps).insert(key, totalDimension);
+   
+                       totalDimension += ThisVariable::dimension;
+                   }
+               }
+           });
+   
+           // Resize the dense portion of dx.
+           if (dx.rows() < totalDimension)
+           {
+               dx.resize(totalDimension, 1);
+           }
+   
            // Resize A if necessary.
            assert(A.rows() == A.cols());
            if (A.rows() < dimensionOfA)
            {
                A.resize(dimensionOfA, dimensionOfA);
+           }
+   
+           // Resize inverseSchurComplementOfD if necessary.
+           assert(inverseSchurComplementOfD.rows() == inverseSchurComplementOfD.cols());
+           if (inverseSchurComplementOfD.rows() < dimensionOfA)
+           {
+               inverseSchurComplementOfD.resize(dimensionOfA, dimensionOfA);
            }
    
            // Resize b_correlated if necessary
@@ -359,6 +575,18 @@ Program Listing for File PSDSchurSolver.h
                    }
                }
            });
+   
+           // Resize the matrices of negativeBDinv if necessary
+           internal::static_for(negativeBDinv, [&](auto i, auto &array) {
+               typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
+               for (auto &matrix : array)
+               {
+                   if (matrix.rows() < dimensionOfA)
+                   {
+                       matrix.resize(dimensionOfA, ThisVariable::dimension);
+                   }
+               }
+           });
        }
    
        void addNewVariablesToSlotArrays(VariableContainer<Variables...> &variables)
@@ -367,19 +595,26 @@ Program Listing for File PSDSchurSolver.h
            internal::static_for(variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
                typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
    
-               // Only do this for uncorrelated variables.
-               if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
-               {
-                   Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> zeroRHSMatrix = RHSBlockVector::template MatrixBlock<ThisVariable>::Zero();
+               Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> zeroRHSMatrix = RHSBlockVector::template MatrixBlock<ThisVariable>::Zero();
    
-                   for (size_t idx = 0; idx < variableMap.size(); ++idx)
+               for (size_t idx = 0; idx < variableMap.size(); ++idx)
+               {
+                   auto key = variableMap.getKeyFromDataIndex(idx);
+                   assert(variables.variableExists(key));
+                   // Only do this for uncorrelated variables.
+                   if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
                    {
-                       auto key = variableMap.getKeyFromDataIndex(idx);
    
                        // Check if the key exists in B
                        if (std::get<BVector<ThisVariable>>(B).at(key) == std::get<BVector<ThisVariable>>(B).end())
                        {
                            std::get<BVector<ThisVariable>>(B).insert(key, Eigen::Matrix<ScalarType, Eigen::Dynamic, ThisVariable::dimension>::Zero(dimensionOfA));
+                       }
+   
+                       // Check if the key exists in negativeBDinv
+                       if (std::get<BVector<ThisVariable>>(negativeBDinv).at(key) == std::get<BVector<ThisVariable>>(negativeBDinv).end())
+                       {
+                           std::get<BVector<ThisVariable>>(negativeBDinv).insert(key, Eigen::Matrix<ScalarType, Eigen::Dynamic, ThisVariable::dimension>::Zero(dimensionOfA));
                        }
    
                        // Check if the key exists in D
@@ -393,6 +628,12 @@ Program Listing for File PSDSchurSolver.h
                        {
                            b_uncorrelated.addRowBlock(key, zeroRHSMatrix);
                        }
+                   }
+   
+                   // Add an elements to the dx block vector.
+                   if (!dxBlockVector.blockExists(key))
+                   {
+                       dxBlockVector.addRowBlock(key, zeroRHSMatrix);
                    }
                }
            });

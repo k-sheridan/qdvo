@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="24" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="24" bodyend="-1"/>
+        <location file="src/Optimizer/BlockVector.h" line="25" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="25" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac3288df5419d8131d54844c0c27a828e" prot="public" static="no">
         <templateparamlist>
@@ -53,7 +53,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="26" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="26" bodyend="-1"/>
+        <location file="src/Optimizer/BlockVector.h" line="27" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="27" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -68,7 +68,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="125" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="125" bodyend="-1"/>
+        <location file="src/Optimizer/BlockVector.h" line="126" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="126" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -83,7 +83,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="28" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="28" bodyend="28"/>
+        <location file="src/Optimizer/BlockVector.h" line="29" column="5" bodyfile="src/Optimizer/BlockVector.h" bodystart="29" bodyend="29"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a44ac052c3268fcdd0b465dfcebb56988" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -102,7 +102,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="34" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="34" bodyend="37"/>
+        <location file="src/Optimizer/BlockVector.h" line="35" column="12" bodyfile="src/Optimizer/BlockVector.h" bodystart="35" bodyend="38"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1af00f687a4296ed0038083b43794c1a17" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -121,7 +121,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="43" column="18" bodyfile="src/Optimizer/BlockVector.h" bodystart="43" bodyend="46"/>
+        <location file="src/Optimizer/BlockVector.h" line="44" column="18" bodyfile="src/Optimizer/BlockVector.h" bodystart="44" bodyend="47"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -149,7 +149,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="51" column="36" bodyfile="src/Optimizer/BlockVector.h" bodystart="51" bodyend="56"/>
+        <location file="src/Optimizer/BlockVector.h" line="52" column="36" bodyfile="src/Optimizer/BlockVector.h" bodystart="52" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a7759a4c991bc017f5018ccb55e9aa538" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -172,7 +172,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="60" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="60" bodyend="66"/>
+        <location file="src/Optimizer/BlockVector.h" line="61" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="61" bodyend="67"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1aa5a5318d205de5f22e3aa45e995fb41a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -195,7 +195,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="70" column="17" bodyfile="src/Optimizer/BlockVector.h" bodystart="70" bodyend="74"/>
+        <location file="src/Optimizer/BlockVector.h" line="71" column="17" bodyfile="src/Optimizer/BlockVector.h" bodystart="71" bodyend="75"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -218,7 +218,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="78" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="78" bodyend="81"/>
+        <location file="src/Optimizer/BlockVector.h" line="79" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="79" bodyend="82"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1a31bc69bd9f12604c9112664a75e6897a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -240,7 +240,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/BlockVector.h" line="84" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="84" bodyend="121"/>
+        <location file="src/Optimizer/BlockVector.h" line="85" column="10" bodyfile="src/Optimizer/BlockVector.h" bodystart="85" bodyend="122"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -248,7 +248,7 @@
     <detaileddescription>
 <para>Unlike the <ref refid="class_arg_min_1_1_sparse_block_row" kindref="compound">SparseBlockRow</ref>, the <ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref> is assumed to be dense and can then achieve constant time insert, lookup, and erase via the slot map. This class uses a slightly different variant of the slot map. One which allows us to choose a key value pair. </para>
     </detaileddescription>
-    <location file="src/Optimizer/BlockVector.h" line="21" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="21" bodyend="127"/>
+    <location file="src/Optimizer/BlockVector.h" line="22" column="22" bodyfile="src/Optimizer/BlockVector.h" bodystart="22" bodyend="128"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ab4d5ee31454db6020134a54cde6df094" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addRowBlock</name></member>
       <member refid="class_arg_min_1_1_block_vector_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_column_dim0bac633487987d65ff71706076a0c3e7_1ac9cdb40b1d674e596d1ddb4f9ac9cd17" prot="public" virt="non-virtual"><scope>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ColumnDimension &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>blockExists</name></member>

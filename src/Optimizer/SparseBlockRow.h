@@ -65,7 +65,7 @@ public:
     }
 
     /// Block vector variant of the sparse dot product.
-    /// It is assumed that he block vector contains keys for at least all variables in this row.
+    /// If the the block vector does not contain an element in the sparse block row, it is assumed to be 0.
     /// a.k.a. Row * v = result
     template <int DenseMatrixColumns>
     void dot(BlockVector<Scalar<ScalarType>, Dimension<DenseMatrixColumns>, VariableGroup<Variables...>> &v, Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& result)
@@ -78,12 +78,13 @@ public:
             {
                 const VariableKey<ThisVariable>& key = keyBlockPair.first;
 
-                // The block must exist.
-                assert(v.blockExists(key));
+                // If the block does not exist, don't dot this element.
+                if (v.blockExists(key)) 
+                {
+                    const Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
 
-                const Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
-
-                result.noalias() += keyBlockPair.second * vBlock;
+                    result.noalias() += keyBlockPair.second * vBlock;
+                }
             }
         });
 

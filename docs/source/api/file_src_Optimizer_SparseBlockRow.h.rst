@@ -31,6 +31,8 @@ Includes
 
 - ``Eigen/Core``
 
+- ``Optimizer/BlockVector.h`` (:ref:`file_src_Optimizer_BlockVector.h`)
+
 - ``Optimizer/Containers.h`` (:ref:`file_src_Optimizer_Containers.h`)
 
 - ``Optimizer/MetaHelpers.h`` (:ref:`file_src_Optimizer_MetaHelpers.h`)

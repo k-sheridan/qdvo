@@ -50,11 +50,11 @@
         <childnode refid="6" relation="include">
         </childnode>
       </node>
-      <node id="31">
+      <node id="33">
         <label>src/Optimizer/ErrorTermBase.h</label>
         <link refid="_error_term_base_8h_source"/>
       </node>
-      <node id="33">
+      <node id="31">
         <label>src/Optimizer/SparseBlockMatrix.h</label>
         <link refid="_sparse_block_matrix_8h_source"/>
         <childnode refid="26" relation="include">
@@ -76,6 +76,8 @@
         <childnode refid="26" relation="include">
         </childnode>
         <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
         </childnode>
       </node>
       <node id="10">
@@ -225,9 +227,9 @@
         </childnode>
         <childnode refid="25" relation="include">
         </childnode>
-        <childnode refid="30" relation="include">
+        <childnode refid="32" relation="include">
         </childnode>
-        <childnode refid="31" relation="include">
+        <childnode refid="33" relation="include">
         </childnode>
         <childnode refid="26" relation="include">
         </childnode>
@@ -300,12 +302,14 @@
         <childnode refid="11" relation="include">
         </childnode>
       </node>
-      <node id="30">
+      <node id="32">
         <label>src/Optimizer/Containers.h</label>
         <link refid="_containers_8h_source"/>
         <childnode refid="9" relation="include">
         </childnode>
-        <childnode refid="31" relation="include">
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
         </childnode>
         <childnode refid="26" relation="include">
         </childnode>
@@ -313,17 +317,17 @@
         </childnode>
         <childnode refid="28" relation="include">
         </childnode>
-        <childnode refid="32" relation="include">
+        <childnode refid="30" relation="include">
         </childnode>
         <childnode refid="29" relation="include">
         </childnode>
       </node>
-      <node id="32">
+      <node id="30">
         <label>src/Optimizer/SparseBlockRow.h</label>
         <link refid="_sparse_block_row_8h_source"/>
         <childnode refid="26" relation="include">
         </childnode>
-        <childnode refid="33" relation="include">
+        <childnode refid="31" relation="include">
         </childnode>
       </node>
       <node id="20">

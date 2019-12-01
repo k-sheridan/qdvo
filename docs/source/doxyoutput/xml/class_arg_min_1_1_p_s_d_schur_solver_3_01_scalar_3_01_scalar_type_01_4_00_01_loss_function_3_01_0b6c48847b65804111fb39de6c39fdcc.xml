@@ -40,6 +40,19 @@
         </inbodydescription>
         <location file="src/Optimizer/PSDSchurSolver.h" line="42" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="42" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a63666cd7086a8e85c27199878d19111f" prot="public" static="no">
+        <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>&lt; 1 &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
+        <definition>using ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::DxBlockVector =  BlockVector&lt;Scalar&lt;ScalarType&gt;, Dimension&lt;1&gt;, VariableGroup&lt;Variables...&gt; &gt;</definition>
+        <argsstring></argsstring>
+        <name>DxBlockVector</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="43" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af29de7cb7bb6a624ae8e742dffa7dc5a" prot="public" static="no">
         <templateparamlist>
           <param>
@@ -56,7 +69,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="44" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="44" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="45" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aa1f5c15cf0c45c9a62c69f69b7643488" prot="public" static="no">
         <templateparamlist>
@@ -74,7 +87,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="46" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="46" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="47" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a81cfaec9660d6dc3ceff98c31b83ba" prot="public" static="no">
         <templateparamlist>
@@ -92,7 +105,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="48" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="48" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="49" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5ba3b44ee5f164ebffd5e30b1379e309" prot="public" static="no">
         <templateparamlist>
@@ -110,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="50" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="50" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="51" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5e69eb2ff6fb18b2ea7e0f3de595f7f2" prot="public" static="no">
         <type><ref refid="class_arg_min_1_1_huber_loss_function" kindref="compound">HuberLossFunction</ref>&lt; ScalarType &gt;</type>
@@ -123,7 +136,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="51" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="51" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="52" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-attrib">
@@ -139,7 +152,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="54" column="22" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="54" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="55" column="22" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a46d3e3b63f0d474b021fc3cd8797b086" prot="public" static="no" mutable="no">
         <type>Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, Eigen::Dynamic &gt;</type>
@@ -153,7 +166,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="57" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="57" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="58" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af94e57639664988d3e425492227f6805" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, Eigen::Dynamic &gt;</type>
+        <definition>Eigen::Matrix&lt;ScalarType, Eigen::Dynamic, Eigen::Dynamic&gt; ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::inverseSchurComplementOfD</definition>
+        <argsstring></argsstring>
+        <name>inverseSchurComplementOfD</name>
+        <briefdescription>
+<para>Inverse Schur Complement of D. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="60" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="60" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac85e934320f9d12046db4479589995b8" prot="public" static="no" mutable="no">
         <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_array" kindref="compound">BVector</ref>&lt; UncorrelatedVariables &gt;... &gt;</type>
@@ -167,7 +194,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="59" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="59" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="62" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aff9a0ac6f7797f5c56d8dc9b78006761" prot="public" static="no" mutable="no">
+        <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_array" kindref="compound">BVector</ref>&lt; UncorrelatedVariables &gt;... &gt;</type>
+        <definition>std::tuple&lt;BVector&lt;UncorrelatedVariables&gt;...&gt; ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::negativeBDinv</definition>
+        <argsstring></argsstring>
+        <name>negativeBDinv</name>
+        <briefdescription>
+<para>Used during the schur solve to store a precomputed: <formula id="4">$ -B D^{-1} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="64" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="64" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a95e0f4ba3af2455be7f8ca8b03e7a1d9" prot="public" static="no" mutable="no">
         <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_array" kindref="compound">DVector</ref>&lt; UncorrelatedVariables &gt;... &gt;</type>
@@ -175,14 +216,13 @@
         <argsstring></argsstring>
         <name>D</name>
         <briefdescription>
-<para>Block diagonal matrix in the bottom right. Each block is invertible. <linebreak/>
- </para>
+<para>Block diagonal matrix in the bottom right. Each block is invertible. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="61" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="61" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="66" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="66" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a4bc925f5facfba5399bf438d85fd617c" prot="public" static="no" mutable="no">
         <type>Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, 1 &gt;</type>
@@ -196,22 +236,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="63" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="63" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="68" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="68" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a101394ed64c21ece8c4c4026491691f0" prot="public" static="no" mutable="no">
-        <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>&lt; 1 &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt; &gt;</type>
-        <definition>BlockVector&lt;Scalar&lt;ScalarType&gt;, Dimension&lt;1&gt;, VariableGroup&lt;Variables...&gt; &gt; ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::dxBlockVector</definition>
+      <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a854f364bc5f56057a0ca2c6b3533af71" prot="public" static="no" mutable="no">
+        <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">DxBlockVector</ref></type>
+        <definition>DxBlockVector ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::dxBlockVector</definition>
         <argsstring></argsstring>
         <name>dxBlockVector</name>
         <briefdescription>
-<para>Block vector form of the dx vector. Used to solve ordering issues. <linebreak/>
- </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="65" column="17" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="65" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="69" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a98ca7f89beb5c4585fc08d466b4c5a3b" prot="public" static="no" mutable="no">
         <type>Eigen::Matrix&lt; ScalarType, Eigen::Dynamic, 1 &gt;</type>
@@ -225,7 +263,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="67" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="67" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="71" column="19" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="71" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a6e170372680d83853bf30686a436f29e" prot="public" static="no" mutable="no">
         <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">RHSBlockVector</ref></type>
@@ -239,7 +277,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="69" column="20" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="69" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="73" column="20" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="73" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ade1da82db7dcc7ab91f21332c477c7e4" prot="public" static="no" mutable="no">
         <type>std::tuple&lt; <ref refid="class_arg_min_1_1_slot_array" kindref="compound">IndexMap</ref>&lt; Variables &gt;... &gt;</type>
@@ -253,7 +291,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="71" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="71" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="75" column="16" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="75" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a9794a4c783e9ec2a48d416a0e12180" prot="public" static="no" mutable="no">
         <type>size_t</type>
@@ -268,7 +306,22 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="73" column="12" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="73" bodyend="-1"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="77" column="12" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a7f1dd7951eab1728bb19070178febab0" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::totalDimension</definition>
+        <argsstring></argsstring>
+        <name>totalDimension</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>The current total problem dimension. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="79" column="12" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -287,7 +340,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="75" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="75" bodyend="77"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="81" column="5" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="81" bodyend="83"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a72239cba214691743f2bbb944a42d80d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -309,7 +362,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="82" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="82" bodyend="89"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="88" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="88" bodyend="95"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a210e17730a96519e7899f68fed1bfe75" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -341,18 +394,54 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="98" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="98" bodyend="100"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="104" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="104" bodyend="106"/>
       </memberdef>
-      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a36cb1ef84241b9b4ab2a809324892578" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a9fd9b31344f6bd44065c718346ca06d5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>bool</type>
+            <declname>Revert</declname>
+            <defname>Revert</defname>
+            <defval>false</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::applyUpdateToVariables</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variables)</argsstring>
+        <name>applyUpdateToVariables</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variables</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Applies the perturbation to all variables using their box plus operator. Assumes that the linear system has just been solved.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>revert</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, this will apply the reverse update to the variables. This can be used to revert a negative update. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="115" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="115" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae11fcc2f8e7c5411c85d8d52197b1e9c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename GaussianPriorType</type>
           </param>
         </templateparamlist>
         <type>void</type>
-        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::iterate</definition>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::solveLinearSystem</definition>
         <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variables, ErrorTermContainer&lt; ErrorTerms... &gt; &amp;linearizedErrorTerms, GaussianPriorType &amp;prior)</argsstring>
-        <name>iterate</name>
+        <name>solveLinearSystem</name>
         <param>
           <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
           <declname>variables</declname>
@@ -368,16 +457,16 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Builds a linear system using a prior and errorterm set and solves it. It is assumed that the error terms are linearized, and their variable pointers are valid.</para>
+<para>Solves the linear system currently setup. Warning the linear system is invalidated after this runs. It is assumed that the error terms are linearized.</para>
 <para>From: <ulink url="https://en.wikipedia.org/wiki/Schur_complement">https://en.wikipedia.org/wiki/Schur_complement</ulink></para>
-<para><formula id="4">$ {\displaystyle M=\left[{\begin{matrix}A&amp;B\\C&amp;D\end{matrix}}\right]} $</formula></para>
-<para><formula id="5">$ {\displaystyle M/D:=A-BD^{-1}C\,} $</formula></para>
-<para><formula id="6">$ {\displaystyle M/A:=D-CA^{-1}B.} $</formula></para>
-<para><formula id="7">$ {\displaystyle {\begin{aligned}&amp;{\begin{bmatrix}A&amp;B\\C&amp;D\end{bmatrix}}^{-1}={\begin{bmatrix}I_{p}&amp;0\\-D^{-1}C&amp;I_{q}\end{bmatrix}}{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;0\\0&amp;D^{-1}\end{bmatrix}}{\begin{bmatrix}I_{p}&amp;-BD^{-1}\\0&amp;I_{q}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&amp;D^{-1}+D^{-1}C\left(A-BD^{-1}C\right)^{-1}BD^{-1}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&amp;\left(D-CA^{-1}B\right)^{-1}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(M/D\right)^{-1}&amp;-\left(M/D\right)^{-1}BD^{-1}\\-D^{-1}C\left(M/D\right)^{-1}&amp;\left(M/A\right)^{-1}\end{bmatrix}}.\end{aligned}}} $</formula> </para>
+<para><formula id="5">$ {\displaystyle M=\left[{\begin{matrix}A&amp;B\\C&amp;D\end{matrix}}\right]} $</formula></para>
+<para><formula id="6">$ {\displaystyle M/D:=A-BD^{-1}C\,} $</formula></para>
+<para><formula id="7">$ {\displaystyle M/A:=D-CA^{-1}B.} $</formula></para>
+<para><formula id="8">$ {\displaystyle {\begin{aligned}&amp;{\begin{bmatrix}A&amp;B\\C&amp;D\end{bmatrix}}^{-1}={\begin{bmatrix}I_{p}&amp;0\\-D^{-1}C&amp;I_{q}\end{bmatrix}}{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;0\\0&amp;D^{-1}\end{bmatrix}}{\begin{bmatrix}I_{p}&amp;-BD^{-1}\\0&amp;I_{q}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&amp;D^{-1}+D^{-1}C\left(A-BD^{-1}C\right)^{-1}BD^{-1}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(A-BD^{-1}C\right)^{-1}&amp;-\left(A-BD^{-1}C\right)^{-1}BD^{-1}\\-D^{-1}C\left(A-BD^{-1}C\right)^{-1}&amp;\left(D-CA^{-1}B\right)^{-1}\end{bmatrix}}\\[4pt]={}&amp;{\begin{bmatrix}\left(M/D\right)^{-1}&amp;-\left(M/D\right)^{-1}BD^{-1}\\-D^{-1}C\left(M/D\right)^{-1}&amp;\left(M/A\right)^{-1}\end{bmatrix}}.\end{aligned}}} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="118" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="118" bodyend="124"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="167" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="167" bodyend="305"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a0c26a4d0e58d96433da5c1a1c7b49e77" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -399,7 +488,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="127" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="127" bodyend="136"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="308" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="308" bodyend="317"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a03ece8262ff5fa096db0dcebcb3f56" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -413,18 +502,18 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="139" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="139" bodyend="172"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="320" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="320" bodyend="353"/>
       </memberdef>
-      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a911689060ff5fdd5bf4a98d1317ae275" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac385baed534f823fbcc8996d6a52beb2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename GaussianPriorType</type>
           </param>
         </templateparamlist>
         <type>void</type>
-        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::buildProblem</definition>
+        <definition>void ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;::buildLinearSystem</definition>
         <argsstring>(GaussianPriorType &amp;prior, ErrorTermContainer&lt; ErrorTerms... &gt; &amp;linearizedErrorTerms)</argsstring>
-        <name>buildProblem</name>
+        <name>buildLinearSystem</name>
         <param>
           <type>GaussianPriorType &amp;</type>
           <declname>prior</declname>
@@ -437,13 +526,13 @@
         </briefdescription>
         <detaileddescription>
 <para>Using the set of linearized error terms, Build up a linear system by computing</para>
-<para><formula id="8">$ A = A_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} J_{i} \rho $</formula></para>
-<para><formula id="9">$ b = b_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} e_{i} \rho $</formula></para>
-<para>Where <formula id="10">$ e_{i} $</formula> is the residual and <formula id="11">$ J_{i} $</formula> is the jacobian of error w.r.t to all variables. </para>
+<para><formula id="9">$ A = A_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} J_{i} \rho $</formula></para>
+<para><formula id="10">$ b = b_{0} + \sum_{i=0}^n J_{i}^{\top} \Sigma^{-1} e_{i} \rho $</formula></para>
+<para>Where <formula id="11">$ e_{i} $</formula> is the residual and <formula id="12">$ J_{i} $</formula> is the jacobian of error w.r.t to all variables. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="185" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="185" bodyend="236"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="366" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="366" bodyend="419"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a48c7bd960097621b7bac0e743cb5ef15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -458,12 +547,12 @@
         </briefdescription>
         <detaileddescription>
 <para>Sets the problem exactly to the prior.</para>
-<para><formula id="12">$ A = A_{0} $</formula></para>
-<para><formula id="13">$ b = b_{0} $</formula> </para>
+<para><formula id="13">$ A = A_{0} $</formula></para>
+<para><formula id="14">$ b = b_{0} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="245" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="245" bodyend="301"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="428" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="428" bodyend="491"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1abef2f76859098bd86fe659d6b2da5cc2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -490,7 +579,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="308" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="308" bodyend="326"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="498" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="498" bodyend="516"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae2ea433485d5fc1d302a8bf74d022fe3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -524,7 +613,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="333" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="333" bodyend="382"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="523" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="523" bodyend="573"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a327ae4eb527ded9e2123422bab0fdf7f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -541,9 +630,10 @@
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
-<para>compute the index map.</para>
+<para>compute the index map starting with only the correlated variables.</para>
+<para>Compute the remaining variables in the index map (uncorrelated set).</para>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="385" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="385" bodyend="432"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="576" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="576" bodyend="670"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a7197bc556facdc7c8c01adb5bc6caf04" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -561,7 +651,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="435" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="435" bodyend="470"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="673" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="673" bodyend="721"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac236f2906f84f4955154f0ac6f22fbbd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -583,7 +673,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/PSDSchurSolver.h" line="473" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="473" bodyend="482"/>
+        <location file="src/Optimizer/PSDSchurSolver.h" line="724" column="10" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="724" bodyend="733"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -601,7 +691,7 @@
         <link refid="class_arg_min_1_1_block_vector"/>
       </node>
       <node id="2">
-        <label>ArgMin::BlockVector&lt; ArgMin::Scalar&lt; ScalarType &gt;, ArgMin::Dimension&lt; 1 &gt;, ArgMin::VariableGroup&lt; Variables... &gt; &gt;</label>
+        <label>ArgMin::BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; 1 &gt;, VariableGroup&lt; Variables... &gt; &gt;</label>
         <link refid="class_arg_min_1_1_block_vector"/>
       </node>
       <node id="1">
@@ -615,35 +705,40 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/Optimizer/PSDSchurSolver.h" line="40" column="1" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="39" bodyend="483"/>
+    <location file="src/Optimizer/PSDSchurSolver.h" line="40" column="1" bodyfile="src/Optimizer/PSDSchurSolver.h" bodystart="39" bodyend="734"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a46d3e3b63f0d474b021fc3cd8797b086" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>A</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae2ea433485d5fc1d302a8bf74d022fe3" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>addBlockToLHS</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1abef2f76859098bd86fe659d6b2da5cc2" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>addBlockToRHS</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a7197bc556facdc7c8c01adb5bc6caf04" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>addNewVariablesToSlotArrays</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a9fd9b31344f6bd44065c718346ca06d5" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>applyUpdateToVariables</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac85e934320f9d12046db4479589995b8" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>B</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a98ca7f89beb5c4585fc08d466b4c5a3b" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>b_correlated</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a6e170372680d83853bf30686a436f29e" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>b_uncorrelated</name></member>
-      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a911689060ff5fdd5bf4a98d1317ae275" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>buildProblem</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac385baed534f823fbcc8996d6a52beb2" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>buildLinearSystem</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af29de7cb7bb6a624ae8e742dffa7dc5a" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>BVector</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a95e0f4ba3af2455be7f8ca8b03e7a1d9" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>D</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aa1f5c15cf0c45c9a62c69f69b7643488" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>DBlock</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a9794a4c783e9ec2a48d416a0e12180" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>dimensionOfA</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a81cfaec9660d6dc3ceff98c31b83ba" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>DVector</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a4bc925f5facfba5399bf438d85fd617c" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>dx</name></member>
-      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a101394ed64c21ece8c4c4026491691f0" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>dxBlockVector</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a63666cd7086a8e85c27199878d19111f" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>DxBlockVector</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a854f364bc5f56057a0ca2c6b3533af71" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>dxBlockVector</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5ba3b44ee5f164ebffd5e30b1379e309" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>IndexMap</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a72239cba214691743f2bbb944a42d80d" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>initialize</name></member>
-      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a36cb1ef84241b9b4ab2a809324892578" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>iterate</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1af94e57639664988d3e425492227f6805" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>inverseSchurComplementOfD</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a0c26a4d0e58d96433da5c1a1c7b49e77" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>linearize</name></member>
-      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5e69eb2ff6fb18b2ea7e0f3de595f7f2" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>LossFunction</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a69e0ff6e1d76d2f7f0bac1d1b9b7a406" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>lossFunction</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a5e69eb2ff6fb18b2ea7e0f3de595f7f2" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>LossFunction</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aff9a0ac6f7797f5c56d8dc9b78006761" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>negativeBDinv</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a327ae4eb527ded9e2123422bab0fdf7f" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>precomputeIndexMapAndResizeMatrices</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1aca8f12cb82a9144a91a55504813ff089" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>PSDSchurSolver</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a76c85085c2dd32e6ff3634244d2fd491" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>RHSBlockVector</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a48c7bd960097621b7bac0e743cb5ef15" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>setProblemToPrior</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a2a03ece8262ff5fa096db0dcebcb3f56" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>setZero</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a210e17730a96519e7899f68fed1bfe75" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>solve</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ae11fcc2f8e7c5411c85d8d52197b1e9c" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>solveLinearSystem</name></member>
+      <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1a7f1dd7951eab1728bb19070178febab0" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>totalDimension</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ac236f2906f84f4955154f0ac6f22fbbd" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>updateVariablePointers</name></member>
       <member refid="class_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01_0b6c48847b65804111fb39de6c39fdcc_1ade1da82db7dcc7ab91f21332c477c7e4" prot="public" virt="non-virtual"><scope>ArgMin::PSDSchurSolver&lt; Scalar&lt; ScalarType &gt;, LossFunction&lt; LossFunctionType &gt;, ErrorTermGroup&lt; ErrorTerms... &gt;, VariableGroup&lt; Variables... &gt;, VariableGroup&lt; UncorrelatedVariables... &gt; &gt;</scope><name>variableToIndexMaps</name></member>
     </listofallmembers>

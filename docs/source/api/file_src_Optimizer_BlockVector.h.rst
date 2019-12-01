@@ -31,6 +31,8 @@ Includes
 
 - ``Eigen/Core``
 
+- ``Optimizer/Containers.h`` (:ref:`file_src_Optimizer_Containers.h`)
+
 - ``Optimizer/Key.h`` (:ref:`file_src_Optimizer_Key.h`)
 
 - ``Optimizer/MetaHelpers.h`` (:ref:`file_src_Optimizer_MetaHelpers.h`)
@@ -48,6 +50,8 @@ Included By
 - :ref:`file_src_Optimizer_GaussianPrior.h`
 
 - :ref:`file_src_Optimizer_PSDSchurSolver.h`
+
+- :ref:`file_src_Optimizer_SparseBlockRow.h`
 
 
 

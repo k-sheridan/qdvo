@@ -178,10 +178,29 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Updates the prior error term on manifold. A0 * (x + dx) = b0 =&gt; A0 * x = b0 - A0 * dx; Assumes that the dx vector has the same variable order as the variable container. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/GaussianPrior.h" line="55" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="55" bodyend="73"/>
+        <location file="src/Optimizer/GaussianPrior.h" line="56" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="56" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a7cb82718b4f1d670bbd478960f7d9ecd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::update</definition>
+        <argsstring>(BlockVector&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; 1 &gt;, VariableGroup&lt; Variables... &gt;&gt; &amp;dx)</argsstring>
+        <name>update</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_block_vector" kindref="compound">BlockVector</ref>&lt; <ref refid="struct_arg_min_1_1_scalar" kindref="compound">Scalar</ref>&lt; ScalarType &gt;, <ref refid="struct_arg_min_1_1_dimension" kindref="compound">Dimension</ref>&lt; 1 &gt;, <ref refid="struct_arg_min_1_1_variable_group" kindref="compound">VariableGroup</ref>&lt; Variables... &gt;&gt; &amp;</type>
+          <declname>dx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Updates the prior with a block vector. The block vector must contain at least a subset of the variables contained in the b0 vector. This is the most efficient variant of this operation and is agnostic to ordering. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/GaussianPrior.h" line="79" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="79" bodyend="110"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -208,7 +227,7 @@
         <link refid="class_arg_min_1_1_block_vector"/>
       </node>
     </collaborationgraph>
-    <location file="src/Optimizer/GaussianPrior.h" line="19" column="1" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="18" bodyend="74"/>
+    <location file="src/Optimizer/GaussianPrior.h" line="19" column="1" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="18" bodyend="111"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1ac0c03b660e91cdd2082a909110126ee3" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>A0</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a561e9a2573e9133f960d4c130ad372e1" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addVariable</name></member>
@@ -220,6 +239,7 @@
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1aa912bb10d93962b8ce8e753b63f6b73b" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>SBM</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a8832574816dc1a2c42cad72c18b324ff" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>temporaryVector</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9370f7cbba1f7c86bf54e9550647cce8" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>update</name></member>
+      <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a7cb82718b4f1d670bbd478960f7d9ecd" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>update</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

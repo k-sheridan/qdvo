@@ -41,7 +41,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="61" column="15" bodyfile="src/Optimizer/Containers.h" bodystart="61" bodyend="-1"/>
+        <location file="src/Optimizer/Containers.h" line="75" column="15" bodyfile="src/Optimizer/Containers.h" bodystart="75" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -64,6 +64,54 @@
         </inbodydescription>
         <location file="src/Optimizer/Containers.h" line="19" column="16" bodyfile="src/Optimizer/Containers.h" bodystart="19" bodyend="22"/>
       </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_variable_container_1a49b2289574431ee38db8cbf32c03db9e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+        <definition>VariableKey&lt;VariableType&gt; ArgMin::VariableContainer&lt; Variables &gt;::insert</definition>
+        <argsstring>(const VariableType &amp;value)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const VariableType &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inserts a variable into the container. <simplesect kind="return"><para>The key to the variable is returned. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Containers.h" line="26" column="16" bodyfile="src/Optimizer/Containers.h" bodystart="26" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_variable_container_1aaaaf992d6c9c4343465247b991c026cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename VariableType</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool ArgMin::VariableContainer&lt; Variables &gt;::variableExists</definition>
+        <argsstring>(VariableKey&lt; VariableType &gt; key)</argsstring>
+        <name>variableExists</name>
+        <param>
+          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a key is a valid variable key. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Containers.h" line="33" column="9" bodyfile="src/Optimizer/Containers.h" bodystart="33" bodyend="36"/>
+      </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
           <param>
@@ -85,7 +133,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="28" column="11" bodyfile="src/Optimizer/Containers.h" bodystart="28" bodyend="50"/>
+        <location file="src/Optimizer/Containers.h" line="42" column="11" bodyfile="src/Optimizer/Containers.h" bodystart="42" bodyend="64"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>size_t</type>
@@ -99,18 +147,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="53" column="11" bodyfile="src/Optimizer/Containers.h" bodystart="53" bodyend="58"/>
+        <location file="src/Optimizer/Containers.h" line="67" column="11" bodyfile="src/Optimizer/Containers.h" bodystart="67" bodyend="72"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/Containers.h" line="12" column="1" bodyfile="src/Optimizer/Containers.h" bodystart="11" bodyend="62"/>
+    <location file="src/Optimizer/Containers.h" line="12" column="1" bodyfile="src/Optimizer/Containers.h" bodystart="11" bodyend="76"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_variable_container_1af5aac8295d546207c9c028152604e8d9" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>getVariableMap</name></member>
+      <member refid="class_arg_min_1_1_variable_container_1a49b2289574431ee38db8cbf32c03db9e" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>insert</name></member>
       <member refid="class_arg_min_1_1_variable_container_1a88bcbb7d9a31fc88f9e23e4c67c68de8" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>totalDimensions</name></member>
       <member refid="class_arg_min_1_1_variable_container_1a5fc7874e55bbeabe28d7628491294a3a" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>tupleOfVariableMaps</name></member>
+      <member refid="class_arg_min_1_1_variable_container_1aaaaf992d6c9c4343465247b991c026cb" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>variableExists</name></member>
       <member refid="class_arg_min_1_1_variable_container_1aee87960a0e849bec6f8dd881c0b02f51" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>variableIndex</name></member>
       <member refid="class_arg_min_1_1_variable_container_1aef9325aa87da6c80e5dc68e2b2c5097d" prot="public" virt="non-virtual"><scope>ArgMin::VariableContainer</scope><name>VariableMap</name></member>
     </listofallmembers>

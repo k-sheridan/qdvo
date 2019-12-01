@@ -28,6 +28,13 @@ public:
       return getVariableMap<VariableType>().insert(value);
    }
 
+   /// Erase a variable into the container.
+   template <typename VariableType>
+   void erase(VariableKey<VariableType>& key)
+   {
+      getVariableMap<VariableType>().erase(key);
+   }
+
    /// Checks if a key is a valid variable key.
    template <typename VariableType>
    bool variableExists(VariableKey<VariableType> key)

@@ -18,6 +18,7 @@ Program Listing for File SparseBlockRow.h
    #include "Optimizer/MetaHelpers.h"
    #include "Optimizer/SlotMap.h"
    #include "Optimizer/Containers.h"
+   #include "Optimizer/BlockVector.h"
    
    namespace ArgMin
    {
@@ -69,6 +70,29 @@ Program Listing for File SparseBlockRow.h
                    }
                }
            });
+       }
+   
+       template <int DenseMatrixColumns>
+       void dot(BlockVector<Scalar<ScalarType>, Dimension<DenseMatrixColumns>, VariableGroup<Variables...>> &v, Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& result)
+       {
+           result = Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>::Zero();
+   
+           internal::static_for(columns, [&](auto i, auto &matrixMap) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+               for (const auto& keyBlockPair : matrixMap)
+               {
+                   const VariableKey<ThisVariable>& key = keyBlockPair.first;
+   
+                   // If the block does not exist, don't dot this element.
+                   if (v.blockExists(key)) 
+                   {
+                       const Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
+   
+                       result.noalias() += keyBlockPair.second * vBlock;
+                   }
+               }
+           });
+   
        }
    
        void setZero()

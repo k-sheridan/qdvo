@@ -31,6 +31,8 @@ Includes
 
 - ``Optimizer/OptimizableVariable.h`` (:ref:`file_src_Optimizer_OptimizableVariable.h`)
 
+- ``sophus/se3.hpp``
+
 
 
 Included By

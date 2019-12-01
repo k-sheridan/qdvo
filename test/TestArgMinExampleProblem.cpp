@@ -175,6 +175,19 @@ TEST_F(PSDSchurSolverTest, IterateWithOnlyPrior) {
     EXPECT_NEAR(solver.dx.block(0, 0, solver.totalDimension, 1).norm(), 0, 1e-9);
     int previousDimension = solver.totalDimension;
 
-    //TODO Remove a variable and compute another iteration.
-    
+    //Remove a variable and compute another iteration.
+    variableContainer.erase(targetKey);
+    prior.removeUnsedVariables(variableContainer);
+
+    // Verify that the row was erased.
+    EXPECT_EQ(prior.A0.getRowMap<ArgMin::SE3>().count(targetKey), 0);
+
+    // Run another iteration from scratch and verify everything still works as expected.
+    solver.initialize(variableContainer, errorTermContainer);
+    solver.linearize(variableContainer, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
+
+    EXPECT_EQ(solver.totalDimension, previousDimension - ArgMin::SE3::dimension);
+    EXPECT_NEAR(solver.dx.block(0, 0, solver.totalDimension, 1).norm(), 0, 1e-9);
 }

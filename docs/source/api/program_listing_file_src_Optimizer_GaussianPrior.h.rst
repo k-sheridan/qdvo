@@ -61,7 +61,6 @@ Program Listing for File GaussianPrior.h
            assert(false);
        }
    
-       // Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
        void update(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
        {
            
@@ -80,6 +79,39 @@ Program Listing for File GaussianPrior.h
    
            // Move the mean.
            b0.subtractVector(variableOrder, temporaryVector);
+       }
+   
+       void update(BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>& dx)
+       {
+           // This tuple is used to iterate over all variable types.
+           std::tuple<Variables*...> tupleOfVariables;
+   
+           // Compute b0 = b0 - A0*dx
+           internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
+   
+               auto& rowMap = A0.template getRowMap<RowVariable>();
+   
+               // Stores the dot product of a row and dx vector.
+               Eigen::Matrix<ScalarType, RowVariable::dimension, 1> temporary;
+   
+               // Iterate over all rows of the SBM.
+               for (auto& keyRowPair : rowMap)
+               {
+                   const VariableKey<RowVariable>& key = keyRowPair.first;
+                   auto& sparseBlockRow = keyRowPair.second;
+   
+                   // Compute the dot product of the sparse block row with the dx vector.
+                   sparseBlockRow.dot(dx, temporary);
+   
+                   // The b0 block must exist for this key.
+                   assert(b0.blockExists(key));
+   
+                   auto& bBlock = b0.getRowBlock(key);
+   
+                   bBlock.noalias() -= temporary;
+               }
+           });
        }
    };
    
