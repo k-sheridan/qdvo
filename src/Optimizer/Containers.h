@@ -28,6 +28,14 @@ public:
       return getVariableMap<VariableType>().insert(value);
    }
 
+   /// Gets the variable by its key.
+   /// @return A reference to the value in the container.
+   template <typename VariableType>
+   VariableType& at(const VariableKey<VariableType>& key)
+   {
+      return *(getVariableMap<VariableType>().at(key));
+   }
+
    /// Erase a variable into the container.
    template <typename VariableType>
    void erase(VariableKey<VariableType>& key)
@@ -97,6 +105,22 @@ public:
    ErrorTermMap<ErrorTermType> &getErrorTermMap()
    {
       return std::get<ErrorTermMap<ErrorTermType>>(tupleOfErrorTermMaps);
+   }
+
+   /// Gets the variable by its key.
+   /// @return A reference to the value in the container.
+   template <typename ErrorTermType>
+   ErrorTermType& at(const ErrorTermKey<ErrorTermType>& key)
+   {
+      return *(getErrorTermMap<ErrorTermType>().at(key));
+   }
+
+   /// Inserts an error term into the container.
+   /// @return The key refering to the error term in the container.
+   template <typename ErrorTermType>
+   ErrorTermKey<ErrorTermType> insert(const ErrorTermType& errorTerm)
+   {
+      return getErrorTermMap<ErrorTermType>().insert(errorTerm);
    }
 
    /// Stores the error terms.

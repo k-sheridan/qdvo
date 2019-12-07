@@ -13,6 +13,7 @@ find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
 find_package(GTest REQUIRED)
 find_package(GoogleBenchmark REQUIRED)
+find_package(spdlog REQUIRED)
 
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
@@ -47,7 +48,7 @@ file(GLOB QDVO_SOURCE_FILES
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
-target_link_libraries(QDVO ${OpenCV_LIBS} ${sophus_LIBRARIES} ${Boost_LIBRARIES} ${GTSAM_LIBRARIES})
+target_link_libraries(QDVO ${OpenCV_LIBS} ${sophus_LIBRARIES} spdlog::spdlog)
 
 set_property(TARGET QDVO PROPERTY CXX_STANDARD 17)
 

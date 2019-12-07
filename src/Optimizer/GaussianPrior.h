@@ -85,6 +85,9 @@ public:
                 } else {
                     // Delete this row.
                     rowIt = rowMap.erase(rowIt);
+
+                    // Delete the row's corresponding b0 block.
+                    b0.removeRowBlock(rowKey);
                 }
             }
         });

@@ -67,17 +67,19 @@ class RelativeReprojectionError : public ErrorTermBase<Scalar<double>, Dimension
 
 public:
     Eigen::Vector2d bearing;
+    Eigen::Vector2d z;
 
-    RelativeReprojectionError(VariableKey<ArgMin::SE3> hostFrame, VariableKey<ArgMin::SE3> targetFrame, VariableKey<ArgMin::InverseDepth> dinv, Eigen::Vector2d bearingMeasurement) {
+    RelativeReprojectionError(VariableKey<ArgMin::SE3> hostFrame, VariableKey<ArgMin::SE3> targetFrame, VariableKey<ArgMin::InverseDepth> dinv, Eigen::Vector2d bearingMeasurement, Eigen::Vector2d bearingInHost) {
         std::get<0>(variableKeys) = hostFrame;
         std::get<1>(variableKeys) = targetFrame;
         std::get<2>(variableKeys) = dinv;
-        bearing = bearingMeasurement;
+        z = bearingMeasurement;
+        bearing = bearingInHost;
         information.setIdentity();
     }
 
     template <typename... Variables>
-    void evaluate(VariableContainer<Variables...> &variables, bool relinearize)
+    void evaluate(VariableContainer<Variables...> &variables, bool relinearize = false)
     {
         EXPECT_TRUE(checkVariablePointerConsistency(variables));
 
@@ -85,7 +87,15 @@ public:
         Sophus::SE3d &target = std::get<1>(variablePointers)->value;
         double &inverseDepth = std::get<2>(variablePointers)->value;
 
+        EXPECT_GT(inverseDepth, 0);
+
         // Compute the residual.
+        auto pointInHost = Eigen::Vector3d(bearing(0, 0) / inverseDepth, bearing(1, 0) / inverseDepth, 1/inverseDepth);
+        Eigen::Vector3d pointInTarget = target.inverse() * host * pointInHost;
+
+        EXPECT_GT(pointInTarget(2, 0), 0);
+
+        residual = z - Eigen::Vector2d(pointInTarget(0, 0)/pointInTarget(2, 0), pointInTarget(1, 0)/pointInTarget(2, 0));
 
         if (relinearize)
         {
@@ -93,7 +103,38 @@ public:
             Eigen::Matrix<double, 2, 6> &targetJacobian = (std::get<1>(variableJacobians));
             Eigen::Matrix<double, 2, 1> &dinvJacobian = (std::get<2>(variableJacobians));
 
+            Eigen::Matrix<double, 2, 3> dPi;
+            dPi << 1/pointInTarget(2, 0), 0, -pointInTarget(0, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0)),
+                        0, 1/pointInTarget(2, 0), pointInTarget(1, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0));
+
+            EXPECT_NEAR(dPi(1, 1), 1/pointInTarget(2, 0), 1e-6);
+
             // Compute the jacobians.
+            auto A = target.so3().matrix();
+            auto B = host.so3().matrix();
+            //T = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{observationFrameIdx}.camID);
+            //C = T(1:3, 1:3);
+            
+            auto& d = target.translation();
+            auto& e = host.translation();
+            //f = T(1:3, 4);
+
+            //dinv = graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.dinv;
+            //u0 = [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing; 1];
+
+            //J_dinv = -projJac * dPi * (C'*A'*B*C*u0*1/dinv^2);
+            dinvJacobian = -dPi * (A.transpose() * B * pointInHost * 1/inverseDepth);
+
+            //J_dphi_o = projJac * dPi * (C' * so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e - d)));
+            targetJacobian.block(0, 0, 2, 3) = dPi * (Sophus::SO3d::hat(A.transpose() * (B * pointInHost + e - d)));
+            //J_dt_o = -projJac * dPi * (C'*A');
+            targetJacobian.block(0, 3, 2, 3) = -dPi * (A.transpose());
+
+            //J_dphi_o = -projJac * dPi * C'*A'*B * so3Hat(C*u0/dinv + f);
+            hostJacobian.block(0, 0, 2, 3) = -dPi * A.transpose() * B * Sophus::SO3d::hat(pointInHost);
+            //J_dt_o = projJac * dPi * (C'*A');
+            hostJacobian.block(0, 3, 2, 3) = dPi * (A.transpose());
+
 
             linearizationValid = true;
         }
@@ -133,6 +174,15 @@ class PSDSchurSolverTest : public ::testing::Test {
      prior.addVariable(dssKey);
 
   }
+
+RelativeReprojectionError createErrorTerm(VariableKey<ArgMin::SE3> hostK, VariableKey<ArgMin::SE3> targetK, VariableKey<ArgMin::InverseDepth> dinvK, Eigen::Vector2d bearing)
+{
+    const auto& dinv = variableContainer.at(dinvK).value;
+    Eigen::Vector3d p = (variableContainer.at(targetK).value.inverse() * variableContainer.at(hostK).value * Eigen::Vector3d(bearing(0, 0)/dinv, bearing(1, 0)/dinv, 1/dinv));
+    Eigen::Vector2d z(p(0,0)/p(2,0),p(1,0)/p(2,0));
+    RelativeReprojectionError errorTerm(hostK, targetK, dinvK, z, bearing);
+    return errorTerm;
+}
 
   ArgMin::GaussianPrior<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth, ArgMin::SimpleScalar, DifferentSimpleScalar>> prior;
 
@@ -190,4 +240,71 @@ TEST_F(PSDSchurSolverTest, IterateWithOnlyPrior) {
 
     EXPECT_EQ(solver.totalDimension, previousDimension - ArgMin::SE3::dimension);
     EXPECT_NEAR(solver.dx.block(0, 0, solver.totalDimension, 1).norm(), 0, 1e-9);
+}
+
+TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
+    SetUpProblem();
+
+    // Setup camera poses.
+    variableContainer.at(targetKey).value.so3() = Sophus::SO3d::exp(Eigen::Vector3d(0, -0.1, 0));
+    variableContainer.at(targetKey).value.translation() = Eigen::Vector3d(1, 0, 0);
+
+    // Set up each of the error terms.
+    auto errorTerm1 = createErrorTerm(hostKey, targetKey, l1Key, Eigen::Vector2d(0, 0));
+    auto errorTermKey1 = errorTermContainer.insert(errorTerm1);
+
+    auto errorTerm2 = createErrorTerm(hostKey, targetKey, l2Key, Eigen::Vector2d(0.3, 0));
+    auto errorTermKey2 = errorTermContainer.insert(errorTerm2);
+
+    auto errorTerm3 = createErrorTerm(hostKey, targetKey, l3Key, Eigen::Vector2d(0, 0.3));
+    auto errorTermKey3 = errorTermContainer.insert(errorTerm3);
+
+    std::cout << errorTermContainer.at(errorTermKey1).z << errorTermContainer.at(errorTermKey1).bearing << std::endl;
+    std::cout << errorTermContainer.at(errorTermKey2).z << errorTermContainer.at(errorTermKey2).bearing << std::endl;
+    std::cout << errorTermContainer.at(errorTermKey3).z << errorTermContainer.at(errorTermKey3).bearing << std::endl;
+
+    variableContainer.erase(ssKey);
+    variableContainer.erase(dssKey);
+    prior.removeUnsedVariables(variableContainer);
+    std::cout << "here" << std::endl;
+    //auto ssErrorTerm = DifferenceErrorTerm(ssKey, dssKey);
+    //auto sserrorTermKey = errorTermContainer.insert(ssErrorTerm);
+
+    // Verify the error terms evaluate to a zero error state.
+    solver.initialize(variableContainer, errorTermContainer); // Updates the variable pointers.
+    std::cout << "init" << std::endl;
+
+    errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey2).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
+
+    // Solve one iteration and verify that the residuals still read 0.
+    solver.initialize(variableContainer, errorTermContainer);
+    std::cout << "init" << std::endl;
+    solver.linearize(variableContainer, errorTermContainer);
+    std::cout << "lin" << std::endl;
+    solver.buildLinearSystem(prior, errorTermContainer);
+    std::cout << solver.A << std::endl;
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(solver.A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    std::cout << svd.singularValues() << std::endl;
+    Eigen::MatrixXd b;
+    b.setIdentity(solver.dimensionOfA, solver.dimensionOfA);
+    std::cout << solver.A.ldlt().solve(b) << std::endl;
+    std::cout << solver.A.ldlt().isPositive() << std::endl;
+    std::cout << solver.A.inverse() << std::endl;
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
+    std::cout << solver.dx << std::endl;
+    solver.applyUpdateToVariables(variableContainer);
+    std::cout << "update" << std::endl;
+
+    errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey2).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
+
 }
