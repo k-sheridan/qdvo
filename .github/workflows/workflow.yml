@@ -22,6 +22,22 @@ jobs:
         sudo apt-get install libeigen3-dev
         sudo apt-get install libopencv-dev
         
+    - name: Cache spdlog
+      id: cache-spdlog
+      uses: actions/cache@v1
+      with:
+        path: spdlog
+        key: ${{ runner.os }}-sophus
+      
+    - name: Build spdlog
+      if: steps.cache-spdlog.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/gabime/spdlog.git
+        cd spdlog && mkdir build && cd build && cmake .. && make -j
+    
+    - name: Install spdlog
+      run: cd spdlog/build && sudo make install
+    
     - name: Cache Sophus 
       id: cache-sophus
       uses: actions/cache@v1
