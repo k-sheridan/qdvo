@@ -9,6 +9,8 @@
 #include "HuberLossFunction.h"
 #include <cassert>
 #include <type_traits>
+#include <numeric>
+#include <cmath>
 
 #include "spdlog/spdlog.h"
 
@@ -53,13 +55,25 @@ public:
     using IndexMap = SlotArray<size_t, VariableKey<VariableType>>;
     using LossFunction = HuberLossFunction<ScalarType>;
 
+    struct Settings {
+        /// The first lambda used during the solve.
+        double initialLambda = 1e3;
+        /// The value lambda is divided by each time a successful iteration occurs.
+        double lambdaReductionMultiplier = 10;
+        /// The maximum number of iterations for the solve.
+        int maximumIterations = 15;
+    } settings;
+
+    struct SolveResult {
+        /// The error at each iteration.
+        std::vector<ScalarType> whitenedSqError;
+    };
+
     /// Loss function used to weight the error for each error term.
     LossFunctionType lossFunction;
 
     /// Dense matrix in the upper right corner
     Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A;
-    /// Inverse Schur Complement of D.
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD;
     /// Top right block matrix. Equal to bottom left transposed.
     std::tuple<BVector<UncorrelatedVariables>...> B;
     /// Used during the schur solve to store a precomputed: \f$ -B D^{-1} \f$
@@ -103,8 +117,96 @@ public:
      * After the solve, it can be assumed that the error terms are in the linearized state used for the final iteration.
      */
     template <typename GaussianPriorType>
-    void solveLevenbergMarquardt(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior, double lambdaInit = 1e3, double v = 10)
+    SolveResult solveLevenbergMarquardt(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
     {
+        spdlog::info("Starting Levenberg-Marquardt solve.");
+        // Initialize the solver.
+        initialize(variables, errorTerms);
+
+        SolveResult result;
+        ScalarType lambda = settings.initialLambda;
+
+        // Iterate and solve.
+        for (int iteration = 0; iteration < settings.maximumIterations; ++iteration)
+        {
+            // Linearize the error terms.
+            linearize(variables, errorTerms);
+            // Build the linear system.
+            double whitenedSqError = buildLinearSystem(prior, errorTerms);
+
+            spdlog::info("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
+
+            // Add the current error to the error array.
+            result.whitenedSqError.push_back(whitenedSqError);
+
+            // If this is not the first iteration, check if the error was increased
+            if (iteration != 0)
+            {
+                if (*(result.whitenedSqError.end()-1) < *(result.whitenedSqError.end()-2))
+                {
+                    // The error decreased, reduce lambda.
+                    lambda = lambda / settings.lambdaReductionMultiplier;
+                }
+                else
+                {
+                    // The error increased or stagnated, break.
+                    break;
+                }
+            }
+
+            // Add lambda to the linear system.
+            addLambdaToLinearSystem(lambda);
+
+            // Solve the linear system.
+            solveLinearSystem(variables, errorTerms, prior);
+
+            // Verify that the perturbation is not nan.
+            if (isUpdateValid())
+            {
+                // Apply the update.
+                spdlog::info("Updating variables");
+                applyUpdateToVariables(variables);
+                spdlog::info("Updating prior");
+                prior.update(dxBlockVector);
+            } else {
+                // Return early without updating
+                spdlog::info("Perturbation invalid, returning early");
+                return result;
+            }
+        }
+
+        spdlog::info("Finished Levenberg-Marquardt solve.");
+        return result;
+    }
+
+    /**
+     * This adds a lambda to the diagonal members of A.
+     */
+    void addLambdaToLinearSystem(ScalarType lambda)
+    {
+        A.block(0, 0, dimensionOfA, dimensionOfA).diagonal().array() += lambda;
+
+        internal::static_for(D, [&](auto i, auto &blockArray) {
+            for (auto& block : blockArray)
+            {
+                block.diagonal().array() += lambda;
+            }
+        });
+    }
+
+    /**
+     * Verifies that the update vector, dx, is valid.
+     */
+    bool isUpdateValid()
+    {
+        for (int i = 0; i < dx.rows(); ++i)
+        {
+            if (isnan(dx(i, 0)))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -215,10 +317,6 @@ public:
             }
         });
 
-        spdlog::info("Computing The Inverse Schur Complement of D");
-        // Compute the inverse of the schur complement of D.
-        inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.block(0, 0, dimensionOfA, dimensionOfA).inverse();
-
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
 
@@ -241,7 +339,8 @@ public:
 
         spdlog::info("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
         // Multiply the inverse schur complement of D by the correlated b vector.
-        dx.block(0, 0, dimensionOfA, 1).noalias() = inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
+        dx.block(0, 0, dimensionOfA, 1) = A.block(0, 0, dimensionOfA, dimensionOfA).ldlt().solve(b_correlated.block(0, 0, dimensionOfA, 1));
+
 
         spdlog::info("Computing D^{-1} b_{uncorrelated}");
         // Multiply Dinv by the b_uncorrelated vector.
@@ -363,12 +462,17 @@ public:
      * 
      * Where \f$ e_{i} \f$ is the residual and \f$ J_{i} \f$ is the jacobian of error w.r.t to
      * all variables.
+     * 
+     * @return Whitened squared error. If no error terms were used, NaN is returned.
      */
     template <typename GaussianPriorType>
-    void buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
+    double buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
     {
         // Initialize the current problem to the prior.
         setProblemToPrior(prior);
+
+        double whitenedSqError = 0;
+        int nErrorTerms = 0;
 
         // iterate through all error terms
         internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
@@ -381,6 +485,9 @@ public:
                     double sqError = errorTerm.residual.squaredNorm();
                     double error = sqrt(sqError);
                     double weight = lossFunction.computeWeight(error, sqError);
+
+                    whitenedSqError += sqError;
+                    ++nErrorTerms;
 
                     // Iterate through all independent variables.
                     internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
@@ -419,6 +526,8 @@ public:
                 }
             }
         });
+
+        return whitenedSqError / nErrorTerms;
     }
 
     /**
@@ -640,13 +749,6 @@ public:
         if (A.rows() < dimensionOfA)
         {
             A.resize(dimensionOfA, dimensionOfA);
-        }
-
-        // Resize inverseSchurComplementOfD if necessary.
-        assert(inverseSchurComplementOfD.rows() == inverseSchurComplementOfD.cols());
-        if (inverseSchurComplementOfD.rows() < dimensionOfA)
-        {
-            inverseSchurComplementOfD.resize(dimensionOfA, dimensionOfA);
         }
 
         // Resize b_correlated if necessary

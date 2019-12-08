@@ -259,20 +259,14 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
     auto errorTerm3 = createErrorTerm(hostKey, targetKey, l3Key, Eigen::Vector2d(0, 0.3));
     auto errorTermKey3 = errorTermContainer.insert(errorTerm3);
 
-    std::cout << errorTermContainer.at(errorTermKey1).z << errorTermContainer.at(errorTermKey1).bearing << std::endl;
-    std::cout << errorTermContainer.at(errorTermKey2).z << errorTermContainer.at(errorTermKey2).bearing << std::endl;
-    std::cout << errorTermContainer.at(errorTermKey3).z << errorTermContainer.at(errorTermKey3).bearing << std::endl;
-
-    variableContainer.erase(ssKey);
-    variableContainer.erase(dssKey);
-    prior.removeUnsedVariables(variableContainer);
-    std::cout << "here" << std::endl;
-    //auto ssErrorTerm = DifferenceErrorTerm(ssKey, dssKey);
-    //auto sserrorTermKey = errorTermContainer.insert(ssErrorTerm);
+    //variableContainer.erase(ssKey);
+    //variableContainer.erase(dssKey);
+    //prior.removeUnsedVariables(variableContainer);
+    auto ssErrorTerm = DifferenceErrorTerm(ssKey, dssKey);
+    auto sserrorTermKey = errorTermContainer.insert(ssErrorTerm);
 
     // Verify the error terms evaluate to a zero error state.
     solver.initialize(variableContainer, errorTermContainer); // Updates the variable pointers.
-    std::cout << "init" << std::endl;
 
     errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
     EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
@@ -283,23 +277,54 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
 
     // Solve one iteration and verify that the residuals still read 0.
     solver.initialize(variableContainer, errorTermContainer);
-    std::cout << "init" << std::endl;
     solver.linearize(variableContainer, errorTermContainer);
-    std::cout << "lin" << std::endl;
     solver.buildLinearSystem(prior, errorTermContainer);
-    std::cout << solver.A << std::endl;
-    Eigen::JacobiSVD<Eigen::MatrixXd> svd(solver.A, Eigen::ComputeThinU | Eigen::ComputeThinV);
-    std::cout << svd.singularValues() << std::endl;
-    Eigen::MatrixXd b;
-    b.setIdentity(solver.dimensionOfA, solver.dimensionOfA);
-    std::cout << solver.A.ldlt().solve(b) << std::endl;
-    std::cout << solver.A.ldlt().isPositive() << std::endl;
-    std::cout << solver.A.inverse() << std::endl;
-    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
-    std::cout << solver.dx << std::endl;
-    solver.applyUpdateToVariables(variableContainer);
-    std::cout << "update" << std::endl;
+    
+    // Verify A was computed correctly
+    Eigen::MatrixXd A_expected;
+    A_expected.setIdentity(12, 12);
+    A_expected = 1e-24 * A_expected;
 
+    auto jtj = [&](auto key){
+        const auto& hostJ = std::get<0>(errorTermContainer.at(key).variableJacobians);
+        const auto& targetJ = std::get<1>(errorTermContainer.at(key).variableJacobians);
+        size_t hostIdx = variableContainer.variableIndex(std::get<0>(errorTermContainer.at(key).variableKeys));
+        size_t targetIdx = variableContainer.variableIndex(std::get<1>(errorTermContainer.at(key).variableKeys));
+        const auto& inf = errorTermContainer.at(key).information;
+
+        A_expected.block(hostIdx, hostIdx, 6, 6) += hostJ.transpose() * inf * hostJ;
+        A_expected.block(targetIdx, targetIdx, 6, 6) += targetJ.transpose() * inf * targetJ;
+        A_expected.block(targetIdx, hostIdx, 6, 6) += targetJ.transpose() * inf * hostJ;
+        A_expected.block(hostIdx, targetIdx, 6, 6) += hostJ.transpose() * inf * targetJ;
+    };
+
+    jtj(errorTermKey1);
+    jtj(errorTermKey2);
+    jtj(errorTermKey3);
+
+    EXPECT_TRUE(A_expected.isApprox(solver.A.block(0, 0, 12, 12)));
+
+    solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
+    solver.applyUpdateToVariables(variableContainer);
+
+    errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey2).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
+    errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
+    EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
+
+    // Randomly perturb the inverse depths.
+    Eigen::Matrix<double, 1, 1> perturbation(0.001);
+    variableContainer.at(l1Key).update(perturbation);
+    perturbation(0, 0) = 0.003;
+    variableContainer.at(l2Key).update(perturbation);
+    perturbation(0, 0) = -0.007;
+    variableContainer.at(l3Key).update(perturbation);
+
+    solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+
+    // Verify that the errors have been reduced.
     errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
     EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
     errorTermContainer.at(errorTermKey2).evaluate(variableContainer);
