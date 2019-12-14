@@ -202,7 +202,7 @@ public:
     {
         for (int i = 0; i < dx.rows(); ++i)
         {
-            if (isnan(dx(i, 0)))
+            if (std::isnan(dx(i, 0)))
             {
                 return false;
             }
