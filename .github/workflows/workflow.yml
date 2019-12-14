@@ -27,7 +27,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: spdlog
-        key: ${{ runner.os }}-sophus
+        key: ${{ runner.os }}-spdlog
       
     - name: Build spdlog
       if: steps.cache-spdlog.outputs.cache-hit != 'true'
