@@ -11,7 +11,9 @@
 #include "Optimizer/Variables/SimpleScalar.h"
 #include "Optimizer/ErrorTermBase.h"
 #include "Optimizer/HuberLossFunction.h"
+#include "Optimizer/ErrorTermValidator.h"
 #include <type_traits>
+#include <random>
 
 #include <gtest/gtest.h>
 
@@ -105,7 +107,7 @@ public:
 
             Eigen::Matrix<double, 2, 3> dPi;
             dPi << 1/pointInTarget(2, 0), 0, -pointInTarget(0, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0)),
-                        0, 1/pointInTarget(2, 0), pointInTarget(1, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0));
+                        0, 1/pointInTarget(2, 0), -pointInTarget(1, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0));
 
             EXPECT_NEAR(dPi(1, 1), 1/pointInTarget(2, 0), 1e-6);
 
@@ -123,17 +125,17 @@ public:
             //u0 = [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing; 1];
 
             //J_dinv = -projJac * dPi * (C'*A'*B*C*u0*1/dinv^2);
-            dinvJacobian = -dPi * (A.transpose() * B * pointInHost * 1/inverseDepth);
+            dinvJacobian = dPi * (A.transpose() * B * pointInHost * 1/inverseDepth);
 
             //J_dphi_o = projJac * dPi * (C' * so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e - d)));
-            targetJacobian.block(0, 0, 2, 3) = dPi * (Sophus::SO3d::hat(A.transpose() * (B * pointInHost + e - d)));
+            targetJacobian.block(0, 0, 2, 3) = -dPi * (Sophus::SO3d::hat(A.transpose() * (B * pointInHost + e - d)));
             //J_dt_o = -projJac * dPi * (C'*A');
-            targetJacobian.block(0, 3, 2, 3) = -dPi * (A.transpose());
+            targetJacobian.block(0, 3, 2, 3) = dPi * (A.transpose());
 
             //J_dphi_o = -projJac * dPi * C'*A'*B * so3Hat(C*u0/dinv + f);
-            hostJacobian.block(0, 0, 2, 3) = -dPi * A.transpose() * B * Sophus::SO3d::hat(pointInHost);
+            hostJacobian.block(0, 0, 2, 3) = dPi * A.transpose() * B * Sophus::SO3d::hat(pointInHost);
             //J_dt_o = projJac * dPi * (C'*A');
-            hostJacobian.block(0, 3, 2, 3) = dPi * (A.transpose());
+            hostJacobian.block(0, 3, 2, 3) = -dPi * (A.transpose());
 
 
             linearizationValid = true;
@@ -313,16 +315,42 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
     EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
     errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
     EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
+}
+
+TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
+    SetUpProblem();
+
+    // Setup camera poses.
+    variableContainer.at(targetKey).value.so3() = Sophus::SO3d::exp(Eigen::Vector3d(0, -0.1, 0));
+    variableContainer.at(targetKey).value.translation() = Eigen::Vector3d(1, 0, 0);
+
+    // Set up each of the error terms.
+    auto errorTerm1 = createErrorTerm(hostKey, targetKey, l1Key, Eigen::Vector2d(0, 0));
+    auto errorTermKey1 = errorTermContainer.insert(errorTerm1);
+
+    auto errorTerm2 = createErrorTerm(hostKey, targetKey, l2Key, Eigen::Vector2d(0.3, 0));
+    auto errorTermKey2 = errorTermContainer.insert(errorTerm2);
+
+    auto errorTerm3 = createErrorTerm(hostKey, targetKey, l3Key, Eigen::Vector2d(0, 0.2));
+    auto errorTermKey3 = errorTermContainer.insert(errorTerm3);
+
+    //variableContainer.erase(ssKey);
+    //variableContainer.erase(dssKey);
+    //prior.removeUnsedVariables(variableContainer);
+    auto ssErrorTerm = DifferenceErrorTerm(ssKey, dssKey);
+    auto sserrorTermKey = errorTermContainer.insert(ssErrorTerm);
 
     // Randomly perturb the inverse depths.
-    Eigen::Matrix<double, 1, 1> perturbation(0.001);
+    Eigen::Matrix<double, 1, 1> perturbation(0.01);
     variableContainer.at(l1Key).update(perturbation);
-    perturbation(0, 0) = 0.003;
+    perturbation(0, 0) = 0.03;
     variableContainer.at(l2Key).update(perturbation);
-    perturbation(0, 0) = -0.007;
+    perturbation(0, 0) = -0.01;
     variableContainer.at(l3Key).update(perturbation);
 
-    solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+    auto result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+
+    std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << std::endl;
 
     // Verify that the errors have been reduced.
     errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
@@ -332,4 +360,46 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
     errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
     EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
 
+}
+
+TEST(ErrorTermValidation, ValidateReprojectionError)
+{
+    ArgMin::SE3 host, target;
+    ArgMin::InverseDepth dinv(1);
+
+    VariableContainer<ArgMin::SE3, ArgMin::InverseDepth> vc;
+    auto hostKey = vc.insert(host);
+    auto targetKey = vc.insert(target);
+    auto dinvKey = vc.insert(dinv);
+    auto z = Eigen::Vector2d(0,0);
+    auto bearing = Eigen::Vector2d(0,0);
+
+    std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(-0.1, 0.1);
+
+    for (int i = 0; i < 100; ++i)
+    {
+
+        // Randomly set the variables
+        vc.at(dinvKey).value += dis(gen);
+
+        Eigen::Matrix<double, 6, 1> perturbation;
+        perturbation << dis(gen), dis(gen), dis(gen), dis(gen), dis(gen), dis(gen);
+        vc.at(targetKey).update(perturbation);
+
+        perturbation << dis(gen), dis(gen), dis(gen), dis(gen), dis(gen), dis(gen);
+        vc.at(hostKey).update(perturbation);
+
+        RelativeReprojectionError errorTerm(hostKey, targetKey, dinvKey, z + Eigen::Vector2d(dis(gen), dis(gen)), bearing + Eigen::Vector2d(dis(gen), dis(gen)));
+
+        ArgMin::ErrorTermValidator<RelativeReprojectionError> validator(errorTerm);
+
+        EXPECT_TRUE(validator.validate(vc));
+
+        vc.at(dinvKey) = dinv;
+        vc.at(targetKey) = target;
+        vc.at(hostKey) = host;
+
+    }
 }

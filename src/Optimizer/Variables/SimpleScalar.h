@@ -11,9 +11,7 @@ public:
 
     double value;
 
-    SimpleScalar()
-    {
-    }
+    SimpleScalar() = default;
 
     SimpleScalar(double val) : value(val)
     {

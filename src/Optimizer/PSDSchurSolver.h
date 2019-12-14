@@ -61,7 +61,7 @@ public:
         /// The value lambda is divided by each time a successful iteration occurs.
         double lambdaReductionMultiplier = 10;
         /// The maximum number of iterations for the solve.
-        int maximumIterations = 15;
+        int maximumIterations = 25;
     } settings;
 
     struct SolveResult {
@@ -119,7 +119,7 @@ public:
     template <typename GaussianPriorType>
     SolveResult solveLevenbergMarquardt(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
     {
-        spdlog::info("Starting Levenberg-Marquardt solve.");
+        spdlog::trace("Starting Levenberg-Marquardt solve.");
         // Initialize the solver.
         initialize(variables, errorTerms);
 
@@ -134,7 +134,7 @@ public:
             // Build the linear system.
             double whitenedSqError = buildLinearSystem(prior, errorTerms);
 
-            spdlog::info("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
+            spdlog::trace("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
 
             // Add the current error to the error array.
             result.whitenedSqError.push_back(whitenedSqError);
@@ -150,6 +150,7 @@ public:
                 else
                 {
                     // The error increased or stagnated, break.
+                    //lambda = lambda * settings.lambdaReductionMultiplier;
                     break;
                 }
             }
@@ -164,18 +165,18 @@ public:
             if (isUpdateValid())
             {
                 // Apply the update.
-                spdlog::info("Updating variables");
+                spdlog::trace("Updating variables");
                 applyUpdateToVariables(variables);
-                spdlog::info("Updating prior");
+                spdlog::trace("Updating prior");
                 prior.update(dxBlockVector);
             } else {
                 // Return early without updating
-                spdlog::info("Perturbation invalid, returning early");
+                spdlog::trace("Perturbation invalid, returning early");
                 return result;
             }
         }
 
-        spdlog::info("Finished Levenberg-Marquardt solve.");
+        spdlog::trace("Finished Levenberg-Marquardt solve.");
         return result;
     }
 
@@ -270,8 +271,8 @@ public:
     template <typename GaussianPriorType>
     void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
     {
-        spdlog::info("Starting Schur Solve with problem dimension: {} and a correlated dimension of: {}", totalDimension, dimensionOfA);
-        spdlog::info("Computing D^{-1}");
+        spdlog::trace("Starting Schur Solve with problem dimension: {} and a correlated dimension of: {}", totalDimension, dimensionOfA);
+        spdlog::trace("Computing D^{-1}");
         // Solve for the deltas using the Schur Complement.
         // First invert the D matrix
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -285,7 +286,7 @@ public:
             }
         });
 
-        spdlog::info("Computing -B D^{-1}");
+        spdlog::trace("Computing -B D^{-1}");
         // Compute -B Dinv, and compute the inverse Schur Complement of D.
         // This will use A to store the schur complement before inversion.
         internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
@@ -320,7 +321,7 @@ public:
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
 
-        spdlog::info("Computing -B D^{-1} b_{uncorrelated}");
+        spdlog::trace("Computing -B D^{-1} b_{uncorrelated}");
         // Multiply -BDinv * b_uncorrelated.
         internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -337,12 +338,12 @@ public:
             }
         });
 
-        spdlog::info("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
+        spdlog::trace("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
         // Multiply the inverse schur complement of D by the correlated b vector.
         dx.block(0, 0, dimensionOfA, 1) = A.block(0, 0, dimensionOfA, dimensionOfA).ldlt().solve(b_correlated.block(0, 0, dimensionOfA, 1));
 
 
-        spdlog::info("Computing D^{-1} b_{uncorrelated}");
+        spdlog::trace("Computing D^{-1} b_{uncorrelated}");
         // Multiply Dinv by the b_uncorrelated vector.
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -364,7 +365,7 @@ public:
             }
         });
 
-        spdlog::info("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
+        spdlog::trace("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
         // At this point the partial solution is stored in the dx vector.
         // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
         // This is correct  because Dinv is symmetric, and C = B^T
@@ -385,7 +386,7 @@ public:
             }
         });
 
-        spdlog::info("Setting the dx block vector");
+        spdlog::trace("Setting the dx block vector");
         // Set the dx block vector from the index map and dx vector
         internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
@@ -402,7 +403,7 @@ public:
             }
         });
 
-        spdlog::info("Schur Solve complete. ");
+        spdlog::trace("Schur Solve complete. ");
     }
 
     /// Linearizes all error terms stored in this container.
@@ -476,7 +477,7 @@ public:
 
         // iterate through all error terms
         internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
-            spdlog::info("Building problem with Error Term Type: {}", typeid(typename std::tuple_element<errorTermTypeIndex, std::tuple<ErrorTerms...>>::type).name());
+            spdlog::trace("Building problem with Error Term Type: {}", typeid(typename std::tuple_element<errorTermTypeIndex, std::tuple<ErrorTerms...>>::type).name());
             for (auto &errorTerm : errorTermMap)
             {
                 // Check if the linearization is valid for this error term.
@@ -539,7 +540,7 @@ public:
      */
     void setProblemToPrior(GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior)
     {
-        spdlog::info("Setting problem to prior.");
+        spdlog::trace("Setting problem to prior.");
         // Zero the problem.
         setZero();
 

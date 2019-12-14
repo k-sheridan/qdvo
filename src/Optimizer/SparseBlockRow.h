@@ -81,7 +81,7 @@ public:
                 // If the block does not exist, don't dot this element.
                 if (v.blockExists(key)) 
                 {
-                    const Eigen::Matrix<ScalarType, RowDimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
+                    const Eigen::Matrix<ScalarType, ThisVariable::dimension, DenseMatrixColumns>& vBlock = v.getRowBlock(key);
 
                     result.noalias() += keyBlockPair.second * vBlock;
                 }

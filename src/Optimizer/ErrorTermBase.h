@@ -28,17 +28,24 @@ class ErrorTermBase<Scalar<ScalarType>, Dimension<ResidualDimension>, VariableGr
 {
 public:
 
+    using VariablePointers = std::tuple<IndependentVariables*...>;
+    using VariableKeys = std::tuple<VariableKey<IndependentVariables>...>;
+    using VariableJacobians = std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...>;
+
+    // The precision of this error term.
+    typedef ScalarType scalar_type;
+
     /// Compile time acces to the error term's dimension.
     static const int residual_dimension = ResidualDimension;
 
     /// These jacobians are from the most recent linearization.
-    std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...> variableJacobians;
+    VariableJacobians variableJacobians;
     /// These are the keys used to access the variables over time.
     /// These keys can only be invalidated is the variable is removed or overwritten.
-    std::tuple<VariableKey<IndependentVariables>...> variableKeys;
+    VariableKeys variableKeys;
     /// These pointers are used to avoid the indirection of the slotmap.
     /// These pointers are invalidated every time a key is added or removed from the slot map.
-    std::tuple<IndependentVariables*...> variablePointers;
+    VariablePointers variablePointers;
 
     /// This is the most recent residual computed for the error term.
     Eigen::Matrix<ScalarType, ResidualDimension, 1> residual;
