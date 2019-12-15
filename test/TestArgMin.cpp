@@ -384,7 +384,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     solver.initialize(variableContainer, errorTermContainer);
 
     // Verify that the prior is added the problem
-    solver.setProblemToPrior(prior);
+    solver.setProblemToPrior(prior, variableContainer);
 
     // Verify that the prior has been added.
     EXPECT_TRUE((std::get<LS::DVector<SimpleScalar>>(solver.D).at(ssKey1))->isApprox(Prior::BV::MatrixBlock<SimpleScalar>::Constant(1)));
@@ -442,7 +442,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     EXPECT_TRUE(errorTermContainer.getErrorTermMap<DifferenceErrorTerm>().at(errorTermKey2)->linearizationValid);
 
     // Build the problem.
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
 
     // Our LHS is computed as:
     //A0 = [3, 0, 0;
@@ -476,7 +476,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     // Test if the linear system is solved correctly.
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
     solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
     // Verify the perturbation is correct.
@@ -518,7 +518,7 @@ TEST(ArgMin, PSDSchurSolverSimple)
     // Solve another iteration and make sure that the delta vector is zero.
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
     solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
     // Verify the perturbation is correct.

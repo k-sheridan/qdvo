@@ -225,7 +225,7 @@ TEST_F(PSDSchurSolverTest, IterateWithOnlyPrior) {
 
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
     solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
     // Since the prior is the only constraint, the dx vector should be ~0;
@@ -242,7 +242,7 @@ TEST_F(PSDSchurSolverTest, IterateWithOnlyPrior) {
     // Run another iteration from scratch and verify everything still works as expected.
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
     solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
     EXPECT_EQ(solver.totalDimension, previousDimension - ArgMin::SE3::dimension);
@@ -285,7 +285,7 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblem) {
     // Solve one iteration and verify that the residuals still read 0.
     solver.initialize(variableContainer, errorTermContainer);
     solver.linearize(variableContainer, errorTermContainer);
-    solver.buildLinearSystem(prior, errorTermContainer);
+    solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
     
     // Verify A was computed correctly
     Eigen::MatrixXd A_expected;
@@ -393,7 +393,7 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
 
     // Solve and verify the host and target key poses.
     spdlog::set_level(spdlog::level::trace);
-    prior.removeUnsedVariables(variableContainer);
+    //prior.removeUnsedVariables(variableContainer);
     result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
     std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
     EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
@@ -404,7 +404,7 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
     EXPECT_TRUE(marginalizer.marginalizeVariable(hostKey, prior, errorTermContainer, VariableGroup<ArgMin::InverseDepth>()));
     variableContainer.erase(hostKey);
 
-    prior.removeUnsedVariables(variableContainer);
+    //prior.removeUnsedVariables(variableContainer);
     result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
     std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
     EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);

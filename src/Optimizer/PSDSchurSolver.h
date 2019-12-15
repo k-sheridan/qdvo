@@ -57,7 +57,8 @@ public:
     using IndexMap = SlotArray<size_t, VariableKey<VariableType>>;
     using LossFunction = HuberLossFunction<ScalarType>;
 
-    struct Settings {
+    struct Settings
+    {
         /// The first lambda used during the solve.
         double initialLambda = 1e3;
         /// The value lambda is divided by each time a successful iteration occurs.
@@ -66,7 +67,8 @@ public:
         int maximumIterations = 25;
     } settings;
 
-    struct SolveResult {
+    struct SolveResult
+    {
         /// The error at each iteration.
         std::vector<ScalarType> whitenedSqError;
     };
@@ -138,7 +140,7 @@ public:
             // Linearize the error terms.
             linearize(variables, errorTerms);
             // Build the linear system.
-            double whitenedSqError = buildLinearSystem(prior, errorTerms);
+            double whitenedSqError = buildLinearSystem(prior, errorTerms, variables);
 
             SPDLOG_TRACE("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
 
@@ -148,7 +150,7 @@ public:
             // If this is not the first iteration, check if the error was increased
             if (iteration != 0)
             {
-                if (*(result.whitenedSqError.end()-1) < *(result.whitenedSqError.end()-2))
+                if (*(result.whitenedSqError.end() - 1) < *(result.whitenedSqError.end() - 2))
                 {
                     // The error decreased, reduce lambda.
                     lambda = lambda / settings.lambdaReductionMultiplier;
@@ -175,7 +177,9 @@ public:
                 applyUpdateToVariables(variables);
                 SPDLOG_TRACE("Updating prior");
                 prior.update(dxBlockVector);
-            } else {
+            }
+            else
+            {
                 // Return early without updating
                 SPDLOG_ERROR("Perturbation invalid, returning early");
                 return result;
@@ -194,7 +198,7 @@ public:
         A.block(0, 0, dimensionOfA, dimensionOfA).diagonal().array() += lambda;
 
         internal::static_for(D, [&](auto i, auto &blockArray) {
-            for (auto& block : blockArray)
+            for (auto &block : blockArray)
             {
                 block.diagonal().array() += lambda;
             }
@@ -348,7 +352,6 @@ public:
         // Multiply the inverse schur complement of D by the correlated b vector.
         dx.block(0, 0, dimensionOfA, 1) = A.block(0, 0, dimensionOfA, dimensionOfA).ldlt().solve(b_correlated.block(0, 0, dimensionOfA, 1));
 
-
         SPDLOG_TRACE("Computing D^{-1} b_{uncorrelated}");
         // Multiply Dinv by the b_uncorrelated vector.
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -473,10 +476,10 @@ public:
      * @return Whitened squared error. If no error terms were used, NaN is returned.
      */
     template <typename GaussianPriorType>
-    double buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
+    double buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, VariableContainer<Variables...>& variables)
     {
         // Initialize the current problem to the prior.
-        setProblemToPrior(prior);
+        setProblemToPrior(prior, variables);
 
         double whitenedSqError = 0;
         int nErrorTerms = 0;
@@ -549,7 +552,7 @@ public:
      * 
      * \f$ b = b_{0} \f$
      */
-    void setProblemToPrior(GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior)
+    void setProblemToPrior(GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior, VariableContainer<Variables...> &variables)
     {
         SPDLOG_TRACE("Setting problem to prior.");
         // Zero the problem.
@@ -573,28 +576,33 @@ public:
                 const VariableKey<RowVariable> &rowKey = keySparseBlockRowPair.first;
                 auto &sparseBlockRow = keySparseBlockRowPair.second;
 
-                internal::static_for(variableTuple, [&](auto j, auto &temp) {
-                    typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
+                if (variables.variableExists(rowKey))
+                {
+                    internal::static_for(variableTuple, [&](auto j, auto &temp) {
+                        typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
 
-                    constexpr bool row_variable_is_uncorrelated = internal::Is_in_tuple<RowVariable, std::tuple<UncorrelatedVariables...>>::value;
-                    constexpr bool column_variable_is_uncorrelated = internal::Is_in_tuple<ColumnVariable, std::tuple<UncorrelatedVariables...>>::value;
+                        constexpr bool row_variable_is_uncorrelated = internal::Is_in_tuple<RowVariable, std::tuple<UncorrelatedVariables...>>::value;
+                        constexpr bool column_variable_is_uncorrelated = internal::Is_in_tuple<ColumnVariable, std::tuple<UncorrelatedVariables...>>::value;
 
-                    // Skip if the variables are both uncorrelated and different.
-                    if constexpr (!(row_variable_is_uncorrelated && column_variable_is_uncorrelated && !std::is_same<RowVariable, ColumnVariable>::value))
-                    {
-                        auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
-
-                        for (auto &keyColumnMatrixPair : variableMap)
+                        // Skip if the variables are both uncorrelated and different.
+                        if constexpr (!(row_variable_is_uncorrelated && column_variable_is_uncorrelated && !std::is_same<RowVariable, ColumnVariable>::value))
                         {
-                            // Get the key for this column.
-                            const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+                            auto &variableMap = sparseBlockRow.template getVariableMap<ColumnVariable>();
 
-                            // Add the block matrix to the problem.
-                            const auto &blockMatrix = keyColumnMatrixPair.second;
-                            addBlockToLHS(rowKey, columnKey, blockMatrix);
+                            for (auto &keyColumnMatrixPair : variableMap)
+                            {
+                                // Get the key for this column.
+                                const VariableKey<ColumnVariable> &columnKey = keyColumnMatrixPair.first;
+                                if (variables.variableExists(columnKey))
+                                {
+                                    // Add the block matrix to the problem.
+                                    const auto &blockMatrix = keyColumnMatrixPair.second;
+                                    addBlockToLHS(rowKey, columnKey, blockMatrix);
+                                }
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -608,9 +616,11 @@ public:
             {
                 //  Get the key for this block.
                 auto key = priorRHSRowMap.getKeyFromDataIndex(it - priorRHSRowMap.begin());
-
-                // add the block to b.
-                addBlockToRHS(key, *(it));
+                if (variables.variableExists(key))
+                {
+                    // add the block to b.
+                    addBlockToRHS(key, *(it));
+                }
             }
         });
     }
@@ -851,10 +861,10 @@ public:
         std::tuple<std::vector<VariableKey<Variables>>...> keysToErase;
 
         // Find keys in the Dx block vector which are not in the variable container.
-        std::tuple<Variables*...> variableTuple;
+        std::tuple<Variables *...> variableTuple;
         internal::static_for(variableTuple, [&](auto i, auto &donotuseme) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
-            auto& variableMap = dxBlockVector.template getRowMap<ThisVariable>();
+            auto &variableMap = dxBlockVector.template getRowMap<ThisVariable>();
 
             for (auto it = variableMap.begin(); it != variableMap.end(); it++)
             {
@@ -871,28 +881,28 @@ public:
         internal::static_for(keysToErase, [&](auto i, auto &keyVector) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
 
-            if constexpr(internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
+            if constexpr (internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
             {
                 // Erase D
-                for (const auto& key : keyVector)
+                for (const auto &key : keyVector)
                 {
                     std::get<DVector<ThisVariable>>(D).erase(key);
                 }
 
                 // Erase B
-                for (const auto& key : keyVector)
+                for (const auto &key : keyVector)
                 {
                     std::get<BVector<ThisVariable>>(B).erase(key);
                 }
 
                 // Erase -negBDinv
-                for (const auto& key : keyVector)
+                for (const auto &key : keyVector)
                 {
                     std::get<BVector<ThisVariable>>(negativeBDinv).erase(key);
                 }
 
                 // Erase b_uncorr
-                for (const auto& key : keyVector)
+                for (const auto &key : keyVector)
                 {
                     b_uncorrelated.removeRowBlock(key);
                 }
