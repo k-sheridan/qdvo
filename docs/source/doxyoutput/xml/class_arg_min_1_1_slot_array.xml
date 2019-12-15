@@ -248,6 +248,20 @@
         </inbodydescription>
         <location file="src/Optimizer/SlotArray.h" line="178" column="12" bodyfile="src/Optimizer/SlotArray.h" bodystart="178" bodyend="181"/>
       </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_slot_array_1ad74724ae27af8f974c03c1d158a8071d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void ArgMin::SlotArray&lt; DataType, KeyType &gt;::clear</definition>
+        <argsstring>()</argsstring>
+        <name>clear</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>O(n) Removes all data stored in this slot array. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/SlotArray.h" line="187" column="10" bodyfile="src/Optimizer/SlotArray.h" bodystart="187" bodyend="198"/>
+      </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_slot_array_1aa52649e71538d6b14ce94afef0dd8543" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>KeyType</type>
         <definition>KeyType ArgMin::SlotArray&lt; DataType, KeyType &gt;::getKeyFromDataIndex</definition>
@@ -264,7 +278,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/SlotArray.h" line="188" column="13" bodyfile="src/Optimizer/SlotArray.h" bodystart="188" bodyend="198"/>
+        <location file="src/Optimizer/SlotArray.h" line="205" column="13" bodyfile="src/Optimizer/SlotArray.h" bodystart="205" bodyend="215"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -272,12 +286,13 @@
     <detaileddescription>
 <para>The slot array is basically a vector which uses keys and 1 layer of indirection to allow for constant time insert, erase, and access. Additionally, this implementation allows for fast iteration. </para>
     </detaileddescription>
-    <location file="src/Optimizer/SlotArray.h" line="16" column="1" bodyfile="src/Optimizer/SlotArray.h" bodystart="15" bodyend="199"/>
+    <location file="src/Optimizer/SlotArray.h" line="16" column="1" bodyfile="src/Optimizer/SlotArray.h" bodystart="15" bodyend="216"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_slot_array_1ad0285070ee952bdc369fb100ff43eb89" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>at</name></member>
       <member refid="class_arg_min_1_1_slot_array_1a2f73839603a8610c6c8c3eb58528029e" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>at</name></member>
       <member refid="class_arg_min_1_1_slot_array_1a2f4643fb713e40daf1a1f9763da1af4b" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>begin</name></member>
       <member refid="class_arg_min_1_1_slot_array_1a3eb669c85db8703b351660e8e0021fb0" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>begin</name></member>
+      <member refid="class_arg_min_1_1_slot_array_1ad74724ae27af8f974c03c1d158a8071d" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>clear</name></member>
       <member refid="class_arg_min_1_1_slot_array_1aebc8d34b5923f9d6816cf6b289112fb2" prot="private" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>data</name></member>
       <member refid="class_arg_min_1_1_slot_array_1a6516448c907447b405937c240d2761d1" prot="private" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>dataToSlotIndex</name></member>
       <member refid="class_arg_min_1_1_slot_array_1a1f7977f2be18c00006c5c0b23a09d0e4" prot="public" virt="non-virtual"><scope>ArgMin::SlotArray</scope><name>end</name></member>

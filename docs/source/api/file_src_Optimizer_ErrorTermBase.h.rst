@@ -39,6 +39,12 @@ Includes
 
 
 
+Included By
+-----------
+
+
+- :ref:`file_src_Optimizer_Marginalizer.h`
+
 
 
 

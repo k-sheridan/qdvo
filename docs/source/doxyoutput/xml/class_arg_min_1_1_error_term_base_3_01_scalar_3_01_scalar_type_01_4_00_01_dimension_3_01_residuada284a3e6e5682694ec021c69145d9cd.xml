@@ -18,6 +18,60 @@
         <defname>IndependentVariables</defname>
       </param>
     </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a20a900fc8c03732389cb33e136c29df7" prot="public" static="no">
+        <type>std::tuple&lt; IndependentVariables *... &gt;</type>
+        <definition>using ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::VariablePointers =  std::tuple&lt;IndependentVariables*...&gt;</definition>
+        <argsstring></argsstring>
+        <name>VariablePointers</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/ErrorTermBase.h" line="31" column="5" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ad119a2d968e49109bce7ec0f3ec759d2" prot="public" static="no">
+        <type>std::tuple&lt; <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; IndependentVariables &gt;... &gt;</type>
+        <definition>using ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::VariableKeys =  std::tuple&lt;VariableKey&lt;IndependentVariables&gt;...&gt;</definition>
+        <argsstring></argsstring>
+        <name>VariableKeys</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/ErrorTermBase.h" line="32" column="5" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ac2cb108a413015824f458f4014328914" prot="public" static="no">
+        <type>std::tuple&lt; Eigen::Matrix&lt; ScalarType, ResidualDimension, IndependentVariables::dimension &gt;... &gt;</type>
+        <definition>using ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::VariableJacobians =  std::tuple&lt;Eigen::Matrix&lt;ScalarType, ResidualDimension, IndependentVariables::dimension&gt;...&gt;</definition>
+        <argsstring></argsstring>
+        <name>VariableJacobians</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/ErrorTermBase.h" line="33" column="5" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a5579a2919f5224b1c82e9c975f362d37" prot="public" static="no">
+        <type>ScalarType</type>
+        <definition>typedef ScalarType ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::scalar_type</definition>
+        <argsstring></argsstring>
+        <name>scalar_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/ErrorTermBase.h" line="36" column="24" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
       <sectiondef kind="public-static-attrib">
       <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afdfe20172281c680f42a0915ac1ac044" prot="public" static="yes" mutable="no">
         <type>const int</type>
@@ -32,13 +86,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="32" column="22" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="32" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="39" column="22" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="39" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a766c4b7274aab33af9a47da2b43bab6f" prot="public" static="no" mutable="no">
-        <type>std::tuple&lt; Eigen::Matrix&lt; ScalarType, ResidualDimension, IndependentVariables::dimension &gt;... &gt;</type>
-        <definition>std::tuple&lt;Eigen::Matrix&lt;ScalarType, ResidualDimension, IndependentVariables::dimension&gt;...&gt; ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variableJacobians</definition>
+      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ab5ba6bffa254d5eb3228262a23b4bc91" prot="public" static="no" mutable="no">
+        <type>VariableJacobians</type>
+        <definition>VariableJacobians ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variableJacobians</definition>
         <argsstring></argsstring>
         <name>variableJacobians</name>
         <briefdescription>
@@ -48,11 +102,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="35" column="16" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="35" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="42" column="23" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="42" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a715f0bde55a3b0e9dc50b8303696b454" prot="public" static="no" mutable="no">
-        <type>std::tuple&lt; <ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; IndependentVariables &gt;... &gt;</type>
-        <definition>std::tuple&lt;VariableKey&lt;IndependentVariables&gt;...&gt; ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variableKeys</definition>
+      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a88904f0a84ed346e903f9b8cb7b389ea" prot="public" static="no" mutable="no">
+        <type>VariableKeys</type>
+        <definition>VariableKeys ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variableKeys</definition>
         <argsstring></argsstring>
         <name>variableKeys</name>
         <briefdescription>
@@ -62,11 +116,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="38" column="16" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="38" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="45" column="18" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="45" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1acf8d4d24f8574fd61e41cb307cf65d25" prot="public" static="no" mutable="no">
-        <type>std::tuple&lt; IndependentVariables *... &gt;</type>
-        <definition>std::tuple&lt;IndependentVariables*...&gt; ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variablePointers</definition>
+      <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a6d54b63efe7836a147c5acedc539a23b" prot="public" static="no" mutable="no">
+        <type>VariablePointers</type>
+        <definition>VariablePointers ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;::variablePointers</definition>
         <argsstring></argsstring>
         <name>variablePointers</name>
         <briefdescription>
@@ -76,7 +130,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="41" column="16" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="41" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="48" column="22" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ae47eb3544a9055af96f13fcfa00a3edc" prot="public" static="no" mutable="no">
         <type>Eigen::Matrix&lt; ScalarType, ResidualDimension, 1 &gt;</type>
@@ -90,7 +144,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="44" column="19" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="44" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="51" column="19" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a9d51bf9758acacc84d8acc0d4babd3df" prot="public" static="no" mutable="no">
         <type>Eigen::Matrix&lt; ScalarType, ResidualDimension, ResidualDimension &gt;</type>
@@ -104,7 +158,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="47" column="19" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="47" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="54" column="19" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a3716dfa71701cb254ce0da4acc9c204d" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -119,7 +173,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="50" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="50" bodyend="-1"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="57" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="57" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -146,7 +200,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="54" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="54" bodyend="64"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="61" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="61" bodyend="71"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a8b8962bdc9719c1d2ef34386fc4f7b03" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -171,7 +225,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/ErrorTermBase.h" line="68" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="68" bodyend="85"/>
+        <location file="src/Optimizer/ErrorTermBase.h" line="75" column="10" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="75" bodyend="92"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -182,17 +236,21 @@
 <para>void evaluate(VariableContainer&lt;Variables...&gt;&amp; variables, bool relinearize);</para>
 <para>This function must compute the residual given the variable states, and will compute the jacobians w.r.t to the variables if relinearize is true. Check the linearizationValid flag before using the error term. </para>
     </detaileddescription>
-    <location file="src/Optimizer/ErrorTermBase.h" line="28" column="1" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="27" bodyend="86"/>
+    <location file="src/Optimizer/ErrorTermBase.h" line="28" column="1" bodyfile="src/Optimizer/ErrorTermBase.h" bodystart="27" bodyend="93"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a8b8962bdc9719c1d2ef34386fc4f7b03" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>checkVariablePointerConsistency</name></member>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a9d51bf9758acacc84d8acc0d4babd3df" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>information</name></member>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a3716dfa71701cb254ce0da4acc9c204d" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>linearizationValid</name></member>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ae47eb3544a9055af96f13fcfa00a3edc" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>residual</name></member>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afdfe20172281c680f42a0915ac1ac044" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>residual_dimension</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a5579a2919f5224b1c82e9c975f362d37" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>scalar_type</name></member>
       <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1afcc06aeb70943279333e85c9477a3905" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>updateVariablePointers</name></member>
-      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a766c4b7274aab33af9a47da2b43bab6f" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variableJacobians</name></member>
-      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a715f0bde55a3b0e9dc50b8303696b454" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variableKeys</name></member>
-      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1acf8d4d24f8574fd61e41cb307cf65d25" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variablePointers</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ac2cb108a413015824f458f4014328914" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>VariableJacobians</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ab5ba6bffa254d5eb3228262a23b4bc91" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variableJacobians</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a88904f0a84ed346e903f9b8cb7b389ea" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variableKeys</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1ad119a2d968e49109bce7ec0f3ec759d2" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>VariableKeys</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a6d54b63efe7836a147c5acedc539a23b" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>variablePointers</name></member>
+      <member refid="class_arg_min_1_1_error_term_base_3_01_scalar_3_01_scalar_type_01_4_00_01_dimension_3_01_residuada284a3e6e5682694ec021c69145d9cd_1a20a900fc8c03732389cb33e136c29df7" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermBase&lt; Scalar&lt; ScalarType &gt;, Dimension&lt; ResidualDimension &gt;, VariableGroup&lt; IndependentVariables... &gt; &gt;</scope><name>VariablePointers</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

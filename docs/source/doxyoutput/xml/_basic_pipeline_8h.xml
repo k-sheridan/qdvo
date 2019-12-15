@@ -568,89 +568,51 @@
 <codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">QDVO</highlight></codeline>
 <codeline lineno="16"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>The<sp/>goal<sp/>of<sp/>this<sp/>class<sp/>is<sp/>to<sp/>be<sp/>a<sp/>&quot;easily&quot;<sp/>modifiable<sp/>implementation<sp/>of<sp/>the<sp/>quasi-direct<sp/>approach<sp/>to<sp/>visual<sp/>odometry.</highlight></codeline>
-<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>This<sp/>should<sp/>allow<sp/>easy<sp/>modification<sp/>of<sp/>the<sp/>patch<sp/>comparison,<sp/>and<sp/>serve<sp/>as<sp/>a<sp/>place<sp/>for<sp/>preallocation<sp/>of<sp/>quantities.</highlight></codeline>
-<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>The<sp/>basic<sp/>datastructures<sp/>are<sp/>held<sp/>in<sp/>the<sp/>graph<sp/>datastructure.<sp/>They<sp/>contain<sp/>all<sp/>necessary<sp/>information,<sp/>access,<sp/>insert,<sp/>and<sp/>reset<sp/>functions<sp/>implemented<sp/>in<sp/>a<sp/>protected<sp/>way.</highlight></codeline>
-<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="25" refid="class_q_d_v_o_1_1_basic_pipeline" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_basic_pipeline" kindref="compound">BasicPipeline</ref></highlight></codeline>
+<codeline lineno="25" refid="class_q_d_v_o_1_1_basic_pipeline" refkind="compound"><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_q_d_v_o_1_1_basic_pipeline" kindref="compound">BasicPipeline</ref></highlight></codeline>
 <codeline lineno="26"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
 <codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline" kindref="compound">BasicPipeline</ref>();</highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref><sp/>graph;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>datastructure<sp/>for<sp/>all<sp/>possible<sp/>QDVO<sp/>algorithms.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref><sp/>frontEndVisualOdometry;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>initialize<sp/>the<sp/>current<sp/>frame<sp/>pose.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref><sp/>swe;<sp/></highlight><highlight class="comment">//<sp/>main<sp/>estimator<sp/>for<sp/>the<sp/>whole<sp/>algorithm</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31" refid="class_q_d_v_o_1_1_basic_pipeline_1af41fd7e475aa394632256fd5792c46dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1af41fd7e475aa394632256fd5792c46dc" kindref="member">graph</ref>;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="class_q_d_v_o_1_1_basic_pipeline_1aaa206ab3ae086d7bfa1121a5b3eef889" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1aaa206ab3ae086d7bfa1121a5b3eef889" kindref="member">frontEndVisualOdometry</ref>;</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="37"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Preallocates<sp/>keyframes<sp/>and<sp/>current<sp/>frame.</highlight></codeline>
-<codeline lineno="38"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initialize();</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="42"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Gives<sp/>the<sp/>algorithm<sp/>a<sp/>new<sp/>image</highlight></codeline>
-<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>addFrame(cv::Mat<sp/>&amp;image,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;time,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="47"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>adds<sp/>a<sp/>new<sp/>camera<sp/>for<sp/>the<sp/>visual<sp/>odometry<sp/>algorithm.</highlight></codeline>
-<codeline lineno="48"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>addCamera(std::unique_ptr&lt;QDVO::CameraModel&gt;<sp/>&amp;cameraModel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
-<codeline lineno="50"><highlight class="normal"></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="52"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>detects<sp/>features<sp/>and<sp/>adds<sp/>new<sp/>landmarks<sp/>to<sp/>the<sp/>frame.</highlight></codeline>
-<codeline lineno="53"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>createNewLandmarks(std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;keyframe,<sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>&amp;featureDetector);</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"></highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="57"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Activates<sp/>new<sp/>landmarks<sp/>from<sp/>the<sp/>set<sp/>of<sp/>keyframes<sp/>such<sp/>that<sp/>the<sp/>current<sp/>features<sp/>are<sp/>well<sp/>distributed.</highlight></codeline>
-<codeline lineno="58"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>activateNewLandmarks();</highlight></codeline>
-<codeline lineno="60"><highlight class="normal"></highlight></codeline>
-<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="62"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Does<sp/>an<sp/>initial<sp/>search<sp/>for<sp/>potential<sp/>correspondences<sp/>between<sp/>active<sp/>landmarks<sp/>and<sp/>the<sp/>current<sp/>frame.</highlight></codeline>
-<codeline lineno="63"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>initializeCorrespondenceDistributionsForCurrentFrame();</highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="67"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Attempts<sp/>to<sp/>initialize<sp/>inactive<sp/>landmarks<sp/>using<sp/>an<sp/>epipolar<sp/>search</highlight></codeline>
-<codeline lineno="68"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runEpipolarDepthEstimators();</highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="72"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>marginalizes<sp/>keyframes.<sp/>This<sp/>function<sp/>can<sp/>be<sp/>changed<sp/>in<sp/>a<sp/>modular<sp/>fashion</highlight></codeline>
-<codeline lineno="73"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>runMarginalizationStrategy();</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"></highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="77"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Checks<sp/>if<sp/>the<sp/>current<sp/>frame<sp/>has<sp/>met<sp/>the<sp/>criteria<sp/>for<sp/>a<sp/>keyframe.</highlight></codeline>
-<codeline lineno="78"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isCurrentFrameAKeyframe();</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="82"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>This<sp/>function<sp/>is<sp/>ran<sp/>after<sp/>the<sp/>current<sp/>frame<sp/>is<sp/>setup<sp/>and<sp/>before<sp/>the<sp/>correspondence<sp/>distributions<sp/>are<sp/>initialized.<sp/>It<sp/>will<sp/>insert<sp/>a<sp/>new<sp/>patch<sp/>comparer</highlight></codeline>
-<codeline lineno="83"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>into<sp/>the<sp/>unordered_map<sp/>of<sp/>patch<sp/>comparers<sp/>while<sp/>removing<sp/>any<sp/>old/redundant<sp/>patch<sp/>comparers.</highlight></codeline>
-<codeline lineno="84"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>updatePatchComparers();</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"></highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>-=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ZNCC<sp/>IMPLEMENTATION<sp/>SPECIFIC<sp/>and<sp/>PREALLOCATED<sp/>/<sp/>PRECOMPUTED<sp/>DATA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" kindref="member">swe</ref>;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1aec25914726581bacf05e6abdf053fed5" kindref="member">initialize</ref>();</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a23e84a2ce01234fab8325603da834821" kindref="member">addFrame</ref>(cv::Mat<sp/>&amp;image,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;time,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1af9c6182da0eef93e45f1ac06362eea09" kindref="member">addCamera</ref>(std::unique_ptr&lt;QDVO::CameraModel&gt;<sp/>&amp;cameraModel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID<sp/>=<sp/>1);</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7a9ed3a35a1eb842c021a9c444f52473" kindref="member">createNewLandmarks</ref>(std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;keyframe,<sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>&amp;<ref refid="class_q_d_v_o_1_1_basic_pipeline_1a4a2972517e53bf079102c72f8c24c090" kindref="member">featureDetector</ref>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a6b90259131f4b6fb6e532cfa07ef7ae4" kindref="member">activateNewLandmarks</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7446e40b000d8f3aa99a4c4563a17409" kindref="member">initializeCorrespondenceDistributionsForCurrentFrame</ref>();</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a172afb9a0940a3ce6543777036976047" kindref="member">runEpipolarDepthEstimators</ref>();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a2f6b21312fc1e5440711cd82f06d30af" kindref="member">runMarginalizationStrategy</ref>();</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a30af66aa558eeb9cf876b10954bef9cc" kindref="member">isCurrentFrameAKeyframe</ref>();</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7ae2e691f88ee7d54128cd830d732089" kindref="member">updatePatchComparers</ref>();</highlight></codeline>
 <codeline lineno="89"><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>featureDetector;<sp/></highlight><highlight class="comment">//<sp/>global<sp/>feature<sp/>detector.<sp/>NOT<sp/>MEANT<sp/>TO<sp/>BE<sp/>USED<sp/>IN<sp/>MULTIPLE<sp/>THREADS<sp/>WITHOUT<sp/>LOCKING!</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;ID_TYPE,<sp/>std::shared_ptr&lt;PatchComparer&gt;&gt;<sp/>patchComparers;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>to<sp/>speed<sp/>up<sp/>the<sp/>patch<sp/>comparisons.</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;RadialSearchPattern&gt;<sp/>radialSearchPatternPtr;<sp/></highlight><highlight class="comment">//<sp/>used<sp/>globally<sp/>to<sp/>generate<sp/>the<sp/>correspondence<sp/>distributions.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>-=-=-=-===-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ZNCC<sp/>IMPLEMENTATION<sp/>SPECIFIC<sp/>and<sp/>PREALLOCATED<sp/>/<sp/>PRECOMPUTED<sp/>DATA</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="class_q_d_v_o_1_1_basic_pipeline_1a4a2972517e53bf079102c72f8c24c090" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a4a2972517e53bf079102c72f8c24c090" kindref="member">featureDetector</ref>;</highlight></codeline>
 <codeline lineno="95"><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::PatchWarper&gt;<sp/>patchWarper;<sp/></highlight><highlight class="comment">//<sp/>pointer<sp/>to<sp/>the<sp/>patch<sp/>warp<sp/>implementation</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="97"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="97" refid="class_q_d_v_o_1_1_basic_pipeline_1a88c2ca0211b6ccc3e689c55d57bf1d10" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;ID_TYPE,<sp/>std::shared_ptr&lt;PatchComparer&gt;&gt;<sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a88c2ca0211b6ccc3e689c55d57bf1d10" kindref="member">patchComparers</ref>;</highlight></codeline>
 <codeline lineno="98"><highlight class="normal"></highlight></codeline>
-<codeline lineno="99"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="class_q_d_v_o_1_1_basic_pipeline_1ac67b02f5de3b44576cdae9ea3b85cabe" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::shared_ptr&lt;RadialSearchPattern&gt;<sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1ac67b02f5de3b44576cdae9ea3b85cabe" kindref="member">radialSearchPatternPtr</ref>;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_q_d_v_o_1_1_basic_pipeline_1ad98ee9aefea5524f51346acc0d4b4ab1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::PatchWarper&gt;<sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1ad98ee9aefea5524f51346acc0d4b4ab1" kindref="member">patchWarper</ref>;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>QDVO</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="src/Pipeline/BasicPipeline.h"/>
   </compounddef>

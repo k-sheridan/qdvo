@@ -15,6 +15,21 @@
         <defname>Dimension</defname>
       </param>
     </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_arg_min_1_1_optimizable_variable_1a9a6868c01747a23197d461776ab461b5" prot="public" static="no">
+        <type>ScalarType</type>
+        <definition>typedef ScalarType ArgMin::OptimizableVariable&lt; ScalarType, Dimension &gt;::scalar_type</definition>
+        <argsstring></argsstring>
+        <name>scalar_type</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/OptimizableVariable.h" line="15" column="24" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="15" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
       <sectiondef kind="public-static-attrib">
       <memberdef kind="variable" id="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" static="yes" mutable="no">
         <type>const size_t</type>
@@ -39,6 +54,7 @@
     <location file="src/Optimizer/OptimizableVariable.h" line="13" column="26" bodyfile="src/Optimizer/OptimizableVariable.h" bodystart="13" bodyend="18"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::OptimizableVariable</scope><name>dimension</name></member>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a9a6868c01747a23197d461776ab461b5" prot="public" virt="non-virtual"><scope>ArgMin::OptimizableVariable</scope><name>scalar_type</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

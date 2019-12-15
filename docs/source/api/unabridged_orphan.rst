@@ -135,6 +135,11 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_src_Optimizer_ErrorTermValidator.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_src_DataStructures_Feature.cpp.rst
 
 .. toctree::

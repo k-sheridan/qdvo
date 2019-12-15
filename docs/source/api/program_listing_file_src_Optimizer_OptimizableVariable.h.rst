@@ -19,7 +19,7 @@ Program Listing for File OptimizableVariable.h
    template <typename ScalarType, size_t Dimension>
    class OptimizableVariable {
        public:
-   
+       typedef ScalarType scalar_type;
        static const size_t dimension = Dimension;
    
    };

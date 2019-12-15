@@ -55,10 +55,50 @@ Program Listing for File GaussianPrior.h
            b0.addRowBlock(key, zeroVec);
        }
    
-       template <typename VariableType>
-       void removeVariable(VariableKey<VariableType> &removedKey)
+       void removeUnsedVariables(VariableContainer<Variables...> &variableContainer)
        {
-           assert(false);
+           // This tuple is used to iterate over all variable types.
+           std::tuple<Variables*...> tupleOfVariables;
+   
+           // Iterate through all sparse block rows.
+           internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
+               typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
+               auto& rowMap = A0.template getRowMap<RowVariable>();
+   
+               for (auto rowIt = rowMap.begin(); rowIt != rowMap.end();)
+               {   
+                   // Get the key for this row.
+                   const VariableKey<RowVariable>& rowKey = rowIt->first;
+                   // Check if the key exists in the variable set.
+                   if (variableContainer.variableExists(rowKey))
+                   { 
+                       // Search the sparse block row for invalid elements.
+                       internal::static_for(tupleOfVariables, [&](auto j, auto &do_not_use_me) {
+                           typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
+                           auto& columnMap = rowIt->second.template getVariableMap<ColumnVariable>();
+   
+                           for (auto colIt = columnMap.begin(); colIt != columnMap.end();){
+                               // Get the key for this block matrix.
+                               const VariableKey<ColumnVariable>& colKey = colIt->first;
+   
+                               // Check if this key exists.
+                               if (variableContainer.variableExists(colKey)) {
+                                   colIt++;
+                               } else {
+                                   colIt = columnMap.erase(colIt);
+                               }
+                           }
+                       });
+                       rowIt++; // increment the iterator.
+                   } else {
+                       // Delete this row.
+                       rowIt = rowMap.erase(rowIt);
+   
+                       // Delete the row's corresponding b0 block.
+                       b0.removeRowBlock(rowKey);
+                   }
+               }
+           });
        }
    
        void update(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)

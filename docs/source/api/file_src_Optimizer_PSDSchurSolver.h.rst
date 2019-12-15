@@ -45,6 +45,12 @@ Includes
 
 - ``cassert``
 
+- ``cmath``
+
+- ``numeric``
+
+- ``spdlog/spdlog.h``
+
 - ``type_traits``
 
 
@@ -62,6 +68,10 @@ Namespaces
 Classes
 -------
 
+
+- :ref:`exhale_struct_struct_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01c9cbe61e2efd2c48cc16174a93894ad9`
+
+- :ref:`exhale_struct_struct_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01487a40e6554669aa2ca56f04c759fe2c`
 
 - :ref:`exhale_class_class_arg_min_1_1_p_s_d_schur_solver`
 

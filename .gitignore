@@ -10,8 +10,8 @@
 
 datasets/
 build/
-docs/source/api
-docs/source/doxyoutput
+docs/source/api/
+docs/source/doxyoutput/
 .vscode/
 
 solveSudoku.m

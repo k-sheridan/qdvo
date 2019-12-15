@@ -43,6 +43,16 @@ Classes and Structs
 .. toctree::
    :maxdepth: 5
 
+   struct_arg_min_1_1internal_1_1errorterm__validator__helper.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_arg_min_1_1internal_1_1errorterm__validator__helper_3_01std_1_1tuple_3_01_variable_key_3_01_t_01_4_8_8_8_01_4_01_4.rst
+
+.. toctree::
+   :maxdepth: 5
+
    struct_arg_min_1_1internal_1_1_index.rst
 
 .. toctree::
@@ -79,6 +89,16 @@ Classes and Structs
    :maxdepth: 5
 
    struct_arg_min_1_1_loss_function.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01c9cbe61e2efd2c48cc16174a93894ad9.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   struct_arg_min_1_1_p_s_d_schur_solver_3_01_scalar_3_01_scalar_type_01_4_00_01_loss_function_3_01487a40e6554669aa2ca56f04c759fe2c.rst
 
 .. toctree::
    :maxdepth: 5
@@ -164,6 +184,11 @@ Classes and Structs
    :maxdepth: 5
 
    class_arg_min_1_1_error_term_key.rst
+
+.. toctree::
+   :maxdepth: 5
+
+   class_arg_min_1_1_error_term_validator.rst
 
 .. toctree::
    :maxdepth: 5

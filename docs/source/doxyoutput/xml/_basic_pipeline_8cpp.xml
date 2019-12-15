@@ -554,7 +554,7 @@
 <codeline lineno="5"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="6"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::initialize()</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1aec25914726581bacf05e6abdf053fed5" kindref="member">QDVO::BasicPipeline::initialize</ref>()</highlight></codeline>
 <codeline lineno="9"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>precompute<sp/>the<sp/>radial<sp/>search<sp/>pattern<sp/>LUT</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;radialSearchPatternPtr<sp/>=<sp/>std::shared_ptr&lt;RadialSearchPattern&gt;(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">QDVO::RadialSearchPattern</ref>(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));</highlight></codeline>
@@ -573,7 +573,7 @@
 <codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Created<sp/>a<sp/>new<sp/>feature<sp/>detector&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
 <codeline lineno="25"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::addCamera(std::unique_ptr&lt;QDVO::CameraModel&gt;<sp/>&amp;cameraModel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1af9c6182da0eef93e45f1ac06362eea09" kindref="member">QDVO::BasicPipeline::addCamera</ref>(std::unique_ptr&lt;QDVO::CameraModel&gt;<sp/>&amp;cameraModel,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
 <codeline lineno="28"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;graph.setCameraModel(cameraModel,<sp/>cameraID);</highlight></codeline>
 <codeline lineno="30"><highlight class="normal"></highlight></codeline>
@@ -585,7 +585,7 @@
 <codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Added<sp/>default<sp/>unit<sp/>extrinsic&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
 <codeline lineno="37"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::addFrame(cv::Mat<sp/>&amp;image,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;time,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a23e84a2ce01234fab8325603da834821" kindref="member">QDVO::BasicPipeline::addFrame</ref>(cv::Mat<sp/>&amp;image,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&amp;time,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>ID_TYPE<sp/>cameraID)</highlight></codeline>
 <codeline lineno="40"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/></highlight></codeline>
 <codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>save<sp/>the<sp/>last<sp/>imu<sp/>state</highlight><highlight class="normal"></highlight></codeline>
@@ -638,12 +638,12 @@
 <codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="90"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="91"><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::runMarginalizationStrategy()</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a2f6b21312fc1e5440711cd82f06d30af" kindref="member">QDVO::BasicPipeline::runMarginalizationStrategy</ref>()</highlight></codeline>
 <codeline lineno="93"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;swe.runMarginalizationStrategy(this-&gt;graph);</highlight></codeline>
 <codeline lineno="95"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="96"><highlight class="normal"></highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::createNewLandmarks(std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;keyframe,<sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>&amp;featureDetector)</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7a9ed3a35a1eb842c021a9c444f52473" kindref="member">QDVO::BasicPipeline::createNewLandmarks</ref>(std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;keyframe,<sp/>std::unique_ptr&lt;QDVO::FeatureDetector&gt;<sp/>&amp;featureDetector)</highlight></codeline>
 <codeline lineno="98"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Creating<sp/>new<sp/>landmarks<sp/>for<sp/>keyframe:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>keyframe-&gt;frameID<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
 <codeline lineno="100"><highlight class="normal"></highlight></codeline>
@@ -676,7 +676,7 @@
 <codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="128"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="129"><highlight class="normal"></highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7446e40b000d8f3aa99a4c4563a17409" kindref="member">QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame</ref>()</highlight></codeline>
 <codeline lineno="131"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>first<sp/>update<sp/>the<sp/>patch<sp/>comparers<sp/>before<sp/>initializing<sp/>all<sp/>the<sp/>correspondence<sp/>distributions</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/>this-&gt;updatePatchComparers();</highlight></codeline>
@@ -734,7 +734,7 @@
 <codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Initialized<sp/>correspondence<sp/>distributions<sp/>for<sp/>this<sp/>frame.<sp/>Could<sp/>not<sp/>initialize:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::accumulate(result.begin(),<sp/>result.end(),<sp/>0)<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>distributions.&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
 <codeline lineno="186"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="187"><highlight class="normal"></highlight></codeline>
-<codeline lineno="188"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::isCurrentFrameAKeyframe()</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a30af66aa558eeb9cf876b10954bef9cc" kindref="member">QDVO::BasicPipeline::isCurrentFrameAKeyframe</ref>()</highlight></codeline>
 <codeline lineno="189"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(this-&gt;graph.getKeyframeSet().size()<sp/>==<sp/>0)</highlight></codeline>
 <codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
@@ -745,7 +745,7 @@
 <codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
 <codeline lineno="197"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="198"><highlight class="normal"></highlight></codeline>
-<codeline lineno="199"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::updatePatchComparers()</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a7ae2e691f88ee7d54128cd830d732089" kindref="member">QDVO::BasicPipeline::updatePatchComparers</ref>()</highlight></codeline>
 <codeline lineno="200"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="201"><highlight class="normal"></highlight></codeline>
 <codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;QDVO::Frame&gt;<sp/>&amp;cf<sp/>=<sp/>this-&gt;graph.getCurrentFrame();</highlight></codeline>
@@ -803,11 +803,11 @@
 <codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;there<sp/>are<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>this-&gt;patchComparers.size()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>patch<sp/>comparers<sp/>in<sp/>the<sp/>table&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
 <codeline lineno="255"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="256"><highlight class="normal"></highlight></codeline>
-<codeline lineno="257"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::runEpipolarDepthEstimators()</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a172afb9a0940a3ce6543777036976047" kindref="member">QDVO::BasicPipeline::runEpipolarDepthEstimators</ref>()</highlight></codeline>
 <codeline lineno="258"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="259"><highlight class="normal">}</highlight></codeline>
 <codeline lineno="260"><highlight class="normal"></highlight></codeline>
-<codeline lineno="261"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>QDVO::BasicPipeline::activateNewLandmarks()</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_q_d_v_o_1_1_basic_pipeline_1a6b90259131f4b6fb6e532cfa07ef7ae4" kindref="member">QDVO::BasicPipeline::activateNewLandmarks</ref>()</highlight></codeline>
 <codeline lineno="262"><highlight class="normal">{</highlight></codeline>
 <codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
 <codeline lineno="264"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Warning:<sp/>This<sp/>is<sp/>an<sp/>absolute<sp/>mess,<sp/>but<sp/>for<sp/>now<sp/>it<sp/>will<sp/>have<sp/>to<sp/>do.</highlight></codeline>

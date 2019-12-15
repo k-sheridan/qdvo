@@ -17,6 +17,10 @@ Classes
 -------
 
 
+- :ref:`exhale_struct_struct_arg_min_1_1internal_1_1errorterm__validator__helper`
+
+- :ref:`exhale_struct_struct_arg_min_1_1internal_1_1errorterm__validator__helper_3_01std_1_1tuple_3_01_variable_key_3_01_t_01_4_8_8_8_01_4_01_4`
+
 - :ref:`exhale_struct_struct_arg_min_1_1internal_1_1_index`
 
 - :ref:`exhale_struct_struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4`

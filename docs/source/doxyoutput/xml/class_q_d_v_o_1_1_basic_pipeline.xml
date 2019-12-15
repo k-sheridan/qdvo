@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="class_q_d_v_o_1_1_basic_pipeline" kind="class" language="C++" prot="public">
     <compoundname>QDVO::BasicPipeline</compoundname>
+    <includes refid="_basic_pipeline_8h" local="no">BasicPipeline.h</includes>
       <sectiondef kind="public-attrib">
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1af41fd7e475aa394632256fd5792c46dc" prot="public" static="no" mutable="no">
         <type><ref refid="class_q_d_v_o_1_1_graph" kindref="compound">Graph</ref></type>
@@ -9,12 +10,13 @@
         <argsstring></argsstring>
         <name>graph</name>
         <briefdescription>
+<para>main datastructure for all possible QDVO algorithms. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="30" column="11" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="30" bodyend="-1"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="31" column="11" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="31" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1aaa206ab3ae086d7bfa1121a5b3eef889" prot="public" static="no" mutable="no">
         <type><ref refid="class_q_d_v_o_1_1_front_end_visual_odometry" kindref="compound">FrontEndVisualOdometry</ref></type>
@@ -22,19 +24,7 @@
         <argsstring></argsstring>
         <name>frontEndVisualOdometry</name>
         <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="32" column="28" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="32" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" prot="public" static="no" mutable="no">
-        <type><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref></type>
-        <definition>SlidingWindowEstimator QDVO::BasicPipeline::swe</definition>
-        <argsstring></argsstring>
-        <name>swe</name>
-        <briefdescription>
+<para>used to initialize the current frame pose. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -42,38 +32,27 @@
         </inbodydescription>
         <location file="src/Pipeline/BasicPipeline.h" line="34" column="28" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="34" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1af3de4966f352a6451669a04d22b7b30b" prot="public" static="no" mutable="no">
+        <type><ref refid="class_q_d_v_o_1_1_sliding_window_estimator" kindref="compound">SlidingWindowEstimator</ref></type>
+        <definition>SlidingWindowEstimator QDVO::BasicPipeline::swe</definition>
+        <argsstring></argsstring>
+        <name>swe</name>
+        <briefdescription>
+<para>main estimator for the whole algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Pipeline/BasicPipeline.h" line="37" column="28" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1a4a2972517e53bf079102c72f8c24c090" prot="public" static="no" mutable="no">
         <type>std::unique_ptr&lt; <ref refid="class_q_d_v_o_1_1_feature_detector" kindref="compound">QDVO::FeatureDetector</ref> &gt;</type>
         <definition>std::unique_ptr&lt;QDVO::FeatureDetector&gt; QDVO::BasicPipeline::featureDetector</definition>
         <argsstring></argsstring>
         <name>featureDetector</name>
         <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="90" column="21" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="90" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1a88c2ca0211b6ccc3e689c55d57bf1d10" prot="public" static="no" mutable="no">
-        <type>std::unordered_map&lt; ID_TYPE, std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_comparer" kindref="compound">PatchComparer</ref> &gt; &gt;</type>
-        <definition>std::unordered_map&lt;ID_TYPE, std::shared_ptr&lt;PatchComparer&gt; &gt; QDVO::BasicPipeline::patchComparers</definition>
-        <argsstring></argsstring>
-        <name>patchComparers</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="92" column="24" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="92" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1ac67b02f5de3b44576cdae9ea3b85cabe" prot="public" static="no" mutable="no">
-        <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">RadialSearchPattern</ref> &gt;</type>
-        <definition>std::shared_ptr&lt;RadialSearchPattern&gt; QDVO::BasicPipeline::radialSearchPatternPtr</definition>
-        <argsstring></argsstring>
-        <name>radialSearchPatternPtr</name>
-        <briefdescription>
+<para>global feature detector. NOT MEANT TO BE USED IN MULTIPLE THREADS WITHOUT LOCKING! </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -81,18 +60,47 @@
         </inbodydescription>
         <location file="src/Pipeline/BasicPipeline.h" line="94" column="21" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="94" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1a88c2ca0211b6ccc3e689c55d57bf1d10" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; ID_TYPE, std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_comparer" kindref="compound">PatchComparer</ref> &gt; &gt;</type>
+        <definition>std::unordered_map&lt;ID_TYPE, std::shared_ptr&lt;PatchComparer&gt; &gt; QDVO::BasicPipeline::patchComparers</definition>
+        <argsstring></argsstring>
+        <name>patchComparers</name>
+        <briefdescription>
+<para>used to speed up the patch comparisons. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Pipeline/BasicPipeline.h" line="97" column="24" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1ac67b02f5de3b44576cdae9ea3b85cabe" prot="public" static="no" mutable="no">
+        <type>std::shared_ptr&lt; <ref refid="class_q_d_v_o_1_1_radial_search_pattern" kindref="compound">RadialSearchPattern</ref> &gt;</type>
+        <definition>std::shared_ptr&lt;RadialSearchPattern&gt; QDVO::BasicPipeline::radialSearchPatternPtr</definition>
+        <argsstring></argsstring>
+        <name>radialSearchPatternPtr</name>
+        <briefdescription>
+<para>used globally to generate the correspondence distributions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Pipeline/BasicPipeline.h" line="100" column="21" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="class_q_d_v_o_1_1_basic_pipeline_1ad98ee9aefea5524f51346acc0d4b4ab1" prot="public" static="no" mutable="no">
         <type>std::unique_ptr&lt; <ref refid="class_q_d_v_o_1_1_patch_warper" kindref="compound">QDVO::PatchWarper</ref> &gt;</type>
         <definition>std::unique_ptr&lt;QDVO::PatchWarper&gt; QDVO::BasicPipeline::patchWarper</definition>
         <argsstring></argsstring>
         <name>patchWarper</name>
         <briefdescription>
+<para>pointer to the patch warp implementation </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="96" column="21" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="96" bodyend="-1"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="103" column="21" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -117,10 +125,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Preallocates keyframes and current frame. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="39" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="8" bodyend="25"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="42" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="8" bodyend="25"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a23e84a2ce01234fab8325603da834821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -143,10 +152,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Gives the algorithm a new image </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="44" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="39" bodyend="90"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="47" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="39" bodyend="90"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1af9c6182da0eef93e45f1ac06362eea09" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -165,10 +175,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>adds a new camera for the visual odometry algorithm. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="49" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="27" bodyend="37"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="52" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="27" bodyend="37"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a7a9ed3a35a1eb842c021a9c444f52473" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -186,10 +197,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>detects features and adds new landmarks to the frame. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="54" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="97" bodyend="128"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="57" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="97" bodyend="128"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a6b90259131f4b6fb6e532cfa07ef7ae4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -199,10 +211,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Activates new landmarks from the set of keyframes such that the current features are well distributed. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="59" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="261" bodyend="349"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="62" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="261" bodyend="349"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a7446e40b000d8f3aa99a4c4563a17409" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -212,10 +225,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Does an initial search for potential correspondences between active landmarks and the current frame. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="64" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="130" bodyend="186"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="67" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="130" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a172afb9a0940a3ce6543777036976047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -225,10 +239,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Attempts to initialize inactive landmarks using an epipolar search </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="69" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="257" bodyend="259"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="72" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="257" bodyend="259"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a2f6b21312fc1e5440711cd82f06d30af" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -238,10 +253,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>marginalizes keyframes. This function can be changed in a modular fashion </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="74" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="92" bodyend="95"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="77" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="92" bodyend="95"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a30af66aa558eeb9cf876b10954bef9cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -251,10 +267,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Checks if the current frame has met the criteria for a keyframe. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="79" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="188" bodyend="197"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="82" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="188" bodyend="197"/>
       </memberdef>
       <memberdef kind="function" id="class_q_d_v_o_1_1_basic_pipeline_1a7ae2e691f88ee7d54128cd830d732089" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -264,15 +281,18 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>This function is ran after the current frame is setup and before the correspondence distributions are initialized. It will insert a new patch comparer into the unordered_map of patch comparers while removing any old/redundant patch comparers. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Pipeline/BasicPipeline.h" line="85" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="199" bodyend="255"/>
+        <location file="src/Pipeline/BasicPipeline.h" line="88" column="10" bodyfile="src/Pipeline/BasicPipeline.cpp" bodystart="199" bodyend="255"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
+<para>The goal of this class is to be a &quot;easily&quot; modifiable implementation of the quasi-direct approach to visual odometry. This should allow easy modification of the patch comparison, and serve as a place for preallocation of quantities.</para>
+<para>The basic datastructures are held in the graph datastructure. They contain all necessary information, access, insert, and reset functions implemented in a protected way. </para>
     </detaileddescription>
     <collaborationgraph>
       <node id="2">
@@ -308,7 +328,7 @@
         <link refid="class_q_d_v_o_1_1_front_end_visual_odometry"/>
       </node>
     </collaborationgraph>
-    <location file="src/Pipeline/BasicPipeline.h" line="26" column="1" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="25" bodyend="97"/>
+    <location file="src/Pipeline/BasicPipeline.h" line="26" column="1" bodyfile="src/Pipeline/BasicPipeline.h" bodystart="25" bodyend="104"/>
     <listofallmembers>
       <member refid="class_q_d_v_o_1_1_basic_pipeline_1a6b90259131f4b6fb6e532cfa07ef7ae4" prot="public" virt="non-virtual"><scope>QDVO::BasicPipeline</scope><name>activateNewLandmarks</name></member>
       <member refid="class_q_d_v_o_1_1_basic_pipeline_1af9c6182da0eef93e45f1ac06362eea09" prot="public" virt="non-virtual"><scope>QDVO::BasicPipeline</scope><name>addCamera</name></member>

@@ -1,5 +1,7 @@
 #pragma once
 
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+
 #include "Containers.h"
 #include "MetaHelpers.h"
 #include "GaussianPrior.h"
@@ -103,6 +105,10 @@ public:
      */
     void initialize(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
     {
+        SPDLOG_TRACE("Initializing Solver.");
+
+        removeOldVariablesFromSlotArrays(variables);
+
         addNewVariablesToSlotArrays(variables);
 
         precomputeIndexMapAndResizeMatrices(variables);
@@ -119,7 +125,7 @@ public:
     template <typename GaussianPriorType>
     SolveResult solveLevenbergMarquardt(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
     {
-        spdlog::trace("Starting Levenberg-Marquardt solve.");
+        SPDLOG_TRACE("Starting Levenberg-Marquardt solve.");
         // Initialize the solver.
         initialize(variables, errorTerms);
 
@@ -134,7 +140,7 @@ public:
             // Build the linear system.
             double whitenedSqError = buildLinearSystem(prior, errorTerms);
 
-            spdlog::trace("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
+            SPDLOG_TRACE("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
 
             // Add the current error to the error array.
             result.whitenedSqError.push_back(whitenedSqError);
@@ -165,18 +171,18 @@ public:
             if (isUpdateValid())
             {
                 // Apply the update.
-                spdlog::trace("Updating variables");
+                SPDLOG_TRACE("Updating variables");
                 applyUpdateToVariables(variables);
-                spdlog::trace("Updating prior");
+                SPDLOG_TRACE("Updating prior");
                 prior.update(dxBlockVector);
             } else {
                 // Return early without updating
-                spdlog::trace("Perturbation invalid, returning early");
+                SPDLOG_ERROR("Perturbation invalid, returning early");
                 return result;
             }
         }
 
-        spdlog::trace("Finished Levenberg-Marquardt solve.");
+        SPDLOG_TRACE("Finished Levenberg-Marquardt solve.");
         return result;
     }
 
@@ -271,8 +277,8 @@ public:
     template <typename GaussianPriorType>
     void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
     {
-        spdlog::trace("Starting Schur Solve with problem dimension: {} and a correlated dimension of: {}", totalDimension, dimensionOfA);
-        spdlog::trace("Computing D^{-1}");
+        SPDLOG_TRACE("Starting Schur Solve with problem dimension: {} and a correlated dimension of: {}", totalDimension, dimensionOfA);
+        SPDLOG_TRACE("Computing D^{-1}");
         // Solve for the deltas using the Schur Complement.
         // First invert the D matrix
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -286,7 +292,7 @@ public:
             }
         });
 
-        spdlog::trace("Computing -B D^{-1}");
+        SPDLOG_TRACE("Computing -B D^{-1}");
         // Compute -B Dinv, and compute the inverse Schur Complement of D.
         // This will use A to store the schur complement before inversion.
         internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
@@ -321,7 +327,7 @@ public:
         // At this point we have computed the inverse of the LHS.
         // Now we just have to multiply our results with the RHS.
 
-        spdlog::trace("Computing -B D^{-1} b_{uncorrelated}");
+        SPDLOG_TRACE("Computing -B D^{-1} b_{uncorrelated}");
         // Multiply -BDinv * b_uncorrelated.
         internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -338,12 +344,12 @@ public:
             }
         });
 
-        spdlog::trace("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
+        SPDLOG_TRACE("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
         // Multiply the inverse schur complement of D by the correlated b vector.
         dx.block(0, 0, dimensionOfA, 1) = A.block(0, 0, dimensionOfA, dimensionOfA).ldlt().solve(b_correlated.block(0, 0, dimensionOfA, 1));
 
 
-        spdlog::trace("Computing D^{-1} b_{uncorrelated}");
+        SPDLOG_TRACE("Computing D^{-1} b_{uncorrelated}");
         // Multiply Dinv by the b_uncorrelated vector.
         internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
             typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -365,7 +371,7 @@ public:
             }
         });
 
-        spdlog::trace("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
+        SPDLOG_TRACE("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
         // At this point the partial solution is stored in the dx vector.
         // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
         // This is correct  because Dinv is symmetric, and C = B^T
@@ -386,7 +392,7 @@ public:
             }
         });
 
-        spdlog::trace("Setting the dx block vector");
+        SPDLOG_TRACE("Setting the dx block vector");
         // Set the dx block vector from the index map and dx vector
         internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
             typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
@@ -403,7 +409,7 @@ public:
             }
         });
 
-        spdlog::trace("Schur Solve complete. ");
+        SPDLOG_TRACE("Schur Solve complete. ");
     }
 
     /// Linearizes all error terms stored in this container.
@@ -477,7 +483,7 @@ public:
 
         // iterate through all error terms
         internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
-            spdlog::trace("Building problem with Error Term Type: {}", typeid(typename std::tuple_element<errorTermTypeIndex, std::tuple<ErrorTerms...>>::type).name());
+            SPDLOG_TRACE("Building problem with Error Term Type: {}", typeid(typename std::tuple_element<errorTermTypeIndex, std::tuple<ErrorTerms...>>::type).name());
             for (auto &errorTerm : errorTermMap)
             {
                 // Check if the linearization is valid for this error term.
@@ -540,7 +546,7 @@ public:
      */
     void setProblemToPrior(GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior)
     {
-        spdlog::trace("Setting problem to prior.");
+        SPDLOG_TRACE("Setting problem to prior.");
         // Zero the problem.
         setZero();
 
@@ -829,6 +835,61 @@ public:
                 if (!dxBlockVector.blockExists(key))
                 {
                     dxBlockVector.addRowBlock(key, zeroRHSMatrix);
+                }
+            }
+        });
+    }
+
+    /// Ensures that the internal slot arrays do not have excess variables stored in them.
+    void removeOldVariablesFromSlotArrays(VariableContainer<Variables...> &variables)
+    {
+        std::tuple<std::vector<VariableKey<Variables>>...> keysToErase;
+
+        // Find keys in the Dx block vector which are not in the variable container.
+        std::tuple<Variables*...> variableTuple;
+        internal::static_for(variableTuple, [&](auto i, auto &donotuseme) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+            auto& variableMap = dxBlockVector.template getRowMap<ThisVariable>();
+
+            for (auto it = variableMap.begin(); it != variableMap.end(); it++)
+            {
+                auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+
+                if (!variables.variableExists(key))
+                {
+                    std::get<std::vector<decltype(key)>>(keysToErase).push_back(key);
+                }
+            }
+        });
+
+        // Erase all keys which are not in the variable container, but exist in the solver.
+        internal::static_for(keysToErase, [&](auto i, auto &keyVector) {
+            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
+
+            if constexpr(internal::Is_in_tuple<ThisVariable, std::tuple<UncorrelatedVariables...>>::value)
+            {
+                // Erase D
+                for (const auto& key : keyVector)
+                {
+                    std::get<DVector<ThisVariable>>(D).erase(key);
+                }
+
+                // Erase B
+                for (const auto& key : keyVector)
+                {
+                    std::get<BVector<ThisVariable>>(B).erase(key);
+                }
+
+                // Erase -negBDinv
+                for (const auto& key : keyVector)
+                {
+                    std::get<BVector<ThisVariable>>(negativeBDinv).erase(key);
+                }
+
+                // Erase b_uncorr
+                for (const auto& key : keyVector)
+                {
+                    b_uncorrelated.removeRowBlock(key);
                 }
             }
         });

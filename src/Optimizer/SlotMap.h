@@ -98,7 +98,7 @@ public:
     /**
      * O(1)
      */
-    void erase(KeyType &key)
+    void erase(const KeyType &key)
     {
         // check if there are enough slots
         if (slots.size() <= key.index)
@@ -110,6 +110,11 @@ public:
 
         // check if the generations match
         if (slot.generation != key.generation)
+        {
+            return;
+        }
+
+        if (slot.free)
         {
             return;
         }
@@ -152,6 +157,11 @@ public:
 
         // check if the generations match
         if (slot.generation != key.generation)
+        {
+            return data.end();
+        }
+
+        if (slot.free)
         {
             return data.end();
         }

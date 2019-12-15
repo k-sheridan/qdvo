@@ -103,6 +103,7 @@
       <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>dimension</name></member>
       <member refid="class_arg_min_1_1_inverse_depth_1a4eb545cd07f445474ffe7143618652f6" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>InverseDepth</name></member>
       <member refid="class_arg_min_1_1_inverse_depth_1a1ac3352e6dfed2181dc86063962ef8d1" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>InverseDepth</name></member>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a9a6868c01747a23197d461776ab461b5" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>scalar_type</name></member>
       <member refid="class_arg_min_1_1_inverse_depth_1a0c56fd319a3195b1a47e5dc19fe88ad0" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>update</name></member>
       <member refid="class_arg_min_1_1_inverse_depth_1aa7700b06c68c4b3fbaa2dc6dfecd7c59" prot="public" virt="non-virtual"><scope>ArgMin::InverseDepth</scope><name>value</name></member>
     </listofallmembers>

@@ -21,6 +21,10 @@ Program Listing for File PSDSchurSolver.h
    #include "HuberLossFunction.h"
    #include <cassert>
    #include <type_traits>
+   #include <numeric>
+   #include <cmath>
+   
+   #include "spdlog/spdlog.h"
    
    namespace ArgMin
    {
@@ -44,10 +48,19 @@ Program Listing for File PSDSchurSolver.h
        using IndexMap = SlotArray<size_t, VariableKey<VariableType>>;
        using LossFunction = HuberLossFunction<ScalarType>;
    
+       struct Settings {
+           double initialLambda = 1e3;
+           double lambdaReductionMultiplier = 10;
+           int maximumIterations = 25;
+       } settings;
+   
+       struct SolveResult {
+           std::vector<ScalarType> whitenedSqError;
+       };
+   
        LossFunctionType lossFunction;
    
        Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> A;
-       Eigen::Matrix<ScalarType, Eigen::Dynamic, Eigen::Dynamic> inverseSchurComplementOfD;
        std::tuple<BVector<UncorrelatedVariables>...> B;
        std::tuple<BVector<UncorrelatedVariables>...> negativeBDinv;
        std::tuple<DVector<UncorrelatedVariables>...> D;
@@ -73,8 +86,91 @@ Program Listing for File PSDSchurSolver.h
        }
    
        template <typename GaussianPriorType>
-       void solve(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
+       SolveResult solveLevenbergMarquardt(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior)
        {
+           spdlog::trace("Starting Levenberg-Marquardt solve.");
+           // Initialize the solver.
+           initialize(variables, errorTerms);
+   
+           SolveResult result;
+           ScalarType lambda = settings.initialLambda;
+   
+           // Iterate and solve.
+           for (int iteration = 0; iteration < settings.maximumIterations; ++iteration)
+           {
+               // Linearize the error terms.
+               linearize(variables, errorTerms);
+               // Build the linear system.
+               double whitenedSqError = buildLinearSystem(prior, errorTerms);
+   
+               spdlog::trace("Iteration: {} Whitened Error: {} Lambda: {}", iteration, sqrt(whitenedSqError), lambda);
+   
+               // Add the current error to the error array.
+               result.whitenedSqError.push_back(whitenedSqError);
+   
+               // If this is not the first iteration, check if the error was increased
+               if (iteration != 0)
+               {
+                   if (*(result.whitenedSqError.end()-1) < *(result.whitenedSqError.end()-2))
+                   {
+                       // The error decreased, reduce lambda.
+                       lambda = lambda / settings.lambdaReductionMultiplier;
+                   }
+                   else
+                   {
+                       // The error increased or stagnated, break.
+                       //lambda = lambda * settings.lambdaReductionMultiplier;
+                       break;
+                   }
+               }
+   
+               // Add lambda to the linear system.
+               addLambdaToLinearSystem(lambda);
+   
+               // Solve the linear system.
+               solveLinearSystem(variables, errorTerms, prior);
+   
+               // Verify that the perturbation is not nan.
+               if (isUpdateValid())
+               {
+                   // Apply the update.
+                   spdlog::trace("Updating variables");
+                   applyUpdateToVariables(variables);
+                   spdlog::trace("Updating prior");
+                   prior.update(dxBlockVector);
+               } else {
+                   // Return early without updating
+                   spdlog::trace("Perturbation invalid, returning early");
+                   return result;
+               }
+           }
+   
+           spdlog::trace("Finished Levenberg-Marquardt solve.");
+           return result;
+       }
+   
+       void addLambdaToLinearSystem(ScalarType lambda)
+       {
+           A.block(0, 0, dimensionOfA, dimensionOfA).diagonal().array() += lambda;
+   
+           internal::static_for(D, [&](auto i, auto &blockArray) {
+               for (auto& block : blockArray)
+               {
+                   block.diagonal().array() += lambda;
+               }
+           });
+       }
+   
+       bool isUpdateValid()
+       {
+           for (int i = 0; i < dx.rows(); ++i)
+           {
+               if (std::isnan(dx(i, 0)))
+               {
+                   return false;
+               }
+           }
+           return true;
        }
    
        template <bool Revert = false>
@@ -116,8 +212,8 @@ Program Listing for File PSDSchurSolver.h
        template <typename GaussianPriorType>
        void solveLinearSystem(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, GaussianPriorType &prior)
        {
-           std::cout << "Starting Schur Solve with problem dimension: " << totalDimension << " and a correlated dimension of: " << dimensionOfA << std::endl;
-           std::cout << "Computing D^{-1}" << std::endl;
+           spdlog::trace("Starting Schur Solve with problem dimension: {} and a correlated dimension of: {}", totalDimension, dimensionOfA);
+           spdlog::trace("Computing D^{-1}");
            // Solve for the deltas using the Schur Complement.
            // First invert the D matrix
            internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -131,7 +227,7 @@ Program Listing for File PSDSchurSolver.h
                }
            });
    
-           std::cout << "Computing -B D^{-1}" << std::endl;
+           spdlog::trace("Computing -B D^{-1}");
            // Compute -B Dinv, and compute the inverse Schur Complement of D.
            // This will use A to store the schur complement before inversion.
            internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
@@ -163,14 +259,10 @@ Program Listing for File PSDSchurSolver.h
                }
            });
    
-           std::cout << "Computing The Inverse Schur Complement of D" << std::endl;
-           // Compute the inverse of the schur complement of D.
-           inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) = A.block(0, 0, dimensionOfA, dimensionOfA).inverse();
-   
            // At this point we have computed the inverse of the LHS.
            // Now we just have to multiply our results with the RHS.
    
-           std::cout << "Computing -B D^{-1} b_{uncorrelated}" << std::endl;
+           spdlog::trace("Computing -B D^{-1} b_{uncorrelated}");
            // Multiply -BDinv * b_uncorrelated.
            internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
                typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -183,15 +275,16 @@ Program Listing for File PSDSchurSolver.h
    
                    const Eigen::Matrix<ScalarType, RowVariable::dimension, 1> &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
    
-                   b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
+                   b_correlated.block(0, 0, dimensionOfA, 1).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * rhsBlockMatrix).eval();
                }
            });
    
-           std::cout << "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}" << std::endl;
+           spdlog::trace("Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
            // Multiply the inverse schur complement of D by the correlated b vector.
-           dx.block(0, 0, dimensionOfA, 1).noalias() = inverseSchurComplementOfD.block(0, 0, dimensionOfA, dimensionOfA) * b_correlated.block(0, 0, dimensionOfA, 1);
+           dx.block(0, 0, dimensionOfA, 1) = A.block(0, 0, dimensionOfA, dimensionOfA).ldlt().solve(b_correlated.block(0, 0, dimensionOfA, 1));
    
-           std::cout << "Computing D^{-1} b_{uncorrelated}" << std::endl;
+   
+           spdlog::trace("Computing D^{-1} b_{uncorrelated}");
            // Multiply Dinv by the b_uncorrelated vector.
            internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
                typedef typename std::tuple_element<i, std::tuple<UncorrelatedVariables...>>::type RowVariable;
@@ -213,7 +306,7 @@ Program Listing for File PSDSchurSolver.h
                }
            });
    
-           std::cout << "Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}" << std::endl;
+           spdlog::trace("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
            // At this point the partial solution is stored in the dx vector.
            // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
            // This is correct  because Dinv is symmetric, and C = B^T
@@ -230,11 +323,11 @@ Program Listing for File PSDSchurSolver.h
                    auto indexIt = indexMap.at(key);
                    assert(indexIt != indexMap.end());
    
-                   dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
+                   dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() += (negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension).transpose() * dx.block(0, 0, dimensionOfA, 1)).eval();
                }
            });
    
-           std::cout << "Setting the dx block vector" << std::endl;
+           spdlog::trace("Setting the dx block vector");
            // Set the dx block vector from the index map and dx vector
            internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
                typedef typename std::tuple_element<i, std::tuple<Variables...>>::type ThisVariable;
@@ -251,7 +344,7 @@ Program Listing for File PSDSchurSolver.h
                }
            });
    
-           std::cout << "Schur Solve complete. " << std::endl;
+           spdlog::trace("Schur Solve complete. ");
        }
    
        void linearize(VariableContainer<Variables...> &variables, ErrorTermContainer<ErrorTerms...> &errorTerms)
@@ -301,13 +394,17 @@ Program Listing for File PSDSchurSolver.h
        }
    
        template <typename GaussianPriorType>
-       void buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
+       double buildLinearSystem(GaussianPriorType &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms)
        {
            // Initialize the current problem to the prior.
            setProblemToPrior(prior);
    
+           double whitenedSqError = 0;
+           int nErrorTerms = 0;
+   
            // iterate through all error terms
            internal::static_for(linearizedErrorTerms.tupleOfErrorTermMaps, [&](auto errorTermTypeIndex, auto &errorTermMap) {
+               spdlog::trace("Building problem with Error Term Type: {}", typeid(typename std::tuple_element<errorTermTypeIndex, std::tuple<ErrorTerms...>>::type).name());
                for (auto &errorTerm : errorTermMap)
                {
                    // Check if the linearization is valid for this error term.
@@ -316,6 +413,9 @@ Program Listing for File PSDSchurSolver.h
                        double sqError = errorTerm.residual.squaredNorm();
                        double error = sqrt(sqError);
                        double weight = lossFunction.computeWeight(error, sqError);
+   
+                       whitenedSqError += sqError;
+                       ++nErrorTerms;
    
                        // Iterate through all independent variables.
                        internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
@@ -354,10 +454,13 @@ Program Listing for File PSDSchurSolver.h
                    }
                }
            });
+   
+           return whitenedSqError / nErrorTerms;
        }
    
        void setProblemToPrior(GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior)
        {
+           spdlog::trace("Setting problem to prior.");
            // Zero the problem.
            setZero();
    
@@ -475,8 +578,13 @@ Program Listing for File PSDSchurSolver.h
            if constexpr (!row_variable_is_uncorrelated && !column_variable_is_uncorrelated)
            {
                // Add this block to A.
-               const size_t rowIdx = *(std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey));
-               const size_t colIdx = *(std::get<IndexMap<ColumnVariable>>(variableToIndexMaps).at(columnKey));
+               auto rowIdxIt = std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey);
+               auto colIdxIt = std::get<IndexMap<ColumnVariable>>(variableToIndexMaps).at(columnKey);
+               assert(rowIdxIt != std::get<IndexMap<RowVariable>>(variableToIndexMaps).end());
+               assert(colIdxIt != std::get<IndexMap<ColumnVariable>>(variableToIndexMaps).end());
+   
+               const size_t rowIdx = *(rowIdxIt);
+               const size_t colIdx = *(colIdxIt);
    
                A.template block<RowVariable::dimension, ColumnVariable::dimension>(rowIdx, colIdx).noalias() += block;
            }
@@ -484,7 +592,9 @@ Program Listing for File PSDSchurSolver.h
            if constexpr (!row_variable_is_uncorrelated && column_variable_is_uncorrelated)
            {
                // Add this block to B.
-               const size_t rowIdx = *(std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey));
+               auto rowIdxIt = std::get<IndexMap<RowVariable>>(variableToIndexMaps).at(rowKey);
+               assert(rowIdxIt != std::get<IndexMap<RowVariable>>(variableToIndexMaps).end());
+               const size_t rowIdx = *(rowIdxIt);
    
                auto &slotArray = std::get<BVector<ColumnVariable>>(B);
                auto it = slotArray.at(columnKey);
@@ -549,13 +659,6 @@ Program Listing for File PSDSchurSolver.h
            if (A.rows() < dimensionOfA)
            {
                A.resize(dimensionOfA, dimensionOfA);
-           }
-   
-           // Resize inverseSchurComplementOfD if necessary.
-           assert(inverseSchurComplementOfD.rows() == inverseSchurComplementOfD.cols());
-           if (inverseSchurComplementOfD.rows() < dimensionOfA)
-           {
-               inverseSchurComplementOfD.resize(dimensionOfA, dimensionOfA);
            }
    
            // Resize b_correlated if necessary

@@ -24,6 +24,7 @@ Files
 - :ref:`file_src_Optimizer_BlockVector.h`
 - :ref:`file_src_Optimizer_Containers.h`
 - :ref:`file_src_Optimizer_ErrorTermBase.h`
+- :ref:`file_src_Optimizer_ErrorTermValidator.h`
 - :ref:`file_src_Optimizer_GaussianPrior.h`
 - :ref:`file_src_Optimizer_HuberLossFunction.h`
 - :ref:`file_src_Optimizer_Key.h`

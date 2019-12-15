@@ -7,6 +7,7 @@
     <innerfile refid="_block_vector_8h">BlockVector.h</innerfile>
     <innerfile refid="_containers_8h">Containers.h</innerfile>
     <innerfile refid="_error_term_base_8h">ErrorTermBase.h</innerfile>
+    <innerfile refid="_error_term_validator_8h">ErrorTermValidator.h</innerfile>
     <innerfile refid="_gaussian_prior_8h">GaussianPrior.h</innerfile>
     <innerfile refid="_huber_loss_function_8h">HuberLossFunction.h</innerfile>
     <innerfile refid="_key_8h">Key.h</innerfile>

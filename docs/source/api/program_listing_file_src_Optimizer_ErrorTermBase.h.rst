@@ -28,11 +28,18 @@ Program Listing for File ErrorTermBase.h
    {
    public:
    
+       using VariablePointers = std::tuple<IndependentVariables*...>;
+       using VariableKeys = std::tuple<VariableKey<IndependentVariables>...>;
+       using VariableJacobians = std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...>;
+   
+       // The precision of this error term.
+       typedef ScalarType scalar_type;
+   
        static const int residual_dimension = ResidualDimension;
    
-       std::tuple<Eigen::Matrix<ScalarType, ResidualDimension, IndependentVariables::dimension>...> variableJacobians;
-       std::tuple<VariableKey<IndependentVariables>...> variableKeys;
-       std::tuple<IndependentVariables*...> variablePointers;
+       VariableJacobians variableJacobians;
+       VariableKeys variableKeys;
+       VariablePointers variablePointers;
    
        Eigen::Matrix<ScalarType, ResidualDimension, 1> residual;
    

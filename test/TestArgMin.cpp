@@ -12,6 +12,7 @@
 #include "Optimizer/Variables/SimpleScalar.h"
 #include "Optimizer/ErrorTermBase.h"
 #include "Optimizer/HuberLossFunction.h"
+#include "Optimizer/Marginalizer.h"
 #include <type_traits>
 
 #include <gtest/gtest.h>
@@ -167,6 +168,9 @@ TEST(ArgMin, SparseBlockMatrixOperations)
     // insert another diagonal member
     matrix *= 2;
     sbm.setBlock(se3Key2, se3Key2, matrix);
+
+    EXPECT_EQ(sbm.getBlock(se3Key2, se3Key2), matrix);
+
     // insert a inverse depth diagonal.
     auto matrix2 = Eigen::Matrix<double, 1, 1>::Ones();
     sbm.setBlock(dinvKey2, dinvKey2, matrix2);

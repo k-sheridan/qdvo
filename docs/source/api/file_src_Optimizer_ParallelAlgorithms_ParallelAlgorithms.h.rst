@@ -76,7 +76,7 @@ Functions
 
 - :ref:`exhale_function__parallel_algorithms_8h_1ab733e9c2ae16acd27fa25a92b47f44f7`
 
-- :ref:`exhale_function__parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b`
-
 - :ref:`exhale_function__parallel_algorithms_8h_1a8515bbb3c2fa76b12fe61bf768988144`
+
+- :ref:`exhale_function__parallel_algorithms_8h_1a98f0132ed8d223c9a544a10c820fba9b`
 

@@ -6,6 +6,7 @@
 #include "Optimizer/BlockVector.h"
 #include "Optimizer/PSDSchurSolver.h"
 #include "Optimizer/Key.h"
+#include "Optimizer/Marginalizer.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/InverseDepth.h"
 #include "Optimizer/Variables/SimpleScalar.h"
@@ -198,6 +199,10 @@ RelativeReprojectionError createErrorTerm(VariableKey<ArgMin::SE3> hostK, Variab
 
   Solver solver = Solver(lossFunction);
 
+  using Marginalizer = ArgMin::Marginalizer<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth, ArgMin::SimpleScalar, DifferentSimpleScalar>, ArgMin::ErrorTermGroup<RelativeReprojectionError, DifferenceErrorTerm>>;
+
+  Marginalizer marginalizer;
+
   // correlated variables.
   ArgMin::SE3 hostPose;
   ArgMin::SE3 targetPose;
@@ -359,6 +364,43 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
     EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
     errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
     EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
+
+
+    // Marginalize the simple scalar.
+    EXPECT_TRUE(marginalizer.marginalizeVariable(ssKey, prior, errorTermContainer, VariableGroup<>()));
+    variableContainer.erase(ssKey);
+
+    // Verify that the dss key part of the prior is equal to 1.
+    EXPECT_NEAR(prior.A0.getBlock(dssKey, dssKey)(0, 0), 1, 1e-6);
+
+    // Run another solve, and verify that dssKey stays the same.
+    auto previousDssValue = variableContainer.at(dssKey).value;
+    auto previousHostValue = variableContainer.at(hostKey).value;
+    auto previousTargetValue = variableContainer.at(targetKey).value;
+    result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+    std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
+    EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
+    EXPECT_NEAR((previousHostValue.inverse() * variableContainer.at(hostKey).value).log().norm(), 0, 1e-6);
+    EXPECT_NEAR((previousTargetValue.inverse() * variableContainer.at(targetKey).value).log().norm(), 0, 1e-6);
+
+    //Try a full keyframe marginalization.
+    EXPECT_TRUE(marginalizer.marginalizeVariable(l1Key, prior, errorTermContainer, VariableGroup<>()));
+    variableContainer.erase(l1Key);
+    EXPECT_TRUE(marginalizer.marginalizeVariable(l2Key, prior, errorTermContainer, VariableGroup<>()));
+    variableContainer.erase(l2Key);
+    EXPECT_TRUE(marginalizer.marginalizeVariable(l3Key, prior, errorTermContainer, VariableGroup<>()));
+    variableContainer.erase(l3Key);
+
+    // Solve and verify the host and target key poses.
+    spdlog::set_level(spdlog::level::trace);
+    result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+    std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
+    EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
+    EXPECT_NEAR((previousHostValue.inverse() * variableContainer.at(hostKey).value).log().norm(), 0, 1e-6);
+    EXPECT_NEAR((previousTargetValue.inverse() * variableContainer.at(targetKey).value).log().norm(), 0, 1e-6);
+
+    //EXPECT_TRUE(marginalizer.marginalizeVariable(hostKey, prior, errorTermContainer, VariableGroup<ArgMin::InverseDepth>()));
+    //variableContainer.erase(hostKey);
 
 }
 

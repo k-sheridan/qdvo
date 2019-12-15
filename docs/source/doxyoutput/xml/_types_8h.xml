@@ -63,6 +63,8 @@
       <node id="28">
         <label>src/Optimizer/ErrorTermBase.h</label>
         <link refid="_error_term_base_8h_source"/>
+        <childnode refid="22" relation="include">
+        </childnode>
       </node>
       <node id="26">
         <label>src/Optimizer/SparseBlockMatrix.h</label>
@@ -180,6 +182,10 @@
         <childnode refid="8" relation="include">
         </childnode>
       </node>
+      <node id="29">
+        <label>src/Optimizer/ErrorTermValidator.h</label>
+        <link refid="_error_term_validator_8h_source"/>
+      </node>
       <node id="19">
         <label>src/Optimizer/Key.h</label>
         <link refid="_key_8h_source"/>
@@ -190,6 +196,8 @@
         <childnode refid="27" relation="include">
         </childnode>
         <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
         </childnode>
         <childnode refid="21" relation="include">
         </childnode>
@@ -256,6 +264,8 @@
         <childnode refid="20" relation="include">
         </childnode>
         <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
         </childnode>
         <childnode refid="21" relation="include">
         </childnode>

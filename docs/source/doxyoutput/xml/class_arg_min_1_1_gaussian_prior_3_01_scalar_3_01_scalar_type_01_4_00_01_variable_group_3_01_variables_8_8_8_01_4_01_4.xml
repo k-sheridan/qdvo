@@ -139,28 +139,23 @@
         </inbodydescription>
         <location file="src/Optimizer/GaussianPrior.h" line="37" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="37" bodyend="45"/>
       </memberdef>
-      <memberdef kind="function" id="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename VariableType</type>
-          </param>
-        </templateparamlist>
+      <memberdef kind="function" id="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a0b05392bfdbab8b2d969254a30ff8786" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::removeVariable</definition>
-        <argsstring>(VariableKey&lt; VariableType &gt; &amp;removedKey)</argsstring>
-        <name>removeVariable</name>
+        <definition>void ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;::removeUnsedVariables</definition>
+        <argsstring>(VariableContainer&lt; Variables... &gt; &amp;variableContainer)</argsstring>
+        <name>removeUnsedVariables</name>
         <param>
-          <type><ref refid="class_arg_min_1_1_variable_key" kindref="compound">VariableKey</ref>&lt; VariableType &gt; &amp;</type>
-          <declname>removedKey</declname>
+          <type><ref refid="class_arg_min_1_1_variable_container" kindref="compound">VariableContainer</ref>&lt; Variables... &gt; &amp;</type>
+          <declname>variableContainer</declname>
         </param>
         <briefdescription>
-<para>Removes a variable from the. </para>
         </briefdescription>
         <detaileddescription>
+<para>Remove all variables from the gaussian prior which are not part of the given set of variables. This operation has a complexity of N^2 where N is the number of elements in a row. This is the worst case and will typically be much lower since the prior is typically very sparse. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/GaussianPrior.h" line="49" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="49" bodyend="52"/>
+        <location file="src/Optimizer/GaussianPrior.h" line="50" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="50" bodyend="94"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9370f7cbba1f7c86bf54e9550647cce8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -182,7 +177,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/GaussianPrior.h" line="56" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="56" bodyend="74"/>
+        <location file="src/Optimizer/GaussianPrior.h" line="98" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="98" bodyend="116"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a7cb82718b4f1d670bbd478960f7d9ecd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -200,7 +195,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/GaussianPrior.h" line="79" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="79" bodyend="110"/>
+        <location file="src/Optimizer/GaussianPrior.h" line="121" column="10" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="121" bodyend="152"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -227,7 +222,7 @@
         <link refid="class_arg_min_1_1_block_vector"/>
       </node>
     </collaborationgraph>
-    <location file="src/Optimizer/GaussianPrior.h" line="19" column="1" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="18" bodyend="111"/>
+    <location file="src/Optimizer/GaussianPrior.h" line="19" column="1" bodyfile="src/Optimizer/GaussianPrior.h" bodystart="18" bodyend="153"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1ac0c03b660e91cdd2082a909110126ee3" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>A0</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a561e9a2573e9133f960d4c130ad372e1" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>addVariable</name></member>
@@ -235,7 +230,7 @@
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9398a54e811cadc368f29752a0eb0e0f" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>BV</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1abc2f2afeda7cd15fe635218dd2d4cf5d" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>DefaultInverseVariance</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a3f9ccf958e85f7fd613e984e5f6528d4" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>GaussianPrior</name></member>
-      <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a528f8eb068a6eab8a43b98a9aa5244f3" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeVariable</name></member>
+      <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a0b05392bfdbab8b2d969254a30ff8786" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>removeUnsedVariables</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1aa912bb10d93962b8ce8e753b63f6b73b" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>SBM</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a8832574816dc1a2c42cad72c18b324ff" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>temporaryVector</name></member>
       <member refid="class_arg_min_1_1_gaussian_prior_3_01_scalar_3_01_scalar_type_01_4_00_01_variable_group_3_01_variables_8_8_8_01_4_01_4_1a9370f7cbba1f7c86bf54e9550647cce8" prot="public" virt="non-virtual"><scope>ArgMin::GaussianPrior&lt; Scalar&lt; ScalarType &gt;, VariableGroup&lt; Variables... &gt; &gt;</scope><name>update</name></member>

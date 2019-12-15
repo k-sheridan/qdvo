@@ -27,7 +27,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="86" column="4" bodyfile="src/Optimizer/Containers.h" bodystart="86" bodyend="-1"/>
+        <location file="src/Optimizer/Containers.h" line="101" column="4" bodyfile="src/Optimizer/Containers.h" bodystart="101" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-attrib">
@@ -43,7 +43,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="96" column="15" bodyfile="src/Optimizer/Containers.h" bodystart="96" bodyend="-1"/>
+        <location file="src/Optimizer/Containers.h" line="127" column="15" bodyfile="src/Optimizer/Containers.h" bodystart="127" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -64,7 +64,57 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Containers.h" line="90" column="17" bodyfile="src/Optimizer/Containers.h" bodystart="90" bodyend="93"/>
+        <location file="src/Optimizer/Containers.h" line="105" column="17" bodyfile="src/Optimizer/Containers.h" bodystart="105" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_error_term_container_1aa12471b1adaa322ef59288d54b45c7f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ErrorTermType</type>
+          </param>
+        </templateparamlist>
+        <type>ErrorTermType &amp;</type>
+        <definition>ErrorTermType&amp; ArgMin::ErrorTermContainer&lt; ErrorTerms &gt;::at</definition>
+        <argsstring>(const ErrorTermKey&lt; ErrorTermType &gt; &amp;key)</argsstring>
+        <name>at</name>
+        <param>
+          <type>const <ref refid="class_arg_min_1_1_error_term_key" kindref="compound">ErrorTermKey</ref>&lt; ErrorTermType &gt; &amp;</type>
+          <declname>key</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the variable by its key. <simplesect kind="return"><para>A reference to the value in the container. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Containers.h" line="113" column="18" bodyfile="src/Optimizer/Containers.h" bodystart="113" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_arg_min_1_1_error_term_container_1a9a8fe13deadd1a603d3a01d004f71eeb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename ErrorTermType</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_arg_min_1_1_error_term_key" kindref="compound">ErrorTermKey</ref>&lt; ErrorTermType &gt;</type>
+        <definition>ErrorTermKey&lt;ErrorTermType&gt; ArgMin::ErrorTermContainer&lt; ErrorTerms &gt;::insert</definition>
+        <argsstring>(const ErrorTermType &amp;errorTerm)</argsstring>
+        <name>insert</name>
+        <param>
+          <type>const ErrorTermType &amp;</type>
+          <declname>errorTerm</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Inserts an error term into the container. <simplesect kind="return"><para>The key refering to the error term in the container. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/Optimizer/Containers.h" line="121" column="17" bodyfile="src/Optimizer/Containers.h" bodystart="121" bodyend="124"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -72,10 +122,12 @@
     <detaileddescription>
 <para>Container for all error terms. </para>
     </detaileddescription>
-    <location file="src/Optimizer/Containers.h" line="83" column="1" bodyfile="src/Optimizer/Containers.h" bodystart="82" bodyend="97"/>
+    <location file="src/Optimizer/Containers.h" line="98" column="1" bodyfile="src/Optimizer/Containers.h" bodystart="97" bodyend="128"/>
     <listofallmembers>
+      <member refid="class_arg_min_1_1_error_term_container_1aa12471b1adaa322ef59288d54b45c7f2" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermContainer</scope><name>at</name></member>
       <member refid="class_arg_min_1_1_error_term_container_1a675a6bc072f2707ac5446283e567d76e" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermContainer</scope><name>ErrorTermMap</name></member>
       <member refid="class_arg_min_1_1_error_term_container_1a14bb0c5cd4d0f0e27216fc2add804679" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermContainer</scope><name>getErrorTermMap</name></member>
+      <member refid="class_arg_min_1_1_error_term_container_1a9a8fe13deadd1a603d3a01d004f71eeb" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermContainer</scope><name>insert</name></member>
       <member refid="class_arg_min_1_1_error_term_container_1adc2f88f6e506f41d383abbb1d62ba77c" prot="public" virt="non-virtual"><scope>ArgMin::ErrorTermContainer</scope><name>tupleOfErrorTermMaps</name></member>
     </listofallmembers>
   </compounddef>

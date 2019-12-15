@@ -38,6 +38,18 @@ Program Listing for File Containers.h
       }
    
       template <typename VariableType>
+      VariableType& at(const VariableKey<VariableType>& key)
+      {
+         return *(getVariableMap<VariableType>().at(key));
+      }
+   
+      template <typename VariableType>
+      void erase(VariableKey<VariableType>& key)
+      {
+         getVariableMap<VariableType>().erase(key);
+      }
+   
+      template <typename VariableType>
       bool variableExists(VariableKey<VariableType> key)
       {
          return getVariableMap<VariableType>().at(key) != getVariableMap<VariableType>().end();
@@ -90,6 +102,18 @@ Program Listing for File Containers.h
       ErrorTermMap<ErrorTermType> &getErrorTermMap()
       {
          return std::get<ErrorTermMap<ErrorTermType>>(tupleOfErrorTermMaps);
+      }
+   
+      template <typename ErrorTermType>
+      ErrorTermType& at(const ErrorTermKey<ErrorTermType>& key)
+      {
+         return *(getErrorTermMap<ErrorTermType>().at(key));
+      }
+   
+      template <typename ErrorTermType>
+      ErrorTermKey<ErrorTermType> insert(const ErrorTermType& errorTerm)
+      {
+         return getErrorTermMap<ErrorTermType>().insert(errorTerm);
       }
    
       std::tuple<ErrorTermMap<ErrorTerms>...> tupleOfErrorTermMaps;

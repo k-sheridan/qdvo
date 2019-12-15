@@ -44,6 +44,20 @@ public:
         return rowIt->second;
     }
 
+    /// Gets a block matrix reference from the matrix. If the block does not exist, it is inserted and set to zero.
+    /// @param rowKey key pointing to the row.
+    /// @param columnKey key pointing to the column.
+    template <typename RowType, typename ColType>
+    Eigen::Matrix<ScalarType, RowType::dimension, ColType::dimension>& getBlock(VariableKey<RowType> rowKey, VariableKey<ColType> colKey)
+    {
+        // Add a row to the sbm.
+        auto& row = addRowIfItDoesNotExist(rowKey);
+
+        auto result = row.template getVariableMap<ColType>().insert(std::make_pair(colKey, Eigen::Matrix<ScalarType, RowType::dimension, ColType::dimension>::Zero()));
+
+        return result.first->second;
+    }
+
     /// Inserts or assigns a block at the given keys.
     template <typename RowType, typename ColType>
     void setBlock(VariableKey<RowType> rowKey, VariableKey<ColType> colKey, const Eigen::Matrix<ScalarType, RowType::dimension, ColType::dimension>& blockMatrix)

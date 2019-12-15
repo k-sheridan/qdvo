@@ -19,10 +19,10 @@
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
-      <memberdef kind="function" id="class_arg_min_1_1_simple_scalar_1afd7a75d258d8bb3a92a3369b99154d28" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_arg_min_1_1_simple_scalar_1a253f06ea7074e2188b90ac1c56bc4768" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>ArgMin::SimpleScalar::SimpleScalar</definition>
-        <argsstring>()</argsstring>
+        <argsstring>()=default</argsstring>
         <name>SimpleScalar</name>
         <briefdescription>
         </briefdescription>
@@ -30,7 +30,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Variables/SimpleScalar.h" line="14" column="5" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="14" bodyend="16"/>
+        <location file="src/Optimizer/Variables/SimpleScalar.h" line="14" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_simple_scalar_1a074cd5307f770ce96e428368baaf6973" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -47,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Variables/SimpleScalar.h" line="18" column="5" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="18" bodyend="20"/>
+        <location file="src/Optimizer/Variables/SimpleScalar.h" line="16" column="5" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="16" bodyend="18"/>
       </memberdef>
       <memberdef kind="function" id="class_arg_min_1_1_simple_scalar_1a5d1ebf2018d3d7d1ea847a545e50b9a5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -64,7 +64,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/Optimizer/Variables/SimpleScalar.h" line="22" column="10" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="22" bodyend="25"/>
+        <location file="src/Optimizer/Variables/SimpleScalar.h" line="20" column="10" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="20" bodyend="23"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -95,10 +95,11 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/Optimizer/Variables/SimpleScalar.h" line="9" column="1" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="8" bodyend="26"/>
+    <location file="src/Optimizer/Variables/SimpleScalar.h" line="9" column="1" bodyfile="src/Optimizer/Variables/SimpleScalar.h" bodystart="8" bodyend="24"/>
     <listofallmembers>
       <member refid="class_arg_min_1_1_optimizable_variable_1a2717294aa87b6def4cf283fb441b1ab8" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>dimension</name></member>
-      <member refid="class_arg_min_1_1_simple_scalar_1afd7a75d258d8bb3a92a3369b99154d28" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>SimpleScalar</name></member>
+      <member refid="class_arg_min_1_1_optimizable_variable_1a9a6868c01747a23197d461776ab461b5" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>scalar_type</name></member>
+      <member refid="class_arg_min_1_1_simple_scalar_1a253f06ea7074e2188b90ac1c56bc4768" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>SimpleScalar</name></member>
       <member refid="class_arg_min_1_1_simple_scalar_1a074cd5307f770ce96e428368baaf6973" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>SimpleScalar</name></member>
       <member refid="class_arg_min_1_1_simple_scalar_1a5d1ebf2018d3d7d1ea847a545e50b9a5" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>update</name></member>
       <member refid="class_arg_min_1_1_simple_scalar_1a82f3d474b55c8484cd0e173926357192" prot="public" virt="non-virtual"><scope>ArgMin::SimpleScalar</scope><name>value</name></member>

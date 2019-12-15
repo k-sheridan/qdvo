@@ -82,7 +82,7 @@ public:
     /**
      * O(1)
      */
-    void erase(KeyType &key)
+    void erase(const KeyType &key)
     {
         // check if there are enough slots
         if (slots.size() < key.index)
@@ -178,6 +178,23 @@ public:
     size_t size() const
     {
         return data.size();
+    }
+
+    /**
+     * O(n)
+     * Removes all data stored in this slot array.
+     */
+    void clear()
+    {
+        // Delete all data, but keep the memory.
+        data.clear();
+        dataToSlotIndex.clear();
+
+        // Free all slots.
+        for (auto& slot : slots)
+        {
+            slot.free = true;
+        }
     }
 
     /**

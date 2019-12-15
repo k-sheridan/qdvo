@@ -23,9 +23,7 @@ Program Listing for File SimpleScalar.h
    
        double value;
    
-       SimpleScalar()
-       {
-       }
+       SimpleScalar() = default;
    
        SimpleScalar(double val) : value(val)
        {

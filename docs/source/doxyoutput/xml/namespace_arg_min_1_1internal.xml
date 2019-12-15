@@ -2,6 +2,8 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="namespace_arg_min_1_1internal" kind="namespace" language="C++">
     <compoundname>ArgMin::internal</compoundname>
+    <innerclass refid="struct_arg_min_1_1internal_1_1errorterm__validator__helper" prot="public">ArgMin::internal::errorterm_validator_helper</innerclass>
+    <innerclass refid="struct_arg_min_1_1internal_1_1errorterm__validator__helper_3_01std_1_1tuple_3_01_variable_key_3_01_t_01_4_8_8_8_01_4_01_4" prot="public">ArgMin::internal::errorterm_validator_helper&lt; std::tuple&lt; VariableKey&lt; T &gt;... &gt; &gt;</innerclass>
     <innerclass refid="struct_arg_min_1_1internal_1_1_index" prot="public">ArgMin::internal::Index</innerclass>
     <innerclass refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_t_00_01_types_8_8_8_01_4_01_4" prot="public">ArgMin::internal::Index&lt; T, std::tuple&lt; T, Types... &gt; &gt;</innerclass>
     <innerclass refid="struct_arg_min_1_1internal_1_1_index_3_01_t_00_01std_1_1tuple_3_01_u_00_01_types_8_8_8_01_4_01_4" prot="public">ArgMin::internal::Index&lt; T, std::tuple&lt; U, Types... &gt; &gt;</innerclass>
@@ -83,6 +85,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="src/Optimizer/MetaHelpers.h" line="27" column="18"/>
+    <location file="src/Optimizer/ErrorTermValidator.h" line="11" column="1"/>
   </compounddef>
 </doxygen>

@@ -163,6 +163,19 @@ Program Listing for File SlotArray.h
            return data.size();
        }
    
+       void clear()
+       {
+           // Delete all data, but keep the memory.
+           data.clear();
+           dataToSlotIndex.clear();
+   
+           // Free all slots.
+           for (auto& slot : slots)
+           {
+               slot.free = true;
+           }
+       }
+   
        KeyType getKeyFromDataIndex(size_t dataIndex) const 
        {
            assert(dataIndex < dataToSlotIndex.size());

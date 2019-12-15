@@ -7,6 +7,7 @@
     <includedby refid="_block_vector_8h" local="yes">src/Optimizer/BlockVector.h</includedby>
     <includedby refid="_containers_8h" local="yes">src/Optimizer/Containers.h</includedby>
     <includedby refid="_error_term_base_8h" local="yes">src/Optimizer/ErrorTermBase.h</includedby>
+    <includedby refid="_error_term_validator_8h" local="yes">src/Optimizer/ErrorTermValidator.h</includedby>
     <includedby refid="_gaussian_prior_8h" local="yes">src/Optimizer/GaussianPrior.h</includedby>
     <includedby refid="_marginalizer_8h" local="yes">src/Optimizer/Marginalizer.h</includedby>
     <includedby refid="_p_s_d_schur_solver_8h" local="yes">src/Optimizer/PSDSchurSolver.h</includedby>
@@ -28,6 +29,8 @@
       <node id="13">
         <label>src/Optimizer/ErrorTermBase.h</label>
         <link refid="_error_term_base_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="11">
         <label>src/Optimizer/SparseBlockMatrix.h</label>
@@ -55,6 +58,8 @@
         <childnode refid="12" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
@@ -97,6 +102,10 @@
         <label>src/Optimizer/Marginalizer.h</label>
         <link refid="_marginalizer_8h_source"/>
       </node>
+      <node id="14">
+        <label>src/Optimizer/ErrorTermValidator.h</label>
+        <link refid="_error_term_validator_8h_source"/>
+      </node>
       <node id="3">
         <label>src/Pipeline/BasicPipeline.h</label>
         <link refid="_basic_pipeline_8h_source"/>
@@ -119,6 +128,8 @@
         <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>

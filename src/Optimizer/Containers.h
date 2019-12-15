@@ -115,6 +115,14 @@ public:
       return *(getErrorTermMap<ErrorTermType>().at(key));
    }
 
+   /// Erases an error term from the container.
+   /// @param key error term key which will be removed.
+   template <typename ErrorTermType>
+   void erase(const ErrorTermKey<ErrorTermType>& key)
+   {
+      (getErrorTermMap<ErrorTermType>().erase(key));
+   }
+
    /// Inserts an error term into the container.
    /// @return The key refering to the error term in the container.
    template <typename ErrorTermType>
