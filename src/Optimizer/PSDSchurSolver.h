@@ -534,6 +534,11 @@ public:
             }
         });
 
+        if (nErrorTerms == 0)
+        {
+            SPDLOG_WARN("There are no error terms to build the problem with. Expect a nan average error.");
+        }
+
         return whitenedSqError / nErrorTerms;
     }
 

@@ -393,14 +393,22 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
 
     // Solve and verify the host and target key poses.
     spdlog::set_level(spdlog::level::trace);
+    prior.removeUnsedVariables(variableContainer);
     result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
     std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
     EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
     EXPECT_NEAR((previousHostValue.inverse() * variableContainer.at(hostKey).value).log().norm(), 0, 1e-6);
     EXPECT_NEAR((previousTargetValue.inverse() * variableContainer.at(targetKey).value).log().norm(), 0, 1e-6);
 
-    //EXPECT_TRUE(marginalizer.marginalizeVariable(hostKey, prior, errorTermContainer, VariableGroup<ArgMin::InverseDepth>()));
-    //variableContainer.erase(hostKey);
+    // Marginalize the target pose while ignoring Inverse Depth correlations.
+    EXPECT_TRUE(marginalizer.marginalizeVariable(hostKey, prior, errorTermContainer, VariableGroup<ArgMin::InverseDepth>()));
+    variableContainer.erase(hostKey);
+
+    prior.removeUnsedVariables(variableContainer);
+    result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+    std::cout << "Iterations: " << result.whitenedSqError.size() << " final error: " << result.whitenedSqError.back() << " solver dimension: " << solver.totalDimension << std::endl;
+    EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
+    EXPECT_NEAR((previousHostValue.inverse() * variableContainer.at(hostKey).value).log().norm(), 0, 1e-6);
 
 }
 
