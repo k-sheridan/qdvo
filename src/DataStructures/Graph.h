@@ -28,11 +28,6 @@ class Graph
 {
 public:
 
-    using KeyframeMap = ArgMin::SlotMap<std::unique_ptr<Frame>>;
-    using CameraModelMap = ArgMin::SlotMap<std::pair<std::unique_ptr<CameraModel>, QDVO::SE3>>;
-    using LandmarkMap = ArgMin::SlotMap<Landmark>;
-    using ExtrinsicMap = ArgMin::SlotMap<QDVO::SE3>;
-
     Graph();
 
     /// Inserts a camera into QDVO.

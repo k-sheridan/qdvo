@@ -13,8 +13,8 @@ public:
     using index_type = size_t;
     using generation_type = size_t;
 
-    index_type index;
-    generation_type generation;
+    index_type index = std::numeric_limits<index_type>::max();
+    generation_type generation = 0;
 
     void setInvalid()
     {
@@ -31,6 +31,12 @@ template <typename T>
 struct TypedSlotMapKey : public SlotMapKeyBase {
     /// A compile time helper to get the variable type of this key.
     typedef T variable_type;
+
+    /// Compares two keys by their index and generation.
+    bool operator==(const TypedSlotMapKey<T> &other) const
+    {
+        return this->index == other.index && this->generation == other.generation;
+    }
 };
 
 /**
@@ -220,6 +226,46 @@ public:
     size_t size() const
     {
         return data.size();
+    }
+
+    /**
+     * O(1)
+     * 
+     * Increments the generation of a slot to invalidate all previously returned keys.
+     * The key must be a valid key, otherwise an invalid key is returned.
+     * 
+     * Equivalent to:
+     * data = at(key1);
+     * erase(key1);
+     * key2 = insert(data);
+     */
+    KeyType updateSlotGeneration(const KeyType& key)
+    {
+        // check if there are enough slots
+        if (slots.size() <= key.index)
+        {
+            return KeyType();
+        }
+
+        auto &slot = slots.at(key.index);
+
+        // check if the generations match
+        if (slot.generation != key.generation)
+        {
+            return KeyType();
+        }
+
+        if (slot.free)
+        {
+            return KeyType();
+        }
+
+        KeyType newKey = key;
+
+        ++slot.generation;
+        newKey.generation = slot.generation;
+
+        return newKey;
     }
 
     /**

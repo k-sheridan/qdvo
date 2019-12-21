@@ -1,6 +1,9 @@
 #pragma once
 
 #include "DataStructures/Graph.h"
+#include "DataStructures/Landmark.h"
+#include "DataStructures/Frame.h"
+#include "CameraModel.hpp"
 #include "Optimizer/SSEOptimizer.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/MetaHelpers.h"

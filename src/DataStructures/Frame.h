@@ -5,7 +5,7 @@
 #include "IMUState.h"
 #include "CameraModel.hpp"
 #include "Landmark.h"
-#include "Graph.h"
+#include "Types.h"
 #include "ImagePyramid.h"
 #include "CorrespondenceDistribution.h"
 #include "Optimizer/SlotMap.h"
@@ -18,10 +18,10 @@ public:
     Frame();
 
     /// Stores a key to the camera model used for projecting points into the frame.
-    Graph::CameraModelMap::key_type cameraModelKey;
+    CameraModelMap::key_type cameraModelKey;
 
     /// A key pointing the the imu to camera transform for this frame.
-    Graph::ExtrinsicMap::key_type extrinsicKey;
+    ExtrinsicMap::key_type extrinsicKey;
 
     /// Stores the state of this frame.
     IMUState imustate;
@@ -30,7 +30,7 @@ public:
     ImagePyramid imagePyr;
 
     /// Array of keys to landmarks hosted in this frame.
-    std::vector<Graph::LandmarkMap::key_type> landmarkKeys; 
+    std::vector<LandmarkMap::key_type> landmarkKeys; 
 
     /**
      * A preallocated array of correspondence distributions for this frame.

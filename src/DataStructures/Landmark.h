@@ -2,7 +2,7 @@
 
 #include "GlobalDefinitions.h"
 #include "EpipolarDepthEstimator.h"
-#include "Graph.h"
+#include "Types.h"
 #include <Eigen/Core>
 
 namespace  QDVO {
@@ -20,7 +20,7 @@ public:
     SCALAR_TYPE dinv;
 
     /// The key to the parent frame which this landmark is represented in.
-    Graph::KeyframeMap::key_type parentFrameKey;
+    KeyframeMap::key_type parentFrameKey;
 
     /// A depth estimator used to initialize the depth of this landmark.
     EpipolarDepthEstimator depthEstimator;
