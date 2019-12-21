@@ -1,11 +1,10 @@
-#ifndef CORRESPONDENCEDISTRIBUTION_H
-#define CORRESPONDENCEDISTRIBUTION_H
+#pragma once
 
 #include <unordered_set>
-#include "GlobalDefinitions.h"
 #include <algorithm>
 #include <memory>
-#include <deque>
+#include <vector>
+#include "GlobalDefinitions.h"
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
 #include "Patch.h"
@@ -14,6 +13,7 @@
 namespace QDVO {
 
 class Frame;
+class CameraModel;
 class PatchComparer;
 
 /**
@@ -34,27 +34,26 @@ public:
 
     /// The warped template patch to be used for the creation of the correspondence distribution.
     Patch warpedPatch;
-    /// a pointer to the frame which the patch should be compared to.
-    QDVO::Frame* framePtr = nullptr;
 
     /// Serves as a method for finding nearest neighbors.
     SpatialMap<PotentialCorrespondence> correspondenceMap;
+
     /// Is this correspondence distribution currently not being used.
     bool dormant = true; 
 
 
 
-    CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> patternPtr, QDVO::Frame* framePtr);
+    CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> patternPtr);
 
     /**
      * Will perform an initial radial search for potential correspondences to get an idea of the structure of the raw patch comparison function.
      */
-    void initializeDistribution(const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
+    void initializeDistribution(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
 
     /**
      * Efficiently evaluates the gradient of the negative log likelihood of the gaussian mixture model described by this class.
      */
-    Eigen::Matrix<SCALAR_TYPE, 2, 1> computeResidual(const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
+    Eigen::Matrix<SCALAR_TYPE, 2, 1> computeResidual(CameraModel& cameraModel, Frame& frame, const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
 
     /**
      * clears all potential correspondences while retaining allocated memory, and sets the correspondence distribution into a dormant state.
@@ -67,7 +66,7 @@ private:
     /**
      * does a radial search while evaluating the patch comparison metric
      */
-    std::vector<PotentialCorrespondence*> search(const Eigen::Vector2i& centerPixel, const unsigned searchRadius, bool minimalSearch);
+    std::vector<PotentialCorrespondence*> search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i& centerPixel, const unsigned searchRadius, bool minimalSearch);
 
     // pre-allocated quantities.
     std::vector<SCALAR_TYPE> expScoreArray;
@@ -82,5 +81,3 @@ private:
 
 
 }
-
-#endif // CORRESPONDENCEDISTRIBUTION_H

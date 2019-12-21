@@ -8,19 +8,19 @@ QDVO::BasicPipeline::BasicPipeline()
 void QDVO::BasicPipeline::initialize()
 {
     // precompute the radial search pattern LUT
-    this->radialSearchPatternPtr = std::shared_ptr<RadialSearchPattern>(new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
+    this->radialSearchPatternPtr = std::make_shared<RadialSearchPattern>(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS);
 
     // create the patch warper
-    this->patchWarper = std::unique_ptr<QDVO::PatchWarper>(new QDVO::PatchWarper());
+    this->patchWarper = std::make_unique<QDVO::PatchWarper>();
 
     std::cout << "Computed radial search pattern" << std::endl;
 
     // create current frame
-    this->graph.getCurrentFrame() = std::unique_ptr<QDVO::Frame>(new Frame());
+    this->graph.getCurrentFrame() = std::make_unique<QDVO::Frame>();
     std::cout << "Allocated current frame" << std::endl;
 
     // create a feature detector
-    this->featureDetector = std::unique_ptr<QDVO::FeatureDetector>(new QDVO::FeatureDetector());
+    this->featureDetector = std::make_unique<QDVO::FeatureDetector>();
     std::cout << "Created a new feature detector" << std::endl;
 }
 

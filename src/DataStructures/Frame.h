@@ -1,11 +1,14 @@
 #pragma once
 
 #include <opencv2/core.hpp>
+#include <deque>
 #include "IMUState.h"
 #include "CameraModel.hpp"
 #include "Landmark.h"
+#include "Graph.h"
 #include "ImagePyramid.h"
 #include "CorrespondenceDistribution.h"
+#include "Optimizer/SlotMap.h"
 
 namespace QDVO
 {
@@ -14,18 +17,31 @@ class Frame
 public:
     Frame();
 
-    ID_TYPE camID, frameID; // camid: the id of the camera this frame is asociated to. frameID: the unique sequential id of this frame.
+    /// Stores a key to the camera model used for projecting points into the frame.
+    Graph::CameraModelMap::key_type cameraModelKey;
 
-    IMUState imustate; // stores the state of the frame.
+    /// A key pointing the the imu to camera transform for this frame.
+    Graph::ExtrinsicMap::key_type extrinsicKey;
 
-    ImagePyramid imagePyr; // holds the actual image for this frame.
+    /// Stores the state of this frame.
+    IMUState imustate;
 
-    CameraModel *cm = nullptr; // pointer to the global camera model for this frame.
+    /// Stores the image measurement for this frame.
+    ImagePyramid imagePyr;
 
-    std::vector<Landmark> landmarks; // array of landmarks hosted in this frame. ID's should be ordered and landmarks should never be deleted.
+    /// Array of keys to landmarks hosted in this frame.
+    std::vector<Graph::LandmarkMap::key_type> landmarkKeys; 
 
+    /**
+     * A preallocated array of correspondence distributions for this frame.
+     * This array should never be shrunk. the correspondence distributions can be uninitialized though.
+     */
+    std::deque<CorrespondenceDistribution> correspondenceDistributions;
+
+    /// Flag to mark whether the frame has ever been setup.
     bool initialized = false;
 
+    /// enum representing the state of this frame.
     enum FrameStatus
     {
         INACTIVE,
@@ -37,9 +53,7 @@ public:
 
     int maxIntensity() { return this->maxImageIntensity; }
 
-    Landmark &getLandmark(QDVO::ID landmarkID) { return landmarks.at(landmarkID - 1); }
-
-    /*
+    /**
      * resets all members of this frame while leaving the memory used by them allocated.
      */
     void reset();
@@ -53,13 +67,8 @@ public:
         }
     }
 
-    /*
-     * a preallocated array of correspondence distributions for this frame.
-     * This array should never be shrunk. the correspondence distributions can be uninitialized though.
-     */
-    std::deque<CorrespondenceDistribution> correspondenceDistributions;
-
 private:
+    /// The maximum value any element in the image can be.
     int maxImageIntensity;
 };
 

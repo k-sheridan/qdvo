@@ -27,10 +27,16 @@ public:
     }
 };
 
+template <typename T>
+struct TypedSlotMapKey : public SlotMapKeyBase {
+    /// A compile time helper to get the variable type of this key.
+    typedef T variable_type;
+};
+
 /**
  * This is a slot map as defined by allan deutsch.
  */
-template <typename DataType, typename KeyType>
+template <typename DataType, typename KeyType = TypedSlotMapKey<DataType>>
 class SlotMap
 {
 
@@ -51,6 +57,9 @@ class SlotMap
     std::vector<size_t> dataToSlotIndex; // vector which points data to its slot index.
 
 public:
+    typedef KeyType key_type;
+    typedef DataType data_type;
+
     SlotMap()
     {
     }
@@ -84,7 +93,7 @@ public:
         slot.dataIndex = data.size();
 
         // push a new data member to the back of the data arrays.
-        data.push_back(value);
+        data.push_back(std::move(value));
         dataToSlotIndex.push_back(slotIndex);
 
         // setup key.

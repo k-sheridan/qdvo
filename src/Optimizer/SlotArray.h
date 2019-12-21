@@ -65,7 +65,7 @@ public:
             slot.dataIndex = data.size();
 
             // push a new data member to the back of the data arrays.
-            data.push_back(value);
+            data.push_back(std::move(value));
             dataToSlotIndex.push_back(slotIndex);
 
             return InsertResult::SUCCESS_NO_OVERWRITE;

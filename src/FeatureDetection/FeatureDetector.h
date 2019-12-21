@@ -3,8 +3,6 @@
 #include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include "DataStructures/Feature.h"
-#include "DataStructures/Frame.h"
 #include <algorithm>
 
 
@@ -20,6 +18,10 @@
 #define SPATIAL_MASK_RADIUS 6
 
 namespace  QDVO {
+
+class Frame;
+class Feature;
+
 class FeatureDetector
 {
 public:
@@ -41,10 +43,12 @@ public:
     };
 
 private:
-    cv::Mat dx, dy; // preallocated containers for the image gradients.
-    cv::Mat dxdx, dydy, dxdy; // preallocated containers for structure tensors.
-
-    cv::Mat spatialMask; // used to ensure no two features are too close to each other.
+    /// preallocated containers for the image gradients.
+    cv::Mat dx, dy; 
+    /// preallocated containers for structure tensors.
+    cv::Mat dxdx, dydy, dxdy;
+    /// used to ensure no two features are too close to each other.
+    cv::Mat spatialMask; 
 };
 }
 

@@ -1,12 +1,15 @@
 #include "FeatureDetector.h"
 
+#include "DataStructures/Frame.h"
+#include "DataStructures/Feature.h"
+
 QDVO::FeatureDetector::FeatureDetector()
 {
 
 }
 
 
-std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(Frame& frame, const int level)
+std::vector<QDVO::Feature> QDVO::FeatureDetector::detectFeatures(QDVO::Frame& frame, const int level)
 {
     cv::Mat image = frame.imagePyr.getImage(level).toOpenCVImage();
 

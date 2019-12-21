@@ -13,8 +13,6 @@
 #define RETIK startT = std::chrono::high_resolution_clock::now();
 #define RETOK endT = std::chrono::high_resolution_clock::now(); diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
 
-#define ID_TYPE uint64_t
-
 // configurable
 
 // the number of keyframes used in the sliding window estimator

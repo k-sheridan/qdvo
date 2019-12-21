@@ -1,40 +1,11 @@
 #include "Graph.h"
 
+#include "Landmark.h"
+#include "Frame.h"
+#include "CameraModel.hpp"
+
 QDVO::Graph::Graph()
 {
-}
-
-std::unique_ptr<QDVO::Frame> &QDVO::Graph::getCurrentFrame()
-{
-    return (this->currentFrame);
-}
-
-std::unique_ptr<QDVO::CameraModel> &QDVO::Graph::getCameraModel(const ID_TYPE cameraID)
-{
-    return (this->cameraModelMap.at(cameraID));
-}
-
-QDVO::SE3 QDVO::Graph::getExtrinsic(const ID_TYPE cameraID)
-{
-    assert(this->extrinsicSet.count(cameraID));
-    return this->extrinsicSet.at(cameraID);
-}
-
-std::unique_ptr<QDVO::Frame> &QDVO::Graph::getKeyframe(const ID_TYPE keyframeID)
-{
-    return (this->keyframeSet.at(keyframeID));
-}
-
-std::unique_ptr<QDVO::Frame> &QDVO::Graph::getFrame(const ID_TYPE frameID)
-{
-    if (this->currentFrame->frameID == frameID)
-    {
-        return this->currentFrame;
-    }
-    else
-    {
-        return this->getKeyframe(frameID);
-    }
 }
 
 void QDVO::Graph::moveCurrentFrameIntoNewKeyframePosition()
@@ -80,28 +51,6 @@ void QDVO::Graph::moveCurrentFrameIntoKeyframePosition()
         // there is enough room to make a new keyframe.
         this->moveCurrentFrameIntoNewKeyframePosition();
     }
-}
-
-ID_TYPE QDVO::Graph::getNewFrameID()
-{
-    ID_TYPE highestFrameID = 0;
-    for (auto &e : this->keyframeSet)
-    {
-        assert(e.first == e.second->frameID);
-        if (e.second->frameID > highestFrameID)
-        {
-            highestFrameID = e.second->frameID;
-        }
-    }
-
-    if (this->currentFrame->frameID > highestFrameID)
-    {
-        highestFrameID = this->currentFrame->frameID;
-    }
-
-    assert(highestFrameID + 1 > 0);
-
-    return highestFrameID + 1;
 }
 
 std::vector<std::tuple<QDVO::Landmark *, QDVO::Vector2>> QDVO::Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly, bool includeCurrentFrameLandmarks)

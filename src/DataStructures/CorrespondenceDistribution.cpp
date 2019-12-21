@@ -1,20 +1,20 @@
 #include "CorrespondenceDistribution.h"
+#include "Patch.h"
 #include "PatchComparer.h"
 #include <algorithm>
 
-QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> patternPtr, QDVO::Frame *framePtr)
+QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> searchPattern)
 {
     this->correspondenceMap = QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
-    this->radialSearchPattern = std::shared_ptr<const RadialSearchPattern>(patternPtr);
-    this->framePtr = framePtr;
+    this->radialSearchPattern = std::move(searchPattern);
 }
 
-QDVO::Vector2 QDVO::CorrespondenceDistribution::computeResidual(const QDVO::Vector2 &px_0)
+QDVO::Vector2 QDVO::CorrespondenceDistribution::computeResidual(CameraModel& cameraModel, Frame& frame, const QDVO::Vector2 &px_0)
 {
     assert(!this->dormant);
 
     // Look for the closest potential correspondences approximately under a certain radius using the generic quadtree. While looking compute the gaussians
-    std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(Eigen::Vector2i(px_0(0), px_0(1)), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, true);
+    std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, Eigen::Vector2i(px_0(0), px_0(1)), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, true);
 
     // compute the gaussian weights and residual finally
     errorArray.resize(pcs.size());
@@ -51,19 +51,19 @@ void QDVO::CorrespondenceDistribution::reset()
     this->correspondenceMap.reset(); // wipe the actual distribution container clean.
 }
 
-void QDVO::CorrespondenceDistribution::initializeDistribution(const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch)
+void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch)
 {
     this->dormant = false; // set the distribution to awake.
 
     this->warpedPatch = warpedPatch; // replace the patch
 
-    this->patchComparer = std::shared_ptr<QDVO::PatchComparer>(patchComparerPtr); // set a new patch comparer for this distribution
+    this->patchComparer = std::move(patchComparer); // set a new patch comparer for this distribution
 
     // perform the search
-    std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(centerPixel, floodRadius, false);
+    std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, centerPixel, floodRadius, false);
 }
 
-std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)
+std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)
 {
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> influentialPotentialCorrespondences;
     bool firstInfluentialPotentialCorrespondenceFound = false;
@@ -87,7 +87,7 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::C
             Eigen::Vector2i testPoint = centerPixel + delta; // this is a point on a constant radius.
 
             // Make sure that this testPoint Is On The Image.
-            if (!this->framePtr->cm->isPixelOnImage(testPoint))
+            if (!cameraModel.isPixelOnImage(testPoint))
             {
                 continue;
             }
@@ -98,7 +98,7 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::C
             if (!pc->initialized)
             {
                 // try to compare the patch at the testPoint.
-                auto score = this->patchComparer->compare(this->warpedPatch, *(this->framePtr), testPoint);
+                auto score = this->patchComparer->compare(this->warpedPatch, frame, testPoint);
 
                 // Add the score to the distribution
                 if(score.has_value())

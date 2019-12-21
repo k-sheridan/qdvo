@@ -7,7 +7,6 @@
 namespace QDVO
 {
 
-using ID = ID_TYPE;
 using Scalar = SCALAR_TYPE;
 using SE3 = Sophus::SE3<Scalar>;
 using SO3 = Sophus::SO3<Scalar>;
