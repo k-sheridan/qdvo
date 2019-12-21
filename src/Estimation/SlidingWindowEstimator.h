@@ -12,6 +12,7 @@ namespace QDVO {
 class SlidingWindowEstimator
 {
 public:
+
     SlidingWindowEstimator();
 
     void run(QDVO::Graph& graph);
@@ -20,7 +21,6 @@ public:
 
     void runMarginalizationStrategy(QDVO::Graph& graph);
 
-    ArgMin::SSEOptimizer<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3>, ArgMin::ErrorTermGroup<ArgMin::SE3>> optimizer;
 };
 
 } // namespace QDVO

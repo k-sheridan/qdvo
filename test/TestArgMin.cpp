@@ -67,16 +67,7 @@ public:
 
 TEST(ArgMin, Basic)
 {
-    SE3 pose;
-    InverseDepth zinv;
-
-    // Create an optimizer.
-
-    ArgMin::SSEOptimizer<Scalar<double>, ArgMin::VariableGroup<SE3, InverseDepth>, ArgMin::ErrorTermGroup<DifferenceErrorTerm>> optimizer;
-
-    // Add some variables
-    ArgMin::VariableKey<SE3> se3Key = optimizer.addVariable(pose);
-    VariableKey<InverseDepth> dinvKey = optimizer.addVariable(zinv);
+    
 }
 
 TEST(ArgMin, SparseBlockRowOperations)

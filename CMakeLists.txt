@@ -58,6 +58,9 @@ add_subdirectory(test)
 # benchmark
 add_subdirectory(bench)
 
+# visualization
+add_subdirectory(src/visualizer)
+
 # Installation
 
 include(GNUInstallDirs)

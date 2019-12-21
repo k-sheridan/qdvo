@@ -8,7 +8,7 @@
 
 namespace QDVO {
 
-/*
+/**
  * This datastructure is a series of nested hash tables where keys are guaranteed not to collide.
  * It provides nearly instantaneous access of the elements within the table.
  *

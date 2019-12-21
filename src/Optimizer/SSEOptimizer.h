@@ -1,9 +1,8 @@
 #pragma once
 
-#include "MetaHelpers.h"
-#include "Key.h"
-#include "Containers.h"
-#include "GaussianPrior.h"
+#include "Optimizer/MetaHelpers.h"
+#include "Optimizer/Key.h"
+#include "Optimizer/Containers.h"
 
 namespace ArgMin
 {
@@ -11,8 +10,8 @@ namespace ArgMin
 template <typename...>
 class SSEOptimizer;
 
-template <typename ScalarType, typename... Variables, typename... ErrorTerms>
-class SSEOptimizer<Scalar<ScalarType>, VariableGroup<Variables...>, ErrorTermGroup<ErrorTerms...>>
+template <typename ScalarType, typename Solver, typename Prior, typename Marginalizer, typename... Variables, typename... ErrorTerms>
+class SSEOptimizer<Scalar<ScalarType>, Solver, Prior, Marginalizer, VariableGroup<Variables...>, ErrorTermGroup<ErrorTerms...>>
 {
 public:
     /// Inserts a variable into the optimizer.
@@ -43,7 +42,7 @@ public:
     {
         variables.template getVariableMap<VariableType>().erase(key);
 
-        // TODO erase the variables from the sparse prior.
+        
     }
 
     /// Adds error term to the problem.
@@ -66,12 +65,22 @@ public:
         assert(false);
     }
 
-    /// Containers for both variables and error terms.
+    /// Variable container.
     VariableContainer<Variables...> variables;
+
+    /// Error term container.
     ErrorTermContainer<ErrorTerms...> errorTerms;
 
-    /// Gaussian Prior
-    GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> prior;
+    /// Prior
+    Prior prior;
+
+    /// Marginalizer
+    Marginalizer marginalizer;
+
+    /// Solver
+    Solver solver;
+
+
 };
 
 } //namespace ArgMin

@@ -2,10 +2,10 @@
 #include "PatchComparer.h"
 #include <algorithm>
 
-QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<RadialSearchPattern> patternPtr, QDVO::Frame *framePtr)
+QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> patternPtr, QDVO::Frame *framePtr)
 {
     this->correspondenceMap = QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
-    this->radialSearchPattern = std::shared_ptr<RadialSearchPattern>(patternPtr);
+    this->radialSearchPattern = std::shared_ptr<const RadialSearchPattern>(patternPtr);
     this->framePtr = framePtr;
 }
 
