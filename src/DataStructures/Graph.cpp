@@ -8,10 +8,13 @@ namespace QDVO {
 
 Graph::Graph()
 {
+    currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
+    std::cout << "Initialized current frame." << std::endl;
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition()
 {
+    std::unique_ptr<Frame>& currentFrame = getCurrentFrame();
     assert(currentFrame->status == Frame::FrameStatus::ACTIVE);
     assert(keyframes.size() <= N_KEYFRAMES);
 
@@ -25,22 +28,24 @@ void Graph::moveCurrentFrameIntoNewKeyframePosition()
     newKeyframe->cameraModelKey = currentFrame->cameraModelKey;
 
     // swap the current frame into its new spot.
-    newKeyframe.swap(currentFrame);
+    currentFrameKey = newKeyframeKey;
+
 }
 
 void Graph::moveCurrentFrameIntoMarginalizedKeyframePosition(const KeyframeMap::key_type marginalizedKeyframeKey)
 {
+    auto& currentFrame = getCurrentFrame();
     assert(currentFrame->status == Frame::FrameStatus::MARGINALIZED);
 
     auto& keyframe = *(keyframes.at(marginalizedKeyframeKey));
 
     assert(keyframe->status == Frame::FrameStatus::MARGINALIZED);
 
-    keyframe.swap(currentFrame);
-
     // update the slot generation.
-    auto newKey = keyframes.updateSlotGeneration(marginalizedKeyframeKey);
+    auto newKey = keyframes.updateSlotGeneration(currentFrameKey);
     assert(!newKey.isInvalid());
+
+    currentFrameKey = marginalizedKeyframeKey;
 }
 
 void Graph::moveCurrentFrameIntoKeyframePosition()
@@ -61,19 +66,24 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
 {
     std::vector<std::tuple<LandmarkMap::key_type, Vector2>> visibleLandmarkPtrs;
 
-    auto& cm = cameraModelMap.at(currentFrame->cameraModelKey)->first;
+    auto& cm = cameraModelMap.at(getCurrentFrame()->cameraModelKey)->first;
 
-    const SE3& T_cfimu_cfcam = *(extrinsics.at(currentFrame->extrinsicKey));
+    const SE3& T_cfimu_cfcam = *(extrinsics.at(getCurrentFrame()->extrinsicKey));
 
     // iterate through all keyframes and project their landmarks into the current frame
     for (auto &keyframe : keyframes)
     {
-        std::cout << "computing visible landmarks for kf " << std::endl;
+        if (keyframe->status != QDVO::Frame::FrameStatus::ACTIVE) {
+            std::cout << "skipping inactive or marginalized keyframe." << std::endl;
+            continue;
+        }
+
+        std::cout << "computing visible landmarks for kf: " << std::endl;
 
         const SE3& T_kfimu_kfcam = *(extrinsics.at(keyframe->extrinsicKey));
 
         // inv(T_w_cimu * T_imu_cam) * T_w_kimu * T_imu_cam
-        SE3 T_cf_kf = (currentFrame->imustate.getSE3() * T_cfimu_cfcam).inverse() * (keyframe->imustate.getSE3() * T_kfimu_kfcam);
+        SE3 T_cf_kf = (getCurrentFrame()->imustate.getSE3() * T_cfimu_cfcam).inverse() * (keyframe->imustate.getSE3() * T_kfimu_kfcam);
 
         for (auto &lKey : keyframe->landmarkKeys)
         {
@@ -99,7 +109,7 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
 
     if (includeCurrentFrameLandmarks)
     {
-        for (auto &lKey : currentFrame->landmarkKeys)
+        for (auto &lKey : getCurrentFrame()->landmarkKeys)
         {
             // Get the landmark.
             auto& l = *(landmarks.at(lKey));
@@ -120,21 +130,42 @@ Vector3 Graph::projectLandmarkToCameraFrame(KeyframeMap::key_type targetFrameKey
     std::unique_ptr<Frame> &sourceFrame = *(keyframes.at(sourceFrameKey));
 
     Landmark &l = *(landmarks.at(landmarkKey));
+
     assert(l.parentFrameKey == sourceFrameKey);
-
-    SE3& T_tfimu_tfcam = *(extrinsics.at(targetFrame->extrinsicKey));
-    SE3& T_sfimu_sfcam = *(extrinsics.at(sourceFrame->extrinsicKey));
-
-    SE3 T_tf_sf = (targetFrame->imustate.getSE3() * T_tfimu_tfcam).inverse() * (sourceFrame->imustate.getSE3() * T_sfimu_sfcam);
-
-    return T_tf_sf * l.getEuclideanPoint();
+    
+    return projectLandmarkToCameraFrame(*targetFrame, *sourceFrame, l);
 }
 
 Result<Vector2> Graph::projectLandmarkToPixel(KeyframeMap::key_type targetFrameKey, KeyframeMap::key_type sourceFrameKey, LandmarkMap::key_type landmarkKey)
 {
-    Vector3 pt = this->projectLandmarkToCameraFrame(targetFrameKey, sourceFrameKey, landmarkKey);
+    std::unique_ptr<Frame> &targetFrame = *(keyframes.at(targetFrameKey));
+    std::unique_ptr<Frame> &sourceFrame = *(keyframes.at(sourceFrameKey));
 
-    std::unique_ptr<CameraModel> &cm = cameraModelMap.at((*keyframes.at(targetFrameKey))->cameraModelKey)->first;
+    Landmark &l = *(landmarks.at(landmarkKey));
+
+    assert(l.parentFrameKey == sourceFrameKey);
+    
+    return projectLandmarkToPixel(*targetFrame, *sourceFrame, l);
+}
+
+
+/// Transforms the landmark into a euclidean point in the current frame.
+QDVO::Vector3 Graph::projectLandmarkToCameraFrame(const Frame& targetFrame, const Frame& sourceFrame, const Landmark& landmark) 
+{
+    SE3& T_tfimu_tfcam = *(extrinsics.at(targetFrame.extrinsicKey));
+    SE3& T_sfimu_sfcam = *(extrinsics.at(sourceFrame.extrinsicKey));
+
+    SE3 T_tf_sf = (targetFrame.imustate.getSE3() * T_tfimu_tfcam).inverse() * (sourceFrame.imustate.getSE3() * T_sfimu_sfcam);
+
+    return T_tf_sf * landmark.getEuclideanPoint();
+}
+
+/// Projects a landmark in the pixels in the current frame.
+QDVO::Result<QDVO::Vector2> Graph::projectLandmarkToPixel(const Frame& targetFrame, const Frame& sourceFrame, const Landmark& landmark)
+{
+    auto pt = projectLandmarkToCameraFrame(targetFrame, sourceFrame, landmark);
+
+    std::unique_ptr<CameraModel> &cm = cameraModelMap.at(targetFrame.cameraModelKey)->first;
 
     return cm->project(pt);
 }

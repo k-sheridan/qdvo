@@ -73,6 +73,8 @@ public:
     std::atomic_bool newFrameAdded; // flag used to tell the visualization thread when the algorithm has been updated.
     std::mutex algorithmMutex;
 
+    QDVO::CameraModelMap::key_type cameraModelKey;
+    QDVO::ExtrinsicMap::key_type extrinsicKey;
 
     // Visualizer Variables
     std::string window_name;

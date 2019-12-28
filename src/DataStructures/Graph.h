@@ -41,15 +41,30 @@ public:
 
     /// Get a reference to the current frame unique pointer.
     /// @return Unique pointer reference to the current frame.
-    std::unique_ptr<Frame> &getCurrentFrame();
+    std::unique_ptr<Frame> &getCurrentFrame() {
+        return *keyframes.at(currentFrameKey);
+    }
 
-    CameraModelMap &getCameraModelMap();
+    /// @return the key to the current frame.
+    KeyframeMap::key_type getCurrentFrameKey() {
+        return currentFrameKey;
+    }
 
-    ExtrinsicMap &getExtrinsicMap();
+    CameraModelMap &getCameraModelMap() {
+        return cameraModelMap;
+    }
 
-    KeyframeMap &getKeyframeMap();
+    ExtrinsicMap &getExtrinsicMap() {
+        return extrinsics;
+    }
 
-    LandmarkMap& getLandmarkMap();
+    KeyframeMap &getKeyframeMap() {
+        return keyframes;
+    }
+
+    LandmarkMap& getLandmarkMap() {
+        return landmarks;
+    }
 
     /**
      * This function will swap the current frame and the marginalized keyframe and update the hash table key to reflect the new keyframe id.
@@ -73,8 +88,14 @@ public:
     /// Transforms the landmark into a euclidean point in the target frame.
     QDVO::Vector3 projectLandmarkToCameraFrame(KeyframeMap::key_type targetFrameKey, KeyframeMap::key_type sourceFrameKey, LandmarkMap::key_type landmarkKey);
 
-    /// Projects a landmark in the pixels in the current frame.
+    /// Projects a landmark in the pixels in a keyframe.
     QDVO::Result<QDVO::Vector2> projectLandmarkToPixel(KeyframeMap::key_type targetFrameKey, KeyframeMap::key_type sourceFrameKey, LandmarkMap::key_type landmarkKey);
+
+    /// Transforms the landmark into a euclidean point in the current frame.
+    QDVO::Vector3 projectLandmarkToCameraFrame(const Frame& targetFrameKey, const Frame& sourceFrameKey, const Landmark& landmarkKey);
+
+    /// Projects a landmark in the pixels in the current frame.
+    QDVO::Result<QDVO::Vector2> projectLandmarkToPixel(const Frame& targetFrameKey, const Frame& sourceFrameKey, const Landmark& landmarkKey);
 
 private:
     /// Stores camera models, and initial estimates of the imu to camera extrinsic.
@@ -91,6 +112,6 @@ private:
 
     /// A unique pointer to the current frame which is updated at camera rate.
     /// This frame is swapped into the marginalized keyframe slot when it is made into a keyframe.
-    std::unique_ptr<Frame> currentFrame;
+    KeyframeMap::key_type currentFrameKey;
 };
 } // namespace QDVO

@@ -65,6 +65,10 @@ public:
         {
             e.reset();
         }
+
+        status = FrameStatus::INACTIVE;
+
+        initialized = false;
     }
 
 private:

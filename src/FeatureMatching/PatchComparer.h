@@ -1,5 +1,4 @@
-#ifndef PATCHCOMPARER_H
-#define PATCHCOMPARER_H
+#pragma once
 
 #include "GlobalDefinitions.h"
 #include <opencv2/core.hpp>
@@ -11,7 +10,7 @@
 
 namespace QDVO {
 
-/*
+/**
  * base class used to compare two image patches.
  * For speed, this is implemented in a way which will compare a patch with a pixel, image combinination.
  * This base class is implemented as a ZNCC.
@@ -22,7 +21,7 @@ public:
 
     PatchComparer();
 
-    /*
+    /**
      * uses the zero mean normalized cross correlation to determine how well a target frame pixel matches the patch.
      * result is bounded on the interval [0, 1] where 0 is a highly unlikely match, and 1 is a highly likely match.
      *
@@ -33,5 +32,3 @@ public:
 
 };
 }
-
-#endif // PATCHCOMPARER_H

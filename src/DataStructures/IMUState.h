@@ -39,7 +39,7 @@ public:
     /**
      * creates a sophus se3 type representing the imu pose
      */
-    QDVO::SE3 getSE3();
+    QDVO::SE3 getSE3() const ;
 };
 }
 

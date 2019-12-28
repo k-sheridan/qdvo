@@ -44,17 +44,17 @@ public:
     /**
      * Gives the algorithm a new image
      */
-    void addFrame(cv::Mat &image, const double &time, const ID_TYPE cameraID = 1);
+    void addFrame(cv::Mat &image, const double &time, const CameraModelMap::key_type& cameraModelKey, const ExtrinsicMap::key_type& extrinsicKey);
 
     /**
      * adds a new camera for the visual odometry algorithm.
      */
-    void addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel, const ID_TYPE cameraID = 1);
+    CameraModelMap::key_type addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel);
 
     /**
      * detects features and adds new landmarks to the frame.
      */
-    void createNewLandmarks(std::unique_ptr<QDVO::Frame> &keyframe, std::unique_ptr<QDVO::FeatureDetector> &featureDetector);
+    void createNewLandmarks(Graph& graph, KeyframeMap::key_type keyframeKey, std::unique_ptr<QDVO::FeatureDetector> &featureDetector);
 
     /**
      * Activates new landmarks from the set of keyframes such that the current features are well distributed.
@@ -94,7 +94,7 @@ public:
     std::unique_ptr<QDVO::FeatureDetector> featureDetector;
 
     /// used to speed up the patch comparisons.
-    std::unordered_map<ID_TYPE, std::shared_ptr<PatchComparer>> patchComparers;
+    std::shared_ptr<PatchComparer> patchComparer;
 
     /// used globally to generate the correspondence distributions.
     std::shared_ptr<RadialSearchPattern> radialSearchPatternPtr;

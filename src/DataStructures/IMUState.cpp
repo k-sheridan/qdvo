@@ -22,7 +22,7 @@ void QDVO::IMUState::updateVelocity(const Eigen::Matrix<SCALAR_TYPE, 3, 1> &dx)
     this->vel += dx.block(6, 0, 3, 1);
 }
 
-QDVO::SE3 QDVO::IMUState::getSE3()
+QDVO::SE3 QDVO::IMUState::getSE3() const 
 {
     return Sophus::SE3<SCALAR_TYPE>(this->attitude.unit_quaternion(), this->pos);
 }

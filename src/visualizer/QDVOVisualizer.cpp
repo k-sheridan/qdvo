@@ -11,7 +11,9 @@ void QDVOVisualizer::initialize()
 
     std::unique_ptr<QDVO::CameraModel> cm(new QDVO::EquidistantCameraModel(190.97847715128717, 190.9733070521226, 254.93170605935475, 256.8974428996504, 1.44*2, 512, 512,
                                                                            Eigen::Vector4d(0.0034823894022493434, 0.0007150348452162257, -0.0020532361418706202, 0.00020293673591811182)));
-    this->algorithm.addCamera(cm);
+    cameraModelKey = this->algorithm.addCamera(cm);
+
+    extrinsicKey = this->algorithm.graph.getExtrinsicMap().insert(this->algorithm.graph.getCameraModelMap().at(cameraModelKey)->second);
 
     this->newFrameAdded = false;
 
@@ -33,10 +35,11 @@ void QDVOVisualizer::transferVisualizationData()
 
         ColorMap hotCMap;
 
-        std::unique_ptr<QDVO::CameraModel>& cm = this->algorithm.graph.getCameraModel(this->algorithm.graph.getCurrentFrame()->camID);
+        std::unique_ptr<QDVO::CameraModel>& cm = this->algorithm.graph.getCameraModelMap().at(this->algorithm.graph.getCurrentFrame()->cameraModelKey)->first;
         // draw current frame landmarks
-        for (auto& e : this->algorithm.graph.getCurrentFrame()->landmarks)
+        for (auto& key : this->algorithm.graph.getCurrentFrame()->landmarkKeys)
         {
+            auto& e = *algorithm.graph.getLandmarkMap().at(key);
             Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
             cv::circle(render, cv::Point2f(px(0), px(1)), 3, hotCMap.getColor(std::clamp(float(1/e.dinv/MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)), -1);
 
@@ -57,7 +60,7 @@ void QDVOVisualizer::runQDVO(cv::Mat &image, double time)
 
     this->algorithmMutex.lock();
     TIK
-    this->algorithm.addFrame(image, time);
+    this->algorithm.addFrame(image, time, cameraModelKey, extrinsicKey);
     TOK
     this->algorithmMutex.unlock();
 

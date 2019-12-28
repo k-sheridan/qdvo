@@ -33,7 +33,7 @@ public:
     } status;
 
     /// Compute the [x,y,z] position estimate of this landmark in the parent frame.
-    Eigen::Matrix<SCALAR_TYPE, 3, 1> getEuclideanPoint();
+    Eigen::Matrix<SCALAR_TYPE, 3, 1> getEuclideanPoint() const;
 };
 }
 
