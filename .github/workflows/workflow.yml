@@ -75,7 +75,7 @@ jobs:
       run: mkdir build && cd build && cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
       
     - name: Build Clang
-      run: pwd && cd build && make
+      run: pwd && cd build && make QDVO && make test_qdvo && make benchmark_qdvo
       
     - name: Test
       run: cd build && ./test/test_qdvo
