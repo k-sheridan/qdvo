@@ -8,6 +8,7 @@
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
 #include "Patch.h"
+#include "Types.h"
 
 
 namespace QDVO {
@@ -41,6 +42,8 @@ public:
     /// Is this correspondence distribution currently not being used.
     bool dormant = true; 
 
+    /// The landmark this correspondence distribution represents an observation of.
+    LandmarkMap::key_type landmarkKey; 
 
 
     CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> patternPtr);
@@ -48,7 +51,7 @@ public:
     /**
      * Will perform an initial radial search for potential correspondences to get an idea of the structure of the raw patch comparison function.
      */
-    void initializeDistribution(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
+    void initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
 
     /**
      * Efficiently evaluates the gradient of the negative log likelihood of the gaussian mixture model described by this class.

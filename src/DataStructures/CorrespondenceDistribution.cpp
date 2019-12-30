@@ -1,6 +1,7 @@
 #include "CorrespondenceDistribution.h"
 #include "Patch.h"
 #include "PatchComparer.h"
+#include "Landmark.h"
 #include <algorithm>
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> searchPattern)
@@ -51,13 +52,15 @@ void QDVO::CorrespondenceDistribution::reset()
     this->correspondenceMap.reset(); // wipe the actual distribution container clean.
 }
 
-void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch)
+void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch)
 {
     this->dormant = false; // set the distribution to awake.
 
     this->warpedPatch = warpedPatch; // replace the patch
 
     this->patchComparer = std::move(patchComparer); // set a new patch comparer for this distribution
+
+    this->landmarkKey = landmarkKey;
 
     // perform the search
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, centerPixel, floodRadius, false);

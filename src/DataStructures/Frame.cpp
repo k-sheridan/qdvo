@@ -35,4 +35,8 @@ void QDVO::Frame::reset()
 
     // reset all correspondence distributions
     this->resetCorrespondenceDistributions();
+    
+    status = FrameStatus::INACTIVE;
+
+    initialized = false;
 }

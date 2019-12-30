@@ -1,5 +1,7 @@
 #include "QDVOVisualizer.h"
 
+#include <string>
+
 QDVOVisualizer::QDVOVisualizer()
 {
 
@@ -21,14 +23,10 @@ void QDVOVisualizer::initialize()
 
 void QDVOVisualizer::transferVisualizationData()
 {
-    //cv::Mat tempMat = this->algorithm.graph.getCurrentFrame()->imagePyr.getImage();
-    //this->visualizationData.currentFrameTexture = pangolin::GlTexture(tempMat.cols,tempMat.rows,GL_LUMINANCE,false,0,GL_LUMINANCE,GL_UNSIGNED_BYTE);
-    //this->visualizationData.currentFrameTexture.Upload(tempMat.data,GL_LUMINANCE,GL_UNSIGNED_BYTE);
-
     // draw current frame visualization
     if (this->algorithm.graph.getCurrentFrame()->initialized) // make sure the frame has been properly initialized
     {
-
+        std::cout << "rendering the current frame" << std::endl;
         cv::Mat temp, render;
         this->algorithm.graph.getCurrentFrame()->imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
         cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
@@ -36,7 +34,7 @@ void QDVOVisualizer::transferVisualizationData()
         ColorMap hotCMap;
 
         std::unique_ptr<QDVO::CameraModel>& cm = this->algorithm.graph.getCameraModelMap().at(this->algorithm.graph.getCurrentFrame()->cameraModelKey)->first;
-        // draw current frame landmarks
+        // draw current frame landmarks.
         for (auto& key : this->algorithm.graph.getCurrentFrame()->landmarkKeys)
         {
             auto& e = *algorithm.graph.getLandmarkMap().at(key);
@@ -45,8 +43,23 @@ void QDVOVisualizer::transferVisualizationData()
 
         }
 
+        // draw correspondence distributions.
+        for (auto& cd : this->algorithm.graph.getCurrentFrame()->correspondenceDistributions) {
+            if (!cd.dormant) {
+                auto& l = *this->algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
+                auto px = this->algorithm.graph.projectLandmarkToPixel(this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey, cd.landmarkKey);
+                auto point = this->algorithm.graph.projectLandmarkToCameraFrame(this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey, cd.landmarkKey);
+
+                if (px.has_value()) {
+                    cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 3, hotCMap.getColor(std::clamp(float(point(2)/MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)), -1);
+                }
+            }
+        }
+
         this->visualizationData.currentFrameImage = pangolin::GlTexture(render.cols,render.rows,GL_RGB,false,0,GL_RGB,GL_UNSIGNED_BYTE);
         this->visualizationData.currentFrameImage.Upload(render.data,GL_RGB,GL_UNSIGNED_BYTE);
+    } else {
+        std::cout << "current frame not initialized. Not rendering." << std::endl;
     }
 
 
@@ -81,14 +94,25 @@ void QDVOVisualizer::runVisualization()
     pangolin::OpenGlMatrix proj = pangolin::ProjectionMatrix(640,480,420,420,320,240,0.1,1000);
     pangolin::OpenGlRenderState s_cam(proj, pangolin::ModelViewLookAt(-1,-1,-1,0,0,0, pangolin::AxisY) );
 
-    pangolin::View& d_img1 = pangolin::Display("Current Frame")
+    pangolin::View& currentFrameView = pangolin::Display("Current Frame")
             .SetBounds(0.3, 1, 0.6, 1);
 
     pangolin::View& pointCloudView = pangolin::Display("Point Cloud")
             .SetHandler(new pangolin::Handler3D(s_cam))
             .SetBounds(0.3, 1, 0, 0.6);
 
+    // create the keyframes.
+    this->visualizationData.keyframeImages.resize(N_KEYFRAMES);
 
+    pangolin::View& keyframeView = pangolin::Display("Keyframes")
+            .SetBounds(0, 0.3, 0, 1)
+            .SetLayout(pangolin::LayoutHorizontal); 
+
+    // add a child for each keyframe.
+    for (int i = 0; i < N_KEYFRAMES; ++i) {
+        pangolin::View& image = pangolin::Display(std::to_string(i));
+        keyframeView.AddDisplay(image);
+    }
 
     while( !pangolin::ShouldQuit() )
     {
@@ -109,9 +133,14 @@ void QDVOVisualizer::runVisualization()
         // Clear screen and activate view to render into
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        d_img1.Activate();
+        currentFrameView.Activate();
         glColor4f(1.0f,1.0f,1.0f,1.0f);
         this->visualizationData.currentFrameImage.RenderToViewportFlipY();
+
+        for (int i = 0; i < N_KEYFRAMES; ++i) {
+            keyframeView[i].Activate();
+            this->visualizationData.keyframeImages[i].RenderToViewportFlipY();
+        }
 
         pointCloudView.Activate(s_cam);
         glClearColor(0.4f,0.4f,0.4f,1.0f);

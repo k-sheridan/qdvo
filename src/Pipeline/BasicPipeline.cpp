@@ -167,7 +167,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         auto px0 = graph.projectLandmarkToPixel(*graph.getCurrentFrame(), landmarkParentFrame, l);
         if (!px0.has_value())
         {
-            //std::cout << "landmark not visible in its parent frame!" << std::endl;
+            std::cout << "landmark not visible in its parent frame!" << std::endl;
             return 1;
         }
         QDVO::Result<QDVO::Patch> warpedPatch = {};
@@ -176,11 +176,11 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         patchWarper->warpPatchToTargetFrame(warpedPatch, l, landmarkParentFrame, *(graph.getCurrentFrame()), graph);
         if (!warpedPatch.has_value())
         {
-            //std::cout << "failed to warp patch" << std::endl;
+            std::cout << "failed to warp patch" << std::endl;
             return 1;
         }
 
-        cdRef.initializeDistribution(cm, f, Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer, warpedPatch.value());
+        cdRef.initializeDistribution(cm, f, lKey, Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer, warpedPatch.value());
         return 0;
     };
 
@@ -193,7 +193,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
 
 bool QDVO::BasicPipeline::isCurrentFrameAKeyframe()
 {
-    if (graph.getKeyframeMap().size() == 0)
+    if (graph.getKeyframeMap().size() == 1)
     {
         std::cout << "First frame is always a keyframe." << std::endl;
         return true;

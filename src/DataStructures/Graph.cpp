@@ -14,8 +14,7 @@ Graph::Graph()
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition()
 {
-    std::unique_ptr<Frame>& currentFrame = getCurrentFrame();
-    assert(currentFrame->status == Frame::FrameStatus::ACTIVE);
+    assert(getCurrentFrame()->status == Frame::FrameStatus::ACTIVE);
     assert(keyframes.size() <= N_KEYFRAMES);
 
     // make room for another keyframe
@@ -24,8 +23,8 @@ void Graph::moveCurrentFrameIntoNewKeyframePosition()
 
     // copy over vital information
     std::unique_ptr<Frame>& newKeyframe = *(keyframes.at(newKeyframeKey));
-    newKeyframe->imustate = currentFrame->imustate;
-    newKeyframe->cameraModelKey = currentFrame->cameraModelKey;
+    newKeyframe->imustate = getCurrentFrame()->imustate;
+    newKeyframe->cameraModelKey = getCurrentFrame()->cameraModelKey;
 
     // swap the current frame into its new spot.
     currentFrameKey = newKeyframeKey;

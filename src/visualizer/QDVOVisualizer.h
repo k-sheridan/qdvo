@@ -82,7 +82,7 @@ public:
     struct VisualizationData{
         int imageWidth = 256, imageHeight = 256;
         pangolin::GlTexture currentFrameImage;
-        std::vector<pangolin::GlTexture> keyFrameImage;
+        std::vector<pangolin::GlTexture> keyframeImages;
         std::vector<Eigen::Vector3d> activePoints;
         std::vector<Eigen::Vector3d> inactivePoints;
         std::vector<Eigen::Vector3d> marginalizedPoints;
