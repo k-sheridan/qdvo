@@ -275,11 +275,13 @@ public:
      */
     KeyType getKeyFromDataIndex(size_t dataIndex)
     {
+        assert(dataIndex < dataToSlotIndex.size());
         size_t slotIndex = dataToSlotIndex.at(dataIndex);
 
         KeyType result;
 
         result.index = slotIndex;
+        assert(slotIndex < slots.size());
         result.generation = slots.at(slotIndex).generation;
 
         return result;

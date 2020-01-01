@@ -100,5 +100,9 @@ public:
 
     void runVisualization();
 
+private:
+
     void transferVisualizationData();
+
+    void draw3DPointCloud();
 };

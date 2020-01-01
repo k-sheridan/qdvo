@@ -56,7 +56,7 @@ public:
     /**
      * Efficiently evaluates the gradient of the negative log likelihood of the gaussian mixture model described by this class.
      */
-    Eigen::Matrix<SCALAR_TYPE, 2, 1> computeResidual(CameraModel& cameraModel, Frame& frame, const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
+    QDVO::Result<QDVO::Vector2> computeResidual(CameraModel& cameraModel, Frame& frame, const Eigen::Matrix<SCALAR_TYPE, 2, 1>& px_0);
 
     /**
      * clears all potential correspondences while retaining allocated memory, and sets the correspondence distribution into a dormant state.

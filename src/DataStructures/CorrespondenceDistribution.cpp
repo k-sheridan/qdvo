@@ -10,7 +10,7 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, uns
     this->radialSearchPattern = std::move(searchPattern);
 }
 
-QDVO::Vector2 QDVO::CorrespondenceDistribution::computeResidual(CameraModel& cameraModel, Frame& frame, const QDVO::Vector2 &px_0)
+QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(CameraModel& cameraModel, Frame& frame, const QDVO::Vector2 &px_0)
 {
     assert(!this->dormant);
 

@@ -1,63 +1,136 @@
 #pragma once
 
 #include "Types.h"
-#include "CorrespondenceDistribution.h"
-#include "CameraModel.h"
+#include "DataStructures/CorrespondenceDistribution.h"
+#include "Optimizer/ErrorTermBase.h"
+#include "Optimizer/Variables/InverseDepth.h"
+#include "Optimizer/Variables/SE3.h"
+#include "CameraModel.hpp"
+#include "DataStructures/Graph.h"
 
 namespace QDVO
 {
 
-/**
- * This is the full QuasiDirect error term / factor. The order is as follows:
- * 
- * Observation IMU Pose
- * Landmark Parent IMU Pose
- * Landmark Inverse Depth
- * 
- */
-class QuasiDirectFactor : public gtsam::NoiseModelFactor3<gtsam::Pose3, gtsam::Pose3, QDVO::InverseDepth>
-{
+class Graph;
 
-private:
-    QDVO::CorrespondenceDistribution *cdPtr; // Do not delete.
-    QDVO::Vector3 landmarkBearing;           // The bearing to the landmark in the landmark frame.
-    QDVO::CameraModel* cmPtr_obsFrame; // observation frame camera model interface. 
-
+class QuasiDirectErrorTerm : public ArgMin::ErrorTermBase<ArgMin::Scalar<double>, ArgMin::Dimension<2>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::SE3, ArgMin::InverseDepth>> {
 public:
-    QuasiDirectFactor(gtsam::Key obsFrameKey,
-                      gtsam::Key landmarkFrameKey,
-                      gtsam::Key landmarkInverseDepthKey,
-                      QDVO::CorrespondenceDistribution &correspondenceDistribution,
-                      QDVO::Vector3 &landmarkBearing,
-                      QDVO::CameraModel* obsFrameCameraModel,
-                      gtsam::SharedNoiseModel model) : gtsam::NoiseModelFactor3<gtsam::Pose3, gtsam::Pose3, QDVO::InverseDepth>(model, obsFrameKey, landmarkFrameKey, landmarkInverseDepthKey)
-    {
-        this->cdPtr = &correspondenceDistribution;
-        this->landmarkBearing = landmarkBearing;
-        this->cmPtr_obsFrame = obsFrameCameraModel;
+    /// The information matrix representing the gaussian uncertainty in this error term.
+    Eigen::Matrix<double, 2, 2> information;
+    /// A cached bearing used to project the landmark. 
+    Eigen::Vector2d bearing;
+    /// A pointer to the correspondence distribution in the target frame used to evaluate this error term.
+    int correspondenceDistributionIndex = -1;
+    /// A pointer to the graph containing the landmarks and correspondence distributions.
+    Graph* graph = nullptr;
+    /// The keys to the target and host Frame in the graph.
+    KeyframeMap::key_type targetFrameKey, hostFrameKey;
+    /// The key to the landmark.
+    LandmarkMap::key_type landmarkKey;
+
+
+    QuasiDirectErrorTerm(ArgMin::VariableKey<ArgMin::SE3> hostFrameVariableKey, 
+                                ArgMin::VariableKey<ArgMin::SE3> targetFrameVariableKey,   
+                                ArgMin::VariableKey<ArgMin::InverseDepth> dinvVariableKey, 
+                                Eigen::Matrix<double, 2, 2> information,
+                                Graph* graph,
+                                KeyframeMap::key_type hostFrameKey,
+                                KeyframeMap::key_type targetFrameKey,
+                                LandmarkMap::key_type landmarkKey) {
+        std::get<0>(variableKeys) = hostFrameVariableKey;
+        std::get<1>(variableKeys) = targetFrameVariableKey;
+        std::get<2>(variableKeys) = dinvVariableKey;
+        this->information = information;
+        this->graph = graph;
+        this->hostFrameKey = hostFrameKey;
+        this->targetFrameKey = targetFrameKey;
+        this->landmarkKey = landmarkKey;
     }
 
-    gtsam::Vector evaluateError(const gtsam::Pose3 &obsFrame,
-                                const gtsam::Pose3 &landmarkFrame,
-                                const QDVO::InverseDepth &landmarkInverseDepth,
-                                boost::optional<gtsam::Matrix &> H1 = boost::none,
-                                boost::optional<gtsam::Matrix &> H2 = boost::none,
-                                boost::optional<gtsam::Matrix &> H3 = boost::none)
+    template <typename... Variables>
+    void evaluate(ArgMin::VariableContainer<Variables...> &variables, bool relinearize = false)
     {
-        const auto& A = obsFrame.rotation();
-        const auto& B = landmarkFrame.rotation();
+        Sophus::SE3d &host = std::get<0>(variablePointers)->value;
+        Sophus::SE3d &target = std::get<1>(variablePointers)->value;
+        double &inverseDepth = std::get<2>(variablePointers)->value;
 
-        const auto&  d = obsFrame.translation();
-        const auto&  e = landmarkFrame.translation();
+        assert(graph != nullptr);
+        Frame& targetFrame = *(*graph->getKeyframeMap().at(targetFrameKey));
+        Frame& sourceFrame = *(*graph->getKeyframeMap().at(hostFrameKey));
+        Landmark& landmark = *graph->getLandmarkMap().at(landmarkKey);
 
-        const auto& u0 = landmarkBearing;
-        const auto& dinv = landmarkInverseDepth.dinv;
+        assert(landmark.parentFrameKey == hostFrameKey);
 
-        const auto p_obs = A..transpose()*B*u0*(1/dinv) + A.transpose()*(e - d);
-
-        QDVO::Matrix2 projJac;
+        auto& cm = graph->getCameraModelMap().at(targetFrame.cameraModelKey)->first;
+        auto& correspondenceDistribution = targetFrame.correspondenceDistributions.at(correspondenceDistributionIndex);
+        Eigen::Vector3d bearing = landmark.bearing;
         
+        // Compute the residual.
+        auto pointInHost = Eigen::Vector3d(bearing(0, 0) / inverseDepth, bearing(1, 0) / inverseDepth, 1/inverseDepth);
+        Eigen::Vector3d pointInTarget = target.inverse() * host * pointInHost;
 
+        // Project the point into a pixel.
+        Eigen::Matrix<double, 2, 2> projJac;
+        auto projectionResult = cm->project(pointInTarget, &projJac);
+
+        // Check if the projection failed.
+        if (!projectionResult.has_value()) {
+            linearizationValid = false;
+            return;
+        }
+
+        auto residualResult = correspondenceDistribution.computeResidual(*cm, targetFrame, projectionResult.value()); 
+
+        if (!residualResult.has_value()) {
+            linearizationValid = false;
+            return;
+        }
+
+        residual = residualResult.value();
+
+        if (relinearize)
+        {
+            Eigen::Matrix<double, 2, 6> &hostJacobian = (std::get<0>(variableJacobians));
+            Eigen::Matrix<double, 2, 6> &targetJacobian = (std::get<1>(variableJacobians));
+            Eigen::Matrix<double, 2, 1> &dinvJacobian = (std::get<2>(variableJacobians));
+
+            Eigen::Matrix<double, 2, 3> dPi;
+            dPi << 1/pointInTarget(2, 0), 0, -pointInTarget(0, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0)),
+                        0, 1/pointInTarget(2, 0), -pointInTarget(1, 0)/(pointInTarget(2, 0) * pointInTarget(2, 0));
+
+            // Compute the jacobians.
+            auto A = target.so3().matrix();
+            auto B = host.so3().matrix();
+            //T = graph.extrinsics.getImu2CameraTransform(graph.FrameContainer{observationFrameIdx}.camID);
+            //C = T(1:3, 1:3);
+            
+            auto& d = target.translation();
+            auto& e = host.translation();
+            //f = T(1:3, 4);
+
+            //dinv = graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.dinv;
+            //u0 = [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing; 1];
+
+            //J_dinv = -projJac * dPi * (C'*A'*B*C*u0*1/dinv^2);
+            dinvJacobian = projJac * dPi * (A.transpose() * B * pointInHost * 1/inverseDepth);
+
+            //J_dphi_o = projJac * dPi * (C' * so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e - d)));
+            targetJacobian.block(0, 0, 2, 3) = -projJac * dPi * (Sophus::SO3d::hat(A.transpose() * (B * pointInHost + e - d)));
+            //J_dt_o = -projJac * dPi * (C'*A');
+            targetJacobian.block(0, 3, 2, 3) = projJac * dPi * (A.transpose());
+
+            //J_dphi_o = -projJac * dPi * C'*A'*B * so3Hat(C*u0/dinv + f);
+            hostJacobian.block(0, 0, 2, 3) = projJac * dPi * A.transpose() * B * Sophus::SO3d::hat(pointInHost);
+            //J_dt_o = projJac * dPi * (C'*A');
+            hostJacobian.block(0, 3, 2, 3) = -projJac * dPi * (A.transpose());
+
+
+            linearizationValid = true;
+        }
+        else
+        {
+            linearizationValid = false;
+        }
     }
 };
 

@@ -62,7 +62,58 @@ void QDVOVisualizer::transferVisualizationData()
         std::cout << "current frame not initialized. Not rendering." << std::endl;
     }
 
+    // Render and transfer the keyframes.
+    int kfidx = 0;
+    int dataIndex = 0;
+    for (auto it = algorithm.graph.getKeyframeMap().begin(); it != algorithm.graph.getKeyframeMap().end(); it++) {
+        std::cout << "drawing keyframe in slot: " << kfidx << std::endl;
+        auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
+        // If the keyframe is not the current frame.
+        if (!(key == algorithm.graph.getCurrentFrameKey()) && (*it)->initialized) {
 
+            cv::Mat temp, render;
+            (*it)->imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
+            cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
+
+            ColorMap hotCMap;
+
+            // draw keyframe landmarks.
+            std::cout << "Drawing landmarks for keyframe: " << key.index << std::endl;
+            for (auto& lKey : (*it)->landmarkKeys)
+            {
+                auto& e = *algorithm.graph.getLandmarkMap().at(lKey);
+                Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
+                cv::circle(render, cv::Point2f(px(0), px(1)), 3, hotCMap.getColor(std::clamp(float(1/e.dinv/MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)), -1);
+
+            }
+
+            this->visualizationData.keyframeImages.at(kfidx)= pangolin::GlTexture(render.cols,render.rows,GL_RGB,false,0,GL_RGB,GL_UNSIGNED_BYTE);
+            this->visualizationData.keyframeImages.at(kfidx).Upload(render.data,GL_RGB,GL_UNSIGNED_BYTE);
+            kfidx++;
+        }
+        dataIndex++;
+    }
+
+    // Cache the points in a common frame.
+    visualizationData.inactivePoints.clear();
+    visualizationData.activePoints.clear();
+    visualizationData.marginalizedPoints.clear();
+    for (auto& landmark : algorithm.graph.getLandmarkMap()) {
+        QDVO::Frame& parentFrame = *(*algorithm.graph.getKeyframeMap().at(landmark.parentFrameKey));
+        auto parentFramePose = parentFrame.imustate.getSE3();
+        QDVO::Vector3 point = parentFramePose * landmark.bearing * (1 / landmark.dinv);
+        
+        if (landmark.status == QDVO::Landmark::INACTIVE) {
+            // inactive.    
+           visualizationData.inactivePoints.push_back(point); 
+        } else if (landmark.status == QDVO::Landmark::ACTIVE) {
+            // active.
+            visualizationData.activePoints.push_back(point);
+        } else {
+            // marginalized.
+            visualizationData.marginalizedPoints.push_back(point);
+        }
+    }
 }
 
 
@@ -84,7 +135,7 @@ void QDVOVisualizer::runQDVO(cv::Mat &image, double time)
 void QDVOVisualizer::runVisualization()
 {
     // create a window and bind its context to the main thread
-    pangolin::CreateWindowAndBind(window_name, 1280, 850);
+    pangolin::CreateWindowAndBind(window_name);
 
     // enable depth
     glEnable(GL_DEPTH_TEST);
@@ -106,7 +157,7 @@ void QDVOVisualizer::runVisualization()
 
     pangolin::View& keyframeView = pangolin::Display("Keyframes")
             .SetBounds(0, 0.3, 0, 1)
-            .SetLayout(pangolin::LayoutHorizontal); 
+            .SetLayout(pangolin::LayoutEqualHorizontal); 
 
     // add a child for each keyframe.
     for (int i = 0; i < N_KEYFRAMES; ++i) {
@@ -143,7 +194,16 @@ void QDVOVisualizer::runVisualization()
         }
 
         pointCloudView.Activate(s_cam);
-        glClearColor(0.4f,0.4f,0.4f,1.0f);
+        draw3DPointCloud();
+
+        // Swap frames and Process Events
+        pangolin::FinishFrame();
+    }
+
+}
+
+void QDVOVisualizer::draw3DPointCloud() {
+        glClearColor(0.5f,0.5f,0.5f,1.0f);
         glPointSize(3);
         glBegin(GL_POINTS);
         glColor3f(0,0.0,0.0);
@@ -152,11 +212,4 @@ void QDVOVisualizer::runVisualization()
         glVertex3f(0, 1, 0);
         glVertex3f(0, 0, 1);
         glEnd();
-
-
-        // Swap frames and Process Events
-        pangolin::FinishFrame();
-    }
-
-
 }
