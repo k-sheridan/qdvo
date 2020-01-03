@@ -2,6 +2,8 @@
 
 QDVO::IMUState::IMUState()
 {
+    pos.setZero();
+    vel.setZero();
 
 }
 

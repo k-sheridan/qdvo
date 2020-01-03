@@ -1,5 +1,6 @@
 #include "QDVOVisualizer.h"
 
+#include <pangolin/gl/gldraw.h>
 #include <string>
 
 QDVOVisualizer::QDVOVisualizer()
@@ -66,7 +67,6 @@ void QDVOVisualizer::transferVisualizationData()
     int kfidx = 0;
     int dataIndex = 0;
     for (auto it = algorithm.graph.getKeyframeMap().begin(); it != algorithm.graph.getKeyframeMap().end(); it++) {
-        std::cout << "drawing keyframe in slot: " << kfidx << std::endl;
         auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
         // If the keyframe is not the current frame.
         if (!(key == algorithm.graph.getCurrentFrameKey()) && (*it)->initialized) {
@@ -78,7 +78,6 @@ void QDVOVisualizer::transferVisualizationData()
             ColorMap hotCMap;
 
             // draw keyframe landmarks.
-            std::cout << "Drawing landmarks for keyframe: " << key.index << std::endl;
             for (auto& lKey : (*it)->landmarkKeys)
             {
                 auto& e = *algorithm.graph.getLandmarkMap().at(lKey);
@@ -135,7 +134,10 @@ void QDVOVisualizer::runQDVO(cv::Mat &image, double time)
 void QDVOVisualizer::runVisualization()
 {
     // create a window and bind its context to the main thread
-    pangolin::CreateWindowAndBind(window_name);
+    auto& windowInterface = pangolin::CreateWindowAndBind(window_name);
+
+    // Resize window.
+    windowInterface.Resize(500, 250);
 
     // enable depth
     glEnable(GL_DEPTH_TEST);
@@ -202,14 +204,123 @@ void QDVOVisualizer::runVisualization()
 
 }
 
+void drawFrustum(QDVO::SE3 pose, Eigen::Vector3f color, float lineWidth) {
+
+	// Get near and far from the Projection matrix.
+	const double near = 0.1; 
+	const double far = 0.2;
+
+	// Get the sides of the near plane.
+	const double nLeft = -0.05;
+	const double nRight = 0.05;
+	const double nTop = 0.05;
+	const double nBottom = -0.05;
+
+	// Get the sides of the far plane.
+	const double fLeft = -0.1;
+	const double fRight = 0.1;
+	const double fTop = 0.1;
+	const double fBottom = -0.1;
+
+	/*
+	 0	glVertex3f(0.0f, 0.0f, 0.0f);
+	 1	glVertex3f(nLeft, nBottom, -near);
+	 2	glVertex3f(nRight, nBottom, -near);
+	 3	glVertex3f(nRight, nTop, -near);
+	 4	glVertex3f(nLeft, nTop, -near);
+	 5	glVertex3f(fLeft, fBottom, -far);
+	 6	glVertex3f(fRight, fBottom, -far);
+	 7	glVertex3f(fRight, fTop, -far);
+	 8	glVertex3f(fLeft, fTop, -far);
+	 */
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	//glLoadIdentity ();
+
+        // TODO - Update: You need to invert the mv before multiplying it with the current mv!
+    Sophus::Matrix4f m = pose.matrix().cast<float>();
+	glMultMatrixf((GLfloat*)m.data());
+
+	glLineWidth(lineWidth);
+    glColor3f(color[0], color[1], color[2]);
+	glBegin(GL_LINES);
+
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(fLeft, fBottom, -far);
+
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(fRight, fBottom, -far);
+
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(fRight, fTop, -far);
+
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(fLeft, fTop, -far);
+
+	//far
+	glVertex3f(fLeft, fBottom, -far);
+	glVertex3f(fRight, fBottom, -far);
+
+	glVertex3f(fRight, fTop, -far);
+	glVertex3f(fLeft, fTop, -far);
+
+	glVertex3f(fRight, fTop, -far);
+	glVertex3f(fRight, fBottom, -far);
+
+	glVertex3f(fLeft, fTop, -far);
+	glVertex3f(fLeft, fBottom, -far);
+
+	//near
+	glVertex3f(nLeft, nBottom, -near);
+	glVertex3f(nRight, nBottom, -near);
+
+	glVertex3f(nRight, nTop, -near);
+	glVertex3f(nLeft, nTop, -near);
+
+	glVertex3f(nLeft, nTop, -near);
+	glVertex3f(nLeft, nBottom, -near);
+
+	glVertex3f(nRight, nTop, -near);
+	glVertex3f(nRight, nBottom, -near);
+
+	glEnd();
+	glLineWidth(1);
+	glPopMatrix();
+}
+
 void QDVOVisualizer::draw3DPointCloud() {
-        glClearColor(0.5f,0.5f,0.5f,1.0f);
-        glPointSize(3);
-        glBegin(GL_POINTS);
-        glColor3f(0,0.0,0.0);
-        glVertex3f(0, 0, 0);
-        glVertex3f(1, 0, 0);
-        glVertex3f(0, 1, 0);
-        glVertex3f(0, 0, 1);
-        glEnd();
+
+    glClearColor(0.5f,0.5f,0.5f,1.0f);
+
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    // Draw inactive points.
+    glColor3f(0.3, 0.3, 0.3);
+    for (auto pt : visualizationData.inactivePoints) {
+        glVertex3f(pt[0], pt[1], pt[2]);
+    }
+    // Draw marginalized points.
+    glColor3f(0,0.0,0.0);
+    for (auto pt : visualizationData.marginalizedPoints) {
+        glVertex3f(pt[0], pt[1], pt[2]);
+    }
+    // Draw active points.
+    glColor3f(1.0, 1.0, 1.0);
+    for (auto pt : visualizationData.activePoints) {
+        glVertex3f(pt[0], pt[1], pt[2]);
+    }
+    glEnd();
+
+    drawFrustum(algorithm.graph.getCurrentFrame()->imustate.getSE3(), Eigen::Vector3f(1, 0, 0), 3);
+
+    int kfidx = 0;
+    int dataIndex = 0;
+    for (auto it = algorithm.graph.getKeyframeMap().begin(); it != algorithm.graph.getKeyframeMap().end(); it++) {
+        auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
+        // If the keyframe is not the current frame.
+        if (!(key == algorithm.graph.getCurrentFrameKey())) {
+            drawFrustum((*it)->imustate.getSE3(), Eigen::Vector3f(1, 1, 1), 3);
+        }
+    }
 }
