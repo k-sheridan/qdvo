@@ -131,6 +131,13 @@ public:
       return getErrorTermMap<ErrorTermType>().insert(errorTerm);
    }
 
+   /// Clears the error term container of all error terms.
+   void clear() {
+      internal::static_for((tupleOfErrorTermMaps), [&](auto i, auto &variableMap) {
+         variableMap.clear();
+      });
+   }
+
    /// Stores the error terms.
    std::tuple<ErrorTermMap<ErrorTerms>...> tupleOfErrorTermMaps;
 };

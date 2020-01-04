@@ -31,6 +31,8 @@ public:
 
     SpatialMap(const unsigned width);
 
+    using MapContainer = std::vector<std::unique_ptr<std::vector<T> > >;
+
     void reset()
     {
         for (auto& e : this->mapOfMaps)
@@ -66,6 +68,10 @@ public:
         return bottomHashTableRef->at(this->index2);
     }
 
+    const MapContainer& getContainer() {
+        return mapOfMaps;
+    }
+
 private:
 
     /*
@@ -90,7 +96,7 @@ private:
 
 
 
-    std::vector<std::unique_ptr<std::vector<T> > > mapOfMaps;
+    MapContainer mapOfMaps;
 
     unsigned maximumIndexBitCount;
     //Eigen::Vector2i pixelShift; // used to shift the pixel to a top left zero index.

@@ -180,13 +180,13 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
             return 1;
         }
 
-        cdRef.initializeDistribution(cm, f, lKey, Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer, warpedPatch.value());
+        cdRef.initializeDistribution(cm, *(graph.getCurrentFrame()), lKey, Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))), MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer, warpedPatch.value());
         return 0;
     };
 
     std::vector<int> result(visibleActiveLandmarks.size());
     // Run the initialization function for all active and visible landmarks.
-    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(), cf->correspondenceDistributions.begin(), result.begin(), initializationFn);
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(), cf->correspondenceDistributions.begin(), result.begin(), initializationFn);
 
     std::cout << "Initialized correspondence distributions for this frame. Could not initialize: " << std::accumulate(result.begin(), result.end(), 0) << " distributions." << std::endl;
 }

@@ -70,6 +70,14 @@ public:
     {
     }
 
+    /// Emptys the slot map while retaining its memory.
+    void clear() {
+        slots.clear();
+        freeSlots.clear();
+        data.clear();
+        dataToSlotIndex.clear();
+    }
+
     /**
      * O(1)
      */

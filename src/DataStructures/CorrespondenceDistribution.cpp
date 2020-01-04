@@ -2,6 +2,7 @@
 #include "Patch.h"
 #include "PatchComparer.h"
 #include "Landmark.h"
+#include "spdlog/spdlog.h"
 #include <algorithm>
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> searchPattern)
@@ -21,18 +22,19 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(Ca
     errorArray.resize(pcs.size());
     std::transform(pcs.begin(), pcs.end(), errorArray.begin(), [px_0] (PotentialCorrespondence* pc) -> QDVO::Vector2 {
         assert(pc != nullptr); 
-        return (px_0 - pc->pixel.cast<SCALAR_TYPE>());});
+        return (pc->pixel.cast<SCALAR_TYPE>() - px_0);});
 
     expScoreArray.resize(pcs.size());
     std::transform(pcs.begin(), pcs.end(), errorArray.begin(), expScoreArray.begin(), [px_0] (PotentialCorrespondence* pc, QDVO::Vector2 error) -> SCALAR_TYPE {
         return exp(-0.5 * error.squaredNorm()) * pc->score;
     });
 
-    SCALAR_TYPE gmm = std::accumulate(expScoreArray.begin(), expScoreArray.begin() + pcs.size(), 0);
+    SCALAR_TYPE gmm = std::accumulate(expScoreArray.begin(), expScoreArray.begin() + pcs.size(), 0.0);
 
     if (gmm < std::numeric_limits<SCALAR_TYPE>::min()){
         // This should never happen, but it could.
-        throw std::runtime_error("gmm too small.");
+        SPDLOG_TRACE("Gaussian mixture evaluated to a small value {} with {} potential correspondences.", gmm, pcs.size());
+        return {};
     }
 
     weightedErrorArray.resize(pcs.size());
@@ -64,6 +66,8 @@ void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& camer
 
     // perform the search
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, centerPixel, floodRadius, false);
+
+    SPDLOG_INFO("initialized distribution with {} correspondences {}, {}", pcs.size(), centerPixel[0], centerPixel[1]);
 }
 
 std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)
@@ -103,20 +107,25 @@ std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::C
                 // try to compare the patch at the testPoint.
                 auto score = this->patchComparer->compare(this->warpedPatch, frame, testPoint);
 
+                pc->initialized = true;
+                pc->pixel = testPoint;
+
                 // Add the score to the distribution
                 if(score.has_value())
                 {
-                    pc->initialized = true;
-                    pc->pixel = testPoint;
                     pc->score = score.value();
-
-                    // If the potential correspondence is good enough, it is influential.
-                    if (pc->score >= POTENTIAL_CORRESPONDENCE_THRESHOLD)
-                    {
-                        firstInfluentialPotentialCorrespondenceFound = true;
-                        influentialPotentialCorrespondences.push_back(pc);
-                    }
                 }
+                else {
+                    // Set this to a bad match.
+                    pc->score = 0;
+                }
+            }
+
+            // If the potential correspondence is good enough, it is influential.
+            if (pc->score >= POTENTIAL_CORRESPONDENCE_THRESHOLD)
+            {
+                firstInfluentialPotentialCorrespondenceFound = true;
+                influentialPotentialCorrespondences.push_back(pc);
             }
         }
     }

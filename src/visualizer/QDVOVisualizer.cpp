@@ -137,7 +137,7 @@ void QDVOVisualizer::runVisualization()
     auto& windowInterface = pangolin::CreateWindowAndBind(window_name);
 
     // Resize window.
-    windowInterface.Resize(500, 250);
+    windowInterface.Resize(1000, 500);
 
     // enable depth
     glEnable(GL_DEPTH_TEST);
