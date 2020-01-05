@@ -208,7 +208,7 @@ void drawFrustum(QDVO::SE3 pose, Eigen::Vector3f color, float lineWidth) {
 
 	// Get near and far from the Projection matrix.
 	const double near = 0.1; 
-	const double far = 0.2;
+	const double far = 0.4;
 
 	// Get the sides of the near plane.
 	const double nLeft = -0.05;
@@ -217,10 +217,10 @@ void drawFrustum(QDVO::SE3 pose, Eigen::Vector3f color, float lineWidth) {
 	const double nBottom = -0.05;
 
 	// Get the sides of the far plane.
-	const double fLeft = -0.1;
-	const double fRight = 0.1;
-	const double fTop = 0.1;
-	const double fBottom = -0.1;
+	const double fLeft = -0.2;
+	const double fRight = 0.2;
+	const double fTop = 0.2;
+	const double fBottom = -0.2;
 
 	/*
 	 0	glVertex3f(0.0f, 0.0f, 0.0f);

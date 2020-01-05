@@ -13,7 +13,7 @@ FrontEndVisualOdometry::FrontEndVisualOdometry()
 
 void FrontEndVisualOdometry::run(QDVO::Graph& graph)
 {
-    spdlog::set_level(spdlog::level::trace);
+    //spdlog::set_level(spdlog::level::trace);
     SPDLOG_TRACE("Clearing old error terms.");
     // Ensure that the error term container is clear.
     errorTermContainer.clear();
@@ -29,7 +29,7 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph)
     }
 
     SPDLOG_TRACE("Solving for current frame pose with fixed landmarks and host frames.");
-    solver.settings.initialLambda = 1e4;
+    solver.settings.initialLambda = 1e3;
     auto result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
 
     if (result.whitenedSqError.size()) {

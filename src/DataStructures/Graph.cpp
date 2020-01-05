@@ -4,12 +4,14 @@
 #include "Frame.h"
 #include "CameraModel.hpp"
 
+#include "spdlog/spdlog.h"
+
 namespace QDVO {
 
 Graph::Graph()
 {
     currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
-    std::cout << "Initialized current frame." << std::endl;
+    SPDLOG_INFO("Initialized current frame.");
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition()
@@ -73,11 +75,11 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
     for (auto &keyframe : keyframes)
     {
         if (keyframe->status != QDVO::Frame::FrameStatus::ACTIVE) {
-            std::cout << "skipping inactive or marginalized keyframe." << std::endl;
+            SPDLOG_INFO("skipping inactive or marginalized keyframe.");
             continue;
         }
 
-        std::cout << "computing visible landmarks for kf: " << std::endl;
+        SPDLOG_INFO("computing visible landmarks for current frame.");
 
         const SE3& T_kfimu_kfcam = *(extrinsics.at(keyframe->extrinsicKey));
 
@@ -95,7 +97,7 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
                 auto px = cm->project(T_cf_kf * l.getEuclideanPoint());
                 if (!px.has_value())
                 {
-                    std::cout << "failed to project: " << l.getEuclideanPoint() << " -> " << T_cf_kf * l.getEuclideanPoint() << std::endl;
+                    SPDLOG_TRACE("failed to project: {} -> {}", l.getEuclideanPoint(), T_cf_kf * l.getEuclideanPoint());
                     continue;
                 }
 

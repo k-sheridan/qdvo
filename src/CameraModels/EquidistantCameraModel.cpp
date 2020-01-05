@@ -60,7 +60,7 @@ QDVO::Result<QDVO::Vector2> QDVO::EquidistantCameraModel::project(Eigen::Matrix<
 
             *(projectionJacobian) /= (2 * delta);
         }
-        catch (std::runtime_error &e)
+        catch (std::bad_optional_access &e)
         {
             std::cout << "failed to numerically evaluate the projection jacobian" << std::endl;
             return {};

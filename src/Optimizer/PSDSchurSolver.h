@@ -9,6 +9,7 @@
 #include "SlotArray.h"
 #include "BlockVector.h"
 #include "HuberLossFunction.h"
+#include "ParallelAlgorithms/ParallelAlgorithms.h"
 #include <cassert>
 #include <type_traits>
 #include <numeric>
@@ -64,7 +65,7 @@ public:
         /// The value lambda is divided by each time a successful iteration occurs.
         double lambdaReductionMultiplier = 10;
         /// The maximum number of iterations for the solve.
-        int maximumIterations = 25;
+        int maximumIterations = 15;
     } settings;
 
     struct SolveResult
@@ -137,6 +138,7 @@ public:
         // Iterate and solve.
         for (int iteration = 0; iteration < settings.maximumIterations; ++iteration)
         {
+            SPDLOG_TRACE("Linearizing error terms.");
             // Linearize the error terms.
             linearize(variables, errorTerms);
             // Build the linear system.
@@ -420,10 +422,10 @@ public:
     {
         // loop through all error terms and linearize all of them.
         internal::static_for(errorTerms.tupleOfErrorTermMaps, [&](auto i, auto &errorTermMap) {
-            for (auto &errorTerm : errorTermMap)
-            {
+            auto linearizationFn = [&variables] (auto& errorTerm) {
                 errorTerm.evaluate(variables, true);
-            }
+            };
+            QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::PARALLEL_CPU, errorTermMap.begin(), errorTermMap.end(), linearizationFn);
         });
     }
 
@@ -532,7 +534,7 @@ public:
                 }
                 else
                 {
-                    std::cout << "linearization invalid for error term." << std::endl;
+                    SPDLOG_TRACE("linearization invalid for error term.");
                 }
             }
         });

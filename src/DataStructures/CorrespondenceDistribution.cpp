@@ -67,7 +67,7 @@ void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& camer
     // perform the search
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, centerPixel, floodRadius, false);
 
-    SPDLOG_INFO("initialized distribution with {} correspondences {}, {}", pcs.size(), centerPixel[0], centerPixel[1]);
+    SPDLOG_TRACE("initialized distribution with {} correspondences {}, {}", pcs.size(), centerPixel[0], centerPixel[1]);
 }
 
 std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)

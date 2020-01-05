@@ -15,11 +15,11 @@ void QDVO::BasicPipeline::initialize()
     // create the patch warper
     patchWarper = std::make_unique<QDVO::PatchWarper>();
 
-    std::cout << "Computed radial search pattern" << std::endl;
+    SPDLOG_INFO("Computed radial search pattern");
 
     // create a feature detector
     featureDetector = std::make_unique<QDVO::FeatureDetector>();
-    std::cout << "Created a new feature detector" << std::endl;
+    SPDLOG_INFO("Created a new feature detector");
 
     patchComparer = std::make_shared<PatchComparer>();
 }
@@ -27,13 +27,13 @@ void QDVO::BasicPipeline::initialize()
 QDVO::CameraModelMap::key_type QDVO::BasicPipeline::addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel)
 {
     QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0), Eigen::Matrix<QDVO::SE3::Scalar, 3, 1>(0, 0, 0));
-    std::cout << "Camera Model Initialized" << std::endl;
+    SPDLOG_INFO("Camera Model Initialized");
     return graph.insertCamera(std::move(cameraModel), unit);
 }
 
 void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const CameraModelMap::key_type& cameraModelKey, const ExtrinsicMap::key_type& extrinsicKey)
 {
-   
+    SPDLOG_INFO("Added frame.");
     // save the last imu state
     QDVO::IMUState lastImuState = graph.getCurrentFrame()->imustate;
     // Reset current frame
@@ -82,6 +82,7 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const Cam
         // finally move the current frame into the keyframe set
         graph.moveCurrentFrameIntoKeyframePosition();
     }
+    SPDLOG_INFO("Finished adding frame.");
 }
 
 void QDVO::BasicPipeline::runMarginalizationStrategy()
@@ -91,14 +92,14 @@ void QDVO::BasicPipeline::runMarginalizationStrategy()
 
 void QDVO::BasicPipeline::createNewLandmarks(Graph& graph, KeyframeMap::key_type keyframeKey, std::unique_ptr<QDVO::FeatureDetector> &featureDetector)
 {
-    std::cout << "Creating new landmarks for keyframe: " << keyframeKey.index << "," << keyframeKey.generation << std::endl;
+    SPDLOG_INFO("Creating new landmarks for keyframe idx:{}, gen:{}", keyframeKey.index, keyframeKey.generation);
 
     std::unique_ptr<Frame>& keyframe = *graph.getKeyframeMap().at(keyframeKey);
 
     // Detect new features in the keyframe
     std::vector<QDVO::Feature> newFeatures = featureDetector->detectFeatures(*keyframe);
 
-    std::cout << "Found " << newFeatures.size() << " new landmarks" << std::endl;
+    SPDLOG_INFO("Found {} new landmarks", newFeatures.size());
 
     // add the landmarks to the keyframe's landmark vector
     std::unique_ptr<QDVO::CameraModel> &cm = graph.getCameraModelMap().at(keyframe->cameraModelKey)->first;
@@ -113,7 +114,7 @@ void QDVO::BasicPipeline::createNewLandmarks(Graph& graph, KeyframeMap::key_type
         auto result = cm->unproject(lm.px);
         if (!result.has_value())
         {
-            std::cout << "failed to unproject pixel." << std::endl;
+            SPDLOG_INFO("failed to unproject pixel.");
             continue;
         }
 
@@ -127,12 +128,14 @@ void QDVO::BasicPipeline::createNewLandmarks(Graph& graph, KeyframeMap::key_type
 
 void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
 {
+    SPDLOG_INFO("Initializing correspondence distributions for current frame.");
     // first update the patch comparers before initializing all the correspondence distributions
     updatePatchComparers();
 
     std::unique_ptr<QDVO::Frame> &cf = graph.getCurrentFrame();
     std::unique_ptr<CameraModel>& cm = graph.getCameraModelMap().at(cf->cameraModelKey)->first;
 
+SPDLOG_INFO("here");
     // second reset correspondence distributions
     cf->resetCorrespondenceDistributions();
 
@@ -148,7 +151,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(cm->width, cm->height, radialSearchPatternPtr)); 
     }
 
-    std::cout << "found " << visibleActiveLandmarks.size() << " visible and active landmarks for the current frame" << std::endl;
+    SPDLOG_INFO("found {} visible and active landmarks for the current frame", visibleActiveLandmarks.size());
 
     auto initializationFn = [&](std::tuple<LandmarkMap::key_type, QDVO::Vector2> &tup, QDVO::CorrespondenceDistribution &cdRef) -> int {
         LandmarkMap::key_type lKey = std::get<0>(tup);
@@ -167,7 +170,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         auto px0 = graph.projectLandmarkToPixel(*graph.getCurrentFrame(), landmarkParentFrame, l);
         if (!px0.has_value())
         {
-            std::cout << "landmark not visible in its parent frame!" << std::endl;
+            SPDLOG_TRACE("landmark not visible in its parent frame!");
             return 1;
         }
         QDVO::Result<QDVO::Patch> warpedPatch = {};
@@ -176,7 +179,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
         patchWarper->warpPatchToTargetFrame(warpedPatch, l, landmarkParentFrame, *(graph.getCurrentFrame()), graph);
         if (!warpedPatch.has_value())
         {
-            std::cout << "failed to warp patch" << std::endl;
+            SPDLOG_TRACE("failed to warp patch");
             return 1;
         }
 
@@ -186,16 +189,16 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForCurrentFrame()
 
     std::vector<int> result(visibleActiveLandmarks.size());
     // Run the initialization function for all active and visible landmarks.
-    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(), cf->correspondenceDistributions.begin(), result.begin(), initializationFn);
+    QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(), cf->correspondenceDistributions.begin(), result.begin(), initializationFn);
 
-    std::cout << "Initialized correspondence distributions for this frame. Could not initialize: " << std::accumulate(result.begin(), result.end(), 0) << " distributions." << std::endl;
+    SPDLOG_INFO("Initialized correspondence distributions for this frame. Could not initialize: {} distributions" ,std::accumulate(result.begin(), result.end(), 0));
 }
 
 bool QDVO::BasicPipeline::isCurrentFrameAKeyframe()
 {
     if (graph.getKeyframeMap().size() == 1)
     {
-        std::cout << "First frame is always a keyframe." << std::endl;
+        SPDLOG_INFO("First frame is always a keyframe.");
         return true;
     }
 
@@ -217,12 +220,12 @@ void QDVO::BasicPipeline::activateNewLandmarks()
      * Warning: This is an absolute mess, but for now it will have to do.
      */
 
-    std::cout << "Activating landmarks." << std::endl;
+    SPDLOG_INFO("Activating landmarks." );
 
     // find all visible active and inactive landmarks
     std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>> visibleLandmarks = graph.getVisibleLandmarksInCurrentFrame(false, true);
 
-    std::cout << "there are currently " << visibleLandmarks.size() << " active and inactive landmarks visible in the current frame" << std::endl;
+    SPDLOG_INFO("there are currently {} active and inactive landmarks visible in the current frame" , visibleLandmarks.size());
 
     // janky way of getting a decent feature distribution.
     cv::Mat mask = cv::Mat::zeros(graph.getCurrentFrame()->imagePyr.getImage().rows(), graph.getCurrentFrame()->imagePyr.getImage().cols(), CV_8U);
@@ -245,7 +248,7 @@ void QDVO::BasicPipeline::activateNewLandmarks()
         }
     }
 
-    std::cout << nActiveLandmarks << " active visible landmarks before activation." << std::endl;
+    SPDLOG_INFO("{} Active visible landmarks before activation.", nActiveLandmarks );
 
     if (nActiveLandmarks >= N_FEATURES_DESIRED)
     {
@@ -276,7 +279,7 @@ void QDVO::BasicPipeline::activateNewLandmarks()
         }
     }
 
-    std::cout << nActiveLandmarks << " active visible landmarks after activating initialized landmarks." << std::endl;
+    SPDLOG_INFO("{} Active visible landmarks after activating initialized landmarks.", nActiveLandmarks);
 
     // if necessary activate uninitialized landmarks
     if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS)
@@ -303,6 +306,6 @@ void QDVO::BasicPipeline::activateNewLandmarks()
                 break;
             }
         }
-        std::cout << nActiveLandmarks << " active visible landmarks after activating uninitialized landmarks." << std::endl;
+        SPDLOG_INFO("{} active visible landmarks after activating uninitialized landmarks.", nActiveLandmarks);
     }
 }
