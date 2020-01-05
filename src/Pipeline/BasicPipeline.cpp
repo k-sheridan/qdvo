@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "DataStructures/Feature.h"
 #include "DataStructures/Graph.h"
+#include "Settings.h"
+#include <cmath> 
 
 QDVO::BasicPipeline::BasicPipeline()
 {
@@ -202,7 +204,92 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe()
         return true;
     }
 
+    Settings s;
+
+    // Compute the pixel flow for each keyframe to check if the current frame should be made a keyframe.
+    // Find the lowest pixel flow score.
+    double smallestPixelFlowScore = std::numeric_limits<double>::max();
+    for (auto it = graph.getKeyframeMap().begin(); it != graph.getKeyframeMap().end(); it++) {
+        auto thisKey = graph.getKeyframeMap().getKeyFromDataIndex(it - graph.getKeyframeMap().begin());
+        if (thisKey == graph.getCurrentFrameKey()) {
+            continue;
+        }
+
+        // Compute the pixel flow with the current frame.
+        auto pixelFlows = computePixelFlowForCurrentFrame(thisKey);
+
+        SPDLOG_INFO("For keyframe {}-{}, Average pixel flow: {} Average translational pixel flow: {}", thisKey.index, thisKey.generation, pixelFlows.first, pixelFlows.second);
+
+        double score = s.weightAvgPixelFlow * pixelFlows.first + s.weightAvgTranslationalFlow * pixelFlows.second; 
+
+        if (score < smallestPixelFlowScore) {
+            smallestPixelFlowScore = score;
+        }
+    }
+
+    assert(!std::isnan(smallestPixelFlowScore));
+    // If this condition is met for any keyframe, The current frame pose is sufficiently "far" from all keyframes to warrant creating a
+    // new keyframe.
+    if (smallestPixelFlowScore > 1) {
+        SPDLOG_INFO("Current frame qualifies as a keyframe!");
+        return true;
+    }
+
     return false;
+}
+
+std::pair<double, double> QDVO::BasicPipeline::computePixelFlowForCurrentFrame(KeyframeMap::key_type key) 
+{
+    Frame& latestKeyframe = *(*graph.getKeyframeMap().at(key));
+    QDVO::SE3 currentFramePose = graph.getCurrentFrame()->imustate.getSE3();
+    QDVO::SE3 latestKeyframePose = latestKeyframe.imustate.getSE3();
+    double pixelFlow = 0;
+    int numberOfObservedFeatures = 0;
+    for (auto landmarkIt = graph.getLandmarkMap().begin(); landmarkIt != graph.getLandmarkMap().end(); landmarkIt++) {
+        // Skip this landmark if it is not active.
+        if (landmarkIt->status != Landmark::LandmarkStatus::ACTIVE) {
+            continue;
+        }
+
+        auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(landmarkIt - graph.getLandmarkMap().begin());
+
+        auto keyframePixel = graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
+        auto currentFramePixel = graph.projectLandmarkToPixel(graph.getCurrentFrameKey(), landmarkIt->parentFrameKey, lKey);
+
+        if (keyframePixel.has_value() && currentFramePixel.has_value()) {
+            pixelFlow += (currentFramePixel.value() - keyframePixel.value()).norm();
+            ++numberOfObservedFeatures;
+        }
+    }
+
+    pixelFlow = pixelFlow / numberOfObservedFeatures;
+
+    double translationalPixelFlow = 0;
+    // Set the current frame rotation to the keyframe rotation
+    graph.getCurrentFrame()->imustate.attitude = latestKeyframePose.so3();
+    numberOfObservedFeatures = 0;
+    for (auto landmarkIt = graph.getLandmarkMap().begin(); landmarkIt != graph.getLandmarkMap().end(); landmarkIt++) {
+        // Skip this landmark if it is not active.
+        if (landmarkIt->status != Landmark::LandmarkStatus::ACTIVE) {
+            continue;
+        }
+
+        auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(landmarkIt - graph.getLandmarkMap().begin());
+
+        auto keyframePixel = graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
+        auto currentFramePixel = graph.projectLandmarkToPixel(graph.getCurrentFrameKey(), landmarkIt->parentFrameKey, lKey);
+
+        if (keyframePixel.has_value() && currentFramePixel.has_value()) {
+            translationalPixelFlow += (currentFramePixel.value() - keyframePixel.value()).norm();
+            ++numberOfObservedFeatures;
+        }
+    }
+    // Reset the current frame attitude
+    graph.getCurrentFrame()->imustate.attitude = currentFramePose.so3();
+
+    translationalPixelFlow = translationalPixelFlow / numberOfObservedFeatures;
+
+    return std::make_pair(pixelFlow, translationalPixelFlow);
 }
 
 void QDVO::BasicPipeline::updatePatchComparers()

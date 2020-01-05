@@ -10,6 +10,10 @@ public:
     // global settings file
     int nKeyframes = 7;
 
+    // from the DSO keyframe selection criteria.
+    double weightAvgPixelFlow = 0.04;
+    double weightAvgTranslationalFlow = 0.12;
+
     // feature detection settings
     struct FeatureDetectionSettings {
         int nFeaturesDesired = 400;

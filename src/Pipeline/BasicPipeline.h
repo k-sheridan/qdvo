@@ -84,6 +84,14 @@ public:
     bool isCurrentFrameAKeyframe();
 
     /**
+     * Computes the pixel flow and translational pixel flow between the current frame and a desired keyframe.
+     * If a pixel flow is nan, there were no commonly observed features between the two frames.
+     * @param keyframeKey the keyframe used to compute pixel flow with respect to.
+     * @return A pair representing the pixel flow and translational pixel flow in that order.
+     */
+    std::pair<double, double> computePixelFlowForCurrentFrame(KeyframeMap::key_type keyframeKey);
+
+    /**
      * This function is ran after the current frame is setup and before the correspondence distributions are initialized. It will insert a new patch comparer
      * into the unordered_map of patch comparers while removing any old/redundant patch comparers.
      */
