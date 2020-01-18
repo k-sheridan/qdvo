@@ -33,6 +33,7 @@ public:
                                 ArgMin::VariableKey<ArgMin::SE3> targetFrameVariableKey,   
                                 ArgMin::VariableKey<ArgMin::InverseDepth> dinvVariableKey, 
                                 Eigen::Matrix<double, 2, 2> information,
+                                int cdidx,
                                 Graph* graph,
                                 KeyframeMap::key_type hostFrameKey,
                                 KeyframeMap::key_type targetFrameKey,
@@ -41,6 +42,7 @@ public:
         std::get<1>(variableKeys) = targetFrameVariableKey;
         std::get<2>(variableKeys) = dinvVariableKey;
         this->information = information;
+        correspondenceDistributionIndex = cdidx;
         this->graph = graph;
         this->hostFrameKey = hostFrameKey;
         this->targetFrameKey = targetFrameKey;
