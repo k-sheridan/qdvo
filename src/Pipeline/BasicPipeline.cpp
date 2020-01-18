@@ -60,11 +60,19 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const Cam
     // Check if the current frame meets the keyframe selection criteria
     if (isCurrentFrameAKeyframe())
     {
-        // Create new landmarks for the new keyframe
-        createNewLandmarks(graph, graph.getCurrentFrameKey(), featureDetector);
+        // Move the current frame into the keyframe set
+        auto newKeyframeKey = graph.getCurrentFrameKey();
+        graph.moveCurrentFrameIntoKeyframePosition();
+        // The new current frame should not be the same as the old one.
+        assert(!(newKeyframeKey == graph.getCurrentFrameKey()));
+        
+        // TODO: The rest of this can be ran on a separate thread. 
 
-        // set the current frame to active
-        graph.getCurrentFrame()->status = QDVO::Frame::ACTIVE;
+        // Create new landmarks for the new keyframe
+        createNewLandmarks(graph, newKeyframeKey, featureDetector);
+
+        // set the new keyframe to active
+        (*graph.getKeyframeMap().at(newKeyframeKey))->status = QDVO::Frame::ACTIVE;
 
         // run the sliding window estimator with the current keyframe set
         swe.run(graph);
@@ -81,8 +89,6 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const Cam
         // activate new landmarks if necessary
         activateNewLandmarks();
 
-        // finally move the current frame into the keyframe set
-        graph.moveCurrentFrameIntoKeyframePosition();
     }
     SPDLOG_INFO("Finished adding frame.");
 }
@@ -315,7 +321,8 @@ void QDVO::BasicPipeline::activateNewLandmarks()
     SPDLOG_INFO("there are currently {} active and inactive landmarks visible in the current frame" , visibleLandmarks.size());
 
     // janky way of getting a decent feature distribution.
-    cv::Mat mask = cv::Mat::zeros(graph.getCurrentFrame()->imagePyr.getImage().rows(), graph.getCurrentFrame()->imagePyr.getImage().cols(), CV_8U);
+    auto& cm = graph.getCameraModelMap().at(graph.getCurrentFrame()->cameraModelKey)->first;
+    cv::Mat mask = cv::Mat::zeros(cm->imageHeight(), cm->imageWidth(), CV_8U);
 
     const int maskRadius = 5;
 
@@ -395,4 +402,5 @@ void QDVO::BasicPipeline::activateNewLandmarks()
         }
         SPDLOG_INFO("{} active visible landmarks after activating uninitialized landmarks.", nActiveLandmarks);
     }
+    SPDLOG_INFO("Finished activating landmakrs.");
 }

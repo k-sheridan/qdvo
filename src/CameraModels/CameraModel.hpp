@@ -27,6 +27,14 @@ public:
 
     virtual bool isPointPotentiallyVisible(const QDVO::Vector3 &pointInCamera);
 
+    virtual int imageWidth() {
+        return width;
+    }
+
+    virtual int imageHeight() {
+        return height;
+    }
+
     template <typename T>
     bool isPixelOnImage(const Eigen::Matrix<T, 2, 1> &pixel)
     {

@@ -16,7 +16,6 @@ Graph::Graph()
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition()
 {
-    assert(getCurrentFrame()->status == Frame::FrameStatus::ACTIVE);
     assert(keyframes.size() <= N_KEYFRAMES);
 
     // make room for another keyframe
@@ -27,6 +26,7 @@ void Graph::moveCurrentFrameIntoNewKeyframePosition()
     std::unique_ptr<Frame>& newKeyframe = *(keyframes.at(newKeyframeKey));
     newKeyframe->imustate = getCurrentFrame()->imustate;
     newKeyframe->cameraModelKey = getCurrentFrame()->cameraModelKey;
+    newKeyframe->extrinsicKey = getCurrentFrame()->extrinsicKey;
 
     // swap the current frame into its new spot.
     currentFrameKey = newKeyframeKey;
@@ -65,6 +65,7 @@ void Graph::moveCurrentFrameIntoKeyframePosition()
 
 std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly, bool includeCurrentFrameLandmarks)
 {
+    SPDLOG_INFO("Computing visible landmarks in current frame.");
     std::vector<std::tuple<LandmarkMap::key_type, Vector2>> visibleLandmarkPtrs;
 
     auto& cm = cameraModelMap.at(getCurrentFrame()->cameraModelKey)->first;

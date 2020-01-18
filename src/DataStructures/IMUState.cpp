@@ -4,7 +4,7 @@ QDVO::IMUState::IMUState()
 {
     pos.setZero();
     vel.setZero();
-
+    attitude = QDVO::SO3::exp(Eigen::Vector3d(0,0,0));
 }
 
 void QDVO::IMUState::update(const Eigen::Matrix<SCALAR_TYPE, 9, 1> &dx)

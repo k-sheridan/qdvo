@@ -16,8 +16,8 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
     for (auto it = graph.getKeyframeMap().begin(); it != graph.getKeyframeMap().end(); it++) {
         auto keyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(it - graph.getKeyframeMap().begin());
 
-        // Check if this keyframe is the current frame.
-        if (keyframeKey == graph.getCurrentFrameKey()) {
+        // Check if this keyframe is the current frame or it is not active.
+        if (keyframeKey == graph.getCurrentFrameKey() || (*it)->status != Frame::FrameStatus::ACTIVE) {
             // Skip this frame.
             continue;
         }
@@ -92,6 +92,12 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
             SPDLOG_INFO("Constructed {} error terms for the new keyframe", errorTermsForThisKeyframe);
         }
     }
+
+    // Run the solver.
+    auto result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+    SPDLOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
+    if (!result.whitenedSqError.empty())
+        SPDLOG_INFO("Initial squared error {} -> final squared error {}", result.whitenedSqError.front(), result.whitenedSqError.back());
 }
 
 void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph)
