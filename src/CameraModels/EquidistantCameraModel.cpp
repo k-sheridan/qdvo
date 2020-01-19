@@ -25,7 +25,7 @@ QDVO::Result<QDVO::Vector2> QDVO::EquidistantCameraModel::project(Eigen::Matrix<
     Eigen::Matrix<SCALAR_TYPE, 3, 1> homogenousPoint = pointInCamera / pointInCamera(2);
 
     SCALAR_TYPE normPointProjectedOntoImagePlane = sqrt(pointInCamera(0) * pointInCamera(0) + pointInCamera(1) * pointInCamera(1));
-    SCALAR_TYPE theta = atan2(normPointProjectedOntoImagePlane, abs(pointInCamera(2)));
+    SCALAR_TYPE theta = atan2(normPointProjectedOntoImagePlane, std::abs(pointInCamera(2)));
 
     if (theta > this->fov / 2.0)
     {

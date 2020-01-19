@@ -6,13 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(CMAKE_CXX_FLAGS -O3)
 
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
+
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 find_package (Sophus REQUIRED)
-find_package(GTest REQUIRED)
-find_package(GoogleBenchmark REQUIRED)
 find_package(spdlog REQUIRED)
 
 include_directories(${benchmark_INCLUDE_DIRS})
@@ -59,7 +60,7 @@ add_subdirectory(test)
 add_subdirectory(bench)
 
 # visualization
-add_subdirectory(src/visualizer)
+add_subdirectory(visualizer)
 
 # Installation
 
