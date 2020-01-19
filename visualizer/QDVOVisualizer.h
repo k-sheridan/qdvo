@@ -38,8 +38,10 @@ public:
 
     float lerp(float low, float high, float interp)
     {
-        assert(high >= low);
         assert(interp <= 1 && interp >= 0);
+        if(high < low) {
+            return low;
+        }
         return low + interp*(high-low);
     }
 

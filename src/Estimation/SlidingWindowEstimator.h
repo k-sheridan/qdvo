@@ -45,7 +45,7 @@ public:
     
     using LossFunction = ArgMin::HuberLossFunction<double>;
 
-    LossFunction lossFunction = LossFunction(1000);
+    LossFunction lossFunction = LossFunction(1);
 
     using Solver = ArgMin::PSDSchurSolver<ArgMin::Scalar<double>, ArgMin::LossFunction<LossFunction>, ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>, ArgMin::VariableGroup<ArgMin::InverseDepth>>;
 
@@ -83,6 +83,12 @@ public:
      * @param graph The graph containing landmarks, keyframes, and observations.
      */
     void runMarginalizationStrategy(QDVO::Graph& graph);
+
+    /**
+     * Synchronizes the variableContainer with the graph through the poseKeyMap.
+     * @param graph The main datastructure holding the keyframes, landmarks, and observations.
+     */
+    void synchronizeGraph(QDVO::Graph& graph);
 
 };
 

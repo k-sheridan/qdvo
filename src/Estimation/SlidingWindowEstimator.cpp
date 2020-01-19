@@ -95,9 +95,19 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
 
     // Run the solver.
     auto result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
+
     SPDLOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
-    if (!result.whitenedSqError.empty())
+    if (!result.whitenedSqError.empty()){
         SPDLOG_INFO("Initial squared error {} -> final squared error {}", result.whitenedSqError.front(), result.whitenedSqError.back());
+    }
+
+    // Apply the updates to the actual graph iff the error was decreased.
+    if (!result.whitenedSqError.empty() && result.whitenedSqError.back() < result.whitenedSqError.front()){
+        SPDLOG_INFO("SWE successfully reduced error, applying updates to graph.");
+        synchronizeGraph(graph);
+    } else {
+        SPDLOG_ERROR("Error increased, not syncing update with graph.");
+    }
 }
 
 void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph)
@@ -108,4 +118,24 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph)
 void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph)
 {
 
+}
+
+void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph)
+{
+    for (auto it = poseKeyMap.begin(); it != poseKeyMap.end(); it++)
+    {
+        auto key = poseKeyMap.getKeyFromDataIndex(it - poseKeyMap.begin());
+        auto& keyframe = (*graph.getKeyframeMap().at(key));
+        auto& variable = variableContainer.at(*it);
+        keyframe->imustate.pos = variable.value.translation();
+        keyframe->imustate.attitude = variable.value.so3();
+    }
+
+    for (auto it = dinvKeyMap.begin(); it != dinvKeyMap.end(); it++)
+    {
+        auto key = dinvKeyMap.getKeyFromDataIndex(it - dinvKeyMap.begin());
+        auto& landmark = (*graph.getLandmarkMap().at(key));
+        auto& variable = variableContainer.at(*it);
+        landmark.dinv = variable.value;
+    }
 }
