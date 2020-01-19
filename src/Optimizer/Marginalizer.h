@@ -51,9 +51,10 @@ public:
     /// @param marginalizedKey This variable will be marginalized into the prior.
     /// @param prior The marginalized information will be added to this prior.
     /// @param linearizedErrorTerms These are the error terms which will be used to compute the marginalized information.
+    /// @param residualThreshold The threshold used to determine if an error term should be marginalized into the prior or simply culled.
     /// @return success flag signifying whether the marginalization was successful.
     template <typename VariableType, typename... IgnoredVariables>
-    bool marginalizeVariable(VariableKey<VariableType> &marginalizedKey, GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, VariableGroup<IgnoredVariables...> ignoredVariableTypes = VariableGroup<IgnoredVariables...>())
+    bool marginalizeVariable(VariableKey<VariableType> &marginalizedKey, GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior, ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms, VariableGroup<IgnoredVariables...> ignoredVariableTypes = VariableGroup<IgnoredVariables...>(), ScalarType residualThreshold = std::numeric_limits<ScalarType>::max())
     {
         typedef typename std::remove_reference<decltype(marginalizedKey)>::type::variable_type MarginalizedVariable;
 
@@ -89,40 +90,43 @@ public:
                         // Check if the linearization is valid for this error term.
                         if (errorTerm.linearizationValid)
                         {
-                            // Iterate through all independent variables.
-                            internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
-                                typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
-                                typedef typename std::remove_reference<decltype(errorTerm)>::type ErrorTermType;
+                            // Check if the error term hass too high of an error.
+                            if (errorTerm.residual.norm() < residualThreshold) {
+                                // Iterate through all independent variables.
+                                internal::static_for(errorTerm.variableKeys, [&](auto i, auto &outerVariableKey) {
+                                    typedef typename std::remove_reference<decltype(outerVariableKey)>::type OuterVariableKeyType;
+                                    typedef typename std::remove_reference<decltype(errorTerm)>::type ErrorTermType;
 
-                                // Cache the error transformation.
-                                Eigen::Matrix<ScalarType, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information).eval();
+                                    // Cache the error transformation.
+                                    Eigen::Matrix<ScalarType, OuterVariableKeyType::variable_type::dimension, ErrorTermType::residual_dimension> rhoJtW = (std::get<i>(errorTerm.variableJacobians).transpose() * errorTerm.information).eval();
 
-                                // Add to rhs.
-                                prior.b0.getRowBlock(outerVariableKey) += rhoJtW * -errorTerm.residual;
+                                    // Add to rhs.
+                                    prior.b0.getRowBlock(outerVariableKey) += rhoJtW * -errorTerm.residual;
 
-                                internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
-                                    // If this variable key points to a variable type which should be ignored, skip.
-                                    //if constexpr (!internal::Is_in_tuple<typename decltype(innerVariableKey)::variable_type, std::tuple<IgnoredVariables>>::value)
-                                    //{
-                                    // Extract the variable types from the keys.
-                                    // These keys must be of type VariableKey<VariableType>.
-                                    typedef typename std::remove_reference<decltype(innerVariableKey)>::type InnerVariableKeyType;
+                                    internal::static_for(errorTerm.variableKeys, [&](auto j, auto &innerVariableKey) {
+                                        // If this variable key points to a variable type which should be ignored, skip.
+                                        //if constexpr (!internal::Is_in_tuple<typename decltype(innerVariableKey)::variable_type, std::tuple<IgnoredVariables>>::value)
+                                        //{
+                                        // Extract the variable types from the keys.
+                                        // These keys must be of type VariableKey<VariableType>.
+                                        typedef typename std::remove_reference<decltype(innerVariableKey)>::type InnerVariableKeyType;
 
-                                    //Compute pJtJ and pJte for this error term.
-                                    // Add to lhs.
-                                    prior.A0.getBlock(outerVariableKey, innerVariableKey) += rhoJtW * std::get<j>(errorTerm.variableJacobians);
-                                    //}
+                                        //Compute pJtJ and pJte for this error term.
+                                        // Add to lhs.
+                                        prior.A0.getBlock(outerVariableKey, innerVariableKey) += rhoJtW * std::get<j>(errorTerm.variableJacobians);
+                                        //}
+                                    });
                                 });
-                            });
+                            }
                         }
                         else
                         {
                             SPDLOG_WARN("linearization invalid for error term. Skipping");
                         }
-                    }
 
                     // Add this error term to the deletion queue.
                     errorTermsToRemove.push_back(errorTermMap.getKeyFromDataIndex(errorTermIt - errorTermMap.begin()));
+                    }
                 }
             }
 

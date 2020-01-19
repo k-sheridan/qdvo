@@ -14,6 +14,10 @@ public:
     double weightAvgPixelFlow = 0.04;
     double weightAvgTranslationalFlow = 0.12;
 
+    // Settings for the sliding window estimator.
+    double huberWidth = 1;
+    double pixelOutlierThreshold = 3;
+
     // feature detection settings
     struct FeatureDetectionSettings {
         int nFeaturesDesired = 400;

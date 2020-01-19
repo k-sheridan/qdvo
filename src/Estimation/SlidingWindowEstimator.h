@@ -10,6 +10,7 @@
 #include "Optimizer/Variables/InverseDepth.h"
 #include "Optimizer/MetaHelpers.h"
 #include "Optimizer/GaussianPrior.h"
+#include "Optimizer/Marginalizer.h"
 #include "Optimizer/HuberLossFunction.h"
 #include "Optimizer/PSDSchurSolver.h"
 #include "Optimizer/Key.h"
@@ -18,6 +19,7 @@
 #include "Optimizer/SlotArray.h"
 #include "Optimizer/SlotMap.h"
 #include "Optimizer/Key.h"
+#include "Settings.h"
 
 namespace QDVO {
 
@@ -33,6 +35,8 @@ namespace QDVO {
 class SlidingWindowEstimator
 {
 public:
+    /// Settings used in the estimator.
+    Settings settings;
 
     /// Variable container which stores the pose refined by the optimizer.
     ArgMin::VariableContainer<ArgMin::SE3, ArgMin::InverseDepth> variableContainer;
@@ -42,6 +46,11 @@ public:
 
     /// A prior used for the solve.
     ArgMin::GaussianPrior<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>> prior;
+
+    using Marginalizer = ArgMin::Marginalizer<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>, ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>>;
+
+    /// Used to marginalize variables from the estimator.
+    Marginalizer marginalizer;
     
     using LossFunction = ArgMin::HuberLossFunction<double>;
 
@@ -84,11 +93,19 @@ public:
      */
     void runMarginalizationStrategy(QDVO::Graph& graph);
 
+private:
     /**
      * Synchronizes the variableContainer with the graph through the poseKeyMap.
      * @param graph The main datastructure holding the keyframes, landmarks, and observations.
      */
     void synchronizeGraph(QDVO::Graph& graph);
+
+    /**
+     * Marginalizes a single landmark from the problem, and removes it from the graph.
+     * @param graph The data structure containing the keyframes, landmarks, and observations.
+     * @param landmarkKey The key to the landmark to be marginalized.
+     */
+    void marginalizeLandmark(QDVO::Graph& graph, LandmarkMap::key_type landmarkKey);
 
 };
 

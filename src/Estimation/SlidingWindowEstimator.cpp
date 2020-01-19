@@ -139,3 +139,8 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph)
         landmark.dinv = variable.value;
     }
 }
+
+void SlidingWindowEstimator::marginalizeLandmark(QDVO::Graph& graph, LandmarkMap::key_type landmarkKey)
+{
+    // First marginalize the landmark.
+}
