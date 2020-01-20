@@ -877,6 +877,7 @@ public:
                     std::get<std::vector<decltype(key)>>(keysToErase).push_back(key);
                 }
             }
+	    SPDLOG_INFO("Found {} remove variables of type {}", std::get<i>(keysToErase).size(), typeid(std::get<i>(variableTuple)).name());
         });
 
         // Erase all keys which are not in the variable container, but exist in the solver.
@@ -908,6 +909,12 @@ public:
                 {
                     b_uncorrelated.removeRowBlock(key);
                 }
+
+//              // Erase dx block vector 
+//              for (const auto &key : keyVector)
+//              {
+//                  dxBlockVector.removeRowBlock(key);
+//              }
             }
         });
     }

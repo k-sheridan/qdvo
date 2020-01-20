@@ -21,6 +21,8 @@
 #include "Optimizer/Key.h"
 #include "Settings.h"
 
+#include "spdlog/spdlog.h"
+
 namespace QDVO {
 
 /**
@@ -102,11 +104,20 @@ private:
 
     /**
      * Marginalizes a single landmark from the problem, and removes it from the graph.
+     * Make sure the error terms are near the solution before running this.
      * @param graph The data structure containing the keyframes, landmarks, and observations.
      * @param landmarkKey The key to the landmark to be marginalized.
      */
     void marginalizeLandmark(QDVO::Graph& graph, LandmarkMap::key_type landmarkKey);
 
+    /**
+     * Marginalizes a keyframe and all its hosted landmarks.
+     * The solver must have been ran at least once for this to work properly
+     * since it assumes that the error terms are near the solution. 
+     * @param graph The data structure containing the keyframes, landmarks, and observations.
+     * @param keyframeKey The key to the keyframe to be marginalized.
+     */
+    void marginalizeKeyframe(QDVO::Graph& graph, KeyframeMap::key_type keyframeKey);
 };
 
 } // namespace QDVO

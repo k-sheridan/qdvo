@@ -65,3 +65,30 @@ TEST(SlotArray, Simple) {
     EXPECT_EQ(generatedKey.index, key5.index);
 }
 
+TEST(SlotArray, VerifyGeneration) {
+
+    using SA = SlotArray<int, TypedKey<int>>;
+    using SM = SlotMap<double, TypedKey<int>>;
+
+    SA array;
+    SM map;
+
+    auto key1 = map.insert(1.0);
+    auto key2 = map.insert(2.0);
+
+    array.insert(key1, 1);
+    array.insert(key2, 2);
+
+    map.erase(key2);
+    auto key3 = map.insert(3);
+    ASSERT_EQ(key2.index, key3.index);
+    EXPECT_NE(key2.generation, key3.generation);
+
+    array.erase(key2);
+    array.insert(key3, 3);
+
+    auto generatedKey = array.getKeyFromDataIndex(array.at(key3) - array.begin());
+
+    // Now the generated key should work with the slot map.
+    EXPECT_NE(map.at(generatedKey), map.end());
+}

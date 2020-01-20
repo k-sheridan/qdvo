@@ -16,9 +16,12 @@ class SlotArray
 {
 
     static_assert(std::is_integral<typename KeyType::index_type>::value);
+    static_assert(std::is_integral<typename KeyType::generation_type>::value);
 
     struct Slot
     {
+	/// The current generation of this slot.
+	typename KeyType::generation_type generation;
         size_t dataIndex; // index of the data in the data array.
         bool free = true;
     };
@@ -56,6 +59,9 @@ public:
 
         // get slot reference
         Slot &slot = slots.at(slotIndex);
+	
+	// Update the slot generation.
+	slot.generation = key.generation;
 
         // Is the slot free?
         if (slot.free) {
@@ -96,6 +102,11 @@ public:
             return;
         }
 
+	// Don't delete the data if the generations dont match.
+	if (slot.generation != key.generation) {
+	    return;
+	}
+
         assert(slot.dataIndex < data.size());
         assert(dataToSlotIndex.at(slot.dataIndex) == key.index);
 
@@ -132,6 +143,11 @@ public:
         if (slot.free) {
             return data.end();
         }
+
+	// Return nothing if the slot generation is different.
+	if (slot.generation != key.generation) {
+	    return data.end();
+	}
 
         assert(slot.dataIndex < data.size());
 
@@ -210,6 +226,8 @@ public:
         KeyType result;
 
         result.index = slotIndex;
+	assert(slotIndex < slots.size());
+	result.generation = slots.at(slotIndex).generation;
 
         return result;
     }

@@ -1,6 +1,5 @@
 #include "SlidingWindowEstimator.h"
 
-#include "spdlog/spdlog.h"
 
 using namespace QDVO;
 
@@ -12,6 +11,7 @@ SlidingWindowEstimator::SlidingWindowEstimator()
 
 void SlidingWindowEstimator::run(QDVO::Graph& graph)
 {
+    //spdlog::set_level(spdlog::level::trace);
     // Check if a new keyframe has been added.
     for (auto it = graph.getKeyframeMap().begin(); it != graph.getKeyframeMap().end(); it++) {
         auto keyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(it - graph.getKeyframeMap().begin());
@@ -93,6 +93,9 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
         }
     }
 
+    // Clean the prior before optimizing.
+    prior.removeUnsedVariables(variableContainer);
+
     // Run the solver.
     auto result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer, prior);
 
@@ -112,7 +115,29 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
 
 void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph)
 {
+    // Iterate through all visual error terms and check if any residuals are too high.
+    std::vector<LandmarkMap::key_type> landmarksToMarginalize; 
+    auto& errorTermMap = errorTermContainer.getErrorTermMap<QDVO::QuasiDirectErrorTerm>();
+    for (auto& errorTerm : errorTermMap) 
+    {
+	if (errorTerm.residual.norm() >= settings.pixelOutlierThreshold)
+	{
+	    landmarksToMarginalize.push_back(errorTerm.landmarkKey);
+	}
+    }
 
+    // Marginalize all landmarks which are outliers.
+    int marginalizedLandmarks = 0;
+    for (auto& landmarkKey : landmarksToMarginalize)
+    {
+        if (graph.getLandmarkMap().at(landmarkKey)->status != Landmark::LandmarkStatus::MARGINALIZED)
+	{
+	    marginalizeLandmark(graph, landmarkKey);
+	    ++marginalizedLandmarks;
+	}
+    }
+
+    SPDLOG_INFO("Remove {} outlier landmarks.", marginalizedLandmarks);
 }
 
 void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph)
@@ -142,5 +167,30 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph)
 
 void SlidingWindowEstimator::marginalizeLandmark(QDVO::Graph& graph, LandmarkMap::key_type landmarkKey)
 {
+    auto variableKey = *dinvKeyMap.at(landmarkKey);
     // First marginalize the landmark.
+    marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer, ArgMin::VariableGroup<>(), settings.pixelOutlierThreshold);
+    // Delete the landmark variable from the SWE.
+    variableContainer.erase(variableKey);
+    dinvKeyMap.erase(landmarkKey);
+    // Set the landmark to marginalized.
+    graph.getLandmarkMap().at(landmarkKey)->status = Landmark::LandmarkStatus::MARGINALIZED;
+}
+
+void SlidingWindowEstimator::marginalizeKeyframe(QDVO::Graph& graph, KeyframeMap::key_type keyframeKey)
+{
+    // First marginalize all landmarks one at a time.
+    auto& keyframe = *(*graph.getKeyframeMap().at(keyframeKey));
+    for (auto& landmarkKey : keyframe.landmarkKeys)
+    {
+	marginalizeLandmark(graph, landmarkKey);
+    }
+
+    // Finally marginalize the keyframe itself while ignoring landmark correlations to preserve sparsity.
+    auto variableKey = *poseKeyMap.at(keyframeKey);
+    marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer, ArgMin::VariableGroup<ArgMin::InverseDepth>(), settings.pixelOutlierThreshold);
+    variableContainer.erase(variableKey);
+    poseKeyMap.erase(keyframeKey);
+    // Set the keyframe to marginalized.
+    keyframe.status = Frame::FrameStatus::MARGINALIZED;
 }

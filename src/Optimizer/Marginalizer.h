@@ -124,8 +124,8 @@ public:
                             SPDLOG_WARN("linearization invalid for error term. Skipping");
                         }
 
-                    // Add this error term to the deletion queue.
-                    errorTermsToRemove.push_back(errorTermMap.getKeyFromDataIndex(errorTermIt - errorTermMap.begin()));
+                        // Add this error term to the deletion queue.
+                        errorTermsToRemove.push_back(errorTermMap.getKeyFromDataIndex(errorTermIt - errorTermMap.begin()));
                     }
                 }
             }
