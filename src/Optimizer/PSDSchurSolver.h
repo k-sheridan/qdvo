@@ -61,11 +61,11 @@ public:
     struct Settings
     {
         /// The first lambda used during the solve.
-        double initialLambda = 1e3;
+        double initialLambda = 1e6;
         /// The value lambda is divided by each time a successful iteration occurs.
         double lambdaReductionMultiplier = 10;
         /// The maximum number of iterations for the solve.
-        int maximumIterations = 15;
+        int maximumIterations = 25;
     } settings;
 
     struct SolveResult

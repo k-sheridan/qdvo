@@ -71,7 +71,7 @@ public:
     /**
      * Attempts to initialize inactive landmarks using an epipolar search
      */
-    void runEpipolarDepthEstimators();
+    void runEpipolarDepthEstimators(KeyframeMap::key_type mostRecentKeyframeKey);
 
     /**
      * marginalizes keyframes. This function can be changed in a modular fashion

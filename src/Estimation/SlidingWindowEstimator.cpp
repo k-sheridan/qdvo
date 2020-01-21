@@ -104,13 +104,20 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
         SPDLOG_INFO("Initial squared error {} -> final squared error {}", result.whitenedSqError.front(), result.whitenedSqError.back());
     }
 
+
+
     // Apply the updates to the actual graph iff the error was decreased.
     if (!result.whitenedSqError.empty() && result.whitenedSqError.back() < result.whitenedSqError.front()){
         SPDLOG_INFO("SWE successfully reduced error, applying updates to graph.");
         synchronizeGraph(graph);
+
+        // remove outliers found during sliding window estimation
+	SPDLOG_INFO("Removing outliers after successful optimization");
+        removeOutliers(graph);
     } else {
         SPDLOG_ERROR("Error increased, not syncing update with graph.");
     }
+
 }
 
 void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph)

@@ -5,6 +5,7 @@
 #include <opencv2/core/eigen.hpp>
 #include "GlobalDefinitions.h"
 #include "Types.h"
+#include "DataStructures/Patch.h"
 
 namespace QDVO {
 
@@ -30,6 +31,8 @@ namespace QDVO {
         int cols(){return image.cols();}
 
         QDVO::Result<ImageIntensityType> getSubPixelIntensity(QDVO::Vector2 px);
+
+	QDVO::Result<Patch> getSubPixelPatch(QDVO::Vector2 centerPixel, int patchWidth = PATCH_WIDTH);
 
         private:
         ImageType image;

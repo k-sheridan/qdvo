@@ -29,6 +29,10 @@ public:
      */
     virtual QDVO::Result<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, Frame& targetFrame, Eigen::Vector2i& pixel);
 
+    /**
+     * Compares two patches and returns a score on [0,1]
+     */
+    virtual SCALAR_TYPE compare(QDVO::Patch& templatePatch, QDVO::Patch& targetPatch);
 
 };
 }

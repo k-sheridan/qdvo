@@ -154,11 +154,7 @@ Result<Vector2> Graph::projectLandmarkToPixel(KeyframeMap::key_type targetFrameK
 /// Transforms the landmark into a euclidean point in the current frame.
 QDVO::Vector3 Graph::projectLandmarkToCameraFrame(const Frame& targetFrame, const Frame& sourceFrame, const Landmark& landmark) 
 {
-    SE3& T_tfimu_tfcam = *(extrinsics.at(targetFrame.extrinsicKey));
-    SE3& T_sfimu_sfcam = *(extrinsics.at(sourceFrame.extrinsicKey));
-
-    SE3 T_tf_sf = (targetFrame.imustate.getSE3() * T_tfimu_tfcam).inverse() * (sourceFrame.imustate.getSE3() * T_sfimu_sfcam);
-
+    SE3 T_tf_sf = computeRelativeKeyframeTransform(targetFrame, sourceFrame); 
     return T_tf_sf * landmark.getEuclideanPoint();
 }
 
@@ -170,6 +166,14 @@ QDVO::Result<QDVO::Vector2> Graph::projectLandmarkToPixel(const Frame& targetFra
     std::unique_ptr<CameraModel> &cm = cameraModelMap.at(targetFrame.cameraModelKey)->first;
 
     return cm->project(pt);
+}
+
+QDVO::SE3 Graph::computeRelativeKeyframeTransform(const Frame& targetFrame, const Frame& sourceFrame)
+{
+    SE3& T_tfimu_tfcam = *(extrinsics.at(targetFrame.extrinsicKey));
+    SE3& T_sfimu_sfcam = *(extrinsics.at(sourceFrame.extrinsicKey));
+
+    return (targetFrame.imustate.getSE3() * T_tfimu_tfcam).inverse() * (sourceFrame.imustate.getSE3() * T_sfimu_sfcam);
 }
 
 } // namespace QDVO

@@ -26,6 +26,13 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph)
             continue;
         }
         auto landmark = graph.getLandmarkMap().at(it->landmarkKey);
+
+        if (landmark->status != Landmark::LandmarkStatus::ACTIVE)
+	{
+		SPDLOG_WARN("Invalid landmark was in the correspondence distribution list {}", landmark->status);
+		continue;
+	}
+
         errorTermContainer.insert(QuasiDirectErrorTerm_TargetFrame(poseKey, Eigen::Matrix2d::Identity(), &graph, landmark->parentFrameKey, graph.getCurrentFrameKey(), it->landmarkKey, it - currentFrame.correspondenceDistributions.begin()));
         ++nErrorTerms;
     }

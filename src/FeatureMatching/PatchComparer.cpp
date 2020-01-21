@@ -26,9 +26,15 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch, Frame
     Eigen::Matrix<QDVO::ImageIntensityType, PATCH_WIDTH, PATCH_WIDTH> patchData = targetImage.block<PATCH_WIDTH, PATCH_WIDTH>(tl(1), tl(0));
     QDVO::Patch testPatch = QDVO::Patch(patchData);
    
-    SCALAR_TYPE resultingScore = (patch.getZeroMeanImageMatrix().array() * testPatch.getZeroMeanImageMatrix().array()).sum()
-    / sqrt(patch.getSumZeroMeanSquared() * testPatch.getSumZeroMeanSquared());
-     resultingScore = ((resultingScore + 1) / 2);
+    SCALAR_TYPE resultingScore = compare(patch, testPatch);
 
     return resultingScore;
+}
+
+SCALAR_TYPE QDVO::PatchComparer::compare(QDVO::Patch& patch, QDVO::Patch& testPatch)
+{
+    SCALAR_TYPE resultingScore = (patch.getZeroMeanImageMatrix().array() * testPatch.getZeroMeanImageMatrix().array()).sum()
+    / sqrt(patch.getSumZeroMeanSquared() * testPatch.getSumZeroMeanSquared());
+     
+    return ((resultingScore + 1) / 2);
 }

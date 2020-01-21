@@ -21,3 +21,25 @@ QDVO::Result<QDVO::ImageIntensityType> QDVO::Image::getSubPixelIntensity(QDVO::V
             return ((image(y0, x0) * (1.f - a) + image(y0, x1) * a) * (1.f - c)
                                    + (image(y1, x0) * (1.f - a) + image(y1, x1) * a) * c);
 }
+
+QDVO::Result<QDVO::Patch> QDVO::Image::getSubPixelPatch(QDVO::Vector2 centerPixel, int patchWidth)
+{
+    assert(patchWidth == PATCH_WIDTH);
+    Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> imageData;
+
+    for (int deltaX = -PATCH_RADIUS; deltaX <= PATCH_RADIUS; ++deltaX)
+    {
+        for (int deltaY = -PATCH_RADIUS; deltaY <= PATCH_RADIUS; ++deltaY)
+        {
+	    auto result = getSubPixelIntensity(centerPixel + QDVO::Vector2(deltaX, deltaY));
+	    if (!result.has_value())
+	    {
+		// Failed to get patch.
+		return {};
+	    }
+	    // Insert the result into the imageData.
+            imageData(deltaY + PATCH_RADIUS, deltaX + PATCH_RADIUS) = (result.value());
+	}
+    }
+    return QDVO::Patch(imageData);
+}

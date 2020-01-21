@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "DataStructures/Feature.h"
 #include "DataStructures/Graph.h"
+#include "DataStructures/Landmark.h"
+#include "EpipolarDepthEstimator.h"
 #include "Settings.h"
 #include <cmath> 
 
@@ -77,14 +79,11 @@ void QDVO::BasicPipeline::addFrame(cv::Mat &image, const double &time, const Cam
         // run the sliding window estimator with the current keyframe set
         swe.run(graph);
 
-        // marginalize excess keyframe
-        runMarginalizationStrategy();
-
-        // remove outliers found during sliding window estimation
-        swe.removeOutliers(graph);
-
         // attempt to estimate the landmark depths using the new motion estimates
-        runEpipolarDepthEstimators();
+        runEpipolarDepthEstimators(newKeyframeKey);
+
+        // marginalize excess keyframes.
+        runMarginalizationStrategy();
 
         // activate new landmarks if necessary
         activateNewLandmarks();
@@ -303,8 +302,38 @@ void QDVO::BasicPipeline::updatePatchComparers()
 
 }
 
-void QDVO::BasicPipeline::runEpipolarDepthEstimators()
+void QDVO::BasicPipeline::runEpipolarDepthEstimators(KeyframeMap::key_type mostRecentKeyframeKey)
 {
+    SPDLOG_INFO("Running Epipolar Depth Estimators");
+    // create a shared pointer to the patch comparer.
+    auto patchComparerPtr = patchComparer;
+
+    Frame& targetKeyframe = *(*graph.getKeyframeMap().at(mostRecentKeyframeKey));
+    // Iterate through all active keyframes and look for uninitialized landmarks.
+    for(auto keyframeIt = graph.getKeyframeMap().begin(); keyframeIt != graph.getKeyframeMap().end(); keyframeIt++)
+    {
+	Frame& sourceKeyframe = *(*keyframeIt);
+	auto sourceKeyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(keyframeIt - graph.getKeyframeMap().begin());
+
+	// Check if this keyframe is active and has parallax with the most recent keyframe.
+	if (sourceKeyframe.status == Frame::FrameStatus::ACTIVE && !(sourceKeyframeKey == mostRecentKeyframeKey))
+	{
+	    // Iterate through all hosted landmarks in this keyframe.
+	    for (auto landmarkKey : sourceKeyframe.landmarkKeys)
+	    {
+		// Get the landmark.
+		auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
+
+		// Check if the landmark should be updated.
+		if (!landmark.depthEstimator.initialized && landmark.status == Landmark::LandmarkStatus::INACTIVE)
+		{
+		    // Update this landmark's depth estimator.
+		    landmark.depthEstimator.update(graph, sourceKeyframe, targetKeyframe, landmark, *patchComparerPtr, *patchWarper);
+		}
+	    }
+	}
+    }	
+    SPDLOG_INFO("Finished running Epipolar Depth Estimators.");
 }
 
 void QDVO::BasicPipeline::activateNewLandmarks()

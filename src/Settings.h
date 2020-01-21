@@ -27,6 +27,15 @@ public:
         SCALAR_TYPE invariantThreshold = 0.1;
         SCALAR_TYPE minimumNormalizedGradientMagnitude = 0.0306;
     } feature_detection;
+
+    // Epipolar depth estimator settings.
+    struct EpipolarDepthEstimatorSettings {
+	int maximumAttempts = 6;
+	int maximumHypotheses = 5;
+	double minimumDepth = 0.1;
+	double maximumDepth = 20;
+	int resolution = 50;
+    } epipolar_depth_estimator;
 };
 }
 

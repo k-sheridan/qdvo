@@ -39,7 +39,7 @@
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 15
 
 // the number of extra radii that are searched after finding the first potential correspondence
-#define SEARCH_RADIUS_PADDING 5
+#define SEARCH_RADIUS_PADDING 3
 
 // define how many image pyramid levels are used during optiizations
 #define IMAGE_PYRAMID_LEVELS 1
