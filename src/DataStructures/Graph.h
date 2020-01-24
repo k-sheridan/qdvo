@@ -100,6 +100,7 @@ public:
 
     /// Computes T_A_B, the transform which maps a point in B into A.
     QDVO::SE3 computeRelativeKeyframeTransform(const Frame& A, const Frame& B);
+
 private:
     /// Stores camera models, and initial estimates of the imu to camera extrinsic.
     CameraModelMap cameraModelMap;
