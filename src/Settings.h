@@ -21,7 +21,7 @@ public:
     // feature detection settings
     struct FeatureDetectionSettings {
         int nFeaturesDesired = 400;
-        int nSections = 100;
+        int nSections = 20;
         SCALAR_TYPE harrisK = 0.05;
         SCALAR_TYPE edgeWeight = 0.1;
         SCALAR_TYPE invariantThreshold = 0.1;
@@ -31,10 +31,11 @@ public:
     // Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
 	int maximumAttempts = 6;
+	double maximumError = 0.1;
 	int maximumHypotheses = 5;
-	double minimumDepth = 0.1;
+	double minimumDepth = 0.4; 
 	double maximumDepth = 20;
-	double resolution = 1.0;
+	double resolution = 0.5;
     } epipolar_depth_estimator;
 };
 }

@@ -36,16 +36,16 @@
 #define MINUMUM_ACTIVE_LANDMARKS 100
 
 // define the maximum radius for the correspondence search.
-#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 15
+#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 25
 
 // the number of extra radii that are searched after finding the first potential correspondence
-#define SEARCH_RADIUS_PADDING 3
+#define SEARCH_RADIUS_PADDING 6
 
 // define how many image pyramid levels are used during optiizations
 #define IMAGE_PYRAMID_LEVELS 1
 
 // define the default landmark inverse depth. This is the depth all landmarks are initialized with and for a monocular use case, will influence the scene scale.
-#define DEFAULT_LANDMARK_DINV 0.5
+#define DEFAULT_LANDMARK_DINV 0.4
 
 
 

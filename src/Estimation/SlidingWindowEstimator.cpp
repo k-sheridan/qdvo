@@ -40,7 +40,13 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
             // Insert a map from the variable key to keyframe key.
             poseKeyMap.insert(keyframeKey, poseKey);
             // Insert the variable into the prior.
-            prior.addVariable(poseKey);
+	    if (graph.getKeyframeMap().size() == 1)
+	    {
+		SPDLOG_INFO("Adding first keyframe pose.");
+                prior.addVariable(poseKey, Eigen::Matrix<double, 6, 1>::Constant(1e24).asDiagonal());
+	    } else {
+                prior.addVariable(poseKey);
+	    }
 
             // Insert the landmarks hosted by this keyframe into the estimator.
             for (auto landmarkKey : (*it)->landmarkKeys) {
@@ -112,10 +118,15 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph)
         synchronizeGraph(graph);
 
         // remove outliers found during sliding window estimation
-	SPDLOG_INFO("Removing outliers after successful optimization");
-        removeOutliers(graph);
+	//SPDLOG_INFO("Removing outliers after successful optimization");
+        //removeOutliers(graph);
     } else {
-        SPDLOG_ERROR("Error increased, not syncing update with graph.");
+        SPDLOG_ERROR("Error increased, still syncing update with graph.");
+        synchronizeGraph(graph);
+
+        // remove outliers found during sliding window estimation
+	//SPDLOG_INFO("Removing outliers after successful optimization");
+        //removeOutliers(graph);
     }
 
 }

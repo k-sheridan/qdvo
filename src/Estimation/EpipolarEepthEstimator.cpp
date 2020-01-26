@@ -3,6 +3,7 @@
 #include "DataStructures/Graph.h"
 #include "CameraModel.hpp"
 #include "PatchComparer.h"
+#include "GlobalDefinitions.h"
 #include "PatchWarper.h"
 #include "Settings.h"
 #include "DataStructures/Patch.h"
@@ -110,5 +111,73 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe, Frame& targ
 	depth += s.epipolar_depth_estimator.resolution / pixelResult.value().first.norm();
     }
 
-    SPDLOG_INFO("Evaluated {} depths during epipolar search.", depths.size());
+    if (scores.empty())
+    {
+        return;
+    }
+    // Find the maximum score.
+    auto maxScoreIt = std::max_element(scores.begin(), scores.end());
+
+    SPDLOG_INFO("Evaluated {} depths during epipolar search. Max score: {} at depth: {}", depths.size(), *maxScoreIt, depths.at(std::distance(scores.begin(), maxScoreIt)));
+
+    if (*maxScoreIt < POTENTIAL_CORRESPONDENCE_THRESHOLD) 
+    {
+	SPDLOG_INFO("Landmark has no match during epipolar depth search.");
+        landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
+	return;
+    }
+
+    // Check that the scores only have a single cluster.
+    int switches = 0;
+    bool state = false;
+    for (auto& score : scores){
+	if ((score >= POTENTIAL_CORRESPONDENCE_THRESHOLD) && state == false)
+	{
+	    ++switches;
+	}
+
+	state = (score >= POTENTIAL_CORRESPONDENCE_THRESHOLD);
+    }
+
+    if (switches > 1)
+    {
+	SPDLOG_INFO("Landmark was not unique.");
+        landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
+	return;
+    }
+
+    // Find the beginning and end potential correspondences.
+    int startIdx = -1;
+    int endIdx = -1;
+    for (int idx = 0; idx < scores.size(); ++idx)
+    {
+        if (startIdx < 0 && scores.at(idx) >= POTENTIAL_CORRESPONDENCE_THRESHOLD){
+            startIdx = idx;
+	}
+	if (endIdx < 0 && startIdx >= 0 && scores.at(idx) < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+            endIdx = idx;
+	    break;
+	}
+    }
+
+    if (endIdx < 0) {
+        endIdx = scores.size() - 1;
+    }
+
+    // Compute the estimation error for this update.
+    assert(startIdx >= 0);
+    double thisError = depths.at(endIdx) - depths.at(startIdx);
+
+    // If the error has decreased, update the point.
+    if (error > thisError) {
+        error = thisError;
+	landmark.dinv = 1.0 / depths.at(std::distance(scores.begin(), maxScoreIt));
+	SPDLOG_INFO("Updated depth. New estimated depth is: {} with and error of: {} and {} hypotheses.", 1.0/landmark.dinv, thisError, endIdx - startIdx + 1);
+    }
+
+    // Finally, check if the current estimate meets our initialization requirements.
+    if (endIdx - startIdx <= s.epipolar_depth_estimator.maximumHypotheses && error <= s.epipolar_depth_estimator.maximumError) {
+        SPDLOG_INFO("Landmark depth successfully estimated with {} hypotheses and and error of {}", endIdx - startIdx, error);
+	initialized = true;
+    }
 }

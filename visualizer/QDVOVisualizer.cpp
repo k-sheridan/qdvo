@@ -102,7 +102,7 @@ void QDVOVisualizer::transferVisualizationData()
         auto parentFramePose = parentFrame.imustate.getSE3();
         QDVO::Vector3 point = parentFramePose * landmark.bearing * (1 / landmark.dinv);
         
-        if (landmark.status == QDVO::Landmark::INACTIVE) {
+        if (landmark.status == QDVO::Landmark::INACTIVE && landmark.depthEstimator.initialized) {
             // inactive.    
            visualizationData.inactivePoints.push_back(point); 
         } else if (landmark.status == QDVO::Landmark::ACTIVE) {
@@ -303,7 +303,7 @@ void QDVOVisualizer::draw3DPointCloud() {
     // Draw marginalized points.
     glColor3f(0,0.0,0.0);
     for (auto pt : visualizationData.marginalizedPoints) {
-        glVertex3f(pt[0], pt[1], pt[2]);
+        //glVertex3f(pt[0], pt[1], pt[2]);
     }
     // Draw active points.
     glColor3f(1.0, 1.0, 1.0);

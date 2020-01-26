@@ -21,8 +21,7 @@ public:
     /// flag which means that the landmark depth has been succesfully initialized.
     bool initialized = false; 
 
-    /// Keeps a count of the the number of valid hypotheses in the best estimate.
-    int bestUpdateHypothesesCount = std::numeric_limits<int>::max();
+    double error = std::numeric_limits<double>::max();
 
     /// Keeps track of the number of attempted updates.
     int attempts = 0;

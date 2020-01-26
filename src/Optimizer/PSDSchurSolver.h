@@ -160,8 +160,8 @@ public:
                 else
                 {
                     // The error increased or stagnated, break.
-                    //lambda = lambda * settings.lambdaReductionMultiplier;
-                    break;
+                    lambda = lambda * settings.lambdaReductionMultiplier;
+                    //break;
                 }
             }
 
