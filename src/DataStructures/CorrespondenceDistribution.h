@@ -63,14 +63,12 @@ public:
      */
     void reset();
 
-
-private:
-
     /**
      * does a radial search while evaluating the patch comparison metric
      */
     std::vector<PotentialCorrespondence*> search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i& centerPixel, const unsigned searchRadius, bool minimalSearch);
 
+private:
     // pre-allocated quantities.
     std::vector<SCALAR_TYPE> expScoreArray;
     std::vector<QDVO::Vector2> errorArray, weightedErrorArray;
