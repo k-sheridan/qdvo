@@ -51,7 +51,7 @@ public:
     /**
      * adds a new camera for the visual odometry algorithm.
      */
-    CameraModelMap::key_type addCamera(std::unique_ptr<QDVO::CameraModel> &cameraModel);
+    CameraModelMap::key_type addCamera(std::unique_ptr<QDVO::CameraModel> cameraModel);
 
     /**
      * detects features and adds new landmarks to the frame.
