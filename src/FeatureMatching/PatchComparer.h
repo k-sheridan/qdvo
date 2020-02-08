@@ -32,7 +32,7 @@ public:
     /**
      * Compares two patches and returns a score on [0,1]
      */
-    virtual SCALAR_TYPE compare(QDVO::Patch& templatePatch, QDVO::Patch& targetPatch);
+    virtual QDVO::Result<SCALAR_TYPE> compare(QDVO::Patch& templatePatch, QDVO::Patch& targetPatch);
 
 };
 }
