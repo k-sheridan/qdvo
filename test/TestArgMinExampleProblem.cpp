@@ -585,17 +585,15 @@ TEST_F(PSDSchurSolverTest, MarginalizationTest) {
             << " final error: " << result.whitenedSqError.back() << std::endl;
 
   // Verify that the errors have been reduced.
-  errorTermContainer.at(errorTermKey1).evaluate(variableContainer);
+  errorTermContainer.at(errorTermKey1).evaluate(variableContainer, true);
   EXPECT_NEAR(errorTermContainer.at(errorTermKey1).residual.norm(), 0, 1e-9);
-  errorTermContainer.at(errorTermKey2).evaluate(variableContainer);
+  errorTermContainer.at(errorTermKey2).evaluate(variableContainer, true);
   EXPECT_NEAR(errorTermContainer.at(errorTermKey2).residual.norm(), 0, 1e-9);
-  errorTermContainer.at(errorTermKey3).evaluate(variableContainer);
+  errorTermContainer.at(errorTermKey3).evaluate(variableContainer, true);
   EXPECT_NEAR(errorTermContainer.at(errorTermKey3).residual.norm(), 0, 1e-9);
 
   // Marginalize all landmarks and guarantee that the prior captures the same
   // information.
-  auto referenceHessian = solver.A;
-
   EXPECT_TRUE(errorTermContainer.at(errorTermKey1).linearizationValid);
   EXPECT_TRUE(errorTermContainer.at(errorTermKey2).linearizationValid);
   EXPECT_TRUE(errorTermContainer.at(errorTermKey3).linearizationValid);
@@ -615,10 +613,12 @@ TEST_F(PSDSchurSolverTest, MarginalizationTest) {
   solver.initialize(variableContainer, errorTermContainer);
   solver.linearize(variableContainer, errorTermContainer);
   solver.buildLinearSystem(prior, errorTermContainer, variableContainer);
+  solver.solveLinearSystem(variableContainer, errorTermContainer, prior);
 
-  auto marginalizedHessian = solver.A;
-
-  std::cout << referenceHessian << std::endl
-            << std::endl
-            << marginalizedHessian << std::endl;
+  // Now that we have marginalized all landmarks, there are no more relative
+  // reprojection error terms.
+  EXPECT_EQ(
+      errorTermContainer.getErrorTermMap<RelativeReprojectionError>().size(),
+      0);
+  EXPECT_NEAR(solver.dx.block(0, 0, solver.totalDimension, 1).norm(), 0, 1e-9);
 }
