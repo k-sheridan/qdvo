@@ -102,3 +102,93 @@ class QDVOSimpleGraphTest : public QDVOBasicTest {
   CameraModelMap::key_type cameraModelKey;
   ExtrinsicMap::key_type extrinsicKey;
 };
+
+class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
+ protected:
+  /// Initializes the keyframe's image with zero.
+  void insertBlankImageIntoKeyframe(KeyframeMap::key_type keyframeKey) {
+    auto& sourceKeyframe = *(*graph.getKeyframeMap().at(keyframeKey));
+    // Create the source image.
+    QDVO::Image image;
+    // TODO don't hard code the image size.
+    image.getImageData() = Eigen::MatrixXf(512, 512);
+    image.getImageData().setZero();
+
+    // Update the source keyframe's image.
+    cv::Mat cvMat;
+    image.toOpenCVImage().convertTo(cvMat, CV_16U);
+    sourceKeyframe.updateImage(cvMat);
+  }
+
+  /// Renders a point landmark into a keyframes' image.
+  /// @param keyframeKey the key to the keyframe which the point will be
+  /// rendered into.
+  /// @param pointInWorld the position of the point in the world frame.
+  /// @param landmarkIntensity the projected brightness of the landmark.
+  /// @return optional pixel position of landmark in keyframe.
+  QDVO::Result<QDVO::Vector2> renderPointLandmark(
+      KeyframeMap::key_type keyframeKey, QDVO::Vector3 pointInWorld,
+      double landmarkIntensity = 5.0) {
+    // project the point into the keyframe.
+    auto& keyframe = *(*graph.getKeyframeMap().at(keyframeKey));
+    auto pointInKeyframe = keyframe.imustate.getSE3().inverse() * pointInWorld;
+
+    auto& cameraModel =
+        graph.getCameraModelMap().at(keyframe.cameraModelKey)->first;
+
+    auto projectionResult = cameraModel->project(pointInKeyframe);
+
+    // Check if the point is visible in this frame.
+    if (projectionResult.has_value()) {
+      // Get the image and insert a bright pixel at the projected point.
+      auto& image = keyframe.imagePyr.getImage().getImageData();
+      image(std::round(projectionResult.value()(0)),
+            std::round(projectionResult.value()(1))) = landmarkIntensity;
+    }
+
+    // Return the projection result.
+    return projectionResult;
+  }
+
+  /// Renders an edge landmark into a keyframes' image.
+  /// @param keyframeKey the key to the keyframe which the point will be
+  /// rendered into.
+  /// @param pointInWorld the position of the point in the world frame.
+  /// @param normalInWorld the direction of the edge landmark in the world.
+  /// @param length The length in meters of the landmark in the world.
+  /// @param sampleResolution Distance between sample points on edge in meters.
+  /// @param landmarkIntensity the projected brightness of the landmark.
+  /// @return optional pixel position of landmark in keyframe.
+  QDVO::Result<QDVO::Vector2> renderEdgeLandmark(
+      KeyframeMap::key_type keyframeKey, QDVO::Vector3 pointInWorld,
+      QDVO::Vector3 normalInWorld, double length, double sampleResolution,
+      double landmarkIntensity = 5.0) {
+    // project the point into the keyframe.
+    auto& keyframe = *(*graph.getKeyframeMap().at(keyframeKey));
+    auto pointInKeyframe = keyframe.imustate.getSE3().inverse() * pointInWorld;
+    auto normalInKeyframe =
+        keyframe.imustate.attitude.inverse() * normalInWorld;
+
+    auto& cameraModel =
+        graph.getCameraModelMap().at(keyframe.cameraModelKey)->first;
+
+    auto centerProjectionResult = cameraModel->project(pointInKeyframe);
+
+    for (double scale = -(length / 2); scale < (length / 2);
+         scale += sampleResolution) {
+      auto projectionResult =
+          cameraModel->project(pointInKeyframe + normalInKeyframe * scale);
+
+      // Check if the point is visible in this frame.
+      if (projectionResult.has_value()) {
+        // Get the image and insert a bright pixel at the projected point.
+        auto& image = keyframe.imagePyr.getImage().getImageData();
+        image(std::round(projectionResult.value()(0)),
+              std::round(projectionResult.value()(1))) = landmarkIntensity;
+      }
+    }
+
+    // Return the projection result.
+    return centerProjectionResult;
+  }
+};
