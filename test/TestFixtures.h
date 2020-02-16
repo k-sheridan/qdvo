@@ -11,6 +11,7 @@
 #include "GlobalDefinitions.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
+#include "RadialSearchPattern.h"
 #include "Types.h"
 
 using namespace QDVO;
@@ -36,6 +37,8 @@ class QDVOBasicTest : public ::testing::Test {
       std::make_shared<QDVO::PatchComparer>(QDVO::PatchComparer());
 
   std::shared_ptr<QDVO::PatchWarper> patchWarper;
+
+  std::shared_ptr<const RadialSearchPattern> radialSearchPattern = std::make_shared<const RadialSearchPattern>(40);
 
   QDVO::Graph graph;
 };

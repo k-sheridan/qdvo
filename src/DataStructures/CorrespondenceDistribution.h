@@ -50,8 +50,9 @@ public:
 
     /**
      * Will perform an initial radial search for potential correspondences to get an idea of the structure of the raw patch comparison function.
+     * @return Number of valid potential correspondences during initialization.
      */
-    void initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
+    int initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i& centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparerPtr, QDVO::Patch warpedPatch);
 
     /**
      * Efficiently evaluates the gradient of the negative log likelihood of the gaussian mixture model described by this class.

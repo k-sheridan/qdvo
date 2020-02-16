@@ -54,7 +54,7 @@ void QDVO::CorrespondenceDistribution::reset()
     this->correspondenceMap.reset(); // wipe the actual distribution container clean.
 }
 
-void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch)
+int QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey, const Eigen::Vector2i &centerPixel, const int floodRadius, std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch)
 {
     this->dormant = false; // set the distribution to awake.
 
@@ -68,6 +68,8 @@ void QDVO::CorrespondenceDistribution::initializeDistribution(CameraModel& camer
     std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> pcs = this->search(cameraModel, frame, centerPixel, floodRadius, false);
 
     SPDLOG_TRACE("initialized distribution with {} correspondences {}, {}", pcs.size(), centerPixel[0], centerPixel[1]);
+
+    return pcs.size();
 }
 
 std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence *> QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame, const Eigen::Vector2i &centerPixel, const unsigned searchRadius, bool minimalSearch)
