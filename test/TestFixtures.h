@@ -70,7 +70,7 @@ class QDVOSimpleGraphTest : public QDVOBasicTest {
     sourceKeyframe.landmarkKeys.push_back(landmarkKey);
 
     // Set the landmark bearing and dinv.
-    landmark.bearing = QDVO::Vector3(0, 0, 1);
+    landmark.bearing = bearing;
     landmark.dinv = dinv;
 
     // Compute the source pixel position.
@@ -131,7 +131,7 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
   /// @return optional pixel position of landmark in keyframe.
   QDVO::Result<QDVO::Vector2> renderPointLandmark(
       KeyframeMap::key_type keyframeKey, QDVO::Vector3 pointInWorld,
-      double landmarkIntensity = 5.0) {
+      double landmarkIntensity = 1) {
     // project the point into the keyframe.
     auto& keyframe = *(*graph.getKeyframeMap().at(keyframeKey));
     auto pointInKeyframe = keyframe.imustate.getSE3().inverse() * pointInWorld;
@@ -193,5 +193,15 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
 
     // Return the projection result.
     return centerProjectionResult;
+  }
+
+  /// Inserts a keyframe with a blank image.
+  KeyframeMap::key_type insertKeyframe(QDVO::Vector3 pos, QDVO::SO3 attitude) {
+    auto sourceKeyframeKey = insertFrame();
+    auto& sourceKeyframe = *(*graph.getKeyframeMap().at(sourceKeyframeKey));
+    insertBlankImageIntoKeyframe(sourceKeyframeKey);
+    sourceKeyframe.imustate.pos = pos;
+    sourceKeyframe.imustate.attitude = attitude;
+    return sourceKeyframeKey;
   }
 };

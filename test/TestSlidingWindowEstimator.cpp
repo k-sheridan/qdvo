@@ -29,7 +29,14 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                                           graph);
 
       if (warpedPatch.has_value()) {
-        std::cout << "Warped Patch to target. " << std::endl;
+        std::cout << "Warped Patch to target. sum: "
+                  << warpedPatch.value().getImageData().sum() << std::endl;
+
+        // The patch should correlate with itself.
+        EXPECT_GT(
+            patchComparer->compare(warpedPatch.value(), warpedPatch.value()),
+            POTENTIAL_CORRESPONDENCE_THRESHOLD);
+
         auto projectionResult =
             graph.projectLandmarkToPixel(target, source, landmark);
         if (projectionResult.has_value()) {
@@ -43,27 +50,23 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
 
           std::cout << "Pixel center: " << center << std::endl;
 
+          // Compare the warped patch with the center pixel.
+          auto score =
+              patchComparer->compare(warpedPatch.value(), target, center);
+          std::cout << "Center score " << score.value() << std::endl;
+
           auto nPcs =
               target.correspondenceDistributions.back().initializeDistribution(
                   targetCameraModel, target, landmarkKey, center,
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
 
-	  std::cout << "Potential Correspondences: " << nPcs << std::endl;
+          std::cout << "Potential Correspondences: " << nPcs << std::endl;
         }
       }
     }
   }
 
-  /// Inserts a keyframe with a blank image.
-  KeyframeMap::key_type insertKeyframe(QDVO::Vector3 pos, QDVO::SO3 attitude) {
-    auto sourceKeyframeKey = insertFrame();
-    auto& sourceKeyframe = *(*graph.getKeyframeMap().at(sourceKeyframeKey));
-    insertBlankImageIntoKeyframe(sourceKeyframeKey);
-    sourceKeyframe.imustate.pos = pos;
-    sourceKeyframe.imustate.attitude = attitude;
-    return sourceKeyframeKey;
-  }
 
   /// Draws point landmark.
   void drawPointLandmark(KeyframeMap::key_type sourceKeyframe,
@@ -73,19 +76,38 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
     EXPECT_EQ(sourceKeyframe, landmark.parentFrameKey);
     auto pointInSource = landmark.getEuclideanPoint();
     auto& source = *(*graph.getKeyframeMap().at(sourceKeyframe));
-    auto pointInWorld = source.imustate.getSE3().inverse() * pointInSource;
+    auto pointInWorld = source.imustate.getSE3() * pointInSource;
+    auto& target = *(*graph.getKeyframeMap().at(targetKeyframe));
 
     // Render the point landmark.
     auto featurePositionResult =
-        renderPointLandmark(targetKeyframe, pointInWorld);
+        renderPointLandmark(targetKeyframe, pointInWorld, 1.0);
 
     if (featurePositionResult.has_value()) {
       // Verify that the feature position is valid.
       auto projResult = graph.projectLandmarkToPixel(
           targetKeyframe, sourceKeyframe, landmarkKey);
+      std::cout << "Rendered feature at: " << featurePositionResult.value()
+                << std::endl;
       ASSERT_TRUE(projResult.has_value());
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
+      EXPECT_EQ(target.imagePyr.getImage().getImageData()(
+                    std::round(projResult.value()(0)),
+                    std::round(projResult.value()(1))),
+                1.0);
+
+      // Verify that the drawn landmark matches.
+      QDVO::Result<QDVO::Patch> warpedPatch;
+      patchWarper->warpPatchToTargetFrame(warpedPatch, landmark, source, target,
+                                          graph);
+      EXPECT_TRUE(warpedPatch.has_value());
+      Eigen::Vector2i center(std::round(featurePositionResult.value()(0)),
+                             std::round(featurePositionResult.value()(1)));
+      auto score = patchComparer->compare(warpedPatch.value(), target, center);
+      EXPECT_TRUE(score.has_value());
+      std::cout << "Match score " << score.value() << std::endl;
+      EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
     }
   }
 };
@@ -119,10 +141,22 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
   drawPointLandmark(sourceKey, l3, targetKey1);
   drawPointLandmark(sourceKey, l4, targetKey1);
 
+  EXPECT_EQ((*graph.getKeyframeMap().at(targetKey1))
+                ->imagePyr.getImage()
+                .getImageData()
+                .sum(),
+            4);
+
   drawPointLandmark(sourceKey, l1, targetKey2);
   drawPointLandmark(sourceKey, l2, targetKey2);
   drawPointLandmark(sourceKey, l3, targetKey2);
   drawPointLandmark(sourceKey, l4, targetKey2);
+
+  EXPECT_EQ((*graph.getKeyframeMap().at(targetKey2))
+                ->imagePyr.getImage()
+                .getImageData()
+                .sum(),
+            4);
 
   // Initialize correspondence distributions.
   initializeCorrespondenceDistributuionsForFrame(targetKey1, sourceKey);
