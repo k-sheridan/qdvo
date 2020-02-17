@@ -145,8 +145,8 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
     if (projectionResult.has_value()) {
       // Get the image and insert a bright pixel at the projected point.
       auto& image = keyframe.imagePyr.getImage().getImageData();
-      image(std::round(projectionResult.value()(0)),
-            std::round(projectionResult.value()(1))) = landmarkIntensity;
+      image(std::round(projectionResult.value()(1)),
+            std::round(projectionResult.value()(0))) = landmarkIntensity;
     }
 
     // Return the projection result.
@@ -186,8 +186,8 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
       if (projectionResult.has_value()) {
         // Get the image and insert a bright pixel at the projected point.
         auto& image = keyframe.imagePyr.getImage().getImageData();
-        image(std::round(projectionResult.value()(0)),
-              std::round(projectionResult.value()(1))) = landmarkIntensity;
+        image(std::round(projectionResult.value()(1)),
+              std::round(projectionResult.value()(0))) = landmarkIntensity;
       }
     }
 

@@ -93,8 +93,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
       EXPECT_EQ(target.imagePyr.getImage().getImageData()(
-                    std::round(projResult.value()(0)),
-                    std::round(projResult.value()(1))),
+                    std::round(projResult.value()(1)),
+                    std::round(projResult.value()(0))),
                 1.0);
 
       // Verify that the drawn landmark matches.

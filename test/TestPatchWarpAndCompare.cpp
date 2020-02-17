@@ -23,8 +23,8 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
 
     EXPECT_TRUE(featurePositionResult.has_value());
     EXPECT_EQ(target.imagePyr.getImage().getImageData()(
-                  std::round(featurePositionResult.value()(0)),
-                  std::round(featurePositionResult.value()(1))),
+                  std::round(featurePositionResult.value()(1)),
+                  std::round(featurePositionResult.value()(0))),
               1.0);
     return featurePositionResult.value();
   }
