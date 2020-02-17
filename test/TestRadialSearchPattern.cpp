@@ -1,26 +1,33 @@
-#include "gtest/gtest.h"
 #include "DataStructures/RadialSearchPattern.h"
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
+#include "TestFixtures.h"
+#include "gtest/gtest.h"
 
-TEST(RadialSearchPattern, Basic)
-{
-    QDVO::RadialSearchPattern pattern(30);
+TEST(RadialSearchPattern, Basic) {
+  constexpr int searchRadius = 100;
+  QDVO::RadialSearchPattern pattern(searchRadius);
 
-    std::cout << pattern.searchPattern.size() << std::endl;
+  EXPECT_EQ(pattern.searchPattern.size(), searchRadius + 1);
 
-    /*cv::Mat render = cv::Mat::zeros(101, 101, CV_8U);
+  Eigen::MatrixXd render(2 * (searchRadius + 1), 2 * (searchRadius + 1));
+  render.setConstant(-1);
 
-    u_int8_t radius = 0;
-    for (auto& e : pattern.searchPattern)
-    {
-        for (auto& f : e)
-        {
-            render.at<uchar>(f(1) + 50, f(0) + 50) = radius;
-        }
-        radius++;
+  int radius = 0;
+  for (auto& e : pattern.searchPattern) {
+    for (auto& f : e) {
+      render(f(1) + searchRadius + 1, f(0) + searchRadius + 1) = radius;
     }
+    radius++;
+  }
 
-    cv::imshow("radial search", render);
-    cv::waitKey(10000);*/
+  for (int row = 0; row < render.rows(); ++row) {
+    for (int col = 0; col < render.cols(); ++col) {
+      auto delta = Eigen::Vector2i(row, col) -
+                   Eigen::Vector2i(searchRadius + 1, searchRadius + 1);
+
+      int radius = std::round(delta.norm());
+      if (radius < searchRadius) {
+        EXPECT_NEAR(radius, render(row, col), 1);
+      }
+    }
+  }
 }

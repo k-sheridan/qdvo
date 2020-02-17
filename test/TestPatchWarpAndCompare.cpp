@@ -67,6 +67,11 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     EXPECT_EQ(patch2.value().getImageData().sum(), 1);
     EXPECT_EQ(patch2.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 1);
 
+    // Compare the two patches expecting that the score is above the threshhold.
+    auto score = patchComparer->compare(patch1.value(), patch2.value());
+    EXPECT_TRUE(score.has_value());
+    EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
+
     // Remove the keyframes and landmark from the graph.
     graph.getKeyframeMap().erase(sourceKey);
     graph.getKeyframeMap().erase(targetKey);

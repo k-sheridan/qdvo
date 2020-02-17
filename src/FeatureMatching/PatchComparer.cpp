@@ -13,7 +13,6 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch,
   Eigen::Vector2i tl = pixel - shift;
   Eigen::Vector2i br = pixel + shift;
 
-  assert(patch.getStdDev() > 1e-8);
   assert(PATCH_WIDTH == 2 * PATCH_RADIUS + 1);
 
   QDVO::ImageType& targetImage = targetFrame.imagePyr.getImage().getImageData();
