@@ -13,7 +13,6 @@ FrontEndVisualOdometry::FrontEndVisualOdometry()
 
 void FrontEndVisualOdometry::run(QDVO::Graph& graph)
 {
-    //spdlog::set_level(spdlog::level::trace);
     SPDLOG_INFO("Clearing old error terms.");
     // Ensure that the error term container is clear.
     errorTermContainer.clear();

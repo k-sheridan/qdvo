@@ -28,7 +28,6 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(QDVO::Result<Patch> &warpedPatch,
 
     if (p0(2) <= 1e-10)
     {
-        //throw std::runtime_error("failed to warp patch. point behind camera.");
         return;
     }
 

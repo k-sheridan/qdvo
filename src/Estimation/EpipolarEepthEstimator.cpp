@@ -7,7 +7,7 @@
 #include "PatchWarper.h"
 #include "Settings.h"
 #include "Types.h"
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 using namespace QDVO;
 

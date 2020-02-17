@@ -1,6 +1,5 @@
 #pragma once
 
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 
 #include <cassert>
 #include <cmath>
@@ -15,7 +14,7 @@
 #include "ParallelAlgorithms/ParallelAlgorithms.h"
 #include "SlotArray.h"
 #include "SlotMap.h"
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 namespace ArgMin {
 

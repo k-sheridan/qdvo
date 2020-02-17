@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Estimation/SlidingWindowEstimator.h"
+#include "Logging.h"
 #include "TestFixtures.h"
 
 class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
@@ -29,8 +30,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                                           graph);
 
       if (warpedPatch.has_value()) {
-        std::cout << "Warped Patch to target. sum: "
-                  << warpedPatch.value().getImageData().sum() << std::endl;
+        SPDLOG_TRACE("Warped Patch to target. sum: {}",
+                     warpedPatch.value().getImageData().sum());
 
         // The patch should correlate with itself.
         EXPECT_GT(
@@ -48,12 +49,12 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           Eigen::Vector2i center(std::round(projectionResult.value()(0)),
                                  std::round(projectionResult.value()(1)));
 
-          std::cout << "Pixel center: " << center << std::endl;
+          SPDLOG_TRACE("Pixel center: {}", center);
 
           // Compare the warped patch with the center pixel.
           auto score =
               patchComparer->compare(warpedPatch.value(), target, center);
-          std::cout << "Center score " << score.value() << std::endl;
+          SPDLOG_TRACE("Center score {}", score.value());
 
           auto nPcs =
               target.correspondenceDistributions.back().initializeDistribution(
@@ -61,12 +62,11 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
 
-          std::cout << "Potential Correspondences: " << nPcs << std::endl;
+          SPDLOG_TRACE("Potential Correspondences: {}", nPcs);
         }
       }
     }
   }
-
 
   /// Draws point landmark.
   void drawPointLandmark(KeyframeMap::key_type sourceKeyframe,
@@ -87,8 +87,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       // Verify that the feature position is valid.
       auto projResult = graph.projectLandmarkToPixel(
           targetKeyframe, sourceKeyframe, landmarkKey);
-      std::cout << "Rendered feature at: " << featurePositionResult.value()
-                << std::endl;
+      SPDLOG_TRACE("Rendered feature at: \n{}\n", featurePositionResult.value());
+
       ASSERT_TRUE(projResult.has_value());
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
@@ -106,7 +106,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                              std::round(featurePositionResult.value()(1)));
       auto score = patchComparer->compare(warpedPatch.value(), target, center);
       EXPECT_TRUE(score.has_value());
-      std::cout << "Match score " << score.value() << std::endl;
+      SPDLOG_TRACE("Match score {}", score.value());
       EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
     }
   }

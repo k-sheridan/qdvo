@@ -12,7 +12,7 @@
 #include "Types.h"
 #include "Optimizer/ParallelAlgorithms/ParallelAlgorithms.h"
 
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 namespace QDVO
 {

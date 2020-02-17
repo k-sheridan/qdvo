@@ -21,7 +21,7 @@
 #include "Optimizer/Key.h"
 #include "Settings.h"
 
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 namespace QDVO {
 

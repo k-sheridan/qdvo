@@ -2,6 +2,7 @@
 #include "PatchWarper.h"
 #include "TestFixtures.h"
 #include "gtest/gtest.h"
+#include "Logging.h"
 
 class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
  public:
@@ -59,7 +60,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     EXPECT_EQ(patch1.value().getImageData().sum(), 1);
     EXPECT_EQ(patch1.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 1);
 
-    std::cout << patch1->getImageData() << std::endl;
+    SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
     patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
                                         graph);

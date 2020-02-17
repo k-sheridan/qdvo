@@ -2,7 +2,7 @@
 #include "Patch.h"
 #include "PatchComparer.h"
 #include "Landmark.h"
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 #include <algorithm>
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(unsigned width, unsigned height, std::shared_ptr<const RadialSearchPattern> searchPattern)

@@ -4,7 +4,7 @@
 #include "Frame.h"
 #include "CameraModel.hpp"
 
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 namespace QDVO {
 
@@ -98,7 +98,7 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
                 auto px = cm->project(T_cf_kf * l.getEuclideanPoint());
                 if (!px.has_value())
                 {
-                    SPDLOG_TRACE("failed to project: {} -> {}", l.getEuclideanPoint(), T_cf_kf * l.getEuclideanPoint());
+                    SPDLOG_TRACE("failed to project landmark"); 
                     continue;
                 }
 

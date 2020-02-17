@@ -9,7 +9,7 @@
 #include "Optimizer/GaussianPrior.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/MetaHelpers.h"
-#include "spdlog/spdlog.h"
+#include "Logging.h"
 
 namespace ArgMin {
 
