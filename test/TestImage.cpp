@@ -17,5 +17,45 @@ TEST_F(ImageTest, Basic) {
   source.updateImage(cvMat);
 
   EXPECT_EQ(source.imagePyr.getImage().getImageData()(cm->cy, cm->cx), 500);
+
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx, cm->cy)).value(),
+            500);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx + 1, cm->cy)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx, cm->cy + 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx - 1, cm->cy)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx, cm->cy - 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx + 1, cm->cy + 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx - 1, cm->cy + 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx + 1, cm->cy - 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx - 1, cm->cy - 1)).value(),
+            0);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx + 0.5, cm->cy)).value(),
+            250);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx, cm->cy + 0.5)).value(),
+            250);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx - 0.5, cm->cy)).value(),
+            250);
+  EXPECT_EQ(source.imagePyr.getImage().getSubPixelIntensity(
+                QDVO::Vector2(cm->cx, cm->cy - 0.5)).value(),
+            250);
 }
 

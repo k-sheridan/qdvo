@@ -1,8 +1,8 @@
+#include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
 #include "TestFixtures.h"
 #include "gtest/gtest.h"
-#include "Logging.h"
 
 class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
  public:
@@ -19,13 +19,13 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
 
     // Render the point landmark.
     auto featurePositionResult =
-        renderPointLandmark(targetKeyframe, pointInWorld, 1.0);
+        renderPointLandmark(targetKeyframe, pointInWorld, 500);
 
     EXPECT_TRUE(featurePositionResult.has_value());
     EXPECT_EQ(target.imagePyr.getImage().getImageData()(
                   std::round(featurePositionResult.value()(1)),
                   std::round(featurePositionResult.value()(0))),
-              1.0);
+              500);
     return featurePositionResult.value();
   }
 
@@ -57,16 +57,16 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     patchWarper->warpPatchToTargetFrame(patch1, landmark, source, target,
                                         graph);
     EXPECT_TRUE(patch1.has_value());
-    EXPECT_EQ(patch1.value().getImageData().sum(), 1);
-    EXPECT_EQ(patch1.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 1);
+    EXPECT_EQ(patch1.value().getImageData().sum(), 500);
+    EXPECT_EQ(patch1.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 500);
 
     SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
     patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
                                         graph);
     EXPECT_TRUE(patch2.has_value());
-    EXPECT_EQ(patch2.value().getImageData().sum(), 1);
-    EXPECT_EQ(patch2.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 1);
+    EXPECT_EQ(patch2.value().getImageData().sum(), 500);
+    EXPECT_EQ(patch2.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 500);
 
     // Compare the two patches expecting that the score is above the threshhold.
     auto score = patchComparer->compare(patch1.value(), patch2.value());
@@ -84,5 +84,9 @@ TEST_F(PatchWarpAndCompareTest, Basic) {
   testBasic(QDVO::Vector3(0, 0, 1), 0.5);
   testBasic(QDVO::Vector3(0.5, 0, 1), 0.5);
   testBasic(QDVO::Vector3(0, -0.5, 1), 0.5);
+  testBasic(QDVO::Vector3(-0.5, 0, 1), 0.5);
+  testBasic(QDVO::Vector3(-0.5, -0.1, 1), 0.5);
+  testBasic(QDVO::Vector3(0.1, 0, 1), 0.5);
+  testBasic(QDVO::Vector3(0.1, 0.2, 1), 0.5);
 }
 
