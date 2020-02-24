@@ -51,6 +51,11 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
         "target frame.");
     return;
   }
+
+  Eigen::Matrix<SCALAR_TYPE, 2, 2> unprojJac = projJac.inverse();
+  assert(patchRadius == PATCH_RADIUS);
+  Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> imageData;
+
   auto px_source = graph.getCameraModelMap()
                        .at(sourceFrame.cameraModelKey)
                        ->first->project(pt_source, &projJac);
@@ -61,12 +66,9 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
     return;
   }
 
-  Eigen::Matrix<SCALAR_TYPE, 2, 2> unprojJac = projJac.inverse();
-  assert(patchRadius == PATCH_RADIUS);
-  Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> imageData;
-
   QDVO::Vector3 u, p;
   u(2) = 1;
+
   for (int deltaX = -patchRadius; deltaX <= patchRadius; ++deltaX) {
     for (int deltaY = -patchRadius; deltaY <= patchRadius; ++deltaY) {
       u.block(0, 0, 2, 1) =
