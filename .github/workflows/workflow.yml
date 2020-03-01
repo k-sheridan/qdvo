@@ -101,3 +101,102 @@ jobs:
       
     - name: Benchmark
       run: cd build && ./bench/benchmark_qdvo
+      
+  build-ubuntu-clang-asan:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: action-cpp-lint
+      uses: CyberZHG/github-action-cpp-lint@0.0.2
+      
+    - name: Apt-Get Dependencies
+      run: |
+        sudo apt-get -qq update
+        sudo apt-get install -y ccache
+        sudo apt-get install gfortran libc++-dev libgoogle-glog-dev libatlas-base-dev libsuitesparse-dev
+        sudo apt-get install libbenchmark-dev
+        sudo apt-get install libeigen3-dev
+        sudo apt-get install libopencv-dev
+        sudo apt install libgl1-mesa-dev
+        sudo apt install libglew-dev
+        
+    - name: Cache spdlog
+      id: cache-spdlog
+      uses: actions/cache@v1
+      with:
+        path: spdlog
+        key: ${{ runner.os }}-spdlog
+      
+    - name: Build spdlog
+      if: steps.cache-spdlog.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/gabime/spdlog.git
+        cd spdlog && mkdir build && cd build && cmake .. && make -j
+    
+    - name: Install spdlog
+      run: cd spdlog/build && sudo make install
+    
+    - name: Cache Sophus 
+      id: cache-sophus
+      uses: actions/cache@v1
+      with:
+        path: Sophus
+        key: ${{ runner.os }}-sophus
+      
+    - name: Build Sophus
+      if: steps.cache-sophus.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/strasdat/Sophus
+        cd Sophus && mkdir build && cd build && cmake .. && make -j16
+    
+    - name: Install Sophus
+      run: cd Sophus/build && sudo make install
+        
+    - name: Cache GTest
+      id: cache-gtest
+      uses: actions/cache@v1
+      with:
+        path: googletest
+        key: ${{ runner.os }}-gtest
+        
+    - name: Build GTest
+      if: steps.cache-gtest.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/google/googletest
+        cd googletest && mkdir build && cd build
+        cmake .. && make
+        
+    - name: Install GTest
+      run: cd googletest/build && sudo make install
+    
+    - name: Cache Pangolin
+      id: cache-pangolin
+      uses: actions/cache@v1
+      with:
+        path: Pangolin
+        key: ${{ runner.os }}-pangolin
+        
+    - name: Build Pangolin
+      if: steps.cache-pangolin.outputs.cache-hit != 'true'
+      run: |
+        git clone https://github.com/stevenlovegrove/Pangolin
+        cd Pangolin && mkdir build && cd build
+        cmake .. && make
+        
+    - name: Install Pangolin
+      run: cd Pangolin/build && sudo make install
+        
+    - name: Configure Clang ASAN
+      run: mkdir build && cd build && cmake -DQDVO_ASAN=1 -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CC_COMPILER=clang ..
+      
+    - name: Build Clang ASAN
+      run: pwd && cd build && make QDVO && make test_qdvo && make benchmark_qdvo
+      
+    - name: Test
+      run: cd build && ./test/test_qdvo
+      
+    - name: Benchmark
+      run: cd build && ./bench/benchmark_qdvo
