@@ -9,6 +9,7 @@
 #include "DataStructures/Image.h"
 #include "EquidistantCameraModel.h"
 #include "GlobalDefinitions.h"
+#include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
 #include "RadialSearchPattern.h"
@@ -38,7 +39,8 @@ class QDVOBasicTest : public ::testing::Test {
 
   std::shared_ptr<QDVO::PatchWarper> patchWarper;
 
-  std::shared_ptr<const RadialSearchPattern> radialSearchPattern = std::make_shared<const RadialSearchPattern>(40);
+  std::shared_ptr<const RadialSearchPattern> radialSearchPattern =
+      std::make_shared<const RadialSearchPattern>(40);
 
   QDVO::Graph graph;
 };
@@ -145,8 +147,47 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
     if (projectionResult.has_value()) {
       // Get the image and insert a bright pixel at the projected point.
       auto& image = keyframe.imagePyr.getImage().getImageData();
-      image(std::round(projectionResult.value()(1)),
-            std::round(projectionResult.value()(0))) = landmarkIntensity;
+
+      auto ceilFn = [](auto scalar) { return std::floor(scalar) + 1; };
+
+      Eigen::Vector2d delta =
+          (projectionResult.value() -
+           Eigen::Vector2d(std::floor(projectionResult.value().x()),
+                           std::floor(projectionResult.value().y())));
+
+      SPDLOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n",
+                   delta, projectionResult.value(),
+                   Eigen::Vector2d(std::floor(projectionResult.value().x()),
+                                   std::floor(projectionResult.value().y())),
+                   Eigen::Vector2d(ceilFn(projectionResult.value().x()),
+                                   ceilFn(projectionResult.value().y())));
+      // Create a high res 2x2 pixel patch.
+      Eigen::Matrix<double, 20, 20> patch;
+      patch.setZero();
+      // Set a 10x10 section to the 1/100 the landmark intensity.
+      patch.block<10, 10>(std::floor(delta.y() * 10.0),
+                          std::floor(delta.x() * 10.0)) =
+          Eigen::Matrix<double, 10, 10>::Constant(landmarkIntensity * 0.01);
+
+      SPDLOG_TRACE("patch: \n{}\n", patch);
+
+      image(ceilFn(projectionResult.value().y()),
+            ceilFn(projectionResult.value().x())) =
+          patch.block<10, 10>(10, 10).cast<QDVO::ImageIntensityType>().sum();
+      image(std::floor(projectionResult.value().y()),
+            std::floor(projectionResult.value().x())) =
+          patch.block<10, 10>(0, 0).cast<QDVO::ImageIntensityType>().sum();
+      image(ceilFn(projectionResult.value().y()),
+            std::floor(projectionResult.value().x())) =
+          patch.block<10, 10>(10, 0).cast<QDVO::ImageIntensityType>().sum();
+      image(std::floor(projectionResult.value().y()),
+            ceilFn(projectionResult.value().x())) =
+          patch.block<10, 10>(0, 10).cast<QDVO::ImageIntensityType>().sum();
+
+      SPDLOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
+                   image(std::floor(projectionResult.value().y()),
+                         std::floor(projectionResult.value().x())),
+                   patch.block<10, 10>(0, 0).sum());
     }
 
     // Return the projection result.

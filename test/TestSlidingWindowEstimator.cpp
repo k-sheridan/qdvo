@@ -87,15 +87,16 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       // Verify that the feature position is valid.
       auto projResult = graph.projectLandmarkToPixel(
           targetKeyframe, sourceKeyframe, landmarkKey);
-      SPDLOG_TRACE("Rendered feature at: \n{}\n", featurePositionResult.value());
+      SPDLOG_TRACE("Rendered feature at: \n{}\n",
+                   featurePositionResult.value());
 
       ASSERT_TRUE(projResult.has_value());
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
-      EXPECT_EQ(target.imagePyr.getImage().getImageData()(
+      EXPECT_NE(target.imagePyr.getImage().getImageData()(
                     std::round(projResult.value()(1)),
                     std::round(projResult.value()(0))),
-                1.0);
+                0);
 
       // Verify that the drawn landmark matches.
       QDVO::Result<QDVO::Patch> warpedPatch;
@@ -129,6 +130,14 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
   auto l2 = insertLandmark(sourceKey, QDVO::Vector3(0.5, 0, 1), 0.5);
   auto l3 = insertLandmark(sourceKey, QDVO::Vector3(0, 0.5, 1), 0.5);
   auto l4 = insertLandmark(sourceKey, QDVO::Vector3(-0.5, -0.5, 1), 0.5);
+
+  // Set all keyframes to active.
+  (*graph.getKeyframeMap().at(targetKey1))->status =
+      QDVO::Frame::FrameStatus::ACTIVE;
+  (*graph.getKeyframeMap().at(targetKey2))->status =
+      QDVO::Frame::FrameStatus::ACTIVE;
+  (*graph.getKeyframeMap().at(sourceKey))->status =
+      QDVO::Frame::FrameStatus::ACTIVE;
 
   // Render all of the landmarks.
   drawPointLandmark(sourceKey, l1, sourceKey);
@@ -176,4 +185,7 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
             4);
   // There should be 3 se3 variables.
   EXPECT_EQ(swe.variableContainer.getVariableMap<ArgMin::SE3>().size(), 3);
+
+  // Verify that the values match up to some scale parameter.a
+  // Use the first landmark to determine the scaling factor.
 }
