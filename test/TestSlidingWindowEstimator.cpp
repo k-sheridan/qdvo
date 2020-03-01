@@ -62,7 +62,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
 
-          SPDLOG_TRACE("Potential Correspondences: {}", nPcs);
+          SPDLOG_INFO("Potential Correspondences: {}", nPcs);
         }
       }
     }
@@ -103,6 +103,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       patchWarper->warpPatchToTargetFrame(warpedPatch, landmark, source, target,
                                           graph);
       EXPECT_TRUE(warpedPatch.has_value());
+      SPDLOG_TRACE("Warped Patch: \n{}\n", warpedPatch.value().getImageData());
       Eigen::Vector2i center(std::round(featurePositionResult.value()(0)),
                              std::round(featurePositionResult.value()(1)));
       auto score = patchComparer->compare(warpedPatch.value(), target, center);
@@ -128,7 +129,7 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
   // Insert landmarks into the source keyframe.
   auto l1 = insertLandmark(sourceKey, QDVO::Vector3(0, 0, 1), 0.5);
   auto l2 = insertLandmark(sourceKey, QDVO::Vector3(0.5, 0, 1), 0.5);
-  auto l3 = insertLandmark(sourceKey, QDVO::Vector3(0, 0.5, 1), 0.5);
+  auto l3 = insertLandmark(sourceKey, QDVO::Vector3(0.2, -0.1, 1), 0.5);
   auto l4 = insertLandmark(sourceKey, QDVO::Vector3(-0.5, -0.5, 1), 0.5);
 
   // Set all keyframes to active.
@@ -150,22 +151,22 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
   drawPointLandmark(sourceKey, l3, targetKey1);
   drawPointLandmark(sourceKey, l4, targetKey1);
 
-  EXPECT_EQ((*graph.getKeyframeMap().at(targetKey1))
-                ->imagePyr.getImage()
-                .getImageData()
-                .sum(),
-            4);
+  EXPECT_NEAR((*graph.getKeyframeMap().at(targetKey1))
+                  ->imagePyr.getImage()
+                  .getImageData()
+                  .sum(),
+              4, 1e-3);
 
   drawPointLandmark(sourceKey, l1, targetKey2);
   drawPointLandmark(sourceKey, l2, targetKey2);
   drawPointLandmark(sourceKey, l3, targetKey2);
   drawPointLandmark(sourceKey, l4, targetKey2);
 
-  EXPECT_EQ((*graph.getKeyframeMap().at(targetKey2))
-                ->imagePyr.getImage()
-                .getImageData()
-                .sum(),
-            4);
+  EXPECT_NEAR((*graph.getKeyframeMap().at(targetKey2))
+                  ->imagePyr.getImage()
+                  .getImageData()
+                  .sum(),
+              4, 1e-3);
 
   // Initialize correspondence distributions.
   initializeCorrespondenceDistributuionsForFrame(targetKey1, sourceKey);

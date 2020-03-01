@@ -22,10 +22,6 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
         renderPointLandmark(targetKeyframe, pointInWorld, 500);
 
     EXPECT_TRUE(featurePositionResult.has_value());
-    EXPECT_EQ(target.imagePyr.getImage().getImageData()(
-                  std::round(featurePositionResult.value()(1)),
-                  std::round(featurePositionResult.value()(0))),
-              500);
     return featurePositionResult.value();
   }
 
@@ -65,7 +61,6 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
                                         graph);
     EXPECT_TRUE(patch1.has_value());
     EXPECT_EQ(patch1.value().getImageData().sum(), 500);
-    EXPECT_EQ(patch1.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 500);
 
     SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
@@ -73,7 +68,6 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
                                         graph);
     EXPECT_TRUE(patch2.has_value());
     EXPECT_EQ(patch2.value().getImageData().sum(), 500);
-    EXPECT_EQ(patch2.value().getImageData()(PATCH_RADIUS, PATCH_RADIUS), 500);
 
     // Compare the two patches expecting that the score is above the threshhold.
     auto score = patchComparer->compare(patch1.value(), patch2.value());
@@ -140,9 +134,9 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
 
   /// Draws point landmark.
   QDVO::Vector2 drawEdgeLandmark(KeyframeMap::key_type sourceKeyframe,
-                                  LandmarkMap::key_type landmarkKey,
-                                  KeyframeMap::key_type targetKeyframe,
-				  QDVO::Vector3 normalInSource) {
+                                 LandmarkMap::key_type landmarkKey,
+                                 KeyframeMap::key_type targetKeyframe,
+                                 QDVO::Vector3 normalInSource) {
     auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
     EXPECT_EQ(sourceKeyframe, landmark.parentFrameKey);
     auto pointInSource = landmark.getEuclideanPoint();
@@ -152,21 +146,19 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
 
     auto normalInWorld = source.imustate.getSE3().inverse() * normalInSource;
     // Render the point landmark.
-    auto featurePositionResult =
-        renderEdgeLandmark(targetKeyframe, pointInWorld, normalInWorld, 1, 0.01, 500);
+    auto featurePositionResult = renderEdgeLandmark(
+        targetKeyframe, pointInWorld, normalInWorld, 1, 0.01, 500);
 
     EXPECT_TRUE(featurePositionResult.has_value());
-    EXPECT_EQ(target.imagePyr.getImage().getImageData()(
-                  std::round(featurePositionResult.value()(1)),
-                  std::round(featurePositionResult.value()(0))),
-              500);
     return featurePositionResult.value();
   }
 
   void testEdgePerspectiveChange(QDVO::Vector2 px_source, double dinv,
-                             QDVO::Vector3 sourcePos, QDVO::Vector3 sourceSo3,
-                             QDVO::Vector3 targetPos, QDVO::Vector3 targetSo3,
-			     QDVO::Vector3 normalInSource) {
+                                 QDVO::Vector3 sourcePos,
+                                 QDVO::Vector3 sourceSo3,
+                                 QDVO::Vector3 targetPos,
+                                 QDVO::Vector3 targetSo3,
+                                 QDVO::Vector3 normalInSource) {
     // Create two keyframes at the same location.
     auto sourceKey = insertKeyframe(sourcePos, QDVO::SO3::exp(sourceSo3));
     auto targetKey = insertKeyframe(targetPos, QDVO::SO3::exp(targetSo3));
@@ -243,16 +235,20 @@ TEST_F(PatchWarpAndCompareTest, PerspectiveChange) {
 }
 
 TEST_F(PatchWarpAndCompareTest, EdgePerspectiveChange) {
-  testEdgePerspectiveChange(QDVO::Vector2(255, 255), 0.5, QDVO::Vector3(0, 0, 0),
-                        QDVO::Vector3(0, 0, 0), QDVO::Vector3(1, 0, 0),
-                        QDVO::Vector3(-0.1, 0, 0), QDVO::Vector3(0, 1, 0));
-  testEdgePerspectiveChange(QDVO::Vector2(240, 255), 0.5, QDVO::Vector3(0, 0, 0),
-                        QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 1, 0),
-                        QDVO::Vector3(0, 0.1, 0), QDVO::Vector3(0, 1, 0));
-  testEdgePerspectiveChange(QDVO::Vector2(255, 200), 0.5, QDVO::Vector3(0, 0, 1),
-                        QDVO::Vector3(0, 0, 0), QDVO::Vector3(1, -0.1, 0),
-                        QDVO::Vector3(0, 0, 0.1), QDVO::Vector3(0, 1, 0));
-  testEdgePerspectiveChange(QDVO::Vector2(255, 400), 0.5, QDVO::Vector3(1, 2, 0),
-                        QDVO::Vector3(0.1, 0, 0), QDVO::Vector3(1, 2, 0),
-                        QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 1, 0));
+  testEdgePerspectiveChange(QDVO::Vector2(255, 255), 0.5,
+                            QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(1, 0, 0), QDVO::Vector3(-0.1, 0, 0),
+                            QDVO::Vector3(0, 1, 0));
+  testEdgePerspectiveChange(QDVO::Vector2(240, 255), 0.5,
+                            QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(0, 1, 0), QDVO::Vector3(0, 0.1, 0),
+                            QDVO::Vector3(0, 1, 0));
+  testEdgePerspectiveChange(QDVO::Vector2(255, 200), 0.5,
+                            QDVO::Vector3(0, 0, 1), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(1, -0.1, 0), QDVO::Vector3(0, 0, 0.1),
+                            QDVO::Vector3(0, 1, 0));
+  testEdgePerspectiveChange(QDVO::Vector2(255, 400), 0.5,
+                            QDVO::Vector3(1, 2, 0), QDVO::Vector3(0.1, 0, 0),
+                            QDVO::Vector3(1, 2, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(0, 1, 0));
 }
