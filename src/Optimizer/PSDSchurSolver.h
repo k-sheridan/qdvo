@@ -998,7 +998,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           std::get<std::vector<decltype(key)>>(keysToErase).push_back(key);
         }
       }
-      SPDLOG_INFO("Found {} remove variables of type {}",
+      SPDLOG_TRACE("Found {} remove variables of type {}",
                   std::get<i>(keysToErase).size(),
                   typeid(std::get<i>(variableTuple)).name());
     });

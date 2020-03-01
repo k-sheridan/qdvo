@@ -62,7 +62,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
 
-          SPDLOG_INFO("Potential Correspondences: {}", nPcs);
+          SPDLOG_TRACE("Potential Correspondences: {}", nPcs);
         }
       }
     }
