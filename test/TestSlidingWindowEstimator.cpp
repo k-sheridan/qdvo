@@ -89,7 +89,6 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           targetKeyframe, sourceKeyframe, landmarkKey);
       SPDLOG_TRACE("Rendered feature at: \n{}\n",
                    featurePositionResult.value());
-
       ASSERT_TRUE(projResult.has_value());
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
@@ -109,28 +108,68 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       auto score = patchComparer->compare(warpedPatch.value(), target, center);
       EXPECT_TRUE(score.has_value());
       SPDLOG_TRACE("Match score {}", score.value());
-      EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
+      if (score.value() < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+        SPDLOG_WARN(
+            "Score low for expected feature. Score: {} \n WarpedPatch: \n{}\n, "
+            "TargetPatch: \n{}\n",
+            score.value(), warpedPatch.value().getImageData(),
+            target.imagePyr.getImage()
+                .getImageData()
+                .block<PATCH_WIDTH, PATCH_WIDTH>(
+                    std::round(featurePositionResult.value().y()) -
+                        PATCH_RADIUS,
+                    std::round(featurePositionResult.value().x()) -
+                        PATCH_RADIUS));
+      }
     }
   }
 };
 
-TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
+using V3 = Eigen::Vector3d;
+
+struct Params {
+  V3 pos1;
+  V3 pos2;
+  V3 pos3;
+
+  V3 so31;
+  V3 so32;
+  V3 so33;
+
+  V3 b1;
+  V3 b2;
+  V3 b3;
+  V3 b4;
+
+  double d1;
+  double d2;
+  double d3;
+  double d4;
+};
+
+/// Set up a parameterized test.
+/// Variables: {sourcePos,sourceSo3, targetPos1,targetSo31,
+/// targetPos2,targetSo32, dinv1, dinv2, dinv3, dinv4}
+class SWEParamTest : public SlidingWindowEstimatorTest,
+                     public ::testing::WithParamInterface<Params> {};
+
+TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
+  // Get the params.
+  const Params& p = GetParam();
+
   // Create 3 frames with blank images.
   KeyframeMap::key_type sourceKey;
-  sourceKey = insertKeyframe(QDVO::Vector3(0, 0, 0),
-                             QDVO::SO3::exp(QDVO::Vector3(0, 0, 0)));
+  sourceKey = insertKeyframe(p.pos1, QDVO::SO3::exp(p.so31));
   KeyframeMap::key_type targetKey1;
-  targetKey1 = insertKeyframe(QDVO::Vector3(0.2, 0, 0),
-                              QDVO::SO3::exp(QDVO::Vector3(0, -0.02, 0)));
+  targetKey1 = insertKeyframe(p.pos2, QDVO::SO3::exp(p.so32));
   KeyframeMap::key_type targetKey2;
-  targetKey2 = insertKeyframe(QDVO::Vector3(0.5, 0, 0),
-                              QDVO::SO3::exp(QDVO::Vector3(0, -0.04, 0)));
+  targetKey2 = insertKeyframe(p.pos3, QDVO::SO3::exp(p.so33));
 
   // Insert landmarks into the source keyframe.
-  auto l1 = insertLandmark(sourceKey, QDVO::Vector3(0, 0, 1), 0.5);
-  auto l2 = insertLandmark(sourceKey, QDVO::Vector3(0.5, 0, 1), 0.5);
-  auto l3 = insertLandmark(sourceKey, QDVO::Vector3(0.2, -0.1, 1), 0.5);
-  auto l4 = insertLandmark(sourceKey, QDVO::Vector3(-0.5, -0.5, 1), 0.5);
+  auto l1 = insertLandmark(sourceKey, p.b1, p.d1);
+  auto l2 = insertLandmark(sourceKey, p.b2, p.d2);
+  auto l3 = insertLandmark(sourceKey, p.b3, p.d3);
+  auto l4 = insertLandmark(sourceKey, p.b4, p.d4);
 
   // Set all keyframes to active.
   (*graph.getKeyframeMap().at(targetKey1))->status =
@@ -190,3 +229,31 @@ TEST_F(SlidingWindowEstimatorTest, ThreeFrameCornersOnlySolve) {
   // Verify that the values match up to some scale parameter.a
   // Use the first landmark to determine the scaling factor.
 }
+
+// Set up the test parameters.
+auto p1 = V3(0, 0, 0);
+auto p2 = V3(0.2, 0, 0);
+auto p3 = V3(0.2, 0.4, 0);
+auto p4 = V3(0, -0.4, 0);
+
+auto s1 = V3(0.01, 0, 0.02);
+auto s2 = V3(0, 0.02, -0.02);
+auto s3 = V3(0.02, 0.02, 0);
+
+auto d1 = 0.5;
+auto d2 = 0.1;
+auto d3 = 0.01;
+
+auto b1 = V3(0.1, -0.1, 1);
+auto b2 = V3(0.5, 0, 1);
+auto b3 = V3(-0.1, -0.4, 1);
+auto b4 = V3(0.1, 0.1, 1);
+
+//clang-format off
+std::vector<Params> cases = {
+    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d1, d1},
+    {p1, p2, p4, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1}};
+//clang-format on
+
+INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,
+                         ::testing::ValuesIn(cases));
