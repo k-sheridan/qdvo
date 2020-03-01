@@ -12,7 +12,7 @@
 #include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
-#include "RadialSearchPattern.h"
+#include "DataStructures/RadialSearchPattern.h"
 #include "Types.h"
 
 using namespace QDVO;
