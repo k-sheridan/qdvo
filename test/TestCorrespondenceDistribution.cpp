@@ -92,7 +92,7 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   EXPECT_NEAR(residual.value().norm(), std::sqrt(50), 1e-6);
 }
 
-TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
+TEST_F(CorrespondenceDistributionTest, DISABLED_EdgeFeature) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
   std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());

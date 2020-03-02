@@ -1,155 +1,179 @@
 #pragma once
 
 #include <Eigen/Core>
+
+#include "MetaHelpers.h"
+#include "Optimizer/BlockVector.h"
 #include "Optimizer/Containers.h"
+#include "Optimizer/Key.h"
 #include "Optimizer/SparseBlockMatrix.h"
 #include "Optimizer/SparseBlockRow.h"
-#include "Optimizer/BlockVector.h"
-#include "Optimizer/Key.h"
-#include "MetaHelpers.h"
 
-namespace ArgMin
-{
+namespace ArgMin {
 
 template <typename... T>
 class GaussianPrior;
 
 template <typename ScalarType, typename... Variables>
-class GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>>
-{
-public:
-    static constexpr ScalarType DefaultInverseVariance = 1e-24;
+class GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> {
+ public:
+  static constexpr ScalarType DefaultInverseVariance = 1e-24;
 
-    using SBM = SparseBlockMatrix<Scalar<ScalarType>, VariableGroup<Variables...>>;
+  using SBM =
+      SparseBlockMatrix<Scalar<ScalarType>, VariableGroup<Variables...>>;
 
-    using BV = BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>;
+  using BV = BlockVector<Scalar<ScalarType>, Dimension<1>,
+                         VariableGroup<Variables...>>;
 
-    SBM A0; // Sparse Block Information Matrix.
+  SBM A0;  // Sparse Block Information Matrix.
 
-    BV b0; // dense mean vector of the gaussian prior.
+  BV b0;  // dense mean vector of the gaussian prior.
 
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> temporaryVector; // Preallocated vector.
+  Eigen::Matrix<ScalarType, Eigen::Dynamic, 1>
+      temporaryVector;  // Preallocated vector.
 
-    GaussianPrior() {}
+  GaussianPrior() {}
 
-    /// Adds variable to the gaussian prior with an initial uncertainty.
-    template <typename VariableType>
-    void addVariable(VariableKey<VariableType> &key, Eigen::Matrix<ScalarType, VariableType::dimension, VariableType::dimension> informationMatrix = Eigen::Matrix<ScalarType, VariableType::dimension, 1>::Constant(DefaultInverseVariance).asDiagonal())
-    {
-        // insert the information block
-        A0.setBlock(key, key, informationMatrix);
+  /// Adds variable to the gaussian prior with an initial uncertainty.
+  template <typename VariableType>
+  void addVariable(VariableKey<VariableType>& key,
+                   Eigen::Matrix<ScalarType, VariableType::dimension,
+                                 VariableType::dimension>
+                       informationMatrix =
+                           Eigen::Matrix<ScalarType, VariableType::dimension,
+                                         1>::Constant(DefaultInverseVariance)
+                               .asDiagonal()) {
+    // insert the information block
+    A0.setBlock(key, key, informationMatrix);
 
-        // Insert a zero mean.
-        Eigen::Matrix<ScalarType, VariableType::dimension, 1> zeroVec = Eigen::Matrix<ScalarType, VariableType::dimension, 1>::Zero();
-        b0.addRowBlock(key, zeroVec);
-    }
+    // Insert a zero mean.
+    Eigen::Matrix<ScalarType, VariableType::dimension, 1> zeroVec =
+        Eigen::Matrix<ScalarType, VariableType::dimension, 1>::Zero();
+    b0.addRowBlock(key, zeroVec);
+  }
 
-    /// Remove all variables from the gaussian prior which are not part of the given set of variables.
-    /// This operation has a complexity of N^2 where N is the number of elements in a row. This is the worst case
-    /// and will typically be much lower since the prior is typically very sparse.
-    void removeUnsedVariables(VariableContainer<Variables...> &variableContainer)
-    {
-        // This tuple is used to iterate over all variable types.
-        std::tuple<Variables*...> tupleOfVariables;
+  /// Remove all variables from the gaussian prior which are not part of the
+  /// given set of variables. This operation has a complexity of N^2 where N is
+  /// the number of elements in a row. This is the worst case and will typically
+  /// be much lower since the prior is typically very sparse.
+  void removeUnsedVariables(
+      VariableContainer<Variables...>& variableContainer) {
+    // This tuple is used to iterate over all variable types.
+    std::tuple<ArgMin::TypedSlotMapKey<Variables>...> tupleOfVariables;
 
-        // Iterate through all sparse block rows.
-        internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
-            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
-            auto& rowMap = A0.template getRowMap<RowVariable>();
+    // Iterate through all sparse block rows.
+    internal::static_for(tupleOfVariables, [&](auto i, auto& do_not_use_me) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          RowVariable;
+      auto& rowMap = A0.template getRowMap<RowVariable>();
 
-            for (auto rowIt = rowMap.begin(); rowIt != rowMap.end();)
-            {   
-                // Get the key for this row.
-                const VariableKey<RowVariable>& rowKey = rowIt->first;
-                // Check if the key exists in the variable set.
-                if (variableContainer.variableExists(rowKey))
-                { 
-                    // Search the sparse block row for invalid elements.
-                    internal::static_for(tupleOfVariables, [&](auto j, auto &do_not_use_me) {
-                        typedef typename std::tuple_element<j, std::tuple<Variables...>>::type ColumnVariable;
-                        auto& columnMap = rowIt->second.template getVariableMap<ColumnVariable>();
+      std::vector<VariableKey<RowVariable>> rowsToRemove;
 
-                        for (auto colIt = columnMap.begin(); colIt != columnMap.end();){
-                            // Get the key for this block matrix.
-                            const VariableKey<ColumnVariable>& colKey = colIt->first;
+      for (auto rowIt = rowMap.begin(); rowIt != rowMap.end(); rowIt++) {
+        // Get the key for this row.
+        const VariableKey<RowVariable>& rowKey = rowIt->first;
+        // Check if the key exists in the variable set.
+        if (variableContainer.variableExists(rowKey)) {
+          // Search the sparse block row for invalid elements.
+          internal::static_for(tupleOfVariables, [&](auto j,
+                                                     auto& do_not_use_me_too) {
+            typedef
+                typename std::tuple_element<j, std::tuple<Variables...>>::type
+                    ColumnVariable;
+            auto& columnMap =
+                rowIt->second.template getVariableMap<ColumnVariable>();
 
-                            // Check if this key exists.
-                            if (variableContainer.variableExists(colKey)) {
-                                colIt++;
-                            } else {
-                                colIt = columnMap.erase(colIt);
-                            }
-                        }
-                    });
-                    rowIt++; // increment the iterator.
-                } else {
-                    // Delete this row.
-                    rowIt = rowMap.erase(rowIt);
+            std::vector<VariableKey<ColumnVariable>> colsToRemove;
 
-                    // Delete the row's corresponding b0 block.
-                    b0.removeRowBlock(rowKey);
-                }
+            for (auto colIt = columnMap.begin(); colIt != columnMap.end();
+                 colIt++) {
+              // Get the key for this block matrix.
+              const VariableKey<ColumnVariable>& colKey = colIt->first;
+
+              // Check if this key exists.
+              if (!variableContainer.variableExists(colKey)) {
+                colsToRemove.push_back(colKey);
+              }
             }
-        });
-    }
 
-    /// Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x = b0 - A0 * dx;
-    /// Assumes that the dx vector has the same variable order as the variable container.
-    void update(VariableContainer<Variables...> &variableOrder, const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> &dx)
-    {
-        
-        // Uneccesarily expensive. This can be packaged directly into the dot function.
-        // This is ran once per iteration.
-        size_t problemSize = variableOrder.totalDimensions();
-        assert(dx.rows() == problemSize); // ensure that dx is consistent with the current variable set.
+            // Remove the columns.
+            for (const auto& key : colsToRemove) {
+              columnMap.erase(key);
+            }
+          });
+        } else {
+          // Delete this row.
+          rowsToRemove.push_back(rowKey);
 
-        if (problemSize > temporaryVector.rows())
-        {
-            temporaryVector.resize(problemSize, Eigen::NoChange);
+          // Delete the row's corresponding b0 block.
+          b0.removeRowBlock(rowKey);
         }
+      }
+      // Remove the rows.
+      for (const auto& key : rowsToRemove) {
+        rowMap.erase(key);
+      }
+    });
+  }
 
-        // Compute the perturbation.
-        A0.dot(variableOrder, dx, temporaryVector);
+  /// Updates the prior error term on manifold. A0 * (x + dx) = b0 => A0 * x =
+  /// b0 - A0 * dx; Assumes that the dx vector has the same variable order as
+  /// the variable container.
+  void update(VariableContainer<Variables...>& variableOrder,
+              const Eigen::Matrix<ScalarType, Eigen::Dynamic, 1>& dx) {
+    // Uneccesarily expensive. This can be packaged directly into the dot
+    // function. This is ran once per iteration.
+    size_t problemSize = variableOrder.totalDimensions();
+    assert(dx.rows() == problemSize);  // ensure that dx is consistent with the
+                                       // current variable set.
 
-        // Move the mean.
-        b0.subtractVector(variableOrder, temporaryVector);
+    if (problemSize > temporaryVector.rows()) {
+      temporaryVector.resize(problemSize, Eigen::NoChange);
     }
 
-    /// Updates the prior with a block vector.
-    /// The block vector must contain at least a subset of the variables contained in the b0 vector.
-    /// This is the most efficient variant of this operation and is agnostic to ordering.
-    void update(BlockVector<Scalar<ScalarType>, Dimension<1>, VariableGroup<Variables...>>& dx)
-    {
-        // This tuple is used to iterate over all variable types.
-        std::tuple<Variables*...> tupleOfVariables;
+    // Compute the perturbation.
+    A0.dot(variableOrder, dx, temporaryVector);
 
-        // Compute b0 = b0 - A0*dx
-        internal::static_for(tupleOfVariables, [&](auto i, auto &do_not_use_me) {
-            typedef typename std::tuple_element<i, std::tuple<Variables...>>::type RowVariable;
+    // Move the mean.
+    b0.subtractVector(variableOrder, temporaryVector);
+  }
 
-            auto& rowMap = A0.template getRowMap<RowVariable>();
+  /// Updates the prior with a block vector.
+  /// The block vector must contain at least a subset of the variables contained
+  /// in the b0 vector. This is the most efficient variant of this operation and
+  /// is agnostic to ordering.
+  void update(BlockVector<Scalar<ScalarType>, Dimension<1>,
+                          VariableGroup<Variables...>>& dx) {
+    // This tuple is used to iterate over all variable types.
+    std::tuple<Variables*...> tupleOfVariables;
 
-            // Stores the dot product of a row and dx vector.
-            Eigen::Matrix<ScalarType, RowVariable::dimension, 1> temporary;
+    // Compute b0 = b0 - A0*dx
+    internal::static_for(tupleOfVariables, [&](auto i, auto& do_not_use_me) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          RowVariable;
 
-            // Iterate over all rows of the SBM.
-            for (auto& keyRowPair : rowMap)
-            {
-                const VariableKey<RowVariable>& key = keyRowPair.first;
-                auto& sparseBlockRow = keyRowPair.second;
+      auto& rowMap = A0.template getRowMap<RowVariable>();
 
-                // Compute the dot product of the sparse block row with the dx vector.
-                sparseBlockRow.dot(dx, temporary);
+      // Stores the dot product of a row and dx vector.
+      Eigen::Matrix<ScalarType, RowVariable::dimension, 1> temporary;
 
-                // The b0 block must exist for this key.
-                assert(b0.blockExists(key));
+      // Iterate over all rows of the SBM.
+      for (auto& keyRowPair : rowMap) {
+        const VariableKey<RowVariable>& key = keyRowPair.first;
+        auto& sparseBlockRow = keyRowPair.second;
 
-                auto& bBlock = b0.getRowBlock(key);
+        // Compute the dot product of the sparse block row with the dx vector.
+        sparseBlockRow.dot(dx, temporary);
 
-                bBlock.noalias() -= temporary;
-            }
-        });
-    }
+        // The b0 block must exist for this key.
+        assert(b0.blockExists(key));
+
+        auto& bBlock = b0.getRowBlock(key);
+
+        bBlock.noalias() -= temporary;
+      }
+    });
+  }
 };
 
-} // namespace ArgMin
+}  // namespace ArgMin

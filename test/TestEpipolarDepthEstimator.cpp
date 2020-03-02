@@ -8,7 +8,7 @@ class EpipolarDepthEstimationTest : public QDVOBasicTest {};
  * This test will simulate a epipolar depth search by creating two
  * images with a corner feature.
  */
-TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
+TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
@@ -130,7 +130,7 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
  * This test verifies that the epipolar depth estimator marks the
  * landmark as an outlier feature if it has no matches.
  */
-TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
+TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNotMatches) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
@@ -246,7 +246,7 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
  * This test will verify that the estimator is not initialized
  * when too many matches are not unique by simulating an edge feature.
  */
-TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
+TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthAlongEdge) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
