@@ -54,7 +54,7 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
 
   // Run a search. We expect that there is one potential correspondence.
   auto searchResult = dist.search(*cm, f, Eigen::Vector2i(256, 256), 25, true);
-  EXPECT_EQ(searchResult.front()->score, 1.0);
+  EXPECT_NEAR(searchResult.front()->score, 1.0, 1e-6);
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
