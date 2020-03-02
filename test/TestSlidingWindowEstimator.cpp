@@ -145,6 +145,10 @@ struct Params {
   double d2;
   double d3;
   double d4;
+
+  friend std::ostream& operator<<(std::ostream& os, Params const& a) {
+    return os << a.d1 << ", " << a.d2 << ", " << a.d3 << ", " << a.d4 << ", "  << '\n';
+  }
 };
 
 /// Set up a parameterized test.
@@ -170,6 +174,29 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
   auto l2 = insertLandmark(sourceKey, p.b2, p.d2);
   auto l3 = insertLandmark(sourceKey, p.b3, p.d3);
   auto l4 = insertLandmark(sourceKey, p.b4, p.d4);
+
+  std::vector<QDVO::KeyframeMap::key_type> keyframes = {sourceKey, targetKey1,
+                                                        targetKey2};
+  auto computePixelPositions =
+      [](QDVO::Graph& graph, std::vector<QDVO::KeyframeMap::key_type> keyframes)
+      -> std::vector<QDVO::Vector2> {
+    std::vector<QDVO::Vector2> results;
+    for (auto keyframeKey : keyframes) {
+      for (auto lKey :
+           (*graph.getKeyframeMap().at(keyframeKey))->landmarkKeys) {
+        for (auto targetKey : keyframes) {
+          auto result =
+              graph.projectLandmarkToPixel(targetKey, keyframeKey, lKey);
+          if (result.has_value()) {
+            results.push_back(result.value());
+          }
+        }
+      }
+    }
+    return results;
+  };
+
+  auto gtPixels = computePixelPositions(graph, keyframes);
 
   // Set all keyframes to active.
   (*graph.getKeyframeMap().at(targetKey1))->status =
@@ -226,8 +253,13 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
   // There should be 3 se3 variables.
   EXPECT_EQ(swe.variableContainer.getVariableMap<ArgMin::SE3>().size(), 3);
 
-  // Verify that the values match up to some scale parameter.a
-  // Use the first landmark to determine the scaling factor.
+  // Test the reprojection errors.
+  auto estPixels = computePixelPositions(graph, keyframes);
+  EXPECT_EQ(gtPixels.size(), estPixels.size());
+
+  for (int i = 0; i < gtPixels.size(); ++i) {
+    EXPECT_NEAR((estPixels.at(i) - gtPixels.at(i)).norm(), 0, 1);
+  }
 }
 
 // Set up the test parameters.
@@ -248,11 +280,15 @@ auto b1 = V3(0.1, -0.1, 1);
 auto b2 = V3(0.5, 0, 1);
 auto b3 = V3(-0.1, -0.4, 1);
 auto b4 = V3(0.1, 0.1, 1);
+auto b5 = V3(0, 0, 1);
 
 //clang-format off
 std::vector<Params> cases = {
     {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d1, d1},
-    {p1, p2, p4, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1}};
+    {p1, p2, p4, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3},
+    {p1, p4, p3, s1, s2, s2, b1, b2, b3, b4, d2, d1, d1, d2},
+    {p1, p4, p3, s1, s2, s2, b1, b4, b3, b5, d2, d1, d1, d2},
+    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1}};
 //clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,

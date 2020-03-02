@@ -80,7 +80,7 @@ class ErrorTermValidator
                 J.block(0, col, ErrorTerm::residual_dimension, 1) = (high - low) / (2 * delta);
             }
 
-            if (!J.isApprox(std::get<i>(referenceJacobians), 1e-6))
+            if (!J.isApprox(std::get<i>(referenceJacobians), 1e-4))
             {
                 std::cout << "Analytical: " << std::endl << J << std::endl << "Numerical: " << std::endl << std::get<i>(referenceJacobians) << std::endl;
                 success = false;
