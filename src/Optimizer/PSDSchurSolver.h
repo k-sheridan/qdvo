@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <cassert>
 #include <cmath>
 #include <numeric>
@@ -10,11 +9,11 @@
 #include "Containers.h"
 #include "GaussianPrior.h"
 #include "HuberLossFunction.h"
+#include "Logging.h"
 #include "MetaHelpers.h"
 #include "ParallelAlgorithms/ParallelAlgorithms.h"
 #include "SlotArray.h"
 #include "SlotMap.h"
-#include "Logging.h"
 
 namespace ArgMin {
 
@@ -146,47 +145,64 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     SolveResult result;
     ScalarType lambda = settings.initialLambda;
 
+    // Set up the solver for the first iteration.
+    SPDLOG_TRACE("Linearizing error terms for first iteration.");
+    // Linearize the error terms.
+    linearize(variables, errorTerms);
+
     // Iterate and solve.
     for (int iteration = 0; iteration < settings.maximumIterations;
          ++iteration) {
-      SPDLOG_TRACE("Linearizing error terms.");
-      // Linearize the error terms.
-      linearize(variables, errorTerms);
+      SPDLOG_TRACE("Building linear system.");
       // Build the linear system.
-      double whitenedSqError = buildLinearSystem(prior, errorTerms, variables);
+      double whitenedSqErrorBeforeSolve =
+          buildLinearSystem(prior, errorTerms, variables);
 
-      SPDLOG_TRACE("Iteration: {} Whitened Error: {} Lambda: {}", iteration,
-                   sqrt(whitenedSqError), lambda);
-
-      // Add the current error to the error array.
-      result.whitenedSqError.push_back(whitenedSqError);
-
-      // If this is not the first iteration, check if the error was increased
-      if (iteration != 0) {
-        if (*(result.whitenedSqError.end() - 1) <
-            *(result.whitenedSqError.end() - 2)) {
-          // The error decreased, reduce lambda.
-          lambda = lambda / settings.lambdaReductionMultiplier;
-        } else {
-          // The error increased or stagnated, break.
-          lambda = lambda * settings.lambdaReductionMultiplier;
-          // break;
-        }
-      }
-
+      SPDLOG_TRACE("Adding lambda to linear system.");
       // Add lambda to the linear system.
       addLambdaToLinearSystem(lambda);
 
+      SPDLOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}", iteration,
+                   whitenedSqErrorBeforeSolve, lambda);
+
+      // Add the current error to the error array.
+      result.whitenedSqError.push_back(whitenedSqErrorBeforeSolve);
+
+      SPDLOG_TRACE("Solving");
       // Solve the linear system.
       solveLinearSystem(variables, errorTerms, prior);
 
       // Verify that the perturbation is not nan.
       if (isUpdateValid()) {
         // Apply the update.
-        SPDLOG_TRACE("Updating variables");
+        SPDLOG_TRACE("Updating variables to check if error increased.");
         applyUpdateToVariables(variables);
-        SPDLOG_TRACE("Updating prior");
-        prior.update(dxBlockVector);
+
+        // Compute the error with this update.
+        double errorAfterUpdate = computeWhitenedSqError(errorTerms, variables);
+        SPDLOG_TRACE("Whitened Squared Error after update: {}",
+                     errorAfterUpdate);
+
+        if (errorAfterUpdate < whitenedSqErrorBeforeSolve) {
+          // The error decreased, reduce lambda.
+          SPDLOG_TRACE("Error decreased... reducing lambda.");
+          lambda = lambda / settings.lambdaReductionMultiplier;
+
+          SPDLOG_TRACE("Updating prior after successful update.");
+          prior.update(dxBlockVector);
+        } else {
+          // The error increased or stagnated, break.
+          SPDLOG_TRACE(
+              "Error increased... increasing lambda and reverting update.");
+          lambda = lambda * settings.lambdaReductionMultiplier;
+
+          // Revert the previous update.
+          applyUpdateToVariables<true>(variables);
+        }
+
+        // Linearize the error terms.
+        SPDLOG_TRACE("Linearizing error terms.");
+        linearize(variables, errorTerms);
       } else {
         // Return early without updating
         SPDLOG_ERROR("Perturbation invalid, returning early");
@@ -221,6 +237,42 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     }
     return true;
+  }
+
+  /**
+   * Evaluates the error terms with the current variables.
+   */
+  double computeWhitenedSqError(ErrorTermContainer<ErrorTerms...> &errorTerms,
+                                VariableContainer<Variables...> &variables) {
+    int nErrorTerms = 0;
+    double whitenedSqError = 0;
+    // iterate through all error terms
+    internal::static_for(
+        errorTerms.tupleOfErrorTermMaps,
+        [&](auto errorTermTypeIndex, auto &errorTermMap) {
+          SPDLOG_TRACE(
+              "Evaluating error with Error Term Type: {}",
+              typeid(
+                  typename std::tuple_element<errorTermTypeIndex,
+                                              std::tuple<ErrorTerms...>>::type)
+                  .name());
+          for (auto &errorTerm : errorTermMap) {
+            // TODO Give evaluate the ability to mark if a residual is invalid.
+            errorTerm.evaluate(variables, true);
+            // Check if the linearization is valid for this error term.
+            if (errorTerm.linearizationValid) {
+              double sqError = errorTerm.residual.squaredNorm();
+              double error = sqrt(sqError);
+              double weight = lossFunction.computeWeight(error, sqError);
+
+              whitenedSqError += sqError;
+              ++nErrorTerms;
+            }
+          }
+        });
+    SPDLOG_TRACE("Computed whitened squared error with {} valid error terms.",
+                 nErrorTerms);
+    return whitenedSqError / nErrorTerms;
   }
 
   /**
@@ -999,8 +1051,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         }
       }
       SPDLOG_TRACE("Found {} remove variables of type {}",
-                  std::get<i>(keysToErase).size(),
-                  typeid(std::get<i>(variableTuple)).name());
+                   std::get<i>(keysToErase).size(),
+                   typeid(std::get<i>(variableTuple)).name());
     });
 
     // Erase all keys which are not in the variable container, but exist in the
