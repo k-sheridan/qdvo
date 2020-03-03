@@ -258,6 +258,7 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
   EXPECT_EQ(gtPixels.size(), estPixels.size());
 
   for (int i = 0; i < gtPixels.size(); ++i) {
+    SPDLOG_TRACE("Pixel error: {}", (estPixels.at(i) - gtPixels.at(i)).norm());
     EXPECT_NEAR((estPixels.at(i) - gtPixels.at(i)).norm(), 0, 1);
   }
 }
@@ -267,6 +268,7 @@ auto p1 = V3(0, 0, 0);
 auto p2 = V3(0.2, 0, 0);
 auto p3 = V3(0.2, 0.4, 0);
 auto p4 = V3(0, -0.4, 0);
+auto p5 = V3(-0.1, -0.2, 0);
 
 auto s1 = V3(0.01, 0, 0.02);
 auto s2 = V3(0, 0.02, -0.02);
@@ -274,7 +276,7 @@ auto s3 = V3(0.02, 0.02, 0);
 
 auto d1 = 0.5;
 auto d2 = 0.1;
-auto d3 = 0.01;
+auto d3 = 0.2;
 
 auto b1 = V3(0.1, -0.1, 1);
 auto b2 = V3(0.5, 0, 1);
@@ -285,10 +287,11 @@ auto b5 = V3(0, 0, 1);
 //clang-format off
 std::vector<Params> cases = {
     {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d1, d1},
-    {p1, p2, p4, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3},
     {p1, p4, p3, s1, s2, s2, b1, b2, b3, b4, d2, d1, d1, d2},
     {p1, p4, p3, s1, s2, s2, b1, b4, b3, b5, d2, d1, d1, d2},
-    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1}};
+    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1},
+    {p5, p4, p3, s2, s2, s3, b1, b2, b3, b4, d3, d3, d3, d2},
+    {p1, p4, p2, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3}};
 //clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,
