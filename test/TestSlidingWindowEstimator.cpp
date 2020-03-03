@@ -54,7 +54,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           // Compare the warped patch with the center pixel.
           auto score =
               patchComparer->compare(warpedPatch.value(), target, center);
-          SPDLOG_TRACE("Center score {}", score.value());
+          SPDLOG_TRACE("Center score {} for landmark: {}", score.value(), landmarkKey.index);
 
           auto nPcs =
               target.correspondenceDistributions.back().initializeDistribution(
@@ -184,6 +184,7 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
     for (auto keyframeKey : keyframes) {
       for (auto lKey :
            (*graph.getKeyframeMap().at(keyframeKey))->landmarkKeys) {
+	      SPDLOG_TRACE("compute pixel for landmark {}", lKey.index);
         for (auto targetKey : keyframes) {
           auto result =
               graph.projectLandmarkToPixel(targetKey, keyframeKey, lKey);
@@ -277,6 +278,7 @@ auto s3 = V3(0.02, 0.02, 0);
 auto d1 = 0.5;
 auto d2 = 0.1;
 auto d3 = 0.2;
+auto d4 = 0.01;
 
 auto b1 = V3(0.1, -0.1, 1);
 auto b2 = V3(0.5, 0, 1);
@@ -291,7 +293,8 @@ std::vector<Params> cases = {
     {p1, p4, p3, s1, s2, s2, b1, b4, b3, b5, d2, d1, d1, d2},
     {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1},
     {p5, p4, p3, s2, s2, s3, b1, b2, b3, b4, d3, d3, d3, d2},
-    {p1, p4, p2, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3}};
+    {p1, p4, p2, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3},
+    {p1, p3, p2, s1, s3, s3, b1, b2, b3, b4, d1, d4, d1, d4}};
 //clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,
