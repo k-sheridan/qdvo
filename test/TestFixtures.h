@@ -7,12 +7,12 @@
 #include "DataStructures/Frame.h"
 #include "DataStructures/Graph.h"
 #include "DataStructures/Image.h"
+#include "DataStructures/RadialSearchPattern.h"
 #include "EquidistantCameraModel.h"
 #include "GlobalDefinitions.h"
 #include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
-#include "DataStructures/RadialSearchPattern.h"
 #include "Types.h"
 
 using namespace QDVO;
@@ -37,7 +37,8 @@ class QDVOBasicTest : public ::testing::Test {
   std::shared_ptr<QDVO::PatchComparer> patchComparer =
       std::make_shared<QDVO::PatchComparer>(QDVO::PatchComparer());
 
-  std::shared_ptr<QDVO::PatchWarper> patchWarper;
+  std::shared_ptr<QDVO::PatchWarper> patchWarper =
+      std::make_shared<QDVO::PatchWarper>(QDVO::PatchWarper());
 
   std::shared_ptr<const RadialSearchPattern> radialSearchPattern =
       std::make_shared<const RadialSearchPattern>(40);
