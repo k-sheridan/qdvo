@@ -49,18 +49,24 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           Eigen::Vector2i center(std::round(projectionResult.value()(0)),
                                  std::round(projectionResult.value()(1)));
 
-          SPDLOG_TRACE("Pixel center: {}", center);
-
           // Compare the warped patch with the center pixel.
           auto score =
               patchComparer->compare(warpedPatch.value(), target, center);
-          SPDLOG_TRACE("Center score {} for landmark: {}", score.value(), landmarkKey.index);
+          SPDLOG_TRACE("Center score {} for landmark: {}", score.value(),
+                       landmarkKey.index);
 
           auto nPcs =
               target.correspondenceDistributions.back().initializeDistribution(
                   targetCameraModel, target, landmarkKey, center,
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
+
+          SPDLOG_TRACE("Pixel center: {}", center);
+
+          SPDLOG_TRACE(
+              "Correspondence Distribution around center pixel: \n{}\n",
+              target.correspondenceDistributions.back().extractScores(
+                  center, Eigen::Vector2i(15, 15)));
 
           SPDLOG_TRACE("Potential Correspondences: {}", nPcs);
         }
@@ -147,7 +153,8 @@ struct Params {
   double d4;
 
   friend std::ostream& operator<<(std::ostream& os, Params const& a) {
-    return os << a.d1 << ", " << a.d2 << ", " << a.d3 << ", " << a.d4 << ", "  << '\n';
+    return os << a.d1 << ", " << a.d2 << ", " << a.d3 << ", " << a.d4 << ", "
+              << '\n';
   }
 };
 
@@ -184,7 +191,7 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
     for (auto keyframeKey : keyframes) {
       for (auto lKey :
            (*graph.getKeyframeMap().at(keyframeKey))->landmarkKeys) {
-	      SPDLOG_TRACE("compute pixel for landmark {}", lKey.index);
+        SPDLOG_TRACE("compute pixel for landmark {}", lKey.index);
         for (auto targetKey : keyframes) {
           auto result =
               graph.projectLandmarkToPixel(targetKey, keyframeKey, lKey);
@@ -294,7 +301,8 @@ std::vector<Params> cases = {
     {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d1, d3, d1},
     {p5, p4, p3, s2, s2, s3, b1, b2, b3, b4, d3, d3, d3, d2},
     {p1, p4, p2, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3},
-    {p1, p3, p2, s1, s3, s3, b1, b2, b3, b4, d1, d4, d1, d4}};
+    {p1, p3, p2, s1, s3, s3, b1, b2, b3, b4, d1, d4, d1, d4},
+    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d4, d1, d1}};
 //clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,
