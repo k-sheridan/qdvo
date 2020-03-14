@@ -6,6 +6,7 @@
 #include "DataStructures/Image.h"
 #include "EquidistantCameraModel.h"
 #include "GlobalDefinitions.h"
+#include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
 #include "Types.h"
@@ -52,6 +53,10 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
                               Eigen::Vector2i(256, 256), 25, patchComparer,
                               patchResult.value());
 
+  SPDLOG_INFO(
+      "Correspondence distribution around center: \n{}\n",
+      dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
+
   // Run a search. We expect that there is one potential correspondence.
   auto searchResult = dist.search(*cm, f, Eigen::Vector2i(256, 256), 25, true);
   EXPECT_NEAR(searchResult.front()->score, 1.0, 1e-6);
@@ -92,7 +97,7 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   EXPECT_NEAR(residual.value().norm(), std::sqrt(50), 1e-6);
 }
 
-TEST_F(CorrespondenceDistributionTest, DISABLED_EdgeFeature) {
+TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
   std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
@@ -119,6 +124,10 @@ TEST_F(CorrespondenceDistributionTest, DISABLED_EdgeFeature) {
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
                               Eigen::Vector2i(256, 256), 25, patchComparer,
                               patchResult.value());
+
+  SPDLOG_INFO(
+      "Correspondence distribution around center: \n{}\n",
+      dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
 
   // Run a search. We expect that there is one potential correspondence.
   auto searchResult = dist.search(*cm, f, Eigen::Vector2i(256, 256), 25, true);
