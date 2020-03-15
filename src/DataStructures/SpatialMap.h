@@ -5,6 +5,8 @@
 #include "Optimizer/SlotArray.h"
 #include "Optimizer/SlotMap.h"
 
+#include <Eigen/Core>
+
 namespace QDVO {
 
 /**

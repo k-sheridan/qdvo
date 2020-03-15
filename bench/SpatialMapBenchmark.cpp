@@ -1,5 +1,6 @@
 #include <benchmark/benchmark.h>
 #include "DataStructures/SpatialMap.h"
+#include <Eigen/Core>
 #include <random>
 
 static void BM_SpatialMapInsert512X512(benchmark::State &state)
