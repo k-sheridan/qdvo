@@ -162,8 +162,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       // Add lambda to the linear system.
       addLambdaToLinearSystem(lambda);
 
-      SPDLOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}", iteration,
-                   whitenedSqErrorBeforeSolve, lambda);
+      SPDLOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}",
+                   iteration, whitenedSqErrorBeforeSolve, lambda);
 
       // Add the current error to the error array.
       result.whitenedSqError.push_back(whitenedSqErrorBeforeSolve);
@@ -174,6 +174,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
       // Verify that the perturbation is not nan.
       if (isUpdateValid()) {
+        // Make sure that after applying this update, it can be reverted.
+        ensureUpdateIsRevertible(variables);
+
         // Apply the update.
         SPDLOG_TRACE("Updating variables to check if error increased.");
         applyUpdateToVariables(variables);
@@ -231,12 +234,26 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    * Verifies that the update vector, dx, is valid.
    */
   bool isUpdateValid() {
-    for (int i = 0; i < dx.rows(); ++i) {
-      if (std::isnan(dx(i, 0))) {
-        return false;
+    bool result = true;
+    std::tuple<Variables *...> tupleOfVars;
+    internal::static_for(tupleOfVars, [&](auto i, auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
+      for (const auto &dx : dxBlockVector.template getRowMap<ThisVariable>()) {
+        bool localResult = true;
+        for (int i = 0; i < dx.rows(); ++i) {
+          if (std::isnan(dx(i, 0))) {
+            localResult = false;
+          }
+        }
+        if (localResult == false) {
+          SPDLOG_ERROR("Update was invalid for a {} with an update of \n{}\n",
+                       typeid(ThisVariable).name(), dx);
+        }
+        result = localResult && result;
       }
-    }
-    return true;
+    });
+    return result;
   }
 
   /**
@@ -276,41 +293,52 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
   }
 
   /**
-   * Applies the perturbation to all variables using their box plus operator.
-   * Assumes that the linear system has just been solved.
-   *
-   * @param revert If true, this will apply the reverse update to the variables.
-   * This can be used to revert a negative update.
+   * Ensures that the update vector can be reverted if an update was bad.
+   * @param Variables which will be updated.
    */
-  template <bool Revert = false>
-  void applyUpdateToVariables(VariableContainer<Variables...> &variables) {
-    Eigen::Matrix<ScalarType, Eigen::Dynamic, 1> temporary;
-
+  void ensureUpdateIsRevertible(VariableContainer<Variables...> &variables) {
     internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
                                                             auto &variableMap) {
       typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
           ThisVariable;
-
-      if constexpr (Revert) {
-        temporary.resize(ThisVariable::dimension, 1);
-      }
 
       for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
         auto &variable = *(it);
 
         auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
 
-        auto &indexMap = std::get<IndexMap<ThisVariable>>(variableToIndexMaps);
-        auto indexIt = indexMap.at(key);
-        assert(indexIt != indexMap.end());
+        assert(dxBlockVector.blockExists(key));
+
+        variable.ensureUpdateIsRevertible(dxBlockVector.getRowBlock(key));
+      }
+    });
+  }
+
+  /**
+   * Applies the perturbation to all variables using their box plus operator.
+   * Assumes that the linear system has just been solved.
+   *
+   * @tparam revert If true, this will apply the reverse update to the
+   * variables. This can be used to revert a negative update.
+   */
+  template <bool Revert = false>
+  void applyUpdateToVariables(VariableContainer<Variables...> &variables) {
+    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
+                                                            auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
+
+      for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
+        auto &variable = *(it);
+
+        auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+
+        assert(dxBlockVector.blockExists(key));
 
         if constexpr (Revert) {
-          temporary =
-              -dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0);
-          variable.update(temporary);
+          variable.update(-dxBlockVector.getRowBlock(key));
         } else {
-          variable.update(
-              dx.template block<ThisVariable::dimension, 1>(*(indexIt), 0));
+          variable.update(dxBlockVector.getRowBlock(key));
         }
       }
     });
@@ -1084,11 +1112,11 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           b_uncorrelated.removeRowBlock(key);
         }
 
-        //              // Erase dx block vector
-        //              for (const auto &key : keyVector)
-        //              {
-        //                  dxBlockVector.removeRowBlock(key);
-        //              }
+        // TODO Find a way to remove these variables properly.
+        // Erase dx block vector
+        // for (const auto &key : keyVector) {
+        // dxBlockVector.removeRowBlock(key);
+        //}
       }
     });
   }
