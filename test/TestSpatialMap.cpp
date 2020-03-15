@@ -1,7 +1,5 @@
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
+#include <Eigen/Core>
 
-#include "DataStructures/RadialSearchPattern.h"
 #include "DataStructures/SpatialMap.h"
 #include "gtest/gtest.h"
 
@@ -34,6 +32,34 @@ TEST(SpatialMap, Basic) {
       if (!(i == 0 || j == 0 || i == 511 || j == 511)) {
         EXPECT_EQ(map.get(Eigen::Vector2i(j, i)).data, -1);
       }
+    }
+  }
+}
+
+TEST(SpatialMap, Hashing) {
+  struct Example {
+    double data = -1;
+    void reset() {}
+  };
+
+  QDVO::SpatialMap<Example> map(512);
+
+  std::vector<std::vector<bool>> table;
+
+  for (int x = 0; x < 512; ++x) {
+    for (int y = 0; y < 512; ++y) {
+      auto topHash = map.topHash(x, y);
+      if (topHash >= table.size()) {
+        table.resize(topHash + 1);
+      }
+      auto& subtable = table.at(topHash);
+      auto bottomHash = map.bottomHash(x, y);
+
+      if (bottomHash >= subtable.size()) {
+        subtable.resize(bottomHash + 1, false);
+      }
+      EXPECT_FALSE(subtable.at(bottomHash));
+      subtable.at(bottomHash) = true;
     }
   }
 }

@@ -4,7 +4,12 @@ project (QDVO VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+message("Building with O3 on.")
 SET(CMAKE_CXX_FLAGS "-O3")
+else() 
+message("Building without O3.")
+endif()
 
 if (QDVO_ASAN)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
@@ -19,6 +24,7 @@ elseif(QDVO_MSAN)
 SET(CMAKE_CXX_FLAGS "-O1 -fsanitize=memory -fno-omit-frame-pointer")
 SET(CMAKE_LINKER_FLAGS "-O1 -fsanitize=memory -fno-omit-frame-pointer")
 endif()
+
 
 SET(CMAKE_C_COMPILER clang)
 SET(CMAKE_CXX_COMPILER clang++)
