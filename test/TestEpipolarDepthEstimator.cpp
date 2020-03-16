@@ -8,7 +8,7 @@ class EpipolarDepthEstimationTest : public QDVOBasicTest {};
  * This test will simulate a epipolar depth search by creating two
  * images with a corner feature.
  */
-TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
+TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
@@ -62,7 +62,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   image.getImageData() = Eigen::MatrixXf(512, 512);
   image.getImageData().setZero();
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(landmark.px(0)), std::round(landmark.px(1))) =
+  image.getImageData()(std::round(landmark.px(1)), std::round(landmark.px(0))) =
       1.0;
 
   // Update the source keyframe's image.
@@ -94,6 +94,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   ASSERT_TRUE(targetPixelResult.has_value());
   auto targetPixel = targetPixelResult.value();
 
+
   auto landmarkInTarget = graph.projectLandmarkToCameraFrame(
       targetKeyframe, sourceKeyframe, landmark);
   EXPECT_EQ(landmarkInTarget(0), -1);
@@ -103,12 +104,15 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   std::cout << std::endl << targetPixel << landmark.px << std::endl;
 
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(targetPixel(0)), std::round(targetPixel(1))) =
+  image.getImageData()(std::round(targetPixel(1)), std::round(targetPixel(0))) =
       1.0;
+
 
   // Update the source keyframe's image.
   image.toOpenCVImage().convertTo(cvMat, CV_16U);
   targetKeyframe.updateImage(cvMat);
+
+  EXPECT_NE(targetKeyframe.imagePyr.getImage().getImageData().sum(), 0);
 
   // Before running the depth estimator, set the landmark depth to the incorrect
   // value.
@@ -130,7 +134,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
  * This test verifies that the epipolar depth estimator marks the
  * landmark as an outlier feature if it has no matches.
  */
-TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNotMatches) {
+TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
@@ -184,7 +188,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNotMatches) {
   image.getImageData() = Eigen::MatrixXf(512, 512);
   image.getImageData().setZero();
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(landmark.px(0)), std::round(landmark.px(1))) =
+  image.getImageData()(std::round(landmark.px(1)), std::round(landmark.px(0))) =
       1.0;
 
   // Update the source keyframe's image.
@@ -234,8 +238,6 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNotMatches) {
   landmark.depthEstimator.update(graph, sourceKeyframe, targetKeyframe,
                                  landmark, *patchComparer, *patchWarper);
 
-  // The depth should not have been updated.
-  EXPECT_EQ(1 / landmark.dinv, depthGT);
   // The landmark should now be initialized.
   EXPECT_FALSE(landmark.depthEstimator.initialized);
   // The landmark should not be marked MARGINALIZED.
@@ -246,7 +248,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNotMatches) {
  * This test will verify that the estimator is not initialized
  * when too many matches are not unique by simulating an edge feature.
  */
-TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthAlongEdge) {
+TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
   // Insert a camera model into the graph.
   auto cameraModelKey = addCameraToGraph(std::move(cm));
 
@@ -301,7 +303,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthAlongEdge) {
   image.getImageData().setZero();
   // Make a line.
   image.getImageData()
-      .block(std::round(landmark.px(0)), 0, 1, 512)
+      .block(std::round(landmark.px(1)), 0, 1, 512)
       .setConstant(1);
 
   // Update the source keyframe's image.
@@ -343,7 +345,7 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthAlongEdge) {
 
   // Make a line.
   image.getImageData()
-      .block(std::round(targetPixel(0)), 0, 1, 512)
+      .block(std::round(targetPixel(1)), 0, 1, 512)
       .setConstant(1);
 
   // Update the source keyframe's image.
@@ -358,8 +360,6 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthAlongEdge) {
   landmark.depthEstimator.update(graph, sourceKeyframe, targetKeyframe,
                                  landmark, *patchComparer, *patchWarper);
 
-  // The depth estimator should have updated the depth to near the solution.
-  EXPECT_EQ(1 / landmark.dinv, depthGT);
   // The landmark should now be initialized.
   EXPECT_FALSE(landmark.depthEstimator.initialized);
   // The landmark should not be marked MARGINALIZED.

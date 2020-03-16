@@ -19,20 +19,22 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // Ensure that the landmark is inactive.
   if (landmark.status != Landmark::LandmarkStatus::INACTIVE) {
-    SPDLOG_WARN("Tried to run epipolar depth estimator on {} landmark.",
+    SPDLOG_ERROR("Tried to run epipolar depth estimator on {} landmark.",
                 landmark.status);
   }
 
   if (initialized) {
     // Return if the estimator already has finished.
+    SPDLOG_TRACE("Tried to update landmark's depth estimator which was already initialized.");
     return;
   }
 
   // Increment the attempts.
   ++attempts;
 
-  if (attempts >= s.epipolar_depth_estimator.maximumAttempts) {
+  if (attempts > s.epipolar_depth_estimator.maximumAttempts) {
     // There have been too many attempts marginalize the landmark.
+    SPDLOG_TRACE("Too many attempts to estimate the landmark depth have occured. Marginalizing point.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -118,7 +120,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
     if (scoreResult.has_value()) {
       depths.push_back(depth);
       scores.push_back(scoreResult.value());
-    }
+    } 
 
     // Increment the depth using pixel derivative.
     depth += s.epipolar_depth_estimator.resolution /
@@ -126,6 +128,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (scores.empty()) {
+    SPDLOG_INFO("Landmark has no match during epipolar depth search.");
+    landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
   // Find the maximum score.
