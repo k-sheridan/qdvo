@@ -1,3 +1,3 @@
 [submodule "test/qdvo-test-datasets"]
 	path = test/qdvo-test-datasets
-	url = https://github.com/k-sheridan/qdvo-test-datasets
+	url = https://github.com/k-sheridan/qdvo-test-datasets.git
