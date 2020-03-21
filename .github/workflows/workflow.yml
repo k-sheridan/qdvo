@@ -9,6 +9,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
+        token: ${{ secrets.CI_TOKEN }}
       
     - name: action-cpp-lint
       uses: CyberZHG/github-action-cpp-lint@0.0.2
@@ -108,6 +111,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
+        token: ${{ secrets.CI_TOKEN }}
       
     - name: action-cpp-lint
       uses: CyberZHG/github-action-cpp-lint@0.0.2
