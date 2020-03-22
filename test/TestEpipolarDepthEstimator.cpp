@@ -10,7 +10,7 @@ class EpipolarDepthEstimationTest : public QDVOBasicTest {};
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::move(cm));
+  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
@@ -136,7 +136,7 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::move(cm));
+  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
@@ -250,7 +250,7 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::move(cm));
+  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
