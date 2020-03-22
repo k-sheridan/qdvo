@@ -74,10 +74,11 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
       // add them as error terms.
       int cdIdx = 0;
       int errorTermsForThisKeyframe = 0;
-      for (auto& cd : (*it)->correspondenceDistributions) {
+      for (auto cdIt = (*it)->correspondenceDistributions.begin();
+           cdIt != (*it)->correspondenceDistributions.end(); cdIt++) {
+        auto& cd = *cdIt;
         if (cd.dormant) {
           // Increment the correspondence distribution index.
-          ++cdIdx;
           continue;
         }
 
@@ -91,7 +92,10 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
 
         QuasiDirectErrorTerm qdet(
             sourceFramePoseVariableKey, targetFramePoseVariableKey,
-            dinvVariableKey, Eigen::Matrix<double, 2, 2>::Identity(), cdIdx,
+            dinvVariableKey, Eigen::Matrix<double, 2, 2>::Identity(),
+            (*it)->correspondenceDistributions.getKeyFromDataIndex(
+                std::distance((*it)->correspondenceDistributions.begin(),
+                              cdIt)),
             &graph, observedLandmarkIt->parentFrameKey, keyframeKey,
             cd.landmarkKey);
 
@@ -99,10 +103,9 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
 
         // Increment the correspondence distribution index.
         ++errorTermsForThisKeyframe;
-        ++cdIdx;
       }
       LOG_TRACE("Constructed {} error terms for the new keyframe",
-                  errorTermsForThisKeyframe);
+                errorTermsForThisKeyframe);
     }
   }
 
@@ -116,7 +119,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   LOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
   if (!result.whitenedSqError.empty()) {
     LOG_INFO("Initial squared error {} -> final squared error {}",
-                result.whitenedSqError.front(), result.whitenedSqError.back());
+             result.whitenedSqError.front(), result.whitenedSqError.back());
   }
 
   // Apply the updates to the actual graph iff the error was decreased.

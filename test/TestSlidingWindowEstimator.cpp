@@ -41,10 +41,9 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
         auto projectionResult =
             graph.projectLandmarkToPixel(target, source, landmark);
         if (projectionResult.has_value()) {
-          target.correspondenceDistributions.push_back(
-              CorrespondenceDistribution(targetCameraModel.imageWidth(),
-                                         targetCameraModel.imageHeight(),
-                                         radialSearchPattern));
+          target.correspondenceDistributions.insert(CorrespondenceDistribution(
+              targetCameraModel.imageWidth(), targetCameraModel.imageHeight(),
+              radialSearchPattern));
 
           Eigen::Vector2i center(std::round(projectionResult.value()(0)),
                                  std::round(projectionResult.value()(1)));
@@ -55,11 +54,11 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           LOG_TRACE("Center score {} for landmark: {}", score.value(),
                     landmarkKey.index);
 
-          auto nPcs =
-              target.correspondenceDistributions.back().initializeDistribution(
-                  targetCameraModel, target, landmarkKey, center,
-                  MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
-                  warpedPatch.value());
+          auto nPcs = (target.correspondenceDistributions.end() - 1)
+                          ->initializeDistribution(
+                              targetCameraModel, target, landmarkKey, center,
+                              MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS,
+                              patchComparer, warpedPatch.value());
 
           LOG_TRACE("Pixel center: {}", center);
 

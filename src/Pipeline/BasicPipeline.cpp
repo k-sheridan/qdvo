@@ -105,7 +105,7 @@ void QDVO::BasicPipeline::createNewLandmarks(
     Graph& graph, KeyframeMap::key_type keyframeKey,
     std::unique_ptr<QDVO::FeatureDetector>& featureDetector) {
   LOG_INFO("Creating new landmarks for keyframe idx:{}, gen:{}",
-              keyframeKey.index, keyframeKey.generation);
+           keyframeKey.index, keyframeKey.generation);
 
   std::unique_ptr<Frame>& keyframe = *graph.getKeyframeMap().at(keyframeKey);
 
@@ -150,7 +150,6 @@ void QDVO::BasicPipeline::
   std::unique_ptr<CameraModel>& cm =
       graph.getCameraModelMap().at(cf->cameraModelKey)->first;
 
-  LOG_INFO("here");
   // second reset correspondence distributions
   cf->resetCorrespondenceDistributions();
 
@@ -160,22 +159,23 @@ void QDVO::BasicPipeline::
   std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>
       visibleActiveLandmarks = graph.getVisibleLandmarksInCurrentFrame(true);
 
-  // Make sure that there are enough correspondence distributions
-  int deficit = std::max(int(visibleActiveLandmarks.size() -
-                             cf->correspondenceDistributions.size()),
-                         0);
-  for (int i = 0; i < deficit; ++i) {
-    // create another correspondence distribution
-    cf->correspondenceDistributions.push_back(QDVO::CorrespondenceDistribution(
-        cm->width, cm->height, radialSearchPatternPtr));
-  }
-
   LOG_INFO("found {} visible and active landmarks for the current frame",
-              visibleActiveLandmarks.size());
+           visibleActiveLandmarks.size());
+
+  // A list of all keys pushed into the frame.
+  std::vector<CorrespondenceDistributionMap::key_type>
+      correspondenceDistributionKeys;
+
+  for (int i = 0; i < visibleActiveLandmarks.size(); ++i) {
+    // create another correspondence distribution
+    correspondenceDistributionKeys.push_back(
+        cf->correspondenceDistributions.insert(QDVO::CorrespondenceDistribution(
+            cm->width, cm->height, radialSearchPatternPtr)));
+  }
 
   auto initializationFn =
       [&](std::tuple<LandmarkMap::key_type, QDVO::Vector2>& tup,
-          QDVO::CorrespondenceDistribution& cdRef) -> int {
+          CorrespondenceDistributionMap::key_type cdKey) -> int {
     LandmarkMap::key_type lKey = std::get<0>(tup);
 
     Landmark& l = *graph.getLandmarkMap().at(lKey);
@@ -183,6 +183,8 @@ void QDVO::BasicPipeline::
     Frame& f = *(*graph.getKeyframeMap().at(l.parentFrameKey));
 
     CameraModel& cm = *(graph.getCameraModelMap().at(f.cameraModelKey)->first);
+
+    auto& cdRef = *cf->correspondenceDistributions.at(cdKey);
 
     assert(cdRef.dormant == true);
 
@@ -219,7 +221,7 @@ void QDVO::BasicPipeline::
   QDVO::ParallelAlgorithms::transform(
       QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,
       visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
-      cf->correspondenceDistributions.begin(), result.begin(),
+      correspondenceDistributionKeys.begin(), result.begin(),
       initializationFn);
 
   LOG_INFO(
@@ -419,8 +421,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     }
   }
 
-  LOG_INFO("{} Active visible landmarks before activation.",
-              nActiveLandmarks);
+  LOG_INFO("{} Active visible landmarks before activation.", nActiveLandmarks);
 
   if (nActiveLandmarks >= N_FEATURES_DESIRED) {
     return;

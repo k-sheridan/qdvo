@@ -36,7 +36,7 @@ class BasicPipelineTest : public ::testing::Test {
   QDVO::ExtrinsicMap::key_type extrinsicKey;
 };
 
-TEST_F(BasicPipelineTest, RunDataset) {
+TEST_F(BasicPipelineTest, DISABLED_RunDataset) {
   const std::string datasetPath =
       std::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";

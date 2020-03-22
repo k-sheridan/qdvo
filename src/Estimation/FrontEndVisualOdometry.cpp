@@ -34,7 +34,9 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
     errorTermContainer.insert(QuasiDirectErrorTerm_TargetFrame(
         poseKey, Eigen::Matrix2d::Identity(), &graph, landmark->parentFrameKey,
         graph.getCurrentFrameKey(), it->landmarkKey,
-        it - currentFrame.correspondenceDistributions.begin()));
+        currentFrame.correspondenceDistributions.getKeyFromDataIndex(
+            std::distance(currentFrame.correspondenceDistributions.begin(),
+                          it))));
     ++nErrorTerms;
   }
   LOG_INFO("Created {} error terms for the current frame.", nErrorTerms);

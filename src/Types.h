@@ -22,10 +22,12 @@ using Result = std::optional<T>;
 class Frame;
 class CameraModel;
 class Landmark;
+class CorrespondenceDistribution;
 
 using KeyframeMap = ArgMin::SlotMap<std::unique_ptr<Frame>>;
 using CameraModelMap = ArgMin::SlotMap<std::pair<std::unique_ptr<CameraModel>, QDVO::SE3>>;
 using LandmarkMap = ArgMin::SlotMap<Landmark>;
 using ExtrinsicMap = ArgMin::SlotMap<QDVO::SE3>;
+using CorrespondenceDistributionMap = ArgMin::SlotMap<QDVO::CorrespondenceDistribution>;
 
 } // namespace QDVO
