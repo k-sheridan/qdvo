@@ -35,7 +35,7 @@ public:
 	int maximumHypotheses = 5;
 	double minimumDepth = 0.4; 
 	double maximumDepth = 20;
-	double resolution = 0.5;
+	double resolution = 1;
     } epipolar_depth_estimator;
 };
 }

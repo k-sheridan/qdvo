@@ -2,7 +2,7 @@
 
 #include "TestFixtures.h"
 
-class EpipolarDepthEstimationTest : public QDVOBasicTest {};
+class EpipolarDepthEstimationTest : public QDVOSimpleGraphTest {};
 
 /**
  * This test will simulate a epipolar depth search by creating two
@@ -10,7 +10,8 @@ class EpipolarDepthEstimationTest : public QDVOBasicTest {};
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
+  //  auto cameraModelKey =
+  //  addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
@@ -94,7 +95,6 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
   ASSERT_TRUE(targetPixelResult.has_value());
   auto targetPixel = targetPixelResult.value();
 
-
   auto landmarkInTarget = graph.projectLandmarkToCameraFrame(
       targetKeyframe, sourceKeyframe, landmark);
   EXPECT_EQ(landmarkInTarget(0), -1);
@@ -106,7 +106,6 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
   // Set a single pixel in the center to high.
   image.getImageData()(std::round(targetPixel(1)), std::round(targetPixel(0))) =
       1.0;
-
 
   // Update the source keyframe's image.
   image.toOpenCVImage().convertTo(cvMat, CV_16U);
@@ -136,7 +135,8 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
+  //  auto cameraModelKey =
+  //  addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
@@ -250,7 +250,8 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
  */
 TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
   // Insert a camera model into the graph.
-  auto cameraModelKey = addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
+  //  auto cameraModelKey =
+  //  addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
 
   // Create an extrinsic for the keyframes.
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
