@@ -126,15 +126,15 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
     synchronizeGraph(graph);
 
     // remove outliers found during sliding window estimation
-    // SPDLOG_INFO("Removing outliers after successful optimization");
-    // removeOutliers(graph);
+    SPDLOG_INFO("Removing outliers after successful optimization");
+    removeOutliers(graph);
   } else {
     SPDLOG_ERROR("Error increased, still syncing update with graph.");
     synchronizeGraph(graph);
 
     // remove outliers found during sliding window estimation
-    // SPDLOG_INFO("Removing outliers after successful optimization");
-    // removeOutliers(graph);
+    SPDLOG_INFO("Removing outliers after unsuccessful optimization");
+    removeOutliers(graph);
   }
 }
 
