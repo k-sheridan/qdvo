@@ -11,7 +11,7 @@ namespace QDVO {
 Graph::Graph()
 {
     currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
-    SPDLOG_INFO("Initialized current frame.");
+    LOG_INFO("Initialized current frame.");
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition()
@@ -65,7 +65,7 @@ void Graph::moveCurrentFrameIntoKeyframePosition()
 
 std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly, bool includeCurrentFrameLandmarks)
 {
-    SPDLOG_INFO("Computing visible landmarks in current frame.");
+    LOG_INFO("Computing visible landmarks in current frame.");
     std::vector<std::tuple<LandmarkMap::key_type, Vector2>> visibleLandmarkPtrs;
 
     auto& cm = cameraModelMap.at(getCurrentFrame()->cameraModelKey)->first;
@@ -76,11 +76,11 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
     for (auto &keyframe : keyframes)
     {
         if (keyframe->status != QDVO::Frame::FrameStatus::ACTIVE) {
-            SPDLOG_INFO("skipping inactive or marginalized keyframe.");
+            LOG_INFO("skipping inactive or marginalized keyframe.");
             continue;
         }
 
-        SPDLOG_INFO("computing visible landmarks for current frame.");
+        LOG_INFO("computing visible landmarks for current frame.");
 
         const SE3& T_kfimu_kfcam = *(extrinsics.at(keyframe->extrinsicKey));
 
@@ -98,7 +98,7 @@ std::vector<std::tuple<LandmarkMap::key_type, Vector2>> Graph::getVisibleLandmar
                 auto px = cm->project(T_cf_kf * l.getEuclideanPoint());
                 if (!px.has_value())
                 {
-                    SPDLOG_TRACE("failed to project landmark"); 
+                    LOG_TRACE("failed to project landmark"); 
                     continue;
                 }
 

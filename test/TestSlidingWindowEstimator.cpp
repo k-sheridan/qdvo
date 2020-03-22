@@ -30,8 +30,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                                           graph);
 
       if (warpedPatch.has_value()) {
-        SPDLOG_TRACE("Warped Patch to target. sum: {}",
-                     warpedPatch.value().getImageData().sum());
+        LOG_TRACE("Warped Patch to target. sum: {}",
+                  warpedPatch.value().getImageData().sum());
 
         // The patch should correlate with itself.
         EXPECT_GT(
@@ -52,8 +52,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           // Compare the warped patch with the center pixel.
           auto score =
               patchComparer->compare(warpedPatch.value(), target, center);
-          SPDLOG_TRACE("Center score {} for landmark: {}", score.value(),
-                       landmarkKey.index);
+          LOG_TRACE("Center score {} for landmark: {}", score.value(),
+                    landmarkKey.index);
 
           auto nPcs =
               target.correspondenceDistributions.back().initializeDistribution(
@@ -61,14 +61,13 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
                   warpedPatch.value());
 
-          SPDLOG_TRACE("Pixel center: {}", center);
+          LOG_TRACE("Pixel center: {}", center);
 
-          SPDLOG_TRACE(
-              "Correspondence Distribution around center pixel: \n{}\n",
-              target.correspondenceDistributions.back().extractScores(
-                  center, Eigen::Vector2i(15, 15)));
+          LOG_TRACE("Correspondence Distribution around center pixel: \n{}\n",
+                    target.correspondenceDistributions.back().extractScores(
+                        center, Eigen::Vector2i(15, 15)));
 
-          SPDLOG_TRACE("Potential Correspondences: {}", nPcs);
+          LOG_TRACE("Potential Correspondences: {}", nPcs);
         }
       }
     }
@@ -93,8 +92,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       // Verify that the feature position is valid.
       auto projResult = graph.projectLandmarkToPixel(
           targetKeyframe, sourceKeyframe, landmarkKey);
-      SPDLOG_TRACE("Rendered feature at: \n{}\n",
-                   featurePositionResult.value());
+      LOG_TRACE("Rendered feature at: \n{}\n", featurePositionResult.value());
       ASSERT_TRUE(projResult.has_value());
       EXPECT_TRUE(
           featurePositionResult.value().isApprox(projResult.value(), 1e-6));
@@ -108,14 +106,14 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
       patchWarper->warpPatchToTargetFrame(warpedPatch, landmark, source, target,
                                           graph);
       EXPECT_TRUE(warpedPatch.has_value());
-      SPDLOG_TRACE("Warped Patch: \n{}\n", warpedPatch.value().getImageData());
+      LOG_TRACE("Warped Patch: \n{}\n", warpedPatch.value().getImageData());
       Eigen::Vector2i center(std::round(featurePositionResult.value()(0)),
                              std::round(featurePositionResult.value()(1)));
       auto score = patchComparer->compare(warpedPatch.value(), target, center);
       EXPECT_TRUE(score.has_value());
-      SPDLOG_TRACE("Match score {}", score.value());
+      LOG_TRACE("Match score {}", score.value());
       if (score.value() < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
-        SPDLOG_WARN(
+        LOG_WARN(
             "Score low for expected feature. Score: {} \n WarpedPatch: \n{}\n, "
             "TargetPatch: \n{}\n",
             score.value(), warpedPatch.value().getImageData(),
@@ -191,7 +189,7 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
     for (auto keyframeKey : keyframes) {
       for (auto lKey :
            (*graph.getKeyframeMap().at(keyframeKey))->landmarkKeys) {
-        SPDLOG_TRACE("compute pixel for landmark {}", lKey.index);
+        LOG_TRACE("compute pixel for landmark {}", lKey.index);
         for (auto targetKey : keyframes) {
           auto result =
               graph.projectLandmarkToPixel(targetKey, keyframeKey, lKey);
@@ -266,7 +264,7 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
   EXPECT_EQ(gtPixels.size(), estPixels.size());
 
   for (int i = 0; i < gtPixels.size(); ++i) {
-    SPDLOG_TRACE("Pixel error: {}", (estPixels.at(i) - gtPixels.at(i)).norm());
+    LOG_TRACE("Pixel error: {}", (estPixels.at(i) - gtPixels.at(i)).norm());
     EXPECT_NEAR((estPixels.at(i) - gtPixels.at(i)).norm(), 0, 1);
   }
 }

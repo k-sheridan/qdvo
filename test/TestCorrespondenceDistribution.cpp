@@ -53,7 +53,7 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
                               Eigen::Vector2i(256, 256), 25, patchComparer,
                               patchResult.value());
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
 
@@ -125,7 +125,7 @@ TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
                               Eigen::Vector2i(256, 256), 25, patchComparer,
                               patchResult.value());
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
 

@@ -156,7 +156,7 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
            Eigen::Vector2d(std::floor(projectionResult.value().x()),
                            std::floor(projectionResult.value().y())));
 
-      SPDLOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n",
+      LOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n",
                    delta, projectionResult.value(),
                    Eigen::Vector2d(std::floor(projectionResult.value().x()),
                                    std::floor(projectionResult.value().y())),
@@ -170,7 +170,7 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
                           std::floor(delta.x() * 10.0)) =
           Eigen::Matrix<double, 10, 10>::Constant(landmarkIntensity * 0.01);
 
-      SPDLOG_TRACE("patch: \n{}\n", patch);
+      LOG_TRACE("patch: \n{}\n", patch);
 
       image(ceilFn(projectionResult.value().y()),
             ceilFn(projectionResult.value().x())) =
@@ -185,7 +185,7 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
             ceilFn(projectionResult.value().x())) =
           patch.block<10, 10>(0, 10).cast<QDVO::ImageIntensityType>().sum();
 
-      SPDLOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
+      LOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
                    image(std::floor(projectionResult.value().y()),
                          std::floor(projectionResult.value().x())),
                    patch.block<10, 10>(0, 0).sum());

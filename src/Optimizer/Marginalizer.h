@@ -162,7 +162,7 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
                         });
                   }
                 } else {
-                  SPDLOG_WARN("linearization invalid for error term. Skipping");
+                  LOG_WARN("linearization invalid for error term. Skipping");
                 }
 
                 // Add this error term to the deletion queue.
@@ -195,7 +195,7 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
         A_margInv = A_marg.inverse();
     // Verify that the matrix inverse was valid.
     if (std::isnan(A_margInv.sum())) {
-      SPDLOG_ERROR(
+      LOG_ERROR(
           "Marginalization failed due to failed inversion of the marginalized "
           "block. Returning early.");
       return false;

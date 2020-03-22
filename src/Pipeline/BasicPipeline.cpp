@@ -19,11 +19,11 @@ void QDVO::BasicPipeline::initialize() {
   // create the patch warper
   patchWarper = std::make_unique<QDVO::PatchWarper>();
 
-  SPDLOG_INFO("Computed radial search pattern");
+  LOG_INFO("Computed radial search pattern");
 
   // create a feature detector
   featureDetector = std::make_unique<QDVO::FeatureDetector>();
-  SPDLOG_INFO("Created a new feature detector");
+  LOG_INFO("Created a new feature detector");
 
   patchComparer = std::make_shared<PatchComparer>();
 }
@@ -32,7 +32,7 @@ QDVO::CameraModelMap::key_type QDVO::BasicPipeline::addCamera(
     std::unique_ptr<QDVO::CameraModel> cameraModel) {
   QDVO::SE3 unit(Eigen::Quaternion<QDVO::SE3::Scalar>(1, 0, 0, 0),
                  Eigen::Matrix<QDVO::SE3::Scalar, 3, 1>(0, 0, 0));
-  SPDLOG_INFO("Camera Model Initialized");
+  LOG_INFO("Camera Model Initialized");
   return graph.insertCamera(std::move(cameraModel), unit);
 }
 
@@ -40,7 +40,7 @@ void QDVO::BasicPipeline::addFrame(
     cv::Mat& image, const double& time,
     const CameraModelMap::key_type& cameraModelKey,
     const ExtrinsicMap::key_type& extrinsicKey) {
-  SPDLOG_INFO("Added frame.");
+  LOG_INFO("Added frame.");
   // save the last imu state
   QDVO::IMUState lastImuState = graph.getCurrentFrame()->imustate;
   // Reset current frame
@@ -94,7 +94,7 @@ void QDVO::BasicPipeline::addFrame(
     // activate new landmarks if necessary
     activateNewLandmarks();
   }
-  SPDLOG_INFO("Finished adding frame.");
+  LOG_INFO("Finished adding frame.");
 }
 
 void QDVO::BasicPipeline::runMarginalizationStrategy() {
@@ -104,7 +104,7 @@ void QDVO::BasicPipeline::runMarginalizationStrategy() {
 void QDVO::BasicPipeline::createNewLandmarks(
     Graph& graph, KeyframeMap::key_type keyframeKey,
     std::unique_ptr<QDVO::FeatureDetector>& featureDetector) {
-  SPDLOG_INFO("Creating new landmarks for keyframe idx:{}, gen:{}",
+  LOG_INFO("Creating new landmarks for keyframe idx:{}, gen:{}",
               keyframeKey.index, keyframeKey.generation);
 
   std::unique_ptr<Frame>& keyframe = *graph.getKeyframeMap().at(keyframeKey);
@@ -113,7 +113,7 @@ void QDVO::BasicPipeline::createNewLandmarks(
   std::vector<QDVO::Feature> newFeatures =
       featureDetector->detectFeatures(*keyframe);
 
-  SPDLOG_INFO("Found {} new landmarks", newFeatures.size());
+  LOG_INFO("Found {} new landmarks", newFeatures.size());
 
   // add the landmarks to the keyframe's landmark vector
   std::unique_ptr<QDVO::CameraModel>& cm =
@@ -127,7 +127,7 @@ void QDVO::BasicPipeline::createNewLandmarks(
 
     auto result = cm->unproject(lm.px);
     if (!result.has_value()) {
-      SPDLOG_INFO("failed to unproject pixel.");
+      LOG_INFO("failed to unproject pixel.");
       continue;
     }
 
@@ -141,7 +141,7 @@ void QDVO::BasicPipeline::createNewLandmarks(
 
 void QDVO::BasicPipeline::
     initializeCorrespondenceDistributionsForCurrentFrame() {
-  SPDLOG_INFO("Initializing correspondence distributions for current frame.");
+  LOG_INFO("Initializing correspondence distributions for current frame.");
   // first update the patch comparers before initializing all the
   // correspondence distributions
   updatePatchComparers();
@@ -150,7 +150,7 @@ void QDVO::BasicPipeline::
   std::unique_ptr<CameraModel>& cm =
       graph.getCameraModelMap().at(cf->cameraModelKey)->first;
 
-  SPDLOG_INFO("here");
+  LOG_INFO("here");
   // second reset correspondence distributions
   cf->resetCorrespondenceDistributions();
 
@@ -170,7 +170,7 @@ void QDVO::BasicPipeline::
         cm->width, cm->height, radialSearchPatternPtr));
   }
 
-  SPDLOG_INFO("found {} visible and active landmarks for the current frame",
+  LOG_INFO("found {} visible and active landmarks for the current frame",
               visibleActiveLandmarks.size());
 
   auto initializationFn =
@@ -193,7 +193,7 @@ void QDVO::BasicPipeline::
     auto px0 = graph.projectLandmarkToPixel(*graph.getCurrentFrame(),
                                             landmarkParentFrame, l);
     if (!px0.has_value()) {
-      SPDLOG_TRACE("landmark not visible in its parent frame!");
+      LOG_TRACE("landmark not visible in its parent frame!");
       return 1;
     }
     QDVO::Result<QDVO::Patch> warpedPatch = {};
@@ -202,7 +202,7 @@ void QDVO::BasicPipeline::
     patchWarper->warpPatchToTargetFrame(warpedPatch, l, landmarkParentFrame,
                                         *(graph.getCurrentFrame()), graph);
     if (!warpedPatch.has_value()) {
-      SPDLOG_TRACE("failed to warp patch");
+      LOG_TRACE("failed to warp patch");
       return 1;
     }
 
@@ -222,7 +222,7 @@ void QDVO::BasicPipeline::
       cf->correspondenceDistributions.begin(), result.begin(),
       initializationFn);
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "Initialized correspondence distributions for this frame. Could "
       "not initialize: {} distributions",
       std::accumulate(result.begin(), result.end(), 0));
@@ -230,7 +230,7 @@ void QDVO::BasicPipeline::
 
 bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
   if (graph.getKeyframeMap().size() == 1) {
-    SPDLOG_INFO("First frame is always a keyframe.");
+    LOG_INFO("First frame is always a keyframe.");
     return true;
   }
 
@@ -250,7 +250,7 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
     // Compute the pixel flow with the current frame.
     auto pixelFlows = computePixelFlowForCurrentFrame(thisKey);
 
-    SPDLOG_INFO(
+    LOG_INFO(
         "For keyframe {}-{}, Average pixel flow: {} Average "
         "translational pixel flow: {}",
         thisKey.index, thisKey.generation, pixelFlows.first, pixelFlows.second);
@@ -268,7 +268,7 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
   // sufficiently "far" from all keyframes to warrant creating a new
   // keyframe.
   if (smallestPixelFlowScore > 1) {
-    SPDLOG_INFO("Current frame qualifies as a keyframe!");
+    LOG_INFO("Current frame qualifies as a keyframe!");
     return true;
   }
 
@@ -342,7 +342,7 @@ void QDVO::BasicPipeline::updatePatchComparers() {}
 
 void QDVO::BasicPipeline::runEpipolarDepthEstimators(
     KeyframeMap::key_type mostRecentKeyframeKey) {
-  SPDLOG_INFO("Running Epipolar Depth Estimators");
+  LOG_INFO("Running Epipolar Depth Estimators");
   // create a shared pointer to the patch comparer.
   auto patchComparerPtr = patchComparer;
 
@@ -377,7 +377,7 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
       }
     }
   }
-  SPDLOG_INFO("Finished running Epipolar Depth Estimators.");
+  LOG_INFO("Finished running Epipolar Depth Estimators.");
 }
 
 void QDVO::BasicPipeline::activateNewLandmarks() {
@@ -385,13 +385,13 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
    * Warning: This is an absolute mess, but for now it will have to do.
    */
 
-  SPDLOG_INFO("Activating landmarks.");
+  LOG_INFO("Activating landmarks.");
 
   // find all visible active and inactive landmarks
   std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>
       visibleLandmarks = graph.getVisibleLandmarksInCurrentFrame(false, true);
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "there are currently {} active and inactive landmarks visible in "
       "the current frame",
       visibleLandmarks.size());
@@ -419,7 +419,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     }
   }
 
-  SPDLOG_INFO("{} Active visible landmarks before activation.",
+  LOG_INFO("{} Active visible landmarks before activation.",
               nActiveLandmarks);
 
   if (nActiveLandmarks >= N_FEATURES_DESIRED) {
@@ -447,7 +447,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     }
   }
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "{} Active visible landmarks after activating initialized "
       "landmarks.",
       nActiveLandmarks);
@@ -455,7 +455,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
   // if necessary activate uninitialized landmarks
   if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS) {
     if (graph.getKeyframeMap().size() > 2) {
-      SPDLOG_WARN(
+      LOG_WARN(
           "Not activating unintialized landmarks. REMOVE "
           "ME.");
       return;
@@ -479,10 +479,10 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
         break;
       }
     }
-    SPDLOG_INFO(
+    LOG_INFO(
         "{} active visible landmarks after activating "
         "uninitialized landmarks.",
         nActiveLandmarks);
   }
-  SPDLOG_INFO("Finished activating landmakrs.");
+  LOG_INFO("Finished activating landmakrs.");
 }

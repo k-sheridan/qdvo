@@ -9,6 +9,7 @@
 #include "Optimizer/HuberLossFunction.h"
 #include "Optimizer/Key.h"
 #include "ErrorTerms/QuasiDirectErrorTerm_TargetFrame.h"
+#include "Logging.h"
 
 namespace QDVO {
 

@@ -32,7 +32,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
   QDVO::Vector3 p0 = T_targetCam_sourceCam * landmark.getEuclideanPoint();
 
   if (p0(2) <= 1e-10) {
-    SPDLOG_TRACE(
+    LOG_TRACE(
         "Could not warp patch because the associated landmark is behind the "
         "target frame. pt_target: \n{}\n",
         p0);
@@ -46,7 +46,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
                  .at(targetFrame.cameraModelKey)
                  ->first->project(u0, &projJac);
   if (!px0.has_value()) {
-    SPDLOG_TRACE(
+    LOG_TRACE(
         "Could not warp patch because landmark was not projectable into the "
         "target frame.");
     return;
@@ -60,7 +60,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
                        .at(sourceFrame.cameraModelKey)
                        ->first->project(pt_source, &projJac);
   if (!px_source.has_value()) {
-    SPDLOG_ERROR(
+    LOG_ERROR(
         "Could not warp patch because landmark was not projectable into the "
         "source frame.");
     return;
@@ -82,7 +82,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
       auto brightness =
           sourceFrame.imagePyr.getImage().getSubPixelIntensity(px);
       if (!brightness.has_value()) {
-        SPDLOG_TRACE(
+        LOG_TRACE(
             "Could not warp patch. It was not possible to sample the source "
             "image.");
         return;

@@ -115,7 +115,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    */
   void initialize(VariableContainer<Variables...> &variables,
                   ErrorTermContainer<ErrorTerms...> &errorTerms) {
-    SPDLOG_TRACE("Initializing Solver.");
+    LOG_TRACE("Initializing Solver.");
 
     removeOldVariablesFromSlotArrays(variables);
 
@@ -138,7 +138,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
   SolveResult solveLevenbergMarquardt(
       VariableContainer<Variables...> &variables,
       ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior) {
-    SPDLOG_TRACE("Starting Levenberg-Marquardt solve.");
+    LOG_TRACE("Starting Levenberg-Marquardt solve.");
     // Initialize the solver.
     initialize(variables, errorTerms);
 
@@ -146,29 +146,29 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     ScalarType lambda = settings.initialLambda;
 
     // Set up the solver for the first iteration.
-    SPDLOG_TRACE("Linearizing error terms for first iteration.");
+    LOG_TRACE("Linearizing error terms for first iteration.");
     // Linearize the error terms.
     linearize(variables, errorTerms);
 
     // Iterate and solve.
     for (int iteration = 0; iteration < settings.maximumIterations;
          ++iteration) {
-      SPDLOG_TRACE("Building linear system.");
+      LOG_TRACE("Building linear system.");
       // Build the linear system.
       double whitenedSqErrorBeforeSolve =
           buildLinearSystem(prior, errorTerms, variables);
 
-      SPDLOG_TRACE("Adding lambda to linear system.");
+      LOG_TRACE("Adding lambda to linear system.");
       // Add lambda to the linear system.
       addLambdaToLinearSystem(lambda);
 
-      SPDLOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}",
+      LOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}",
                    iteration, whitenedSqErrorBeforeSolve, lambda);
 
       // Add the current error to the error array.
       result.whitenedSqError.push_back(whitenedSqErrorBeforeSolve);
 
-      SPDLOG_TRACE("Solving");
+      LOG_TRACE("Solving");
       // Solve the linear system.
       solveLinearSystem(variables, errorTerms, prior);
 
@@ -178,24 +178,24 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         ensureUpdateIsRevertible(variables);
 
         // Apply the update.
-        SPDLOG_TRACE("Updating variables to check if error increased.");
+        LOG_TRACE("Updating variables to check if error increased.");
         applyUpdateToVariables(variables);
 
         // Compute the error with this update.
         double errorAfterUpdate = computeWhitenedSqError(errorTerms, variables);
-        SPDLOG_TRACE("Whitened Squared Error after update: {}",
+        LOG_TRACE("Whitened Squared Error after update: {}",
                      errorAfterUpdate);
 
         if (errorAfterUpdate < whitenedSqErrorBeforeSolve) {
           // The error decreased, reduce lambda.
-          SPDLOG_TRACE("Error decreased... reducing lambda.");
+          LOG_TRACE("Error decreased... reducing lambda.");
           lambda = lambda / settings.lambdaReductionMultiplier;
 
-          SPDLOG_TRACE("Updating prior after successful update.");
+          LOG_TRACE("Updating prior after successful update.");
           prior.update(dxBlockVector);
         } else {
           // The error increased or stagnated, break.
-          SPDLOG_TRACE(
+          LOG_TRACE(
               "Error increased... increasing lambda and reverting update.");
           lambda = lambda * settings.lambdaReductionMultiplier;
 
@@ -204,16 +204,16 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         }
 
         // Linearize the error terms.
-        SPDLOG_TRACE("Linearizing error terms.");
+        LOG_TRACE("Linearizing error terms.");
         linearize(variables, errorTerms);
       } else {
         // Return early without updating
-        SPDLOG_ERROR("Perturbation invalid, returning early");
+        LOG_ERROR("Perturbation invalid, returning early");
         return result;
       }
     }
 
-    SPDLOG_TRACE("Finished Levenberg-Marquardt solve.");
+    LOG_TRACE("Finished Levenberg-Marquardt solve.");
     return result;
   }
 
@@ -247,7 +247,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           }
         }
         if (localResult == false) {
-          SPDLOG_ERROR("Update was invalid for a {} with an update of \n{}\n",
+          LOG_ERROR("Update was invalid for a {} with an update of \n{}\n",
                        typeid(ThisVariable).name(), dx);
         }
         result = localResult && result;
@@ -267,7 +267,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     internal::static_for(
         errorTerms.tupleOfErrorTermMaps,
         [&](auto errorTermTypeIndex, auto &errorTermMap) {
-          SPDLOG_TRACE(
+          LOG_TRACE(
               "Evaluating error with Error Term Type: {}",
               typeid(
                   typename std::tuple_element<errorTermTypeIndex,
@@ -287,7 +287,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             }
           }
         });
-    SPDLOG_TRACE("Computed whitened squared error with {} valid error terms.",
+    LOG_TRACE("Computed whitened squared error with {} valid error terms.",
                  nErrorTerms);
     return whitenedSqError / nErrorTerms;
   }
@@ -367,11 +367,11 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       VariableContainer<Variables...> &variables,
       ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms,
       GaussianPriorType &prior) {
-    SPDLOG_TRACE(
+    LOG_TRACE(
         "Starting Schur Solve with problem dimension: {} and a correlated "
         "dimension of: {}",
         totalDimension, dimensionOfA);
-    SPDLOG_TRACE("Computing D^{-1}");
+    LOG_TRACE("Computing D^{-1}");
     // Solve for the deltas using the Schur Complement.
     // First invert the D matrix
     internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
@@ -386,7 +386,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     });
 
-    SPDLOG_TRACE("Computing -B D^{-1}");
+    LOG_TRACE("Computing -B D^{-1}");
     // Compute -B Dinv, and compute the inverse Schur Complement of D.
     // This will use A to store the schur complement before inversion.
     internal::static_for(B, [&](auto i, auto &matrixSlotArray) {
@@ -436,7 +436,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     // At this point we have computed the inverse of the LHS.
     // Now we just have to multiply our results with the RHS.
 
-    SPDLOG_TRACE("Computing -B D^{-1} b_{uncorrelated}");
+    LOG_TRACE("Computing -B D^{-1} b_{uncorrelated}");
     // Multiply -BDinv * b_uncorrelated.
     internal::static_for(negativeBDinv, [&](auto i, auto &matrixSlotArray) {
       typedef typename std::tuple_element<
@@ -461,7 +461,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     });
 
-    SPDLOG_TRACE(
+    LOG_TRACE(
         "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
     // Multiply the inverse schur complement of D by the correlated b vector.
     dx.block(0, 0, dimensionOfA, 1) =
@@ -469,7 +469,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             .ldlt()
             .solve(b_correlated.block(0, 0, dimensionOfA, 1));
 
-    SPDLOG_TRACE("Computing D^{-1} b_{uncorrelated}");
+    LOG_TRACE("Computing D^{-1} b_{uncorrelated}");
     // Multiply Dinv by the b_uncorrelated vector.
     internal::static_for(D, [&](auto i, auto &matrixSlotArray) {
       typedef typename std::tuple_element<
@@ -496,7 +496,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     });
 
-    SPDLOG_TRACE("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
+    LOG_TRACE("Computing dx_{uncorrelated} = -B D^{-1} dx_{correlated}");
     // At this point the partial solution is stored in the dx vector.
     // Compute the final sweep of (-BDinv)^T * dx_uncorrelated.
     // This is correct  because Dinv is symmetric, and C = B^T
@@ -525,7 +525,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     });
 
-    SPDLOG_TRACE("Setting the dx block vector");
+    LOG_TRACE("Setting the dx block vector");
     // Set the dx block vector from the index map and dx vector
     internal::static_for(variableToIndexMaps, [&](auto i, auto &indexMap) {
       typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
@@ -543,7 +543,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       }
     });
 
-    SPDLOG_TRACE("Schur Solve complete. ");
+    LOG_TRACE("Schur Solve complete. ");
   }
 
   /// Linearizes all error terms stored in this container.
@@ -623,7 +623,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     internal::static_for(
         linearizedErrorTerms.tupleOfErrorTermMaps,
         [&](auto errorTermTypeIndex, auto &errorTermMap) {
-          SPDLOG_TRACE(
+          LOG_TRACE(
               "Building problem with Error Term Type: {}",
               typeid(
                   typename std::tuple_element<errorTermTypeIndex,
@@ -694,13 +694,13 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
                         });
                   });
             } else {
-              SPDLOG_TRACE("linearization invalid for error term.");
+              LOG_TRACE("linearization invalid for error term.");
             }
           }
         });
 
     if (nErrorTerms == 0) {
-      SPDLOG_WARN(
+      LOG_WARN(
           "There are no error terms to build the problem with. Expect a nan "
           "average error.");
     }
@@ -718,7 +718,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
   void setProblemToPrior(
       GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior,
       VariableContainer<Variables...> &variables) {
-    SPDLOG_TRACE("Setting problem to prior.");
+    LOG_TRACE("Setting problem to prior.");
     // Zero the problem.
     setZero();
 
@@ -1078,7 +1078,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           std::get<std::vector<decltype(key)>>(keysToErase).push_back(key);
         }
       }
-      SPDLOG_TRACE("Found {} remove variables of type {}",
+      LOG_TRACE("Found {} remove variables of type {}",
                    std::get<i>(keysToErase).size(),
                    typeid(std::get<i>(variableTuple)).name());
     });

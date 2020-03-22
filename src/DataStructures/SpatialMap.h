@@ -45,6 +45,7 @@ class SpatialMap {
         pc.reset();
       }
     }
+    data.clear();
   }
 
   T& get(const Eigen::Vector2i& pixel) {

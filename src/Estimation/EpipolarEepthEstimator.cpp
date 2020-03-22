@@ -19,13 +19,13 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // Ensure that the landmark is inactive.
   if (landmark.status != Landmark::LandmarkStatus::INACTIVE) {
-    SPDLOG_ERROR("Tried to run epipolar depth estimator on {} landmark.",
+    LOG_ERROR("Tried to run epipolar depth estimator on {} landmark.",
                 landmark.status);
   }
 
   if (initialized) {
     // Return if the estimator already has finished.
-    SPDLOG_TRACE("Tried to update landmark's depth estimator which was already initialized.");
+    LOG_TRACE("Tried to update landmark's depth estimator which was already initialized.");
     return;
   }
 
@@ -34,7 +34,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   if (attempts > s.epipolar_depth_estimator.maximumAttempts) {
     // There have been too many attempts marginalize the landmark.
-    SPDLOG_TRACE("Too many attempts to estimate the landmark depth have occured. Marginalizing point.");
+    LOG_TRACE("Too many attempts to estimate the landmark depth have occured. Marginalizing point.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -46,7 +46,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // If the template patch doesnt exist, return early.
   if (!templatePatch.has_value()) {
-    SPDLOG_INFO("Failed to warp patch for epipolar depth estimator.");
+    LOG_INFO("Failed to warp patch for epipolar depth estimator.");
     return;
   }
 
@@ -128,20 +128,20 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (scores.empty()) {
-    SPDLOG_INFO("Landmark has no match during epipolar depth search.");
+    LOG_INFO("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
   // Find the maximum score.
   auto maxScoreIt = std::max_element(scores.begin(), scores.end());
 
-  SPDLOG_INFO(
+  LOG_INFO(
       "Evaluated {} depths during epipolar search. Max score: {} at depth: {}",
       depths.size(), *maxScoreIt,
       depths.at(std::distance(scores.begin(), maxScoreIt)));
 
   if (*maxScoreIt < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
-    SPDLOG_INFO("Landmark has no match during epipolar depth search.");
+    LOG_INFO("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -158,7 +158,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (switches > 1) {
-    SPDLOG_INFO("Landmark was not unique.");
+    LOG_INFO("Landmark was not unique.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -189,7 +189,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   if (error > thisError) {
     error = thisError;
     landmark.dinv = 1.0 / depths.at(std::distance(scores.begin(), maxScoreIt));
-    SPDLOG_INFO(
+    LOG_INFO(
         "Updated depth. New estimated depth is: {} with and error of: {} and "
         "{} hypotheses.",
         1.0 / landmark.dinv, thisError, endIdx - startIdx + 1);
@@ -199,7 +199,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // requirements.
   if (endIdx - startIdx <= s.epipolar_depth_estimator.maximumHypotheses &&
       error <= s.epipolar_depth_estimator.maximumError) {
-    SPDLOG_INFO(
+    LOG_INFO(
         "Landmark depth successfully estimated with {} hypotheses and and "
         "error of {}",
         endIdx - startIdx, error);

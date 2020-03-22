@@ -46,7 +46,7 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
 
   if (gmm < std::numeric_limits<SCALAR_TYPE>::min()) {
     // This should never happen, but it could.
-    SPDLOG_TRACE(
+    LOG_TRACE(
         "Gaussian mixture evaluated to a small value {} with {} potential "
         "correspondences.",
         gmm, pcs.size());
@@ -93,8 +93,8 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> pcs =
       this->search(cameraModel, frame, centerPixel, floodRadius, false);
 
-  SPDLOG_TRACE("initialized distribution with {} correspondences {}, {}",
-               pcs.size(), centerPixel[0], centerPixel[1]);
+  LOG_TRACE("initialized distribution with {} correspondences {}, {}",
+            pcs.size(), centerPixel[0], centerPixel[1]);
 
   return pcs.size();
 }
@@ -170,7 +170,8 @@ QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
   assert(dimensions.x() % 2 == 1);
   assert(dimensions.y() % 2 == 1);
 
-  Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic> result(dimensions.y(), dimensions.x());
+  Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic> result(
+      dimensions.y(), dimensions.x());
   result.setConstant(-1);
 
   // Iterate through the region.

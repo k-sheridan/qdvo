@@ -62,7 +62,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     EXPECT_TRUE(patch1.has_value());
     EXPECT_EQ(patch1.value().getImageData().sum(), 500);
 
-    SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
+    LOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
     patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
                                         graph);
@@ -114,7 +114,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
                                         graph);
     EXPECT_TRUE(patch1.has_value());
 
-    SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
+    LOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
     patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
                                         graph);
@@ -124,7 +124,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     auto score = patchComparer->compare(patch1.value(), patch2.value());
     EXPECT_TRUE(score.has_value());
     EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
-    SPDLOG_TRACE("Score of patches: {}", score.value());
+    LOG_TRACE("Score of patches: {}", score.value());
 
     // Remove the keyframes and landmark from the graph.
     graph.getKeyframeMap().erase(sourceKey);
@@ -190,7 +190,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
                                         graph);
     EXPECT_TRUE(patch1.has_value());
 
-    SPDLOG_TRACE("patch1: \n{}\n", patch1->getImageData());
+    LOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
     patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
                                         graph);
@@ -200,7 +200,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
     auto score = patchComparer->compare(patch1.value(), patch2.value());
     EXPECT_TRUE(score.has_value());
     EXPECT_GT(score.value(), POTENTIAL_CORRESPONDENCE_THRESHOLD);
-    SPDLOG_TRACE("Score of patches: {}", score.value());
+    LOG_TRACE("Score of patches: {}", score.value());
 
     // Remove the keyframes and landmark from the graph.
     graph.getKeyframeMap().erase(sourceKey);

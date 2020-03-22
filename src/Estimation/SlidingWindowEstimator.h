@@ -56,7 +56,7 @@ public:
     
     using LossFunction = ArgMin::HuberLossFunction<double>;
 
-    LossFunction lossFunction = LossFunction(1);
+    LossFunction lossFunction = LossFunction(0.1);
 
     using Solver = ArgMin::PSDSchurSolver<ArgMin::Scalar<double>, ArgMin::LossFunction<LossFunction>, ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>, ArgMin::VariableGroup<ArgMin::InverseDepth>>;
 

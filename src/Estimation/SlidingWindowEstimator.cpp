@@ -8,7 +8,7 @@ SlidingWindowEstimator::SlidingWindowEstimator() {}
 
 void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   // Check if a new keyframe has been added.
-  SPDLOG_TRACE(
+  LOG_TRACE(
       "Checking if a new active keyframe has been added to the graph. Current "
       "number of keyframes in the graph: {}",
       graph.getKeyframeMap().size());
@@ -22,7 +22,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
     if (keyframeKey == graph.getCurrentFrameKey() ||
         (*it)->status != Frame::FrameStatus::ACTIVE) {
       // Skip this frame.
-      SPDLOG_TRACE(
+      LOG_TRACE(
           "Skipping frame because it is either the current frame or inactive. "
           "Frame state: {}",
           (*it)->status);
@@ -40,7 +40,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
     }
     // If the keyframe is new, add it and all its landmarks to the SWE.
     if (keyframeNotInSWE) {
-      SPDLOG_TRACE("Found new keyframe for sliding window estimator.");
+      LOG_TRACE("Found new keyframe for sliding window estimator.");
       // Insert a variable for the keyframe pose.
       ArgMin::SE3 pose;
       pose.value = (*it)->imustate.getSE3();
@@ -49,7 +49,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
       poseKeyMap.insert(keyframeKey, poseKey);
       // Insert the variable into the prior.
       if (graph.getKeyframeMap().size() == 1) {
-        SPDLOG_TRACE("Adding first keyframe pose.");
+        LOG_TRACE("Adding first keyframe pose.");
         prior.addVariable(
             poseKey, Eigen::Matrix<double, 6, 1>::Constant(1e24).asDiagonal());
       } else {
@@ -67,8 +67,8 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         // Insert variable into the prior.
         prior.addVariable(dinvKey);
       }
-      SPDLOG_TRACE("Added new keyframe to estimator.");
-      SPDLOG_TRACE("Constructing error terms for new keyframe.");
+      LOG_TRACE("Added new keyframe to estimator.");
+      LOG_TRACE("Constructing error terms for new keyframe.");
 
       // Iterate through the correspondence distributions in this keyframe, and
       // add them as error terms.
@@ -101,7 +101,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         ++errorTermsForThisKeyframe;
         ++cdIdx;
       }
-      SPDLOG_TRACE("Constructed {} error terms for the new keyframe",
+      LOG_TRACE("Constructed {} error terms for the new keyframe",
                   errorTermsForThisKeyframe);
     }
   }
@@ -113,27 +113,27 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 
-  SPDLOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
+  LOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
   if (!result.whitenedSqError.empty()) {
-    SPDLOG_INFO("Initial squared error {} -> final squared error {}",
+    LOG_INFO("Initial squared error {} -> final squared error {}",
                 result.whitenedSqError.front(), result.whitenedSqError.back());
   }
 
   // Apply the updates to the actual graph iff the error was decreased.
   if (!result.whitenedSqError.empty() &&
       result.whitenedSqError.back() < result.whitenedSqError.front()) {
-    SPDLOG_INFO("SWE successfully reduced error, applying updates to graph.");
+    LOG_INFO("SWE successfully reduced error, applying updates to graph.");
     synchronizeGraph(graph);
 
     // remove outliers found during sliding window estimation
-    SPDLOG_INFO("Removing outliers after successful optimization");
+    LOG_INFO("Removing outliers after successful optimization");
     removeOutliers(graph);
   } else {
-    SPDLOG_ERROR("Error increased, still syncing update with graph.");
+    LOG_ERROR("Error increased, still syncing update with graph.");
     synchronizeGraph(graph);
 
     // remove outliers found during sliding window estimation
-    SPDLOG_INFO("Removing outliers after unsuccessful optimization");
+    LOG_INFO("Removing outliers after unsuccessful optimization");
     removeOutliers(graph);
   }
 }
@@ -160,7 +160,7 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
     }
   }
 
-  SPDLOG_INFO("Remove {} outlier landmarks.", marginalizedLandmarks);
+  LOG_INFO("Remove {} outlier landmarks.", marginalizedLandmarks);
 }
 
 void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {}

@@ -7,7 +7,6 @@
 #include <opencv2/highgui.hpp>
 
 #include "BasicPipeline.h"
-#include "Logging.h"
 #include "TestFixtures.h"
 
 /**
@@ -47,7 +46,7 @@ TEST_F(BasicPipelineTest, RunDataset) {
   std::ifstream cam0CSV;
   cam0CSV.open(cam0CsvPath, std::ifstream::in);
   if (!cam0CSV.is_open()) {
-    SPDLOG_ERROR("Failed to open dataset csv. {}", cam0CsvPath);
+    LOG_ERROR("Failed to open dataset csv. {}", cam0CsvPath);
     return;
   }
 
