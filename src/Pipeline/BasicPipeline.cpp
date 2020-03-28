@@ -82,7 +82,6 @@ void QDVO::BasicPipeline::addFrame(
     // run the sliding window estimator with the current keyframe
     // set
     swe.run(graph);
-    swe.run(graph);
 
     // attempt to estimate the landmark depths using the new motion
     // estimates
@@ -456,7 +455,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
   // if necessary activate uninitialized landmarks
   if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS) {
     if (graph.getKeyframeMap().size() > 2) {
-      LOG_WARN(
+      LOG_ERROR(
           "Not activating unintialized landmarks. REMOVE "
           "ME.");
       return;

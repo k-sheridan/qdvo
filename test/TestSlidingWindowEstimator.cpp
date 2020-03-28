@@ -63,8 +63,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
           LOG_TRACE("Pixel center: {}", center);
 
           LOG_TRACE("Correspondence Distribution around center pixel: \n{}\n",
-                    target.correspondenceDistributions.back().extractScores(
-                        center, Eigen::Vector2i(15, 15)));
+                    (target.correspondenceDistributions.end() - 1)
+                        ->extractScores(center, Eigen::Vector2i(15, 15)));
 
           LOG_TRACE("Potential Correspondences: {}", nPcs);
         }
