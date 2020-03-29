@@ -166,7 +166,47 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
   LOG_INFO("Remove {} outlier landmarks.", marginalizedLandmarks);
 }
 
-void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {}
+void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
+  LOG_TRACE("Running marginalization strategy.");
+  if (graph.getKeyframeMap().size() < N_KEYFRAMES) {
+    LOG_TRACE("There are {} keyframes, no need to marginalize one.",
+              graph.getKeyframeMap().size());
+    return;
+  }
+
+  // Step 0
+  // Create a list of active keyframe keys sorted by time.
+  std::vector<KeyframeMap::key_type> activeKeyframeKeys;
+  for (auto it = graph.getKeyframeMap().begin();
+       it != graph.getKeyframeMap().end(); it++) {
+    if ((*it)->status == Frame::FrameStatus::ACTIVE) {
+      activeKeyframeKeys.push_back(graph.getKeyframeMap().getKeyFromDataIndex(
+          std::distance(graph.getKeyframeMap().begin(), it)));
+    }
+  }
+
+  // Sort the keys by the keyframe time in ascending order.
+  std::sort(activeKeyframeKeys.begin(), activeKeyframeKeys.end(),
+            [&graph](auto a, auto b) {
+              return (*graph.getKeyframeMap().at(a))->imustate.time <
+                     (*graph.getKeyframeMap().at(b))->imustate.time;
+            });
+
+  CHECK(
+      (*graph.getKeyframeMap().at(activeKeyframeKeys.front()))->imustate.time <
+          (*graph.getKeyframeMap().at(activeKeyframeKeys.back()))
+              ->imustate.time,
+      "Times are not in order.");
+
+  // Step 1
+  // Check if any keyframes have fewer than N% of the total active landmarks
+  // visible.
+  constexpr double activeLandmarkRatioThreshold = 0.02;
+
+  // Step 2
+  // If we could not find any weakly connected keyframes to marginalize, try to
+  // maximize the spatial districution of the keyframes.
+}
 
 void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
   for (auto it = poseKeyMap.begin(); it != poseKeyMap.end(); it++) {
@@ -179,7 +219,13 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
 
   for (auto it = dinvKeyMap.begin(); it != dinvKeyMap.end(); it++) {
     auto key = dinvKeyMap.getKeyFromDataIndex(it - dinvKeyMap.begin());
-    auto& landmark = (*graph.getLandmarkMap().at(key));
+    // Get the landmark.
+    auto landmarkIt = graph.getLandmarkMap().at(key);
+    if (landmarkIt == graph.getLandmarkMap().end()) {
+      LOG_TRACE("inversedepth key map contained invalid landmark key");
+      continue;
+    }
+    auto& landmark = *(landmarkIt);
     auto& variable = variableContainer.at(*it);
     landmark.dinv = variable.value;
   }
@@ -187,7 +233,13 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
 
 void SlidingWindowEstimator::marginalizeLandmark(
     QDVO::Graph& graph, LandmarkMap::key_type landmarkKey) {
-  auto variableKey = *dinvKeyMap.at(landmarkKey);
+  auto variableIt = dinvKeyMap.at(landmarkKey);
+  if (variableIt == dinvKeyMap.end()) {
+    LOG_ERROR("Could not marginalize variable key.");
+    return;
+  }
+  auto variableKey = *variableIt;
+
   // First marginalize the landmark.
   marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer,
                                    ArgMin::VariableGroup<>(),

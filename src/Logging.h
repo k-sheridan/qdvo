@@ -6,6 +6,8 @@
 #define SPDLOG_HEADER_ONLY
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 
+#include <stdlib.h>
+
 #include "spdlog/fmt/ostr.h"  // must be included
 #include "spdlog/spdlog.h"
 
@@ -22,30 +24,24 @@
 
 // Info
 #if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_INFO
-#define LOG_INFO(...)                       \
-  {                                          \
-    SPDLOG_INFO(__VA_ARGS__);               \
-  }
+#define LOG_INFO(...) \
+  { SPDLOG_INFO(__VA_ARGS__); }
 #else
 #define LOG_INFO(...) (void)0
 #endif
 
 // Error
 #if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_ERROR
-#define LOG_ERROR(...)                       \
-  {                                          \
-    SPDLOG_ERROR(__VA_ARGS__);               \
-  }
+#define LOG_ERROR(...) \
+  { SPDLOG_ERROR(__VA_ARGS__); }
 #else
 #define LOG_ERROR(...) (void)0
 #endif
 
 // Warn
 #if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_WARN
-#define LOG_WARN(...)                       \
-  {                                          \
-    SPDLOG_WARN(__VA_ARGS__);               \
-  }
+#define LOG_WARN(...) \
+  { SPDLOG_WARN(__VA_ARGS__); }
 #else
 #define LOG_WARN(...) (void)0
 #endif
@@ -60,3 +56,12 @@
 #else
 #define LOG_DEBUG(...) (void)0
 #endif
+
+#define CHECK(condition, ...) \
+  {                           \
+    if (!(condition)) {         \
+      LOG_ERROR(__VA_ARGS__); \
+      exit(EXIT_FAILURE);     \
+    }                         \
+  }
+

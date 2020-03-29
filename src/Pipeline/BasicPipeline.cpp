@@ -90,6 +90,9 @@ void QDVO::BasicPipeline::addFrame(
     // marginalize excess keyframes.
     runMarginalizationStrategy();
 
+    // Remove the marginalized keys.
+    graph.removeMarginalizedVariables();
+
     // activate new landmarks if necessary
     activateNewLandmarks();
   }
@@ -218,10 +221,9 @@ void QDVO::BasicPipeline::
   std::vector<int> result(visibleActiveLandmarks.size());
   // Run the initialization function for all active and visible landmarks.
   QDVO::ParallelAlgorithms::transform(
-      QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,
+      QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL,
       visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
-      correspondenceDistributionKeys.begin(), result.begin(),
-      initializationFn);
+      correspondenceDistributionKeys.begin(), result.begin(), initializationFn);
 
   LOG_INFO(
       "Initialized correspondence distributions for this frame. Could "
@@ -364,7 +366,12 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
       // keyframe.
       for (auto landmarkKey : sourceKeyframe.landmarkKeys) {
         // Get the landmark.
-        auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
+        auto landmarkIt = graph.getLandmarkMap().at(landmarkKey);
+        if (landmarkIt == graph.getLandmarkMap().end()) {
+          LOG_TRACE("keyframe contained invalid landmark key");
+          continue;
+        }
+        auto& landmark = *(landmarkIt);
 
         // Check if the landmark should be updated.
         if (!landmark.depthEstimator.initialized &&

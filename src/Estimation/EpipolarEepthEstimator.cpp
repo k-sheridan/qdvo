@@ -46,7 +46,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // If the template patch doesnt exist, return early.
   if (!templatePatch.has_value()) {
-    LOG_INFO("Failed to warp patch for epipolar depth estimator.");
+    LOG_TRACE("Failed to warp patch for epipolar depth estimator.");
     return;
   }
 
@@ -128,20 +128,20 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (scores.empty()) {
-    LOG_INFO("Landmark has no match during epipolar depth search.");
+    LOG_TRACE("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
   // Find the maximum score.
   auto maxScoreIt = std::max_element(scores.begin(), scores.end());
 
-  LOG_INFO(
+  LOG_TRACE(
       "Evaluated {} depths during epipolar search. Max score: {} at depth: {}",
       depths.size(), *maxScoreIt,
       depths.at(std::distance(scores.begin(), maxScoreIt)));
 
   if (*maxScoreIt < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
-    LOG_INFO("Landmark has no match during epipolar depth search.");
+    LOG_TRACE("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -158,7 +158,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (switches > 1) {
-    LOG_INFO("Landmark was not unique.");
+    LOG_TRACE("Landmark was not unique.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
@@ -189,7 +189,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   if (error > thisError) {
     error = thisError;
     landmark.dinv = 1.0 / depths.at(std::distance(scores.begin(), maxScoreIt));
-    LOG_INFO(
+    LOG_TRACE(
         "Updated depth. New estimated depth is: {} with and error of: {} and "
         "{} hypotheses.",
         1.0 / landmark.dinv, thisError, endIdx - startIdx + 1);
@@ -199,7 +199,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // requirements.
   if (endIdx - startIdx <= s.epipolar_depth_estimator.maximumHypotheses &&
       error <= s.epipolar_depth_estimator.maximumError) {
-    LOG_INFO(
+    LOG_TRACE(
         "Landmark depth successfully estimated with {} hypotheses and and "
         "error of {}",
         endIdx - startIdx, error);

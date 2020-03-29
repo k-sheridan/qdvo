@@ -77,6 +77,9 @@ public:
     /// generalized version of the two above functions
     void moveCurrentFrameIntoKeyframePosition();
 
+    /// Removes all marginalized variables from the graph.
+    void removeMarginalizedVariables();
+
     /// Projects all landmarks in all keyframes into the current frame to determin if they are visible. will NOT project marginalized landmarks.
     /// @param activeLandmarksOnly Should the function only return active landmarks.
     /// @param includeCurrentFrameLandmarks Should the landmarks hosted in the current frame be included?

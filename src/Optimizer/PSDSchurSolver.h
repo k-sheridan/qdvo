@@ -556,7 +556,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             errorTerm.evaluate(variables, true);
           };
           QDVO::ParallelAlgorithms::for_each(
-              QDVO::ParallelAlgorithms::PARALLEL_CPU, errorTermMap.begin(),
+              QDVO::ParallelAlgorithms::SEQUENTIAL, errorTermMap.begin(),
               errorTermMap.end(), linearizationFn);
         });
   }
