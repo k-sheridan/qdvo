@@ -43,19 +43,26 @@ void QDVOVisualizer::transferVisualizationData() {
             ->first;
     // draw current frame landmarks.
     for (auto& key : this->algorithm.graph.getCurrentFrame()->landmarkKeys) {
-      auto& e = *algorithm.graph.getLandmarkMap().at(key);
+      auto landmarkIt = algorithm.graph.getLandmarkMap().at(key);
+      if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
+        continue;
+      }
+      auto& e = *landmarkIt;
       Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
-      cv::circle(render, cv::Point2f(px(0), px(1)), 3,
-                 hotCMap.getColor(std::clamp(
-                     float(1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
-                 -1);
+      auto color = hotCMap.getColor(
+          std::clamp(float(1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f));
+      cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
     }
 
     // draw correspondence distributions.
     for (auto& cd :
          this->algorithm.graph.getCurrentFrame()->correspondenceDistributions) {
       if (!cd.dormant) {
-        auto& l = *this->algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
+        auto landmarkIt = algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
+        if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
+          continue;
+        }
+        auto& l = *landmarkIt;
         auto px = this->algorithm.graph.projectLandmarkToPixel(
             this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
             cd.landmarkKey);
@@ -97,13 +104,15 @@ void QDVOVisualizer::transferVisualizationData() {
 
       // draw keyframe landmarks.
       for (auto& lKey : (*it)->landmarkKeys) {
-        auto& e = *algorithm.graph.getLandmarkMap().at(lKey);
+        auto landmarkIt = algorithm.graph.getLandmarkMap().at(lKey);
+        if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
+          continue;
+        }
+        auto& e = *landmarkIt;
         Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
-        cv::circle(
-            render, cv::Point2f(px(0), px(1)), 3,
-            hotCMap.getColor(std::clamp(
-                float(1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
-            -1);
+        auto color = hotCMap.getColor(std::clamp(
+            (float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f));
+        cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
       }
 
       this->visualizationData.keyframeImages.at(kfidx) = pangolin::GlTexture(

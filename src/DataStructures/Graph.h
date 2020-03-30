@@ -64,13 +64,6 @@ public:
         return landmarks;
     }
 
-    /**
-     * This function will swap the current frame and the marginalized keyframe and update the hash table key to reflect the new keyframe id.
-     * The current frame is now equal to the marginalized keyframe. For safety, you should always check that a frame is not marginalized when using it.
-     *
-     */
-    void moveCurrentFrameIntoMarginalizedKeyframePosition(KeyframeMap::key_type marginalizedKeyframeKey);
-
     /// assuming there is enough room in the keyframe set, the current frame is moved to a new spot in the keyframe set.
     void moveCurrentFrameIntoNewKeyframePosition();
 

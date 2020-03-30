@@ -461,12 +461,6 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
 
   // if necessary activate uninitialized landmarks
   if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS) {
-    if (graph.getKeyframeMap().size() > 2) {
-      LOG_ERROR(
-          "Not activating unintialized landmarks. REMOVE "
-          "ME.");
-      return;
-    }
     for (auto& t : visibleLandmarks) {
       LandmarkMap::key_type lKey = std::get<0>(t);
 

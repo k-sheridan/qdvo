@@ -29,22 +29,6 @@ void Graph::moveCurrentFrameIntoNewKeyframePosition() {
   currentFrameKey = newKeyframeKey;
 }
 
-void Graph::moveCurrentFrameIntoMarginalizedKeyframePosition(
-    const KeyframeMap::key_type marginalizedKeyframeKey) {
-  auto& currentFrame = getCurrentFrame();
-  assert(currentFrame->status == Frame::FrameStatus::MARGINALIZED);
-
-  auto& keyframe = *(keyframes.at(marginalizedKeyframeKey));
-
-  assert(keyframe->status == Frame::FrameStatus::MARGINALIZED);
-
-  // update the slot generation.
-  auto newKey = keyframes.updateSlotGeneration(currentFrameKey);
-  assert(!newKey.isInvalid());
-
-  currentFrameKey = marginalizedKeyframeKey;
-}
-
 void Graph::moveCurrentFrameIntoKeyframePosition() {
   // there is enough room to make a new keyframe.
   this->moveCurrentFrameIntoNewKeyframePosition();
