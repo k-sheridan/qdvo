@@ -13,8 +13,6 @@ Graph::Graph() {
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition() {
-  assert(keyframes.size() <= N_KEYFRAMES);
-
   // make room for another keyframe
   auto newFrame = std::make_unique<Frame>();
   auto newKeyframeKey = keyframes.insert(std::move(newFrame));
