@@ -22,48 +22,42 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
   // Look for the closest potential correspondences approximately under a
   // certain radius using the generic quadtree. While looking compute the
   // gaussians
-  std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> pcs =
-      this->search(cameraModel, frame, Eigen::Vector2i(px_0(0), px_0(1)),
-                   MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, true);
+  this->search(cameraModel, frame, px_0, MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS,
+               true, errorArray, scoreArray);
 
-  // compute the gaussian weights and residual finally
-  errorArray.resize(pcs.size());
-  std::transform(pcs.begin(), pcs.end(), errorArray.begin(),
-                 [px_0](PotentialCorrespondence* pc) -> QDVO::Vector2 {
-                   assert(pc != nullptr);
-                   return (pc->pixel.cast<SCALAR_TYPE>() - px_0);
+  // Compute exp(error.norm()/2) * score
+  expScoreArray.resize(scoreArray.size());
+  std::transform(scoreArray.begin(), scoreArray.end(), errorArray.begin(),
+                 expScoreArray.begin(),
+                 [](SCALAR_TYPE score, QDVO::Vector2 error) -> SCALAR_TYPE {
+                   return exp(-0.5 * error.squaredNorm()) * score;
                  });
 
-  expScoreArray.resize(pcs.size());
-  std::transform(
-      pcs.begin(), pcs.end(), errorArray.begin(), expScoreArray.begin(),
-      [px_0](PotentialCorrespondence* pc, QDVO::Vector2 error) -> SCALAR_TYPE {
-        return exp(-0.5 * error.squaredNorm()) * pc->score;
-      });
-
-  SCALAR_TYPE gmm = std::accumulate(expScoreArray.begin(),
-                                    expScoreArray.begin() + pcs.size(), 0.0);
+  // Compute the gmm at the center pixel.
+  SCALAR_TYPE gmm = std::accumulate(
+      expScoreArray.begin(), expScoreArray.begin() + scoreArray.size(), 0.0);
 
   if (gmm < std::numeric_limits<SCALAR_TYPE>::min()) {
     // This should never happen, but it could.
     LOG_TRACE(
         "Gaussian mixture evaluated to a small value {} with {} potential "
         "correspondences.",
-        gmm, pcs.size());
+        gmm, scoreArray.size());
     return {};
   }
 
-  weightedErrorArray.resize(pcs.size());
+  weightedErrorArray.resize(scoreArray.size());
 
+  // Compute weighted errors.
   std::transform(
-      errorArray.begin(), errorArray.begin() + pcs.size(),
+      errorArray.begin(), errorArray.begin() + scoreArray.size(),
       expScoreArray.begin(), weightedErrorArray.begin(),
       [gmm](QDVO::Vector2 error, SCALAR_TYPE expScore) -> QDVO::Vector2 {
         return (expScore / gmm) * error;
       });
 
   return std::accumulate(weightedErrorArray.begin(),
-                         weightedErrorArray.begin() + pcs.size(),
+                         weightedErrorArray.begin() + scoreArray.size(),
                          QDVO::Vector2(0, 0));
 }
 
@@ -90,22 +84,30 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   this->landmarkKey = landmarkKey;
 
   // perform the search
-  std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*> pcs =
-      this->search(cameraModel, frame, centerPixel, floodRadius, false);
+  this->search(cameraModel, frame, centerPixel.cast<SCALAR_TYPE>(), floodRadius,
+               false, errorArray, scoreArray);
 
   LOG_TRACE("initialized distribution with {} correspondences {}, {}",
-            pcs.size(), centerPixel[0], centerPixel[1]);
+            scoreArray.size(), centerPixel[0], centerPixel[1]);
 
-  return pcs.size();
+  return scoreArray.size();
 }
 
-std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*>
-QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame,
-                                         const Eigen::Vector2i& centerPixel,
-                                         const unsigned searchRadius,
-                                         bool minimalSearch) {
-  std::vector<QDVO::CorrespondenceDistribution::PotentialCorrespondence*>
-      influentialPotentialCorrespondences;
+void QDVO::CorrespondenceDistribution::search(
+    CameraModel& cameraModel, Frame& frame,
+    const QDVO::Vector2& centerPixelScalar, const unsigned searchRadius,
+    bool minimalSearch, std::vector<QDVO::Vector2>& errors,
+    std::vector<SCALAR_TYPE>& scores) {
+  // Clear the error vector.
+  errors.clear();
+  // Clear the score vector.
+  scores.clear();
+
+  // Compute the integer center pixel.
+  Eigen::Vector2i centerPixel(std::round(centerPixelScalar(0)),
+                              std::round(centerPixelScalar(1)));
+
+  // Start the search.
   bool firstInfluentialPotentialCorrespondenceFound = false;
   int radiusCounter = SEARCH_RADIUS_PADDING;
   assert(this->patchComparer != nullptr);
@@ -135,13 +137,10 @@ QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame,
 
       // Only run the patch comparison on uninitialized potential
       // correspondences.
-      if (!pc->initialized) {
+      if (!pc->initialized()) {
         // try to compare the patch at the testPoint.
         auto score =
             this->patchComparer->compare(this->warpedPatch, frame, testPoint);
-
-        pc->initialized = true;
-        pc->pixel = testPoint;
 
         // Add the score to the distribution
         if (score.has_value()) {
@@ -155,12 +154,13 @@ QDVO::CorrespondenceDistribution::search(CameraModel& cameraModel, Frame& frame,
       // If the potential correspondence is good enough, it is influential.
       if (pc->score >= POTENTIAL_CORRESPONDENCE_THRESHOLD) {
         firstInfluentialPotentialCorrespondenceFound = true;
-        influentialPotentialCorrespondences.push_back(pc);
+        // Compute z - px0
+        errors.push_back(testPoint.cast<SCALAR_TYPE>() - centerPixelScalar);
+        // Add the score.
+        scores.push_back(pc->score);
       }
     }
   }
-
-  return influentialPotentialCorrespondences;
 }
 
 Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic>
@@ -180,7 +180,7 @@ QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
          ++y) {
       auto& pc = correspondenceMap.get(center + Eigen::Vector2i(x, y));
       double score = -1;
-      if (pc.initialized) {
+      if (pc.initialized()) {
         score = pc.score;
       }
 

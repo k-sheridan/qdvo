@@ -69,7 +69,10 @@ void QDVO::BasicPipeline::addFrame(
     auto newKeyframeKey = graph.getCurrentFrameKey();
     graph.moveCurrentFrameIntoKeyframePosition();
     // The new current frame should not be the same as the old one.
-    assert(!(newKeyframeKey == graph.getCurrentFrameKey()));
+    CHECK(!(newKeyframeKey == graph.getCurrentFrameKey()), "Keys were the same.");
+
+    // Cache the imustate from previous current frame estimate.
+    auto previousIMUState = graph.getCurrentFrame()->imustate;
 
     // TODO: The rest of this can be ran on a separate thread.
 
@@ -95,6 +98,9 @@ void QDVO::BasicPipeline::addFrame(
 
     // activate new landmarks if necessary
     activateNewLandmarks();
+
+    // Update the current frame estimate.
+    graph.getCurrentFrame()->imustate = (*graph.getKeyframeMap().at(newKeyframeKey))->imustate;
   }
   LOG_INFO("Finished adding frame.");
 }

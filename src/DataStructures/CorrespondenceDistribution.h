@@ -27,11 +27,10 @@ class PatchComparer;
 class CorrespondenceDistribution {
  public:
   struct PotentialCorrespondence {
-    SCALAR_TYPE score;  // match score.
-    Eigen::Vector2i pixel;
-    bool initialized = false;
+    SCALAR_TYPE score = -1;  // match score.
 
-    void reset() { initialized = false; }
+    bool initialized() { return score != -1; }
+    void reset() { score = -1; }
   };
 
   /// The warped template patch to be used for the creation of the
@@ -78,12 +77,15 @@ class CorrespondenceDistribution {
   void reset();
 
   /**
-   * does a radial search while evaluating the patch comparison metric
+   * Search the correspondence distribution for close by potential
+   * correspondence distributions
+   * @return vector of z - centerPixel, vector of scores associated to the
+   * errors
    */
-  std::vector<PotentialCorrespondence*> search(
-      CameraModel& cameraModel, Frame& frame,
-      const Eigen::Vector2i& centerPixel, const unsigned searchRadius,
-      bool minimalSearch);
+  void search(CameraModel& cameraModel, Frame& frame,
+              const QDVO::Vector2& centerPixel, const unsigned searchRadius,
+              bool minimalSearch, std::vector<QDVO::Vector2>& errors,
+              std::vector<SCALAR_TYPE>& scores);
 
   /**
    * Computes a matrix which stores the scores in a region of the correspondence
@@ -98,7 +100,7 @@ class CorrespondenceDistribution {
 
  private:
   // pre-allocated quantities.
-  std::vector<SCALAR_TYPE> expScoreArray;
+  std::vector<SCALAR_TYPE> scoreArray, expScoreArray;
   std::vector<QDVO::Vector2> errorArray, weightedErrorArray;
 
   std::shared_ptr<const QDVO::RadialSearchPattern>

@@ -14,7 +14,9 @@ TEST(RadialSearchPattern, Basic) {
   int radius = 0;
   for (auto& e : pattern.searchPattern) {
     for (auto& f : e) {
-      render(f(1) + searchRadius + 1, f(0) + searchRadius + 1) = radius;
+      auto& renderPx = render(f(1) + searchRadius + 1, f(0) + searchRadius + 1);
+      EXPECT_EQ(renderPx, -1);
+      renderPx = radius;
     }
     radius++;
   }

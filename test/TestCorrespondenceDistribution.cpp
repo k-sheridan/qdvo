@@ -57,9 +57,13 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
 
-  // Run a search. We expect that there is one potential correspondence.
-  auto searchResult = dist.search(*cm, f, Eigen::Vector2i(256, 256), 25, true);
-  EXPECT_NEAR(searchResult.front()->score, 1.0, 1e-6);
+  std::vector<QDVO::Vector2> errors;
+  std::vector<QDVO::Scalar> scores;
+  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
+  EXPECT_EQ(errors.size(), scores.size());
+  for (auto score : scores) {
+    EXPECT_GE(score, POTENTIAL_CORRESPONDENCE_THRESHOLD);
+  }
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
@@ -129,9 +133,10 @@ TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
 
-  // Run a search. We expect that there is one potential correspondence.
-  auto searchResult = dist.search(*cm, f, Eigen::Vector2i(256, 256), 25, true);
-  EXPECT_EQ(searchResult.front()->score, 1.0);
+  std::vector<QDVO::Vector2> errors;
+  std::vector<QDVO::Scalar> scores;
+  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
+  EXPECT_EQ(errors.size(), scores.size());
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
