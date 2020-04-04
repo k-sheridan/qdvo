@@ -77,8 +77,10 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
       for (auto cdIt = (*it)->correspondenceDistributions.begin();
            cdIt != (*it)->correspondenceDistributions.end(); cdIt++) {
         auto& cd = *cdIt;
-        if (cd.dormant) {
-          // Increment the correspondence distribution index.
+        if (!cd.initialized) {
+          LOG_TRACE(
+              "Skipping correspondence distribution because it was not "
+              "initialized.");
           continue;
         }
 

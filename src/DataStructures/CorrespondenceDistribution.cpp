@@ -17,7 +17,7 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution(
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
     CameraModel& cameraModel, Frame& frame, const QDVO::Vector2& px_0) {
-  assert(!this->dormant);
+  CHECK(initialized, "The correspondence distribution must be initialized.");
 
   // Look for the closest potential correspondences approximately under a
   // certain radius using the generic quadtree. While looking compute the
@@ -63,8 +63,8 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
 
 void QDVO::CorrespondenceDistribution::reset() {
   this->patchComparer =
-      nullptr;           // ensure that we cannot use the wrong patch comparison
-  this->dormant = true;  // put this correspondence distribution to sleep.
+      nullptr;  // ensure that we cannot use the wrong patch comparison
+  this->initialized = false;  // put this correspondence distribution to sleep.
   this->correspondenceMap
       .reset();  // wipe the actual distribution container clean.
 }
@@ -74,8 +74,8 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
     const Eigen::Vector2i& centerPixel, const int floodRadius,
     std::shared_ptr<QDVO::PatchComparer> patchComparer,
     QDVO::Patch warpedPatch) {
-  this->dormant = false;  // set the distribution to awake.
-
+  CHECK(!initialized,
+        "The correspondence distribution must not be initialized.");
   this->warpedPatch = warpedPatch;  // replace the patch
 
   this->patchComparer = std::move(
@@ -89,6 +89,10 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
 
   LOG_TRACE("initialized distribution with {} correspondences {}, {}",
             scoreArray.size(), centerPixel[0], centerPixel[1]);
+
+  // If there is at least on potential correspondence mark this dist as
+  // initilaized.
+  initialized = true;
 
   return scoreArray.size();
 }

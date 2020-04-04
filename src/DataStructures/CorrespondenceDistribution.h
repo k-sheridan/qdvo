@@ -41,7 +41,7 @@ class CorrespondenceDistribution {
   SpatialMap<PotentialCorrespondence> correspondenceMap;
 
   /// Is this correspondence distribution currently not being used.
-  bool dormant = true;
+  bool initialized = false;
 
   /// The landmark this correspondence distribution represents an observation
   /// of.

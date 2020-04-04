@@ -19,7 +19,10 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
   int nErrorTerms = 0;
   for (auto it = currentFrame.correspondenceDistributions.begin();
        it != currentFrame.correspondenceDistributions.end(); it++) {
-    if (it->dormant) {
+    if (!it->initialized) {
+      LOG_TRACE(
+          "Skipping correspondence distribution because it was not "
+          "initialized.");
       continue;
     }
     auto landmark = graph.getLandmarkMap().at(it->landmarkKey);

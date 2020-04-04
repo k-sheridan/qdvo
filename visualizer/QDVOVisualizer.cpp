@@ -57,25 +57,33 @@ void QDVOVisualizer::transferVisualizationData() {
     // draw correspondence distributions.
     for (auto& cd :
          this->algorithm.graph.getCurrentFrame()->correspondenceDistributions) {
-      if (!cd.dormant) {
-        auto landmarkIt = algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
-        if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
-          continue;
-        }
-        auto& l = *landmarkIt;
-        auto px = this->algorithm.graph.projectLandmarkToPixel(
-            this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
-            cd.landmarkKey);
-        auto point = this->algorithm.graph.projectLandmarkToCameraFrame(
-            this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
-            cd.landmarkKey);
+      auto landmarkIt = algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
+      if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
+        continue;
+      }
+      auto& l = *landmarkIt;
+      auto px = this->algorithm.graph.projectLandmarkToPixel(
+          this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
+          cd.landmarkKey);
+      auto point = this->algorithm.graph.projectLandmarkToCameraFrame(
+          this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
+          cd.landmarkKey);
 
-        if (px.has_value()) {
+      if (px.has_value()) {
+        // TODO Draw the distribution.
+
+        // Draw the landmark.
+        // if initialized, draw with a depth color.
+        if (cd.initialized) {
           cv::circle(
-              render, cv::Point2f(px.value()(0), px.value()(1)), 3,
+              render, cv::Point2f(px.value()(0), px.value()(1)), 2,
               hotCMap.getColor(std::clamp(
                   float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
               -1);
+        } else {
+          // If not intiialized, draw purple.
+          cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
+                     cv::Scalar(127, 0, 255), -1);
         }
       }
     }
@@ -110,6 +118,8 @@ void QDVOVisualizer::transferVisualizationData() {
         }
         auto& e = *landmarkIt;
         Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
+
+	// Draw the landmark based on its status.
         auto color = hotCMap.getColor(std::clamp(
             (float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f));
         cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);

@@ -62,6 +62,20 @@ void Graph::removeMarginalizedVariables() {
   for (auto lKey : keyframeKeysToRemove) {
     keyframes.erase(lKey);
   }
+
+  // Clean up the keyframe landmark keys.
+  for (auto& keyframePtr : keyframes) {
+    auto& keyframe = *keyframePtr;
+    for (auto it = keyframe.landmarkKeys.begin();
+         it != keyframe.landmarkKeys.end();) {
+      auto landmarkIt = landmarks.at(*it);
+      if (landmarkIt == landmarks.end()) {
+        it = keyframe.landmarkKeys.erase(it);
+      } else {
+        ++it;
+      }
+    }
+  }
 }
 
 std::vector<std::tuple<LandmarkMap::key_type, Vector2>>

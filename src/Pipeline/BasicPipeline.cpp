@@ -69,7 +69,8 @@ void QDVO::BasicPipeline::addFrame(
     auto newKeyframeKey = graph.getCurrentFrameKey();
     graph.moveCurrentFrameIntoKeyframePosition();
     // The new current frame should not be the same as the old one.
-    CHECK(!(newKeyframeKey == graph.getCurrentFrameKey()), "Keys were the same.");
+    CHECK(!(newKeyframeKey == graph.getCurrentFrameKey()),
+          "Keys were the same.");
 
     // Cache the imustate from previous current frame estimate.
     auto previousIMUState = graph.getCurrentFrame()->imustate;
@@ -100,7 +101,8 @@ void QDVO::BasicPipeline::addFrame(
     activateNewLandmarks();
 
     // Update the current frame estimate.
-    graph.getCurrentFrame()->imustate = (*graph.getKeyframeMap().at(newKeyframeKey))->imustate;
+    graph.getCurrentFrame()->imustate =
+        (*graph.getKeyframeMap().at(newKeyframeKey))->imustate;
   }
   LOG_INFO("Finished adding frame.");
 }
@@ -193,8 +195,6 @@ void QDVO::BasicPipeline::
     CameraModel& cm = *(graph.getCameraModelMap().at(f.cameraModelKey)->first);
 
     auto& cdRef = *cf->correspondenceDistributions.at(cdKey);
-
-    assert(cdRef.dormant == true);
 
     Frame& landmarkParentFrame =
         *(*graph.getKeyframeMap().at(l.parentFrameKey));
@@ -435,7 +435,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
 
   LOG_INFO("{} Active visible landmarks before activation.", nActiveLandmarks);
 
-  if (nActiveLandmarks >= N_FEATURES_DESIRED) {
+  if (nActiveLandmarks >= N_ACTIVE_LANDMARKS_DESIRED) {
     return;
   }
 
@@ -455,7 +455,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
       }
     }
 
-    if (nActiveLandmarks >= N_FEATURES_DESIRED) {
+    if (nActiveLandmarks >= N_ACTIVE_LANDMARKS_DESIRED) {
       break;
     }
   }
@@ -467,6 +467,9 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
 
   // if necessary activate uninitialized landmarks
   if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS) {
+    LOG_WARN(
+        "Too few active landmarks, activating unintialized landmarks. This may "
+        "cause tracking loss.");
     for (auto& t : visibleLandmarks) {
       LandmarkMap::key_type lKey = std::get<0>(t);
 
