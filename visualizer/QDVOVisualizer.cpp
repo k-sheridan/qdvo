@@ -133,9 +133,10 @@ void QDVOVisualizer::transferVisualizationData() {
                            0.0f, 1.0f));
             cv::circle(render, cv::Point2f(px(0), px(1)), 2, color, -1);
           } else {
-            // Draw a gray uninitialized landmark.
-            cv::circle(render, cv::Point2f(px(0), px(1)), 2,
-                       cv::Scalar(40, 40, 40), -1);
+            auto color = hotCMap.getColor(
+                std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
+                           0.0f, 1.0f));
+            cv::circle(render, cv::Point2f(px(0), px(1)), 1, color, -1);
           }
         }
       }
