@@ -92,7 +92,11 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
 
   // If there is at least on potential correspondence mark this dist as
   // initilaized.
-  initialized = true;
+  if (!scoreArray.empty()) {
+    initialized = true;
+  } else {
+    LOG_TRACE("Could not initialize the correspondence distribution.");
+  }
 
   return scoreArray.size();
 }

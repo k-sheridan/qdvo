@@ -31,8 +31,8 @@ public:
     // Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
 	int maximumAttempts = 6;
-	double maximumError = 0.1;
-	int maximumHypotheses = 5;
+	double maximumError = 0.2;
+	int maximumHypotheses = 10;
 	double minimumDepth = 0.4; 
 	double maximumDepth = 20;
 	double resolution = 1;

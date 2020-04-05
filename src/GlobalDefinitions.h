@@ -30,7 +30,7 @@
 #define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.8
 
 // the number of features the feature detector will find on every keyframe.
-#define N_FEATURES_DESIRED 200  
+#define N_FEATURES_DESIRED 300  
 
 // The number of active landmarks desired for a frame.
 #define N_ACTIVE_LANDMARKS_DESIRED 200

@@ -83,7 +83,7 @@ void QDVOVisualizer::transferVisualizationData() {
         } else {
           // If not intiialized, draw purple.
           cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
-                     cv::Scalar(127, 0, 255), -1);
+                     cv::Scalar(255, 0, 204), -1);
         }
       }
     }
@@ -119,10 +119,25 @@ void QDVOVisualizer::transferVisualizationData() {
         auto& e = *landmarkIt;
         Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
 
-	// Draw the landmark based on its status.
-        auto color = hotCMap.getColor(std::clamp(
-            (float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f));
-        cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
+        // Draw the landmark based on its status.
+        if (e.status == QDVO::Landmark::LandmarkStatus::ACTIVE) {
+          auto color = hotCMap.getColor(
+              std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
+                         0.0f, 1.0f));
+          cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
+        } else if (e.status == QDVO::Landmark::LandmarkStatus::INACTIVE) {
+          if (e.depthEstimator.initialized) {
+            // draw a smaller point.
+            auto color = hotCMap.getColor(
+                std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
+                           0.0f, 1.0f));
+            cv::circle(render, cv::Point2f(px(0), px(1)), 2, color, -1);
+          } else {
+            // Draw a gray uninitialized landmark.
+            cv::circle(render, cv::Point2f(px(0), px(1)), 2,
+                       cv::Scalar(40, 40, 40), -1);
+          }
+        }
       }
 
       this->visualizationData.keyframeImages.at(kfidx) = pangolin::GlTexture(

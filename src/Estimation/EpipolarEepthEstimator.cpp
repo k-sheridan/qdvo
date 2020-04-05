@@ -128,8 +128,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   }
 
   if (scores.empty()) {
-    LOG_TRACE("Landmark has no match during epipolar depth search.");
-    landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
+    LOG_TRACE("Could not evaluate any depths for the current keyframe.");
     return;
   }
   // Find the maximum score.
