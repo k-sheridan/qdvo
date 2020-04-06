@@ -57,12 +57,12 @@ class GenericQuadTree {
      * gets the quad at the desired level. If the level is < 0, then the lowest
      * level is returned.
      */
-    Quad* getQuad(const Eigen::Vector2i& pos) {
+    Quad* getQuad(const Eigen::Vector2i& pos, int level = -1) {
       bool bottomFound = false;
       Quad* currentQuad = this;
 
       assert(parentQuad == nullptr);  // must start from the top level
-      // unsigned currentLevel = 0;
+      unsigned currentLevel = 0;
 
       while (!bottomFound) {
         // Get the index of the quadrant this point lies in.
@@ -74,13 +74,13 @@ class GenericQuadTree {
 
         // std::cout << quadPtr << std::endl;
 
-        if (quadPtr == nullptr) {
+        if (quadPtr == nullptr || (level >= 0 && currentLevel == level)) {
           bottomFound = true;
           break;
         }
 
         currentQuad = quadPtr;
-        // currentLevel++;
+        currentLevel++;
       }
 
       return currentQuad;
@@ -170,9 +170,10 @@ class GenericQuadTree {
 
   /**
    * Find the lowest quad which contains data.
+   * If the max level is -1, The search is as deep as possible.
    */
-  Quad& getLowestQuad(const Eigen::Vector2i& pos) {
-    Quad* result = root->getQuad(pos);
+  Quad& getLowestQuad(const Eigen::Vector2i& pos, int maxLevel = -1) {
+    Quad* result = root->getQuad(pos, maxLevel);
     if (result == nullptr) {
       return *root;
     }
@@ -208,6 +209,70 @@ class GenericQuadTree {
     std::vector<T> result;
     getParentQuadWithAtLeastNChildren(getLowestQuad(pos), n)
         .getChildren(result);
+    return result;
+  }
+
+  /// Get  neighbors
+  /// @param pos search around this point.
+  /// @param level The level where the search will be performed.
+  /// @param n number of neighbors to find.
+  /// @return vector of all neighbors.
+  std::vector<T> getNeighbors(const Eigen::Vector2i& pos, int level, int n) {
+    std::vector<T> result;
+
+    // Compute the search increment at level n.
+    double buckets = std::pow(2, level);
+    double widthIncrement = (root->dimensions(0) / buckets);
+    double heightIncrement = (root->dimensions(1) / buckets);
+
+    auto isPixelInTree = [&](const Eigen::Vector2i& pos) -> bool {
+      if (pos(0) < 0 || pos(1) < 0 || pos(0) >= root->dimensions(0) ||
+          pos(1) >= root->dimensions(1)) {
+        return false;
+      }
+      return true;
+    };
+
+    auto searchPoint = [&](const Eigen::Vector2i& pos) {
+      Quad& quad = getLowestQuad(pos, level);
+      // If this search was a success append the quads' children.
+      if (quad.level == level) {
+        quad.getChildren(result);
+      }
+    };
+
+    auto searchLine = [&](int start, int stop, bool horizontal, int radius) {
+      for (int i = start; i <= stop; ++i) {
+        Eigen::Vector2i testPoint;
+        if (horizontal) {
+          testPoint =
+              (Eigen::Vector2d(i, radius) * widthIncrement).cast<int>() + pos;
+        } else {
+          testPoint =
+              (Eigen::Vector2d(radius, i) * heightIncrement).cast<int>() + pos;
+        }
+
+        // Search if necessary.
+        if (isPixelInTree(testPoint)) {
+          searchPoint(testPoint);
+        }
+      }
+    };
+
+    // First search the center point.
+    searchPoint(pos);
+    // Search
+    for (int radius = 1; radius <= buckets; ++radius) {
+      searchLine(-radius, radius, true, radius);
+      searchLine(-radius, radius, true, -radius);
+      searchLine(-radius + 1, radius - 1, false, radius);
+      searchLine(-radius + 1, radius - 1, false, -radius);
+      // Return early if we found enough points.
+      if (result.size() >= n) {
+        return result;
+      }
+    }
+
     return result;
   }
 
