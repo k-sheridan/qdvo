@@ -56,8 +56,18 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         prior.addVariable(poseKey);
       }
 
-      // Insert the landmarks hosted by this keyframe into the estimator.
-      for (auto landmarkKey : (*it)->landmarkKeys) {
+      LOG_TRACE("Added new keyframe to estimator.");
+      LOG_TRACE("Constructing error terms for new keyframe.");
+
+      /// Add a landmark to the estimator if necessary.
+      /// Returns true if the landmark was added.
+      auto addLandmarkToEstimatorIfNecessary =
+          [&](LandmarkMap::key_type landmarkKey) -> bool {
+        // Return early if the variable already exists.
+        if (dinvKeyMap.at(landmarkKey) != dinvKeyMap.end()) {
+          return false;
+        }
+
         // Insert an inverse depth variable into the estimator.
         ArgMin::InverseDepth dinv;
         dinv.value = graph.getLandmarkMap().at(landmarkKey)->dinv;
@@ -66,12 +76,11 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         dinvKeyMap.insert(landmarkKey, dinvKey);
         // Insert variable into the prior.
         prior.addVariable(dinvKey);
-      }
-      LOG_TRACE("Added new keyframe to estimator.");
-      LOG_TRACE("Constructing error terms for new keyframe.");
+        return true;
+      };
 
-      // Iterate through the correspondence distributions in this keyframe, and
-      // add them as error terms.
+      // Iterate through the correspondence distributions in this
+      // keyframe, and add them as error terms.
       int cdIdx = 0;
       int errorTermsForThisKeyframe = 0;
       for (auto cdIt = (*it)->correspondenceDistributions.begin();
@@ -82,6 +91,12 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
               "Skipping correspondence distribution because it was not "
               "initialized.");
           continue;
+        }
+
+        // Add the variable to the estimator if necessary.
+        if (addLandmarkToEstimatorIfNecessary(cd.landmarkKey)) {
+          LOG_TRACE("Added landmark {}-{} to the Sliding Window Estimator",
+                    cd.landmarkKey.index, cd.landmarkKey.generation);
         }
 
         auto targetFramePoseVariableKey = *poseKeyMap.at(keyframeKey);
@@ -353,13 +368,20 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
 
 void SlidingWindowEstimator::marginalizeLandmark(
     QDVO::Graph& graph, LandmarkMap::key_type landmarkKey) {
+  auto landmarkIt = graph.getLandmarkMap().at(landmarkKey);
+  if (landmarkIt == graph.getLandmarkMap().end()) {
+    LOG_ERROR("Tried to marginalize nonexistent landmark");
+    return;
+  }
+  auto& landmark = *landmarkIt;
   auto variableIt = dinvKeyMap.at(landmarkKey);
   if (variableIt == dinvKeyMap.end()) {
     LOG_ERROR("Could not marginalize variable key.");
+    // Set the landmark to marginalized.
+    landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
   auto variableKey = *variableIt;
-  auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
 
   if (landmark.status == Landmark::LandmarkStatus::ACTIVE) {
     // First marginalize the landmark.
