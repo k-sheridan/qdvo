@@ -61,7 +61,7 @@
   {                           \
     if (!(condition)) {         \
       LOG_ERROR(__VA_ARGS__); \
-      exit(EXIT_FAILURE);     \
+      abort();     \
     }                         \
   }
 

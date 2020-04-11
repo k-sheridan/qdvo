@@ -200,14 +200,132 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
               ->imustate.time,
       "Times are not in order.");
 
+  CHECK(activeKeyframeKeys.size() > 2,
+        "There must be at least 3 keyframes to run the marginalizer!");
+
   // Step 1
   // Check if any keyframes have fewer than N% of the total active landmarks
   // visible.
   constexpr double activeLandmarkRatioThreshold = 0.02;
 
+  // Compute the number of visible landmarks in the newest keyframe and the
+  // number of visible landmarks hosted by each frame.
+  ArgMin::SlotArray<int, QDVO::KeyframeMap::key_type>
+      visibleLandmarksHostedInEachFrame;
+  // Fill the slot map.
+  for (auto key : activeKeyframeKeys) {
+    visibleLandmarksHostedInEachFrame.insert(key, 0);
+  }
+
+  int nActiveVisibleLandmarksInCurrentFrame = 0;
+  // Get the newest keyframe key
+  auto newestKeyframeKey = activeKeyframeKeys.back();
+  // Get the newest keyframe.
+  auto& newestKeyframe =
+      *(*(graph.getKeyframeMap().at(activeKeyframeKeys.back())));
+
+  for (const auto& correspondenceDistribution :
+       newestKeyframe.correspondenceDistributions) {
+    // If the correspondence dist is initialized, check if the landmark it is
+    // associated to is initialized.
+    if (correspondenceDistribution.initialized) {
+      auto landmarkIt =
+          graph.getLandmarkMap().at(correspondenceDistribution.landmarkKey);
+      // If the landmark is active, increment the observation counters.
+      if (landmarkIt != graph.getLandmarkMap().end()) {
+        const auto& landmark = *landmarkIt;
+        // Check if the landmark is active.
+        if (landmark.status == Landmark::LandmarkStatus::ACTIVE) {
+          // Increment the total number of visible active landmarks.
+          ++nActiveVisibleLandmarksInCurrentFrame;
+
+          // Increment the landmarks parent frame counter.
+          *(visibleLandmarksHostedInEachFrame.at(landmark.parentFrameKey)) += 1;
+        }
+      }
+    }
+  }
+
+  // Find if any keyframes contain too few active visible landmarks.
+  for (auto frameKeyIt = activeKeyframeKeys.begin();
+       frameKeyIt != activeKeyframeKeys.end() - 2; frameKeyIt++) {
+    auto frameKey = *frameKeyIt;
+    int nLandmarksInThisFrame = *visibleLandmarksHostedInEachFrame.at(frameKey);
+    double ratio = (double)nLandmarksInThisFrame /
+                   (double)nActiveVisibleLandmarksInCurrentFrame;
+    LOG_TRACE(
+        "Frame {} contains {} active and visible landmarks out of the total {} "
+        "active and visible landmarks. Ratio: {}",
+        frameKey.index, nLandmarksInThisFrame,
+        nActiveVisibleLandmarksInCurrentFrame, ratio);
+
+    if (ratio < activeLandmarkRatioThreshold) {
+      LOG_TRACE(
+          "Marginalizing keyframe {}-{} with too few active visible landmarks.",
+          frameKey.index, frameKey.generation);
+      // Marginalize.
+      marginalizeKeyframe(graph, frameKey);
+      // Return because we are done.
+      return;
+    }
+  }
+
   // Step 2
   // If we could not find any weakly connected keyframes to marginalize, try to
   // maximize the spatial districution of the keyframes.
+
+  // Create a distance score map.
+  ArgMin::SlotArray<double, KeyframeMap::key_type> distanceScores;
+  // Epsilon for distance computation.
+  constexpr double epsilon = 1e-16;
+
+  // Iterate through all but the two newest keyframes.
+  for (auto frameKeyIt = activeKeyframeKeys.begin();
+       frameKeyIt != activeKeyframeKeys.end() - 2; frameKeyIt++) {
+    auto frameKey = *frameKeyIt;
+    auto& outerFrame = *(*graph.getKeyframeMap().at(frameKey));
+
+    // Compute the distance between this frame and the newest keyframe.
+    double d_i_1 =
+        (outerFrame.imustate.pos - newestKeyframe.imustate.pos).norm();
+
+    // Insert a distance score for this keyframe.
+    distanceScores.insert(frameKey, 0);
+
+    // Now iterate through all keyframes again.
+    for (auto innerFrameKeyIt = activeKeyframeKeys.begin();
+         innerFrameKeyIt != activeKeyframeKeys.end() - 2; innerFrameKeyIt++) {
+      auto innerFrameKey = *innerFrameKeyIt;
+      // Don't use the same keyframe.
+      if (!(innerFrameKey == frameKey)) {
+        auto& innerFrame = *(*graph.getKeyframeMap().at(innerFrameKey));
+        double d_i_j =
+            (outerFrame.imustate.pos - innerFrame.imustate.pos).norm();
+
+        // Get the distance score.;
+        auto& score = *distanceScores.at(frameKey);
+        score += 1.0 / (d_i_j + epsilon);
+      }
+    }
+
+    // Finalize the score.
+    auto& score = *distanceScores.at(frameKey);
+    score = sqrt(d_i_1) * score;
+  }
+
+  // Select the maximum distance keyframe.
+  auto selectedKeyframeKeyIt =
+      std::max_element(distanceScores.begin(), distanceScores.end());
+
+  CHECK(selectedKeyframeKeyIt != distanceScores.end(), "No maximum score.");
+  auto keyToMarginalize = distanceScores.getKeyFromDataIndex(
+      std::distance(distanceScores.begin(), selectedKeyframeKeyIt));
+
+  LOG_TRACE("Selected keyframe {}-{} with score {} for marginalization",
+            keyToMarginalize.index, keyToMarginalize.generation,
+            *selectedKeyframeKeyIt);
+
+  marginalizeKeyframe(graph, keyToMarginalize);
 }
 
 void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
@@ -241,17 +359,21 @@ void SlidingWindowEstimator::marginalizeLandmark(
     return;
   }
   auto variableKey = *variableIt;
+  auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
 
-  // First marginalize the landmark.
-  marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer,
-                                   ArgMin::VariableGroup<>(),
-                                   settings.pixelOutlierThreshold);
+  if (landmark.status == Landmark::LandmarkStatus::ACTIVE) {
+    // First marginalize the landmark.
+    marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer,
+                                     ArgMin::VariableGroup<>(),
+                                     settings.pixelOutlierThreshold);
+  } else {
+    LOG_WARN("Tried to marginalized landmark with status: {}", landmark.status);
+  }
+  // Set the landmark to marginalized.
+  landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
   // Delete the landmark variable from the SWE.
   variableContainer.erase(variableKey);
   dinvKeyMap.erase(landmarkKey);
-  // Set the landmark to marginalized.
-  graph.getLandmarkMap().at(landmarkKey)->status =
-      Landmark::LandmarkStatus::MARGINALIZED;
 }
 
 void SlidingWindowEstimator::marginalizeKeyframe(

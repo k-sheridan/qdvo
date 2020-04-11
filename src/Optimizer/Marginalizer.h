@@ -182,6 +182,7 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
     // variable block. this is the A0_remain - B' * inv(A) * B
 
     // Get the marginalized row. This assumes that the row exists.
+    CHECK(prior.A0.template getRowMap<MarginalizedVariable>().count(marginalizedKey) == 1, "There must be a row for a variable to be marginalized.");
     auto &marginalizedRow =
         prior.A0.template getRowMap<MarginalizedVariable>().at(marginalizedKey);
     std::tuple<Variables *...> variableTuple;
