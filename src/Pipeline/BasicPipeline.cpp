@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include "DataStructures/Feature.h"
+#include "DataStructures/GenericQuadTree.h"
 #include "DataStructures/Graph.h"
 #include "DataStructures/Landmark.h"
 #include "EpipolarDepthEstimator.h"
@@ -395,10 +396,6 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
 }
 
 void QDVO::BasicPipeline::activateNewLandmarks() {
-  /*
-   * Warning: This is an absolute mess, but for now it will have to do.
-   */
-
   LOG_INFO("Activating landmarks.");
 
   // find all visible active and inactive landmarks
@@ -410,25 +407,28 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
       "the current frame",
       visibleLandmarks.size());
 
-  // janky way of getting a decent feature distribution.
   auto& cm = graph.getCameraModelMap()
                  .at(graph.getCurrentFrame()->cameraModelKey)
                  ->first;
-  cv::Mat mask = cv::Mat::zeros(cm->imageHeight(), cm->imageWidth(), CV_8U);
 
-  const int maskRadius = 5;
+  // Create a quadtree for fast nearest neighbor searches.
+  QDVO::GenericQuadTree<QDVO::Vector2> tree(cm->imageWidth(),
+                                            cm->imageHeight());
 
   int nActiveLandmarks = 0;
 
-  // fill in the mask for all active landmarks.
+  //
+  //
+  // Fill the quad tree with active landmarks.
+  //
+  //
   for (auto& t : visibleLandmarks) {
     LandmarkMap::key_type lKey = std::get<0>(t);
 
     Landmark& l = *graph.getLandmarkMap().at(lKey);
 
     if (l.status == QDVO::Landmark::ACTIVE) {
-      cv::circle(mask, cv::Point2f(l.px(0), l.px(1)), maskRadius,
-                 cv::Scalar(255), -1);
+      tree.insert(std::get<1>(t).cast<int>(), std::get<1>(t));
       ++nActiveLandmarks;
     }
   }
@@ -439,26 +439,120 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     return;
   }
 
-  // first activate initialized landmarks
+  // Lambda which computes the smallest distance between a point and point set.
+  auto minimumDistance = [](const std::vector<QDVO::Vector2>& points,
+                            const QDVO::Vector2& testPoint) {
+    double smallestDistance = std::numeric_limits<double>::max();
+    for (const auto& point : points) {
+      double distance = (point - testPoint).norm();
+      if (distance < smallestDistance) {
+        smallestDistance = distance;
+      }
+    }
+    return smallestDistance;
+  };
+
+  // Get a set of visible inactive initialized landmarks.
+  std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>
+      inactiveInitializedVisibleLandmarks;
+  // Get a set of visible inactive uninitialized landmarks.
+  std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>
+      inactiveUninitializedVisibleLandmarks;
+
+  // Extract the two subsets.
   for (auto& t : visibleLandmarks) {
     LandmarkMap::key_type lKey = std::get<0>(t);
 
     Landmark& l = *graph.getLandmarkMap().at(lKey);
 
-    if (l.status == QDVO::Landmark::INACTIVE && l.depthEstimator.initialized) {
-      if (!mask.at<uint8_t>(cv::Point2f(l.px(0), l.px(1)))) {
-        l.status = QDVO::Landmark::ACTIVE;
-
-        cv::circle(mask, cv::Point2f(l.px(0), l.px(1)), maskRadius,
-                   cv::Scalar(255), -1);
-        ++nActiveLandmarks;
+    if (l.status == QDVO::Landmark::INACTIVE) {
+      if (l.depthEstimator.initialized) {
+        inactiveInitializedVisibleLandmarks.push_back(t);
+      } else {
+        inactiveUninitializedVisibleLandmarks.push_back(t);
       }
     }
-
-    if (nActiveLandmarks >= N_ACTIVE_LANDMARKS_DESIRED) {
-      break;
-    }
   }
+
+  // Lambda which selects the best initialized active landmark.
+  auto selectBestLandmark =
+      [&](const std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>&
+              choices)
+      -> QDVO::Result<std::tuple<LandmarkMap::key_type, QDVO::Vector2>> {
+    // Make an empty result.
+    QDVO::Result<std::tuple<LandmarkMap::key_type, QDVO::Vector2>> result;
+    double largestDistance = -1;
+    // Iterate through all choices to find the best option.
+    for (const auto& t : choices) {
+      LandmarkMap::key_type lKey = std::get<0>(t);
+      Landmark& l = *graph.getLandmarkMap().at(lKey);
+      // Check if the landmark is still inactive.
+      if (l.status == Landmark::LandmarkStatus::INACTIVE) {
+        // Compute the landmarks distance to the nearest active landmark.
+        auto neighbors =
+            tree.getNeighbors(std::get<QDVO::Vector2>(t).cast<int>(), 4, 1);
+        // If there are no neighbors, add this one.
+        if (neighbors.empty()) {
+          result = t;
+          return result;
+        }
+
+        double nearestNeighborDistance =
+            minimumDistance(neighbors, std::get<QDVO::Vector2>(t));
+
+        // If this landmark is far enough and the farthest so far, make it the
+        // result.
+        if (nearestNeighborDistance > largestDistance &&
+            nearestNeighborDistance >= MINUMUM_LANDMARK_SEPERATION) {
+          result = t;
+          largestDistance = nearestNeighborDistance;
+        }
+      }
+    }
+    return result;
+  };
+
+  //
+  //
+  // Activate as many initilaized landmarks as possible.
+  //
+  //
+  //
+  auto activateLandmarks =
+      [&](const std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>&
+              choices,
+          int stopAfterNActiveLandmarks) {
+        bool shouldContinue = false;
+        do {
+          // Break if we have enough active landmarks.
+          if (nActiveLandmarks >= stopAfterNActiveLandmarks) {
+            break;
+          }
+
+          // Find a good landmark.
+          auto result = selectBestLandmark(choices);
+
+          if (result.has_value()) {
+            shouldContinue = true;
+
+            // Activate the desired landmark.
+            LandmarkMap::key_type lKey = std::get<0>(result.value());
+            Landmark& l = *graph.getLandmarkMap().at(lKey);
+            l.status = Landmark::LandmarkStatus::ACTIVE;
+            // Add the landmark to the quadtree.
+            tree.insert(std::get<QDVO::Vector2>(result.value()).cast<int>(),
+                        std::get<QDVO::Vector2>(result.value()));
+            // Increment the active landmark counter.
+            ++nActiveLandmarks;
+
+          } else {
+            shouldContinue = false;
+          }
+        } while (shouldContinue);
+      };
+
+  activateLandmarks(inactiveInitializedVisibleLandmarks,
+                    N_ACTIVE_LANDMARKS_DESIRED);
 
   LOG_INFO(
       "{} Active visible landmarks after activating initialized "
@@ -470,25 +564,10 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     LOG_WARN(
         "Too few active landmarks, activating unintialized landmarks. This may "
         "cause tracking loss.");
-    for (auto& t : visibleLandmarks) {
-      LandmarkMap::key_type lKey = std::get<0>(t);
 
-      Landmark& l = *graph.getLandmarkMap().at(lKey);
+    activateLandmarks(inactiveUninitializedVisibleLandmarks,
+                      MINUMUM_ACTIVE_LANDMARKS);
 
-      if (l.status == QDVO::Landmark::INACTIVE) {
-        if (!mask.at<uint8_t>(cv::Point2f(l.px(0), l.px(1)))) {
-          l.status = QDVO::Landmark::ACTIVE;
-
-          cv::circle(mask, cv::Point2f(l.px(0), l.px(1)), maskRadius,
-                     cv::Scalar(255), -1);
-          ++nActiveLandmarks;
-        }
-      }
-
-      if (nActiveLandmarks >= MINUMUM_ACTIVE_LANDMARKS) {
-        break;
-      }
-    }
     LOG_INFO(
         "{} active visible landmarks after activating "
         "uninitialized landmarks.",

@@ -48,8 +48,8 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
       // Insert a map from the variable key to keyframe key.
       poseKeyMap.insert(keyframeKey, poseKey);
       // Insert the variable into the prior.
-      if (graph.getKeyframeMap().size() == 1) {
-        LOG_TRACE("Adding first keyframe pose.");
+      if (poseKeyMap.size() == 1) {
+        LOG_TRACE("Adding first keyframe pose with strong prior.");
         prior.addVariable(
             poseKey, Eigen::Matrix<double, 6, 1>::Constant(1e24).asDiagonal());
       } else {
