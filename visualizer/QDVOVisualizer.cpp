@@ -92,11 +92,13 @@ void QDVOVisualizer::transferVisualizationData() {
         render.cols, render.rows, GL_RGB, false, 0, GL_RGB, GL_UNSIGNED_BYTE);
     this->visualizationData.currentFrameImage.Upload(render.data, GL_RGB,
                                                      GL_UNSIGNED_BYTE);
-    this->visualizationData.currentFramePose =
-        algorithm.graph.getCurrentFrame()->imustate.getSE3();
   } else {
     std::cout << "current frame not initialized. Not rendering." << std::endl;
   }
+
+  // Set the pose of the current frame.
+  this->visualizationData.currentFramePose =
+      algorithm.graph.getCurrentFrame()->imustate.getSE3();
 
   // Render and transfer the keyframes.
   int kfidx = 0;

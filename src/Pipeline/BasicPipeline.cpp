@@ -196,6 +196,8 @@ void QDVO::BasicPipeline::
     CameraModel& cm = *(graph.getCameraModelMap().at(f.cameraModelKey)->first);
 
     auto& cdRef = *cf->correspondenceDistributions.at(cdKey);
+    CHECK(cdRef.initialized == false,
+          "The correspondence distribution must not be initialized");
 
     Frame& landmarkParentFrame =
         *(*graph.getKeyframeMap().at(l.parentFrameKey));

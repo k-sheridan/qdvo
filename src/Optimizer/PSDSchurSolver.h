@@ -73,6 +73,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     double lambdaReductionMultiplier = 10;
     /// The maximum number of iterations for the solve.
     int maximumIterations = 25;
+    /// Stop after the error increases.
+    bool stopEarly = true;
   } settings;
 
   struct SolveResult {
@@ -163,7 +165,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       addLambdaToLinearSystem(lambda);
 
       LOG_TRACE("Iteration: {}  Whitened Squared Error: {} Lambda: {}",
-                   iteration, whitenedSqErrorBeforeSolve, lambda);
+                iteration, whitenedSqErrorBeforeSolve, lambda);
 
       // Add the current error to the error array.
       result.whitenedSqError.push_back(whitenedSqErrorBeforeSolve);
@@ -183,8 +185,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
         // Compute the error with this update.
         double errorAfterUpdate = computeWhitenedSqError(errorTerms, variables);
-        LOG_TRACE("Whitened Squared Error after update: {}",
-                     errorAfterUpdate);
+        LOG_TRACE("Whitened Squared Error after update: {}", errorAfterUpdate);
 
         if (errorAfterUpdate < whitenedSqErrorBeforeSolve) {
           // The error decreased, reduce lambda.
@@ -201,6 +202,12 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
           // Revert the previous update.
           applyUpdateToVariables<true>(variables);
+
+          // Stop if requested.
+          if (settings.stopEarly) {
+            LOG_TRACE("Stopping.");
+            break;
+          }
         }
 
         // Linearize the error terms.
@@ -248,7 +255,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         }
         if (localResult == false) {
           LOG_ERROR("Update was invalid for a {} with an update of \n{}\n",
-                       typeid(ThisVariable).name(), dx);
+                    typeid(ThisVariable).name(), dx);
         }
         result = localResult && result;
       }
@@ -288,7 +295,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           }
         });
     LOG_TRACE("Computed whitened squared error with {} valid error terms.",
-                 nErrorTerms);
+              nErrorTerms);
     return whitenedSqError / nErrorTerms;
   }
 
@@ -1079,8 +1086,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         }
       }
       LOG_TRACE("Found {} remove variables of type {}",
-                   std::get<i>(keysToErase).size(),
-                   typeid(std::get<i>(variableTuple)).name());
+                std::get<i>(keysToErase).size(),
+                typeid(std::get<i>(variableTuple)).name());
     });
 
     // Erase all keys which are not in the variable container, but exist in the
