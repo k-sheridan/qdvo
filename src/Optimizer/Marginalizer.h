@@ -5,11 +5,11 @@
 #include <type_traits>
 
 #include "ErrorTermBase.h"
+#include "Logging.h"
 #include "Optimizer/Containers.h"
 #include "Optimizer/GaussianPrior.h"
 #include "Optimizer/Key.h"
 #include "Optimizer/MetaHelpers.h"
-#include "Logging.h"
 
 namespace ArgMin {
 
@@ -70,6 +70,10 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
     typedef typename std::remove_reference<decltype(
         marginalizedKey)>::type::variable_type MarginalizedVariable;
 
+    LOG_TRACE("Marginalizing variable {} with index-generation {}-{}",
+              typeid(VariableType).name(), marginalizedKey.index,
+              marginalizedKey.generation);
+
     // Iterate through all error terms, and approximate the error terms which
     // are a function of the marginalized variable with a quadratic error term.
     // TODO I do not have to compute the notignored-ignored parts of the
@@ -110,8 +114,14 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
               if (errorTermContainsMarginalizedVariable) {
                 // Check if the linearization is valid for this error term.
                 if (errorTerm.linearizationValid) {
+                  LOG_TRACE("Found valid error term associated to variable.");
                   // Check if the error term hass too high of an error.
                   if (errorTerm.residual.norm() < residualThreshold) {
+                    LOG_TRACE(
+                        "Found a valid and low error error term ({}) "
+                        "associated to the variable being marginalized. The "
+                        "error at the linearization point is: {}",
+                        typeid(errorTerm).name(), errorTerm.residual.norm());
                     // Iterate through all independent variables.
                     internal::static_for(
                         errorTerm.variableKeys,
@@ -182,7 +192,9 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
     // variable block. this is the A0_remain - B' * inv(A) * B
 
     // Get the marginalized row. This assumes that the row exists.
-    CHECK(prior.A0.template getRowMap<MarginalizedVariable>().count(marginalizedKey) == 1, "There must be a row for a variable to be marginalized.");
+    CHECK(prior.A0.template getRowMap<MarginalizedVariable>().count(
+              marginalizedKey) == 1,
+          "There must be a row for a variable to be marginalized.");
     auto &marginalizedRow =
         prior.A0.template getRowMap<MarginalizedVariable>().at(marginalizedKey);
     std::tuple<Variables *...> variableTuple;

@@ -67,10 +67,16 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         if (dinvKeyMap.at(landmarkKey) != dinvKeyMap.end()) {
           return false;
         }
+        // Get the landmark.
+        const auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
+
+        // make sure that the landmark is active.
+        CHECK(landmark.status == Landmark::LandmarkStatus::ACTIVE,
+              "The landmark must be active.");
 
         // Insert an inverse depth variable into the estimator.
         ArgMin::InverseDepth dinv;
-        dinv.value = graph.getLandmarkMap().at(landmarkKey)->dinv;
+        dinv.value = landmark.dinv;
         auto dinvKey = variableContainer.insert(dinv);
         // Insert mapping between variable and landmark key.
         dinvKeyMap.insert(landmarkKey, dinvKey);
@@ -185,7 +191,7 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
 
 void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
   LOG_TRACE("Running marginalization strategy.");
-  if (graph.getKeyframeMap().size() < N_KEYFRAMES) {
+  if (graph.getKeyframeMap().size() <= N_KEYFRAMES) {
     LOG_TRACE("There are {} keyframes, no need to marginalize one.",
               graph.getKeyframeMap().size());
     return;
@@ -384,6 +390,9 @@ void SlidingWindowEstimator::marginalizeLandmark(
   auto variableKey = *variableIt;
 
   if (landmark.status == Landmark::LandmarkStatus::ACTIVE) {
+    CHECK(variableContainer.variableExists(variableKey),
+          "Landmark is active, but the variable container does not have it.");
+
     // First marginalize the landmark.
     marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer,
                                      ArgMin::VariableGroup<>(),
@@ -402,6 +411,8 @@ void SlidingWindowEstimator::marginalizeKeyframe(
     QDVO::Graph& graph, KeyframeMap::key_type keyframeKey) {
   // First marginalize all landmarks one at a time.
   auto& keyframe = *(*graph.getKeyframeMap().at(keyframeKey));
+  CHECK(keyframe.status == Frame::FrameStatus::ACTIVE,
+        "The keyframe must be active to be marginalized.");
   for (auto& landmarkKey : keyframe.landmarkKeys) {
     marginalizeLandmark(graph, landmarkKey);
   }
@@ -409,6 +420,11 @@ void SlidingWindowEstimator::marginalizeKeyframe(
   // Finally marginalize the keyframe itself while ignoring landmark
   // correlations to preserve sparsity.
   auto variableKey = *poseKeyMap.at(keyframeKey);
+
+  // The variable must exist in the variable container.
+  CHECK(variableContainer.variableExists(variableKey),
+        "Keyframe is active, but the variable container does not have it.");
+
   marginalizer.marginalizeVariable(
       variableKey, prior, errorTermContainer,
       ArgMin::VariableGroup<ArgMin::InverseDepth>(),

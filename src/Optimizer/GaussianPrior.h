@@ -8,6 +8,7 @@
 #include "Optimizer/Key.h"
 #include "Optimizer/SparseBlockMatrix.h"
 #include "Optimizer/SparseBlockRow.h"
+#include "Logging.h"
 
 namespace ArgMin {
 
@@ -111,6 +112,8 @@ class GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> {
       }
       // Remove the rows.
       for (const auto& key : rowsToRemove) {
+        LOG_TRACE("Removing ({}) key with index-generation {}-{} from prior",
+                  typeid(key).name(), key.index, key.generation);
         rowMap.erase(key);
       }
     });
