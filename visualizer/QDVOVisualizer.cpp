@@ -92,6 +92,8 @@ void QDVOVisualizer::transferVisualizationData() {
         render.cols, render.rows, GL_RGB, false, 0, GL_RGB, GL_UNSIGNED_BYTE);
     this->visualizationData.currentFrameImage.Upload(render.data, GL_RGB,
                                                      GL_UNSIGNED_BYTE);
+    this->visualizationData.currentFramePose =
+        algorithm.graph.getCurrentFrame()->imustate.getSE3();
   } else {
     std::cout << "current frame not initialized. Not rendering." << std::endl;
   }
@@ -107,6 +109,10 @@ void QDVOVisualizer::transferVisualizationData() {
       cv::Mat temp, render;
       (*it)->imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
       cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
+
+      // Set the pose.
+      this->visualizationData.keyframePoses.at(dataIndex) =
+          (*it)->imustate.getSE3();
 
       ColorMap hotCMap;
 
@@ -216,6 +222,7 @@ void QDVOVisualizer::runVisualization() {
 
   // create the keyframes.
   this->visualizationData.keyframeImages.resize(N_KEYFRAMES);
+  this->visualizationData.keyframePoses.resize(N_KEYFRAMES);
 
   pangolin::View& keyframeView =
       pangolin::Display("Keyframes")
@@ -370,18 +377,10 @@ void QDVOVisualizer::draw3DPointCloud() {
   }
   glEnd();
 
-  drawFrustum(algorithm.graph.getCurrentFrame()->imustate.getSE3(),
-              Eigen::Vector3f(1, 0, 0), 3);
+  drawFrustum(visualizationData.currentFramePose, Eigen::Vector3f(1, 0, 0), 3);
 
   int kfidx = 0;
-  int dataIndex = 0;
-  for (auto it = algorithm.graph.getKeyframeMap().begin();
-       it != algorithm.graph.getKeyframeMap().end(); it++) {
-    auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
-    // If the keyframe is not the current frame.
-    if (!(key == algorithm.graph.getCurrentFrameKey())) {
-      auto se3 = (*it)->imustate.getSE3();
-      drawFrustum(se3, Eigen::Vector3f(1, 1, 1), 3);
-    }
+  for (auto se3 : visualizationData.keyframePoses) {
+    drawFrustum(se3, Eigen::Vector3f(1, 1, 1), 3);
   }
 }

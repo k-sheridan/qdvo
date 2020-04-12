@@ -111,7 +111,6 @@ QDVO::Result<QDVO::Vector3> QDVO::EquidistantCameraModel::unproject(Eigen::Matri
 
     if (std::abs(theta0) > this->fov / 2.0)
     {
-        //throw std::runtime_error("unproject in unstable region!");
         return {};
     }
 
