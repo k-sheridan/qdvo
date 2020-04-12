@@ -2,6 +2,7 @@
 
 #include <Eigen/Core>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 #define DEFAULT_BIN_WIDTH 1

@@ -76,6 +76,8 @@ class QDVOSimpleGraphTest : public QDVOBasicTest {
     landmark.bearing = bearing;
     landmark.dinv = dinv;
 
+    landmark.status = QDVO::Landmark::LandmarkStatus::ACTIVE;
+
     // Compute the source pixel position.
     auto sourcePixelResult =
         graph.projectLandmarkToPixel(sourceKeyframe, sourceKeyframe, landmark);

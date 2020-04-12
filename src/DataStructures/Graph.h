@@ -6,7 +6,7 @@
 #include <thread>
 #include <tuple>
 #include "GlobalDefinitions.h"
-#include "Settings.h"
+#include "Config.h"
 #include "FeatureDetector.h"
 #include "Types.h"
 #include "Optimizer/SlotMap.h"

@@ -12,6 +12,9 @@ class Config {
     /// global settings file
     int nKeyframes = 7;
 
+    /// Allow for certain functions to be executed in parallel.
+    bool allowParallelExecution = true;
+
     /// from the DSO keyframe selection criteria.
     double weightAvgPixelFlow = 0.04;
     double weightAvgTranslationalFlow = 0.12;

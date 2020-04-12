@@ -133,7 +133,7 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
  * This test verifies that the epipolar depth estimator marks the
  * landmark as an outlier feature if it has no matches.
  */
-TEST_F(EpipolarDepthEstimationTest, EstimateDepthWithNotMatches) {
+TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNoMatches) {
   // Insert a camera model into the graph.
   //  auto cameraModelKey =
   //  addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));

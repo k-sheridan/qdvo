@@ -299,7 +299,7 @@ std::vector<Params> cases = {
     {p5, p4, p3, s2, s2, s3, b1, b2, b3, b4, d3, d3, d3, d2},
     {p1, p4, p2, s1, s3, s3, b1, b2, b3, b4, d1, d1, d1, d3},
     {p1, p3, p2, s1, s3, s3, b1, b2, b3, b4, d1, d4, d1, d4},
-    {p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d4, d1, d1}};
+    /*{p1, p2, p3, s1, s2, s3, b1, b2, b3, b4, d1, d4, d1, d1}*/};
 //clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ParameterizedSWETestGroup, SWEParamTest,
