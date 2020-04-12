@@ -3,12 +3,12 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Config.h"
 #include "DataStructures/Feature.h"
 #include "DataStructures/GenericQuadTree.h"
 #include "DataStructures/Graph.h"
 #include "DataStructures/Landmark.h"
 #include "EpipolarDepthEstimator.h"
-#include "Settings.h"
 
 QDVO::BasicPipeline::BasicPipeline() {}
 
@@ -246,8 +246,6 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
     return true;
   }
 
-  Settings s;
-
   // Compute the pixel flow for each keyframe to check if the current
   // frame should be made a keyframe. Find the lowest pixel flow score.
   double smallestPixelFlowScore = std::numeric_limits<double>::max();
@@ -267,8 +265,8 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
         "translational pixel flow: {}",
         thisKey.index, thisKey.generation, pixelFlows.first, pixelFlows.second);
 
-    double score = s.weightAvgPixelFlow * pixelFlows.first +
-                   s.weightAvgTranslationalFlow * pixelFlows.second;
+    double score = config->weightAvgPixelFlow * pixelFlows.first +
+                   config->weightAvgTranslationalFlow * pixelFlows.second;
 
     if (score < smallestPixelFlowScore) {
       smallestPixelFlowScore = score;

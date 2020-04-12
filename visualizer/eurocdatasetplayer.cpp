@@ -6,6 +6,7 @@
 #include <opencv2/highgui.hpp>
 #include <string>
 
+#include "Config.h"
 #include "QDVOVisualizer.h"
 
 DEFINE_string(datasetPath, "~/Desktop/datasets", "dataset path");
@@ -57,6 +58,8 @@ int main(int argc, char** argv) {
   gflags::SetUsageMessage("some usage message");
   gflags::SetVersionString("1.0.0");
   gflags::ParseCommandLineFlags(&argc, &argv, true);
+
+  config.setParameters(QDVO::Config::Parameters());
 
   visualizer.initialize();
 

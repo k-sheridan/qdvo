@@ -5,7 +5,7 @@
 #include "GlobalDefinitions.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
-#include "Settings.h"
+#include "Config.h"
 #include "Types.h"
 #include "Logging.h"
 
@@ -15,8 +15,6 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
                                     Frame& targetKeyframe, Landmark& landmark,
                                     PatchComparer& patchComparer,
                                     PatchWarper& patchWarper) {
-  Settings s;
-
   // Ensure that the landmark is inactive.
   if (landmark.status != Landmark::LandmarkStatus::INACTIVE) {
     LOG_ERROR("Tried to run epipolar depth estimator on {} landmark.",
@@ -32,7 +30,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // Increment the attempts.
   ++attempts;
 
-  if (attempts > s.epipolar_depth_estimator.maximumAttempts) {
+  if (attempts > config->epipolar_depth_estimator.maximumAttempts) {
     // There have been too many attempts marginalize the landmark.
     LOG_TRACE("Too many attempts to estimate the landmark depth have occured. Marginalizing point.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
@@ -88,8 +86,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // Set up the result vector.
   std::vector<double> depths, scores;
   // Search for the depth with a pixel resolution,
-  double depth = s.epipolar_depth_estimator.minimumDepth;
-  while (depth <= s.epipolar_depth_estimator.maximumDepth) {
+  double depth = config->epipolar_depth_estimator.minimumDepth;
+  while (depth <= config->epipolar_depth_estimator.maximumDepth) {
     // Evaluate the pixel position and pixel derivative for this depth.
     auto pixelResult = dPx_dz(depth);
 
@@ -123,7 +121,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
     } 
 
     // Increment the depth using pixel derivative.
-    depth += s.epipolar_depth_estimator.resolution /
+    depth += config->epipolar_depth_estimator.resolution /
              pixelResult.value().first.norm();
   }
 
@@ -196,8 +194,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // Finally, check if the current estimate meets our initialization
   // requirements.
-  if (endIdx - startIdx <= s.epipolar_depth_estimator.maximumHypotheses &&
-      error <= s.epipolar_depth_estimator.maximumError) {
+  if (endIdx - startIdx <= config->epipolar_depth_estimator.maximumHypotheses &&
+      error <= config->epipolar_depth_estimator.maximumError) {
     LOG_TRACE(
         "Landmark depth successfully estimated with {} hypotheses and and "
         "error of {}",

@@ -57,11 +57,25 @@
 #define LOG_DEBUG(...) (void)0
 #endif
 
+// Check statement.
 #define CHECK(condition, ...) \
   {                           \
-    if (!(condition)) {         \
+    if (!(condition)) {       \
       LOG_ERROR(__VA_ARGS__); \
-      abort();     \
+      abort();                \
     }                         \
   }
+
+/// Define trace if macro to force a log level set.
+#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_TRACE
+#define LOG_TRACE_IF(condition, ...)           \
+  {                                            \
+    if (!(condition)) {                        \
+      spdlog::set_level(spdlog::level::trace); \
+      SPDLOG_TRACE(__VA_ARGS__);               \
+    }                                          \
+  }
+#else
+#define LOG_TRACE_IF(condition, ...) (void)0
+#endif
 

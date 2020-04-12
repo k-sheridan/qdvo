@@ -1,123 +1,141 @@
 #pragma once
 
-#include "Types.h"
+#include "CameraModel.hpp"
+#include "Config.h"
+#include "DataStructures/Frame.h"
 #include "DataStructures/Graph.h"
 #include "DataStructures/Landmark.h"
-#include "DataStructures/Frame.h"
-#include "CameraModel.hpp"
-#include "Optimizer/SSEOptimizer.h"
-#include "Optimizer/Variables/SE3.h"
-#include "Optimizer/Variables/InverseDepth.h"
-#include "Optimizer/MetaHelpers.h"
-#include "Optimizer/GaussianPrior.h"
-#include "Optimizer/Marginalizer.h"
-#include "Optimizer/HuberLossFunction.h"
-#include "Optimizer/PSDSchurSolver.h"
-#include "Optimizer/Key.h"
-#include "Optimizer/Containers.h"
 #include "ErrorTerms/QuasiDirectErrorTerm.h"
+#include "Logging.h"
+#include "Optimizer/Containers.h"
+#include "Optimizer/GaussianPrior.h"
+#include "Optimizer/HuberLossFunction.h"
+#include "Optimizer/Key.h"
+#include "Optimizer/Marginalizer.h"
+#include "Optimizer/MetaHelpers.h"
+#include "Optimizer/PSDSchurSolver.h"
+#include "Optimizer/SSEOptimizer.h"
 #include "Optimizer/SlotArray.h"
 #include "Optimizer/SlotMap.h"
-#include "Optimizer/Key.h"
-#include "Settings.h"
-
-#include "Logging.h"
+#include "Optimizer/Variables/InverseDepth.h"
+#include "Optimizer/Variables/SE3.h"
+#include "Types.h"
 
 namespace QDVO {
 
 /**
- * The Sliding Window Estimator attempts the estimate the states of N camera frames and the depths of the landmarks
- * which the observe.
- * 
- * This estimator marginalizes camera frames and landmarks hosted in them into a single gaussian prior when the frame is
- * deemed not useful.
- * 
+ * The Sliding Window Estimator attempts the estimate the states of N camera
+ * frames and the depths of the landmarks which the observe.
+ *
+ * This estimator marginalizes camera frames and landmarks hosted in them into a
+ * single gaussian prior when the frame is deemed not useful.
+ *
  * Landmarks will be culled if they are deemed to be outliers.
  */
-class SlidingWindowEstimator
-{
-public:
-    /// Settings used in the estimator.
-    Settings settings;
+class SlidingWindowEstimator {
+ public:
+  /// Variable container which stores the pose refined by the optimizer.
+  ArgMin::VariableContainer<ArgMin::SE3, ArgMin::InverseDepth>
+      variableContainer;
 
-    /// Variable container which stores the pose refined by the optimizer.
-    ArgMin::VariableContainer<ArgMin::SE3, ArgMin::InverseDepth> variableContainer;
+  /// Stores all error terms used during the optimization.
+  ArgMin::ErrorTermContainer<QDVO::QuasiDirectErrorTerm> errorTermContainer;
 
-    /// Stores all error terms used during the optimization.
-    ArgMin::ErrorTermContainer<QDVO::QuasiDirectErrorTerm> errorTermContainer;
+  /// A prior used for the solve.
+  ArgMin::GaussianPrior<
+      ArgMin::Scalar<double>,
+      ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>>
+      prior;
 
-    /// A prior used for the solve.
-    ArgMin::GaussianPrior<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>> prior;
+  using Marginalizer = ArgMin::Marginalizer<
+      ArgMin::Scalar<double>,
+      ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>,
+      ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>>;
 
-    using Marginalizer = ArgMin::Marginalizer<ArgMin::Scalar<double>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>, ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>>;
+  /// Used to marginalize variables from the estimator.
+  Marginalizer marginalizer;
 
-    /// Used to marginalize variables from the estimator.
-    Marginalizer marginalizer;
-    
-    using LossFunction = ArgMin::HuberLossFunction<double>;
+  using LossFunction = ArgMin::HuberLossFunction<double>;
 
-    LossFunction lossFunction = LossFunction(0.1);
+  LossFunction lossFunction = LossFunction(0.1);
 
-    using Solver = ArgMin::PSDSchurSolver<ArgMin::Scalar<double>, ArgMin::LossFunction<LossFunction>, ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>, ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>, ArgMin::VariableGroup<ArgMin::InverseDepth>>;
+  using Solver = ArgMin::PSDSchurSolver<
+      ArgMin::Scalar<double>, ArgMin::LossFunction<LossFunction>,
+      ArgMin::ErrorTermGroup<QDVO::QuasiDirectErrorTerm>,
+      ArgMin::VariableGroup<ArgMin::SE3, ArgMin::InverseDepth>,
+      ArgMin::VariableGroup<ArgMin::InverseDepth>>;
 
-    /// Solver used to refine the pose.
-    Solver solver = Solver(lossFunction);
-    
-    /// A map between a variable key used by the solver and a key used in the graph for camera poses.
-    ArgMin::SlotArray<ArgMin::VariableKey<ArgMin::SE3>, KeyframeMap::key_type> poseKeyMap;
+  /// Solver used to refine the pose.
+  Solver solver = Solver(lossFunction);
 
-    /// A map between the variable key used in the solver and a landmark key for the inverse depth. 
-    ArgMin::SlotArray<ArgMin::VariableKey<ArgMin::InverseDepth>, LandmarkMap::key_type> dinvKeyMap;
+  /// A map between a variable key used by the solver and a key used in the
+  /// graph for camera poses.
+  ArgMin::SlotArray<ArgMin::VariableKey<ArgMin::SE3>, KeyframeMap::key_type>
+      poseKeyMap;
 
-    SlidingWindowEstimator();
+  /// A map between the variable key used in the solver and a landmark key for
+  /// the inverse depth.
+  ArgMin::SlotArray<ArgMin::VariableKey<ArgMin::InverseDepth>,
+                    LandmarkMap::key_type>
+      dinvKeyMap;
 
-    /**
-     * Checks to see if a new keyframe has been added to the graph, inserts its variables and error terms
-     * into the slover, and solves for an the minimum error.
-     * 
-     * @param graph The graph containing landmarks, keyframes, and observations.
-     */
-    void run(QDVO::Graph& graph);
+  SlidingWindowEstimator();
 
-    /**
-     * Checks if the current solver contains any outliers, and culls them from both the solver, and graph.
-     * 
-     * @param graph The graph containing landmarks, keyframes, and observations.
-     */
-    void removeOutliers(QDVO::Graph& graph);
+  /**
+   * Checks to see if a new keyframe has been added to the graph, inserts its
+   * variables and error terms into the slover, and solves for an the minimum
+   * error.
+   *
+   * @param graph The graph containing landmarks, keyframes, and observations.
+   */
+  void run(QDVO::Graph& graph);
 
-    /**
-     * Looks through the graph for a keyframe which provides the least information according to a 
-     * distance heuristic. The keyframe's information is then approximated into the gaussian prior and removed from both the
-     * graph, solver, and prior along with any error terms containing references to it.
-     * 
-     * @param graph The graph containing landmarks, keyframes, and observations.
-     */
-    void runMarginalizationStrategy(QDVO::Graph& graph);
+  /**
+   * Checks if the current solver contains any outliers, and culls them from
+   * both the solver, and graph.
+   *
+   * @param graph The graph containing landmarks, keyframes, and observations.
+   */
+  void removeOutliers(QDVO::Graph& graph);
 
-private:
-    /**
-     * Synchronizes the variableContainer with the graph through the poseKeyMap.
-     * @param graph The main datastructure holding the keyframes, landmarks, and observations.
-     */
-    void synchronizeGraph(QDVO::Graph& graph);
+  /**
+   * Looks through the graph for a keyframe which provides the least information
+   * according to a distance heuristic. The keyframe's information is then
+   * approximated into the gaussian prior and removed from both the graph,
+   * solver, and prior along with any error terms containing references to it.
+   *
+   * @param graph The graph containing landmarks, keyframes, and observations.
+   */
+  void runMarginalizationStrategy(QDVO::Graph& graph);
 
-    /**
-     * Marginalizes a single landmark from the problem, and removes it from the graph.
-     * Make sure the error terms are near the solution before running this.
-     * @param graph The data structure containing the keyframes, landmarks, and observations.
-     * @param landmarkKey The key to the landmark to be marginalized.
-     */
-    void marginalizeLandmark(QDVO::Graph& graph, LandmarkMap::key_type landmarkKey);
+ private:
+  /**
+   * Synchronizes the variableContainer with the graph through the poseKeyMap.
+   * @param graph The main datastructure holding the keyframes, landmarks, and
+   * observations.
+   */
+  void synchronizeGraph(QDVO::Graph& graph);
 
-    /**
-     * Marginalizes a keyframe and all its hosted landmarks.
-     * The solver must have been ran at least once for this to work properly
-     * since it assumes that the error terms are near the solution. 
-     * @param graph The data structure containing the keyframes, landmarks, and observations.
-     * @param keyframeKey The key to the keyframe to be marginalized.
-     */
-    void marginalizeKeyframe(QDVO::Graph& graph, KeyframeMap::key_type keyframeKey);
+  /**
+   * Marginalizes a single landmark from the problem, and removes it from the
+   * graph. Make sure the error terms are near the solution before running this.
+   * @param graph The data structure containing the keyframes, landmarks, and
+   * observations.
+   * @param landmarkKey The key to the landmark to be marginalized.
+   */
+  void marginalizeLandmark(QDVO::Graph& graph,
+                           LandmarkMap::key_type landmarkKey);
+
+  /**
+   * Marginalizes a keyframe and all its hosted landmarks.
+   * The solver must have been ran at least once for this to work properly
+   * since it assumes that the error terms are near the solution.
+   * @param graph The data structure containing the keyframes, landmarks, and
+   * observations.
+   * @param keyframeKey The key to the keyframe to be marginalized.
+   */
+  void marginalizeKeyframe(QDVO::Graph& graph,
+                           KeyframeMap::key_type keyframeKey);
 };
 
-} // namespace QDVO
+}  // namespace QDVO

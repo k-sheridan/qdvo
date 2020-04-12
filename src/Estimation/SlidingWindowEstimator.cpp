@@ -171,7 +171,7 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
   auto& errorTermMap =
       errorTermContainer.getErrorTermMap<QDVO::QuasiDirectErrorTerm>();
   for (auto& errorTerm : errorTermMap) {
-    if (errorTerm.residual.norm() >= settings.pixelOutlierThreshold) {
+    if (errorTerm.residual.norm() >= config->pixelOutlierThreshold) {
       landmarksToMarginalize.push_back(errorTerm.landmarkKey);
     }
   }
@@ -396,7 +396,7 @@ void SlidingWindowEstimator::marginalizeLandmark(
     // First marginalize the landmark.
     marginalizer.marginalizeVariable(variableKey, prior, errorTermContainer,
                                      ArgMin::VariableGroup<>(),
-                                     settings.pixelOutlierThreshold);
+                                     config->pixelOutlierThreshold);
   } else {
     LOG_WARN("Tried to marginalized landmark with status: {}", landmark.status);
   }
@@ -428,7 +428,7 @@ void SlidingWindowEstimator::marginalizeKeyframe(
   marginalizer.marginalizeVariable(
       variableKey, prior, errorTermContainer,
       ArgMin::VariableGroup<ArgMin::InverseDepth>(),
-      settings.pixelOutlierThreshold);
+      config->pixelOutlierThreshold);
   variableContainer.erase(variableKey);
   poseKeyMap.erase(keyframeKey);
   // Set the keyframe to marginalized.
