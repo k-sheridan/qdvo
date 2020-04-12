@@ -20,13 +20,9 @@ TEST(ParallelAlgorithmsTest, parallel_transform)
 
     auto fn = [imoutside](int a) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + imoutside; } return a + 10; };
 
-    TIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(),result.begin(), fn);
-    TOK
     std::vector<int> result2(numbers.size());
-    RETIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, numbers.begin(), numbers.end(),result2.begin(), fn);
-    RETOK
     for (int i = 0; i < result.size(); ++i)
     {
         //std::cout << result.at(i) << std::endl;
@@ -51,13 +47,9 @@ TEST(ParallelAlgorithmsTest, parallel_transform_binary)
 
     auto fn = [imoutside](int a, int b) -> int{for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + b + imoutside; } return a + b + 10; };
 
-    TIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(), numbers2.begin(), result.begin(), fn);
-    TOK
     std::vector<int> result2(numbers.size());
-    RETIK
     QDVO::ParallelAlgorithms::transform(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, numbers.begin(), numbers.end(), numbers2.begin(), result2.begin(), fn);
-    RETOK
     for (int i = 0; i < result.size(); ++i)
     {
         //std::cout << result.at(i) << std::endl;
@@ -78,12 +70,8 @@ TEST(ParallelAlgorithmsTest, parallel_for_each)
 
     auto fn = [imoutside](int& a) -> void {for (int i = 0; i < wasteIter; ++i){a = std::max(a, i) + imoutside; } };
 
-    TIK
     QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL, numbers.begin(), numbers.end(), fn);
-    TOK
-    RETIK
     QDVO::ParallelAlgorithms::for_each(QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU, moreNumbers.begin(), moreNumbers.end(), fn);
-    RETOK
     for (int i = 0; i < numbers.size(); ++i)
     {
         //std::cout << result.at(i) << std::endl;

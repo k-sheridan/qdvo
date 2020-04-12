@@ -9,6 +9,7 @@
 #include "DataStructures/Graph.h"
 #include "DataStructures/Landmark.h"
 #include "EpipolarDepthEstimator.h"
+#include "Profiling.h"
 
 QDVO::BasicPipeline::BasicPipeline() {}
 
@@ -47,7 +48,10 @@ void QDVO::BasicPipeline::addFrame(
   // Reset current frame
   graph.getCurrentFrame()->reset();
   // Setup the current frame.
-  graph.getCurrentFrame()->updateImage(image);
+  {
+    PROFILE("updateImage");
+    graph.getCurrentFrame()->updateImage(image);
+  }
   graph.getCurrentFrame()->status = QDVO::Frame::FrameStatus::INACTIVE;
   graph.getCurrentFrame()->cameraModelKey = cameraModelKey;
   graph.getCurrentFrame()->extrinsicKey = extrinsicKey;
@@ -59,13 +63,25 @@ void QDVO::BasicPipeline::addFrame(
 
   // Initialize correspondence distributions
 
-  initializeCorrespondenceDistributionsForCurrentFrame();
+  {
+    PROFILE("initializeCorrespondenceDistribution");
+    initializeCorrespondenceDistributionsForCurrentFrame();
+  }
 
   // Run front end visual odometry
-  frontEndVisualOdometry.run(graph);
+  {
+    PROFILE("runFrontEndVisualOdometry");
+    frontEndVisualOdometry.run(graph);
+  }
 
   // Check if the current frame meets the keyframe selection criteria
-  if (isCurrentFrameAKeyframe()) {
+  bool isKeyframe = false;
+  {
+    PROFILE("isCurrentFrameKeyframe");
+    isKeyframe = isCurrentFrameAKeyframe();
+  }
+
+  if (isKeyframe) {
     // Move the current frame into the keyframe set
     auto newKeyframeKey = graph.getCurrentFrameKey();
     graph.moveCurrentFrameIntoKeyframePosition();
@@ -79,27 +95,42 @@ void QDVO::BasicPipeline::addFrame(
     // TODO: The rest of this can be ran on a separate thread.
 
     // Create new landmarks for the new keyframe
-    createNewLandmarks(graph, newKeyframeKey, featureDetector);
+    {
+      PROFILE("createNewLandmarks");
+      createNewLandmarks(graph, newKeyframeKey, featureDetector);
+    }
 
     // set the new keyframe to active
     (*graph.getKeyframeMap().at(newKeyframeKey))->status = QDVO::Frame::ACTIVE;
 
     // run the sliding window estimator with the current keyframe
     // set
-    swe.run(graph);
+    {
+      PROFILE("runSlidingWindowEstimation");
+      swe.run(graph);
+    }
 
     // attempt to estimate the landmark depths using the new motion
     // estimates
-    runEpipolarDepthEstimators(newKeyframeKey);
+    {
+      PROFILE("runEpipolarDepthEstimation");
+      runEpipolarDepthEstimators(newKeyframeKey);
+    }
 
     // marginalize excess keyframes.
-    runMarginalizationStrategy();
+    {
+      PROFILE("runMarginalizationStrategy");
+      runMarginalizationStrategy();
+    }
 
     // Remove the marginalized keys.
     graph.removeMarginalizedVariables();
 
     // activate new landmarks if necessary
-    activateNewLandmarks();
+    {
+      PROFILE("activateNewLandmarks");
+      activateNewLandmarks();
+    }
 
     // Update the current frame estimate.
     graph.getCurrentFrame()->imustate =

@@ -4,14 +4,7 @@
 #define SMALL_NUMBER 1e-12
 #define PI 3.141592653589793238462643383279502884197169399375105820974944592307816406286
 
-#include <chrono>
-#include <ctime>
-
-#define TIK auto startT = std::chrono::high_resolution_clock::now();
-#define TOK auto endT = std::chrono::high_resolution_clock::now(); std::chrono::duration<double> diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
-
-#define RETIK startT = std::chrono::high_resolution_clock::now();
-#define RETOK endT = std::chrono::high_resolution_clock::now(); diffT = endT-startT; std::cout << "Delta T: " << diffT.count() * 1000 << " ms\n";
+#define QDVO_ENABLE_PROFILING
 
 // configurable
 
