@@ -9,6 +9,7 @@ message("Building with O3 on.")
 SET(CMAKE_CXX_FLAGS "-O3")
 else() 
 message("Building without O3.")
+SET(CMAKE_CXX_FLAGS "-O0")
 endif()
 
 if (QDVO_ASAN)

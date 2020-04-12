@@ -380,7 +380,8 @@ void QDVOVisualizer::draw3DPointCloud() {
     auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
     // If the keyframe is not the current frame.
     if (!(key == algorithm.graph.getCurrentFrameKey())) {
-      drawFrustum((*it)->imustate.getSE3(), Eigen::Vector3f(1, 1, 1), 3);
+      auto se3 = (*it)->imustate.getSE3();
+      drawFrustum(se3, Eigen::Vector3f(1, 1, 1), 3);
     }
   }
 }
