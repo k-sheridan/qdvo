@@ -185,9 +185,9 @@ void QDVOVisualizer::transferVisualizationData() {
   }
 }
 
-void QDVOVisualizer::runQDVO(cv::Mat& image, double time) {
+void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer) {
   // if the newFrameAdded flag is true, then data is being transferred... wait
-  while (this->newFrameAdded == true) {
+  while (notifyVisualizer && this->newFrameAdded == true) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 

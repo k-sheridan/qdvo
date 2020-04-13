@@ -16,6 +16,59 @@
 
 #define MAX_VISUALIZATION_DEPTH 10
 
+/**
+ * This visualizer is meant to both visualize and test the QDVO algorithm.
+ * This specific visualizer is for a monocular use case.
+ */
+class QDVOVisualizer {
+ public:
+  QDVOVisualizer();
+
+  QDVO::BasicPipeline algorithm;
+
+  /// flag used to tell the visualization thread
+  /// when the algorithm has been updated.
+  std::atomic_bool newFrameAdded;
+
+  /// Flag telling the visualizer that the dataset is done.
+  std::atomic_bool datasetFinished = false;
+
+  std::mutex algorithmMutex;
+
+  QDVO::CameraModelMap::key_type cameraModelKey;
+  QDVO::ExtrinsicMap::key_type extrinsicKey;
+
+  // Visualizer Variables
+  std::string window_name;
+
+  struct VisualizationData {
+    int imageWidth = 256, imageHeight = 256;
+    pangolin::GlTexture currentFrameImage;
+    std::vector<pangolin::GlTexture> keyframeImages;
+    std::vector<Eigen::Vector3d> activePoints;
+    std::vector<Eigen::Vector3d> inactivePoints;
+    std::vector<Eigen::Vector3d> marginalizedPoints;
+    std::vector<Sophus::SE3d> keyframePoses;
+    Sophus::SE3d currentFramePose;
+
+  } visualizationData;
+
+  /*
+   * Sets up the algorithm by adding a camera model and
+   * preallocating/precomputing.
+   */
+  void initialize();
+
+  void runQDVO(cv::Mat& image, double time, bool notifyVisualizer);
+
+  void runVisualization();
+
+ private:
+  void transferVisualizationData();
+
+  void draw3DPointCloud();
+};
+
 class ColorMap {
  public:
   ColorMap() { this->init(); }
@@ -246,52 +299,4 @@ class ColorMap {
 
   int n;
   cv::Mat rLUT, bLUT, gLUT;
-};
-
-/*
- * This visualizer is meant to both visualize and test the QDVO algorithm.
- * This specific visualizer is for a monocular use case.
- */
-class QDVOVisualizer {
- public:
-  QDVOVisualizer();
-
-  QDVO::BasicPipeline algorithm;
-
-  std::atomic_bool newFrameAdded;  // flag used to tell the visualization thread
-                                   // when the algorithm has been updated.
-  std::mutex algorithmMutex;
-
-  QDVO::CameraModelMap::key_type cameraModelKey;
-  QDVO::ExtrinsicMap::key_type extrinsicKey;
-
-  // Visualizer Variables
-  std::string window_name;
-
-  struct VisualizationData {
-    int imageWidth = 256, imageHeight = 256;
-    pangolin::GlTexture currentFrameImage;
-    std::vector<pangolin::GlTexture> keyframeImages;
-    std::vector<Eigen::Vector3d> activePoints;
-    std::vector<Eigen::Vector3d> inactivePoints;
-    std::vector<Eigen::Vector3d> marginalizedPoints;
-    std::vector<Sophus::SE3d> keyframePoses;
-    Sophus::SE3d currentFramePose;
-
-  } visualizationData;
-
-  /*
-   * Sets up the algorithm by adding a camera model and
-   * preallocating/precomputing.
-   */
-  void initialize();
-
-  void runQDVO(cv::Mat& image, double time);
-
-  void runVisualization();
-
- private:
-  void transferVisualizationData();
-
-  void draw3DPointCloud();
 };

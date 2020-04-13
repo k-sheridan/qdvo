@@ -51,6 +51,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/Estimation/
     ${PROJECT_SOURCE_DIR}/src/ParallelAlgorithms/
     ${PROJECT_SOURCE_DIR}/src/Pipeline/
+    ${PROJECT_SOURCE_DIR}/thirdparty/
     )
 
 
