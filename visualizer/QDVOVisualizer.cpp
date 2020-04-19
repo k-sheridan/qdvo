@@ -185,7 +185,9 @@ void QDVOVisualizer::transferVisualizationData() {
   }
 }
 
-void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer) {
+void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
+                             QDVO::TrackingLog* trackingLog) {
+  SPDLOG_INFO("Adding frame.");
   // if the newFrameAdded flag is true, then data is being transferred... wait
   while (notifyVisualizer && this->newFrameAdded == true) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -195,6 +197,11 @@ void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer)
   {
     PROFILE("addFrame");
     this->algorithm.addFrame(image, time, cameraModelKey, extrinsicKey);
+  }
+  // Log the tracking state.
+  if (trackingLog != nullptr) {
+    SPDLOG_INFO("Logging tracking state.");
+    trackingLog->logTrackingState(this->algorithm.graph);
   }
   this->algorithmMutex.unlock();
 

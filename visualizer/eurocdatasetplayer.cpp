@@ -9,6 +9,7 @@
 #include <string>
 
 #include "Config.h"
+#include "DataStructures/TrackingLog.h"
 #include "QDVOVisualizer.h"
 
 /*
@@ -24,10 +25,19 @@ DEFINE_string(datasetPath, "~/Desktop/datasets", "dataset path");
 DEFINE_int32(frames, 100000, "number of frames to run");
 DEFINE_bool(headless, false, "Run the without visualization");
 DEFINE_bool(logTrackingData, false, "Log tracking information for later use.");
+DEFINE_string(trackingLogPath, "trackingLog.json",
+              "The path to the tracking log file output.");
 
 QDVOVisualizer visualizer;
 
 void runDataset() {
+  // Create a tracking log.
+  std::ofstream os(FLAGS_trackingLogPath);
+  std::unique_ptr<QDVO::TrackingLog> trackingLog;
+  if (FLAGS_logTrackingData) {
+    trackingLog = std::make_unique<QDVO::TrackingLog>(os, FLAGS_datasetPath);
+  }
+
   // start to parse the euroc dataset.
   std::string cam0CsvPath = (FLAGS_datasetPath + "mav0/cam0/data.csv");
   std::ifstream cam0CSV;
@@ -42,9 +52,6 @@ void runDataset() {
   std::getline(cam0CSV, csvLine);
   std::getline(cam0CSV, csvLine);
 
-  std::ofstream os("file.json");
-  cereal::JSONOutputArchive oar(os);
-
   while (csvLine.size()) {
     // find the time and file of the next image.
     std::stringstream ss(csvLine);
@@ -57,7 +64,7 @@ void runDataset() {
     cv::Mat img = cv::imread(FLAGS_datasetPath + "mav0/cam0/data/" + fileStr,
                              cv::IMREAD_GRAYSCALE);
 
-    visualizer.runQDVO(img, t / 1e-9, !FLAGS_headless);
+    visualizer.runQDVO(img, t / 1e-9, !FLAGS_headless, trackingLog.get());
 
     // increment csv
     std::getline(cam0CSV, csvLine);
@@ -68,6 +75,9 @@ void runDataset() {
       break;
     }
   }
+
+  // Force the archive destructor to be called.
+  trackingLog.reset();
 }
 
 int main(int argc, char** argv) {

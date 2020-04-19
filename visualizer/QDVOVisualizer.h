@@ -12,6 +12,7 @@
 #include <thread>
 
 #include "BasicPipeline.h"
+#include "DataStructures/TrackingLog.h"
 #include "EquidistantCameraModel.h"
 
 #define MAX_VISUALIZATION_DEPTH 10
@@ -59,7 +60,8 @@ class QDVOVisualizer {
    */
   void initialize();
 
-  void runQDVO(cv::Mat& image, double time, bool notifyVisualizer);
+  void runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
+               QDVO::TrackingLog* trackingLog);
 
   void runVisualization();
 
