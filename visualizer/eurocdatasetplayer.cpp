@@ -32,10 +32,11 @@ QDVOVisualizer visualizer;
 
 void runDataset() {
   // Create a tracking log.
-  std::ofstream os(FLAGS_trackingLogPath);
+  std::ofstream os;
   std::unique_ptr<QDVO::TrackingLog> trackingLog;
   if (FLAGS_logTrackingData) {
-    trackingLog = std::make_unique<QDVO::TrackingLog>(os, FLAGS_datasetPath);
+    os = std::ofstream(FLAGS_trackingLogPath);
+    trackingLog = std::make_unique<QDVO::TrackingLog>(os, std::filesystem::absolute(FLAGS_datasetPath));
   }
 
   // start to parse the euroc dataset.

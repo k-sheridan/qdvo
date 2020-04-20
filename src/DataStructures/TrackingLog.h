@@ -28,24 +28,39 @@ struct TrackingLog {
  public:
   struct TrackingState {
     QDVO::Graph& graph;
+    QDVO::SlidingWindowEstimator& swe;
+    QDVO::FrontEndVisualOdometry fevo;
 
     template <class Archive>
     void serialize(Archive& ar) {
-      ar& cereal::make_nvp("garbage", graph.getCurrentFrameKey().generation);
+      ar& cereal::make_nvp("graph", graph);
+      ar& cereal::make_nvp("sliding_window_estimator", swe);
+      ar& cereal::make_nvp("front_end_visual_odometry", fevo);
     }
   };
   /// Initialize the tracking log.
-  TrackingLog(std::ofstream& os, std::string datasetName) : archive(os) {
+  TrackingLog(std::ofstream& os, std::string datasetName,
+              cereal::JSONOutputArchive::Options options =
+                  cereal::JSONOutputArchive::Options(
+                      6, cereal::JSONOutputArchive::Options::IndentChar::space,
+                      0))
+      : archive(os, options) {
     archive& cereal::make_nvp("dataset_name", datasetName);
+    // Manually start the frames node.
     archive.setNextName("frames");
     archive.startNode();
   }
 
   /// Serialize the tracking state.
-  void logTrackingState(Graph& graph) {
-    TrackingState ts = {graph};
+  void logTrackingState(Graph& graph, SlidingWindowEstimator& swe,
+                        FrontEndVisualOdometry& fevo) {
+    TrackingState ts = {graph, swe, fevo};
     archive& cereal::make_nvp(std::to_string(frameNumber), ts);
     ++frameNumber;
+  }
+
+  ~TrackingLog() {
+    archive.finishNode();
   }
 
   /// Archive used to save tracking states.
