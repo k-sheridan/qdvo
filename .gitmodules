@@ -1,3 +1,6 @@
 [submodule "test/qdvo-test-datasets"]
 	path = test/qdvo-test-datasets
 	url = https://github.com/k-sheridan/vio-test-datasets.git
+[submodule "thirdparty/Sophus"]
+	path = thirdparty/Sophus
+	url = https://github.com/strasdat/Sophus

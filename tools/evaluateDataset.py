@@ -5,6 +5,7 @@ import json
 import csv
 
 from parseProfilingLog import parseProfilingLog
+from metrics import computeMetrics
 
 parser = argparse.ArgumentParser(description='Evaluate a euroc format dataset using QDVO.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -22,27 +23,37 @@ if not os.path.exists(args.visualizerBinaryPath):
 if not os.path.exists(args.datasetPath):
     raise Exception('dataset path does not exist')
 
+groundTruthPath = os.path.join(args.datasetPath, "mav0/mocap0/data.csv")
+if not os.path.exists(groundTruthPath):
+    raise Exception('Ground truth does not exist.')
+
 # Open the log file.
 if not os.path.exists(args.output):
     os.mkdir(args.output)
-logFile = open(args.output + "/log.txt", 'w+')
+logFile = open(os.path.join(args.output,"log.txt"), 'w+')
 
 # Run the dataset.
 subprocess.call([args.visualizerBinaryPath, 
     "--headless", str(not args.visualize), 
     "--logTrackingData", 
-    "--trackingLogPath",  args.output + "/trackingLog.json", 
+    "--trackingLogPath",  os.path.join(args.output, "trackingLog.json"), 
     "--frames", str(args.frames),
     "--datasetPath", args.datasetPath], 
     stdout=logFile)
 
 # Open the profiling file.
-profilingFile = open(args.output + "/runtimes.json", 'w+')
+profilingFile = open(os.path.join(args.output, "runtimes.json"), 'w+')
 
 # Extract the runtimes
-runtimes = parseProfilingLog(args.output + "/log.txt")
+runtimes = parseProfilingLog(os.path.join(args.output, "log.txt"))
 # Write the runtimes to a json file.
 json.dump(runtimes, profilingFile, indent=4, separators=(',', ': '))
 
 # Open the tracking log json.
-trackingLog = json.load(open(args.output + "/trackingLog.json"))  
+trackingLog = json.load(open(os.path.join(args.output, "trackingLog.json")))  
+
+# Open the ground truth csv.
+groundTruthCSV = open(groundTruthPath)
+
+# Compute metrics.
+computeMetrics(trackingLog, groundTruthCSV)
