@@ -1,4 +1,6 @@
 # Using the evaluation script
 
 ## Requirements
-- Sophus/Eigen
+- sophuspy
+    - Installing sophuspy
+    - 'git clone https://github.com/pybind/pybind11 && cd pybind11 && mkdir build && cd build && cmake .. && make && make install' 
