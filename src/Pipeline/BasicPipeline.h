@@ -46,7 +46,7 @@ public:
     /**
      * Gives the algorithm a new image
      */
-    void addFrame(cv::Mat &image, const double &time, const CameraModelMap::key_type& cameraModelKey, const ExtrinsicMap::key_type& extrinsicKey);
+    void addFrame(cv::Mat &image, int64_t time, const CameraModelMap::key_type& cameraModelKey, const ExtrinsicMap::key_type& extrinsicKey);
 
     /**
      * adds a new camera for the visual odometry algorithm.

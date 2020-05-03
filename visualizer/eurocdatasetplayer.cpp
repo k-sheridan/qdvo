@@ -59,13 +59,13 @@ void runDataset() {
     std::string timeStr, fileStr;
     std::getline(ss, timeStr, ',');
     std::getline(ss, fileStr, ',');
-    uint64_t t = std::stoull(timeStr);  // nanoseconds
+    int64_t t = std::stoull(timeStr);  // nanoseconds
 
     // run qdvo
     cv::Mat img = cv::imread(FLAGS_datasetPath + "mav0/cam0/data/" + fileStr,
                              cv::IMREAD_GRAYSCALE);
 
-    visualizer.runQDVO(img, t / 1e-9, !FLAGS_headless, trackingLog.get());
+    visualizer.runQDVO(img, t, !FLAGS_headless, trackingLog.get());
 
     // increment csv
     std::getline(cam0CSV, csvLine);

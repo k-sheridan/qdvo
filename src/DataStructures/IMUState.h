@@ -14,7 +14,7 @@ public:
 
     int dimensions = 9;
 
-    double time; // the time of this state.
+    int64_t time = -1; // the time of this state in nanoseconds.
 
     QDVO::SO3 attitude;
     QDVO::Vector3 pos;

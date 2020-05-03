@@ -3,6 +3,7 @@ import os
 import argparse
 import json
 import csv
+from termcolor import colored, cprint
 
 from parseProfilingLog import parseProfilingLog
 from metrics import computeMetrics
@@ -33,6 +34,7 @@ if not os.path.exists(args.output):
 logFile = open(os.path.join(args.output,"log.txt"), 'w+')
 
 # Run the dataset.
+print(colored('Running dataset: ', 'green', attrs=['bold']), colored(f"{args.datasetPath}", 'white', attrs=['bold']))
 subprocess.call([args.visualizerBinaryPath, 
     "--headless", str(not args.visualize), 
     "--logTrackingData", 
@@ -40,7 +42,10 @@ subprocess.call([args.visualizerBinaryPath,
     "--frames", str(args.frames),
     "--datasetPath", args.datasetPath], 
     stdout=logFile)
+print(colored('Finished dataset.', 'green', attrs=['bold']))
 
+
+print(colored(f"Logging runtimes", 'green', attrs=['bold']))
 # Open the profiling file.
 profilingFile = open(os.path.join(args.output, "runtimes.json"), 'w+')
 
@@ -48,6 +53,7 @@ profilingFile = open(os.path.join(args.output, "runtimes.json"), 'w+')
 runtimes = parseProfilingLog(os.path.join(args.output, "log.txt"))
 # Write the runtimes to a json file.
 json.dump(runtimes, profilingFile, indent=4, separators=(',', ': '))
+print(colored(f"Finished logging {len(runtimes.keys())} runtimes", 'green', attrs=['bold']))
 
 # Open the tracking log json.
 trackingLog = json.load(open(os.path.join(args.output, "trackingLog.json")))  
@@ -56,4 +62,6 @@ trackingLog = json.load(open(os.path.join(args.output, "trackingLog.json")))
 groundTruthCSV = open(groundTruthPath)
 
 # Compute metrics.
+print(colored('Computing metrics', 'green', attrs=['bold']))
 computeMetrics(trackingLog, groundTruthCSV)
+print(colored('Finished computing metrics', 'green', attrs=['bold']))

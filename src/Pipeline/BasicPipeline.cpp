@@ -39,7 +39,7 @@ QDVO::CameraModelMap::key_type QDVO::BasicPipeline::addCamera(
 }
 
 void QDVO::BasicPipeline::addFrame(
-    cv::Mat& image, const double& time,
+    cv::Mat& image, int64_t time,
     const CameraModelMap::key_type& cameraModelKey,
     const ExtrinsicMap::key_type& extrinsicKey) {
   LOG_INFO("Added frame.");

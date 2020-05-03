@@ -91,7 +91,7 @@ void serialize(Archive& ar, QDVO::SE3& se3) {
 
 template <class Archive>
 void serialize(Archive& ar, QDVO::IMUState& imustate) {
-  ar& cereal::make_nvp("time", imustate.time);
+  ar& cereal::make_nvp("time_ns", std::to_string(imustate.time));
   ar& cereal::make_nvp("pos", imustate.pos);
   ar& cereal::make_nvp("vel", imustate.vel);
   ar& cereal::make_nvp("attitude", imustate.attitude);
