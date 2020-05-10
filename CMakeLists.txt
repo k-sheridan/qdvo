@@ -34,12 +34,10 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
-find_package (Sophus REQUIRED)
 find_package(spdlog REQUIRED)
 
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
-include_directories(${SOPHUS_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
 
 include_directories(

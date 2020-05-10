@@ -4,3 +4,6 @@
 [submodule "thirdparty/Sophus"]
 	path = thirdparty/Sophus
 	url = https://github.com/strasdat/Sophus
+[submodule "thirdparty/yaml-cpp"]
+	path = thirdparty/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp
