@@ -49,7 +49,7 @@ def getInterpolatedGroundTruthPose(targetTimeNanoSeconds, groundtruth):
     raise RuntimeError('Failed to get interpolated ground truth pose.')
 
 # Given two trajectories, sim3 align the two and compute the SSE trajectory error and scale error.
-# output: [translation error, rotation error, scale difference]
+# output: [translation error RMSE, rotation error RMSE, scale difference]
 def computeTrajectoryError(trajectory1, trajectory2):
     # Compute the sim3 transform between the two trajectories.
     # dR = (R1.inverse() * R_sim * R2).log()
@@ -135,12 +135,37 @@ def computeTrajectoryError(trajectory1, trajectory2):
             b = b + -J.transpose().dot(e) 
         return np.linalg.inv(H).dot(b)
 
-    update = computeUpdate()
+    # output: [SSE pos, SSE rot]
+    def computeSSE():
+        sqRotError = 0.0
+        sqPosError = 0.0
+        for frameNumber in trajectory1:
+            T1 = trajectory1[frameNumber]
+            T2 = trajectory2[frameNumber]
+            dt, dR = computeError(T1['so3'], T1['pos'], T2['so3'], T2['pos'], R_sim, t_sim, scale)
+            sqPosError += dt.transpose().dot(dt)  
+            sqRotError += dR.transpose().dot(dR)  
+        return sqPosError[0,0], sqRotError[0,0]
 
-    
-
+    initialError = computeSSE()
+    currentError = initialError
+    for i in range(1, 20):
+        update = computeUpdate()
+        R_sim, t_sim, scale = applyUpdate(R_sim, t_sim, scale, update)
+        error = computeSSE()
+        if error[0] > currentError[0]:
+            R_sim, t_sim, scale = applyUpdate(R_sim, t_sim, scale, -1 * update)
+            #print(f"Ran {i+1} iterations")
+            break
+        else:
+            currentError = error
+    #print(f"SSE trajectory error {initialError} -> {currentError}")
+    posRMSE = math.sqrt(currentError[0] / len(trajectory1))
+    rotRMSE = math.sqrt(currentError[1] / len(trajectory1))
+    return posRMSE, rotRMSE, abs(scale[0,0])
 
 # Takes tracking data, and ground truth data and returns a metrics json.
+# output: Metrics dict 
 def computeMetrics(trackingData, groundtruth):
     # Extract the imu pose estimates per frame.
     # Extract the ground truth trajectory.
@@ -165,4 +190,15 @@ def computeMetrics(trackingData, groundtruth):
         imuGroundTruth[frameNumber]['so3'] = gtSO3
 
     # Compute the trajectory error.
-    computeTrajectoryError(imuPoseEstimates, imuGroundTruth)
+    posRMSE, rotRMSE, scaleDifference = computeTrajectoryError(imuPoseEstimates, imuGroundTruth)
+    print(f"RMSE position error {posRMSE}")
+    print(f"RMSE rotation error {rotRMSE}")
+    print(f"Scale difference: {scaleDifference}")
+    metrics = {}
+    metrics['trajectory_rsme'] = {}
+    metrics['trajectory_rsme']['position_m'] = posRMSE
+    metrics['trajectory_rsme']['rotation_rad'] = rotRMSE
+    metrics['scale_ratio'] = scaleDifference
+
+    return metrics
+

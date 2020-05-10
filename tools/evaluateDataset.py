@@ -63,5 +63,9 @@ groundTruthCSV = open(groundTruthPath)
 
 # Compute metrics.
 print(colored('Computing metrics', 'green', attrs=['bold']))
-computeMetrics(trackingLog, groundTruthCSV)
+metrics = computeMetrics(trackingLog, groundTruthCSV)
 print(colored('Finished computing metrics', 'green', attrs=['bold']))
+
+# Write the metrics to a file
+metricsFile = open(os.path.join(args.output, "metrics.json"), 'w+')
+json.dump(metrics, metricsFile, indent=4, separators=(',', ': '))
