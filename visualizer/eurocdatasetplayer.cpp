@@ -1,4 +1,5 @@
 #include <gflags/gflags.h>
+#include <yaml-cpp/yaml.h>
 
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
@@ -10,6 +11,7 @@
 
 #include "Config.h"
 #include "DataStructures/TrackingLog.h"
+#include "Logging.h"
 #include "QDVOVisualizer.h"
 
 /*
@@ -36,7 +38,8 @@ void runDataset() {
   std::unique_ptr<QDVO::TrackingLog> trackingLog;
   if (FLAGS_logTrackingData) {
     os = std::ofstream(FLAGS_trackingLogPath);
-    trackingLog = std::make_unique<QDVO::TrackingLog>(os, std::filesystem::absolute(FLAGS_datasetPath));
+    trackingLog = std::make_unique<QDVO::TrackingLog>(
+        os, std::filesystem::absolute(FLAGS_datasetPath));
   }
 
   // start to parse the euroc dataset.
@@ -44,7 +47,7 @@ void runDataset() {
   std::ifstream cam0CSV;
   cam0CSV.open(cam0CsvPath, std::ifstream::in);
   if (!cam0CSV.is_open()) {
-    std::cerr << "failed to open " << cam0CsvPath << std::endl;
+    LOG_ERROR("failed to open {}", cam0CsvPath);
   }
 
   int frameCount = 0;
@@ -81,6 +84,74 @@ void runDataset() {
   trackingLog.reset();
 }
 
+void initialize() {
+  auto camCalibPath = FLAGS_datasetPath + "mav0/cam0/sensor.yaml";
+  auto imuCalibPath = FLAGS_datasetPath + "mav0/imu0/sensor.yaml";
+
+  std::ifstream cam, imu;
+  cam.open(camCalibPath, std::ifstream::in);
+  imu.open(imuCalibPath, std::ifstream::in);
+
+  if (!cam.is_open()) {
+    LOG_ERROR("Could not open {}", camCalibPath);
+  }
+
+  if (!imu.is_open()) {
+    LOG_ERROR("Could not open {}", imuCalibPath);
+  }
+  std::stringstream ss;
+  ss << cam.rdbuf();
+  YAML::Node camCalib = YAML::Load(ss.str());
+
+  ss.str("");
+  ss << imu.rdbuf();
+  YAML::Node imuCalib = YAML::Load(ss.str());
+
+  auto se3FromYamlNode = [](auto yamlNode) {
+    CHECK(yamlNode.size() == 16, "Matrix size wrong.");
+    std::vector<QDVO::Scalar> data;
+    for (auto coeff : yamlNode) {
+      data.push_back(coeff.template as<QDVO::Scalar>());
+    }
+    Eigen::Matrix<QDVO::Scalar, 4, 4> T(data.data());
+    T.transposeInPlace();
+    QDVO::SE3 T_body_cam0(T);
+    return T_body_cam0;
+  };
+
+  QDVO::SE3 T_body_cam0 = se3FromYamlNode(camCalib["T_BS"]["data"]);
+  QDVO::SE3 T_body_imu0 = se3FromYamlNode(imuCalib["T_BS"]["data"]);
+
+  auto T_imu_cam0 = T_body_imu0.inverse() * T_body_cam0;
+
+  CHECK(camCalib["distortion_model"].as<std::string>() == "equidistant",
+        "Only equidistant camera models are supported.");
+
+  // Default max fov.
+  double maxFOV;
+  try {
+    maxFOV = camCalib["fov"].as<double>();
+  } catch (std::exception e) {
+    LOG_WARN("fov did not exist in camera calibration. Using default.");
+    maxFOV = 1.44 * 2;
+  }
+
+  auto cameraModel = std::make_unique<QDVO::EquidistantCameraModel>(
+      camCalib["intrinsics"][0].as<double>(),
+      camCalib["intrinsics"][1].as<double>(),
+      camCalib["intrinsics"][2].as<double>(),
+      camCalib["intrinsics"][3].as<double>(), maxFOV,
+      camCalib["resolution"][0].as<double>(),
+      camCalib["resolution"][1].as<double>(),
+      Eigen::Vector4d(camCalib["distortion_coefficients"][0].as<double>(),
+                      camCalib["distortion_coefficients"][1].as<double>(),
+                      camCalib["distortion_coefficients"][2].as<double>(),
+                      camCalib["distortion_coefficients"][3].as<double>()));
+
+  // Initialize.
+  visualizer.initialize(std::move(cameraModel), T_imu_cam0);
+}
+
 int main(int argc, char** argv) {
   gflags::SetUsageMessage("some usage message");
   gflags::SetVersionString("1.0.0");
@@ -88,7 +159,7 @@ int main(int argc, char** argv) {
 
   config.setParameters(QDVO::Config::Parameters());
 
-  visualizer.initialize();
+  initialize();
 
   std::thread qdvoThread(runDataset);
 

@@ -8,18 +8,13 @@
 
 QDVOVisualizer::QDVOVisualizer() {}
 
-void QDVOVisualizer::initialize() {
+void QDVOVisualizer::initialize(std::unique_ptr<QDVO::CameraModel> cameraModel,
+                                const QDVO::SE3& T_imu_camera) {
   this->algorithm.initialize();
 
-  std::unique_ptr<QDVO::CameraModel> cm(new QDVO::EquidistantCameraModel(
-      190.97847715128717, 190.9733070521226, 254.93170605935475,
-      256.8974428996504, 1.44 * 2, 512, 512,
-      Eigen::Vector4d(0.0034823894022493434, 0.0007150348452162257,
-                      -0.0020532361418706202, 0.00020293673591811182)));
-  cameraModelKey = this->algorithm.addCamera(std::move(cm));
+  cameraModelKey = this->algorithm.addCamera(std::move(cameraModel));
 
-  extrinsicKey = this->algorithm.graph.getExtrinsicMap().insert(
-      this->algorithm.graph.getCameraModelMap().at(cameraModelKey)->second);
+  extrinsicKey = this->algorithm.graph.getExtrinsicMap().insert(T_imu_camera);
 
   this->newFrameAdded = false;
 }
@@ -201,7 +196,8 @@ void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
   // Log the tracking state.
   if (trackingLog != nullptr) {
     SPDLOG_INFO("Logging tracking state.");
-    trackingLog->logTrackingState(this->algorithm.graph, this->algorithm.swe, this->algorithm.frontEndVisualOdometry);
+    trackingLog->logTrackingState(this->algorithm.graph, this->algorithm.swe,
+                                  this->algorithm.frontEndVisualOdometry);
   }
   this->algorithmMutex.unlock();
 

@@ -58,7 +58,7 @@ class QDVOVisualizer {
    * Sets up the algorithm by adding a camera model and
    * preallocating/precomputing.
    */
-  void initialize();
+  void initialize(std::unique_ptr<QDVO::CameraModel> cameraModel, const QDVO::SE3& T_imu_camera);
 
   void runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
                QDVO::TrackingLog* trackingLog);
