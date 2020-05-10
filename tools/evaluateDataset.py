@@ -11,7 +11,6 @@ from metrics import computeMetrics
 parser = argparse.ArgumentParser(description='Evaluate a euroc format dataset using QDVO.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--datasetPath', type=str, required=True, help='Path to the folder above mav0 of the dataset.')
-parser.add_argument('--calibrationPath', type=str, required=True, help='Path to the calibration json file')
 parser.add_argument('--visualizerBinaryPath', type=str, default='../build/visualizer/runEurocDatasets', help='Path to the binary used to run QDVO.')
 parser.add_argument('--visualize', type=bool, default=False, help='Should the dataset be visualized while running?')
 parser.add_argument('--frames', type=int, default=1e12, help='How many frames should the dataset be run for?')
@@ -24,9 +23,6 @@ if not os.path.exists(args.visualizerBinaryPath):
 
 if not os.path.exists(args.datasetPath):
     raise Exception('dataset path does not exist')
-
-if not os.path.exists(args.calibrationPath):
-    raise Exception('calibration path does not exist')
 
 groundTruthPath = os.path.join(args.datasetPath, "mav0/mocap0/data.csv")
 if not os.path.exists(groundTruthPath):

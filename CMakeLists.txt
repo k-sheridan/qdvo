@@ -27,14 +27,10 @@ SET(CMAKE_LINKER_FLAGS "-O1 -fsanitize=memory -fno-omit-frame-pointer")
 endif()
 
 
-SET(CMAKE_C_COMPILER clang)
-SET(CMAKE_CXX_COMPILER clang++)
-
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
-find_package(spdlog REQUIRED)
 
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
@@ -52,7 +48,6 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/thirdparty/
     )
 
-
 file(GLOB QDVO_HEADER_FILES
     "${PROJECT_SOURCE_DIR}/src/*/*.h"
     "${PROJECT_SOURCE_DIR}/src/*/*/*.h"
@@ -66,10 +61,20 @@ file(GLOB QDVO_SOURCE_FILES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
+# Add thirdparty libraries
+add_subdirectory(thirdparty/googletest)
+add_subdirectory(thirdparty/benchmark)
+add_subdirectory(thirdparty/gflags)
+add_subdirectory(thirdparty/spdlog)
+add_subdirectory(thirdparty/Sophus)
+add_subdirectory(thirdparty/yaml-cpp)
+
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
-target_link_libraries(QDVO ${OpenCV_LIBS} ${sophus_LIBRARIES} spdlog::spdlog)
+target_link_libraries(QDVO ${OpenCV_LIBS} sophus spdlog)
 
 set_property(TARGET QDVO PROPERTY CXX_STANDARD 17)
 
@@ -92,6 +97,7 @@ set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/QDVO)
 
 install(TARGETS
             QDVO
+	    spdlog
         EXPORT
             QDVOTargets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
