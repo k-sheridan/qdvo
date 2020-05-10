@@ -5,6 +5,8 @@
 
 *.mat
 
+*.pyc
+
 *.mp4
 *.avi
 
