@@ -48,6 +48,96 @@ def getInterpolatedGroundTruthPose(targetTimeNanoSeconds, groundtruth):
         return pos, rot
     raise RuntimeError('Failed to get interpolated ground truth pose.')
 
+# Given two trajectories, sim3 align the two and compute the SSE trajectory error and scale error.
+# output: [translation error, rotation error, scale difference]
+def computeTrajectoryError(trajectory1, trajectory2):
+    # Compute the sim3 transform between the two trajectories.
+    # dR = (R1.inverse() * R_sim * R2).log()
+    # dt = (t1 - (R_sim * t2) * scale + t_sim)
+    #
+    # dt(phi) = (t1 - (R_sim * exp(phi) * t2) * scale + t_sim)
+    # dt(phi) ~= (t1 - (R_sim * (I + hat(phi)) * t2) * scale + t_sim)
+    # 
+    # dt(phi)_dphi = R_sim * hat(t2 * scale) 
+    #
+    # dt(dt)_dt = 1
+    #
+    # dt(dscale)_dscale = -R_sim * t2 
+    #
+    #
+    # dR(phi) = (R1.inverse() * R_sim * exp(phi) * R2).log()
+    # dR(phi) = (R1.inverse() * R_sim * R2 * exp(R2.inverse() * phi)).log()
+    # dR(phi) ~= (R1.inverse() * R_sim * (I + hat(phi)) * R2).log()
+    #
+    # dR(phi)_dphi = Jrinv((R1.inverse() * R_sim * R2).log()) * R2.inverse()
+
+    # Order: [translation, rotation, scale]
+    R_sim = sophus.SO3.exp([0,0,0])
+    t_sim = np.zeros([3,1])
+    scale = 1.0
+
+    # dx order: [translation, rotation, scale]
+    # output: [rotation, translation, scale]
+    def applyUpdate(R_sim, t_sim, scale, dx):
+        return R_sim * sophus.SO3.exp(dx[3:6, 0:1]), t_sim + dx[0:3, 0:1], scale + dx[6:7, 0:1]
+
+    # output: [dt, dR]
+    def computeError(R1, t1, R2, t2, R_sim, t_sim, scale):
+        t1 = t1.reshape((3, 1))
+        t2 = t2.reshape((3, 1))
+        t_sim = t_sim.reshape((3, 1))
+
+        dR = (R1.inverse() * R_sim * R2).log().reshape((3, 1))
+        dt = (t1 - (R_sim * t2).reshape((3, 1)) * scale + t_sim).reshape((3, 1))
+        return dt, dR
+
+    # variable order: [translation, rotation, scale]
+    # output R_6_7: [dt_dx, dR_dx]
+    def computeJacobian(R1, t1, R2, t2, R_sim, t_sim, scale):
+        t1 = t1.reshape((3, 1))
+        t2 = t2.reshape((3, 1))
+        t_sim = t_sim.reshape((3, 1))
+
+        delta = 1e-4
+        J = np.zeros([6, 7])
+        for i in range(0, 7):
+            dx = np.zeros([7, 1])
+            dx[i:i+1, 0:1] = delta
+            R_simHigh, t_simHigh, scaleHigh = applyUpdate(R_sim, t_sim, scale, dx)
+            dt, dR = computeError(R1, t1, R2, t2, R_simHigh, t_simHigh, scaleHigh)
+            errorHigh = np.zeros([6, 1])
+            errorHigh[0:3, 0:1] = dt
+            errorHigh[3:6, 0:1] = dR
+
+            dx[i:i+1, 0:1] = -delta
+            R_simLow, t_simLow, scaleLow = applyUpdate(R_sim, t_sim, scale, dx)
+            dt, dR = computeError(R1, t1, R2, t2, R_simLow, t_simLow, scaleLow)
+            errorLow = np.zeros([6, 1])
+            errorLow[0:3, 0:1] = dt
+            errorLow[3:6, 0:1] = dR
+
+            J[0:6, i:i+1] = (errorHigh - errorLow) / (2 * delta) 
+
+        return J
+
+    def computeUpdate():
+        H = np.zeros([7, 7]) 
+        b = np.zeros([7, 1])
+        for frameNumber in trajectory1:
+            T1 = trajectory1[frameNumber]
+            T2 = trajectory2[frameNumber]
+            dt, dR = computeError(T1['so3'], T1['pos'], T2['so3'], T2['pos'], R_sim, t_sim, scale)
+            e = np.zeros([6, 1])
+            e[0:3, 0:1] = dt
+            e[3:6, 0:1] = dR
+            J = computeJacobian(T1['so3'], T1['pos'], T2['so3'], T2['pos'], R_sim, t_sim, scale)
+            H = H + J.transpose().dot(J)
+            b = b + -J.transpose().dot(e) 
+        return np.linalg.inv(H).dot(b)
+
+    update = computeUpdate()
+
+    
 
 
 # Takes tracking data, and ground truth data and returns a metrics json.
@@ -69,6 +159,10 @@ def computeMetrics(trackingData, groundtruth):
 
         # Get the interpolated ground truth pose.
         gtPos, gtSO3 = getInterpolatedGroundTruthPose(time, groundtruth)
-        imuGroundTruth['time_ns'] = time
-        imuGroundTruth['pos'] = gtPos
-        imuGroundTruth['so3'] = gtSO3
+        imuGroundTruth[frameNumber] = {}
+        imuGroundTruth[frameNumber]['time_ns'] = time
+        imuGroundTruth[frameNumber]['pos'] = gtPos
+        imuGroundTruth[frameNumber]['so3'] = gtSO3
+
+    # Compute the trajectory error.
+    computeTrajectoryError(imuPoseEstimates, imuGroundTruth)
