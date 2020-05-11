@@ -3,6 +3,7 @@
 #include "CameraModel.hpp"
 #include "DataStructures/CorrespondenceDistribution.h"
 #include "DataStructures/Graph.h"
+#include "Logging.h"
 #include "Optimizer/ErrorTermBase.h"
 #include "Optimizer/Variables/InverseDepth.h"
 #include "Optimizer/Variables/SE3.h"
@@ -60,7 +61,13 @@ class QuasiDirectErrorTerm_TargetFrame
     Sophus::SE3d host = sourceFrame.imustate.getSE3();
     double inverseDepth = landmark.dinv;
 
-    assert(landmark.parentFrameKey == hostFrameKey);
+    CHECK(landmark.parentFrameKey == hostFrameKey,
+          "landmark and parent frame are not related.");
+
+    const Sophus::SE3d& T_imu_hostCam =
+        *graph->getExtrinsicMap().at(sourceFrame.extrinsicKey);
+    const Sophus::SE3d& T_imu_targetCam =
+        *graph->getExtrinsicMap().at(targetFrame.extrinsicKey);
 
     auto& cm = graph->getCameraModelMap().at(targetFrame.cameraModelKey)->first;
     auto& correspondenceDistribution =
@@ -72,7 +79,8 @@ class QuasiDirectErrorTerm_TargetFrame
     auto pointInHost =
         Eigen::Vector3d(bearing(0, 0) / inverseDepth,
                         bearing(1, 0) / inverseDepth, 1 / inverseDepth);
-    Eigen::Vector3d pointInTarget = target.inverse() * host * pointInHost;
+    Eigen::Vector3d pointInTarget = (target * T_imu_targetCam).inverse() *
+                                    (host * T_imu_hostCam) * pointInHost;
 
     // Project the point into a pixel.
     Eigen::Matrix<double, 2, 2> projJac;
@@ -115,19 +123,30 @@ class QuasiDirectErrorTerm_TargetFrame
       auto& e = host.translation();
       // f = T(1:3, 4);
 
+      auto C1 = T_imu_targetCam.so3().matrix();
+      auto C2 = T_imu_hostCam.so3().matrix();
+
+      const auto& f1 = T_imu_targetCam.translation();
+      const auto& f2 = T_imu_hostCam.translation();
+
       // dinv =
       // graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.dinv; u0
       // =
       // [graph.FrameContainer{landmarkFrameIdx}.landmarks{landmarkIdx}.bearing;
       // 1];
 
-      // J_dphi_o = projJac * dPi * (C' * so3Hat(A'*(B*C*u0*(1/dinv) + B*f + e -
-      // d)));
+      // J_dphi_o = projJac * dPi * (C1' * so3Hat(A'*(B*C2*u0*(1/dinv) + B*f2 +
+      // e - d)));
       targetJacobian.block(0, 0, 2, 3) =
           -projJac * dPi *
-          (Sophus::SO3d::hat(A.transpose() * (B * pointInHost + e - d)));
-      // J_dt_o = -projJac * dPi * (C'*A');
-      targetJacobian.block(0, 3, 2, 3) = projJac * dPi * (A.transpose());
+          (C1.transpose() *
+           Sophus::SO3d::hat(A.transpose() *
+                             (B * C2 * pointInHost + B * f2 + e - d)));
+
+      // J_dt_o = -projJac * dPi * (C1'*A');
+      targetJacobian.block(0, 3, 2, 3) =
+          projJac * dPi * (C1.transpose() * A.transpose());
+
 
       linearizationValid = true;
     } else {

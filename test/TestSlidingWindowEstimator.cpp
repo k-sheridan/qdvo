@@ -2,6 +2,7 @@
 
 #include "Estimation/SlidingWindowEstimator.h"
 #include "Logging.h"
+#include "Optimizer/ErrorTermValidator.h"
 #include "TestFixtures.h"
 
 class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
@@ -266,6 +267,12 @@ TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
     LOG_TRACE("Pixel error: {}", (estPixels.at(i) - gtPixels.at(i)).norm());
     EXPECT_NEAR((estPixels.at(i) - gtPixels.at(i)).norm(), 0, 1);
   }
+
+  /*ArgMin::ErrorTermValidator validator(
+      *(swe.errorTermContainer.getErrorTermMap<QDVO::QuasiDirectErrorTerm>()
+            .begin()));
+  EXPECT_TRUE(validator.validate(swe.variableContainer));
+  */
 }
 
 // Set up the test parameters.
