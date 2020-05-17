@@ -10,7 +10,7 @@ namespace QDVO {
 Graph::Graph() {
   currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
   LOG_INFO("Initialized current frame.");
-  //previousFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
+  previousFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
   LOG_INFO("Initialized previous frame.");
 }
 

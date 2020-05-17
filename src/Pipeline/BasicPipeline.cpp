@@ -48,7 +48,7 @@ void QDVO::BasicPipeline::addFrame(
   QDVO::IMUState lastImuState = graph.getCurrentFrame()->imustate;
 
   // Swap the current and previous frame.
-  //graph.swapCurrentAndPreviousFrame();
+  graph.swapCurrentAndPreviousFrame();
 
   // Reset current frame
   graph.getCurrentFrame()->reset();
@@ -292,7 +292,8 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
        it != graph.getKeyframeMap().end(); it++) {
     auto thisKey = graph.getKeyframeMap().getKeyFromDataIndex(
         it - graph.getKeyframeMap().begin());
-    if (thisKey == graph.getCurrentFrameKey()) {
+    if (thisKey == graph.getCurrentFrameKey() ||
+        (*it)->status == QDVO::Frame::FrameStatus::INACTIVE) {
       continue;
     }
 

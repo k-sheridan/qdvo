@@ -9,7 +9,7 @@
 // configurable
 
 // the number of keyframes used in the sliding window estimator
-#define N_KEYFRAMES 7
+#define N_KEYFRAMES 8
 
 // the width of the image patch used. must be an odd number.
 #define PATCH_RADIUS 5
