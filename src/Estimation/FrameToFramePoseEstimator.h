@@ -143,6 +143,8 @@ class DirectSE2ErrorTerm
   }
 };
 
+/// The images used are from the highest level in the image pyramid. 
+/// The coarse images are then normalized to make them illumination invariant.
 class FrameToFramePoseEstimator {
  public:
   struct Settings {

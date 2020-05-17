@@ -44,6 +44,17 @@ class Graph {
     return *keyframes.at(currentFrameKey);
   }
 
+  /// Get a reference to the previous frame unique pointer.
+  /// @return Unique pointer reference to the previous frame.
+  std::unique_ptr<Frame>& getPreviousFrame() {
+    return *keyframes.at(previousFrameKey);
+  }
+
+  /// Efficiently swap the previous and current frame.
+  void swapCurrentAndPreviousFrame() {
+    std::swap(currentFrameKey, previousFrameKey);
+  }
+
   /// @return the key to the current frame.
   KeyframeMap::key_type getCurrentFrameKey() { return currentFrameKey; }
 
@@ -54,10 +65,6 @@ class Graph {
   KeyframeMap& getKeyframeMap() { return keyframes; }
 
   LandmarkMap& getLandmarkMap() { return landmarks; }
-
-  /// Given a keyframekey, get its cameraModel.
-  QDVO::CameraModel& getCameraModelForKeyframe(
-      KeyframeMap::key_type frameKey) const;
 
   /// assuming there is enough room in the keyframe set, the current frame is
   /// moved to a new spot in the keyframe set.
@@ -121,5 +128,11 @@ class Graph {
   /// This frame is swapped into the marginalized keyframe slot when it is made
   /// into a keyframe.
   KeyframeMap::key_type currentFrameKey;
+
+  /// Key to the previous current frame which was not marked as a keyframe.
+  /// This is not necessarily the actualy previous frame.
+  /// If you want the actual previous frame you must also search the active
+  /// keyframe set for the newest frame.
+  KeyframeMap::key_type previousFrameKey;
 };
 }  // namespace QDVO

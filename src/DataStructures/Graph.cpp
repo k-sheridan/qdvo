@@ -10,10 +10,8 @@ namespace QDVO {
 Graph::Graph() {
   currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
   LOG_INFO("Initialized current frame.");
-}
-
-QDVO::CameraModel& Graph::getCameraModelForKeyframe(
-    KeyframeMap::key_type frameKey) const {
+  //previousFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
+  LOG_INFO("Initialized previous frame.");
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition() {

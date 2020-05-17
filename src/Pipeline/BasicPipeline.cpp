@@ -46,6 +46,10 @@ void QDVO::BasicPipeline::addFrame(
   LOG_INFO("Added frame.");
   // save the last imu state
   QDVO::IMUState lastImuState = graph.getCurrentFrame()->imustate;
+
+  // Swap the current and previous frame.
+  //graph.swapCurrentAndPreviousFrame();
+
   // Reset current frame
   graph.getCurrentFrame()->reset();
   // Setup the current frame.
