@@ -14,11 +14,6 @@ Graph::Graph() {
 
 QDVO::CameraModel& Graph::getCameraModelForKeyframe(
     KeyframeMap::key_type frameKey) const {
-  auto keyframeIt = keyframes.at(frameKey);
-  CHECK(keyframeIt != keyframes.end(), "Element does not exist.");
-  auto cameraModelIt = cameraModelMap.at((*keyframeIt)->cameraModelKey);
-  CHECK(cameraModelIt != cameraModelMap.end(), "Element does not exist.");
-  return *(*cameraModelIt).first;
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition() {

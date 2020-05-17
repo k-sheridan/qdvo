@@ -1,5 +1,4 @@
-#ifndef PATCH_H
-#define PATCH_H
+#pragma once
 
 #include <opencv2/core.hpp>
 #include <Eigen/Core>
@@ -47,4 +46,3 @@ private:
 };
 }
 
-#endif // PATCH_H
