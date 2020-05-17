@@ -9,6 +9,7 @@
 #include "DataStructures/Graph.h"
 #include "DataStructures/Landmark.h"
 #include "EpipolarDepthEstimator.h"
+#include "Estimation/FrameToFramePoseEstimator.h"
 #include "Profiling.h"
 
 QDVO::BasicPipeline::BasicPipeline() {}
@@ -52,6 +53,7 @@ void QDVO::BasicPipeline::addFrame(
     PROFILE("updateImage");
     graph.getCurrentFrame()->updateImage(image);
   }
+
   graph.getCurrentFrame()->status = QDVO::Frame::FrameStatus::INACTIVE;
   graph.getCurrentFrame()->cameraModelKey = cameraModelKey;
   graph.getCurrentFrame()->extrinsicKey = extrinsicKey;
@@ -61,8 +63,10 @@ void QDVO::BasicPipeline::addFrame(
   graph.getCurrentFrame()->imustate.time = time;
   graph.getCurrentFrame()->initialized = true;
 
-  // Initialize correspondence distributions
+  // Try to get a coarse initialization for the imustate.
+  QDVO::FrameToFramePoseEstimator f2fEstimator;
 
+  // Initialize correspondence distributions
   {
     PROFILE("initializeCorrespondenceDistribution");
     initializeCorrespondenceDistributionsForCurrentFrame();

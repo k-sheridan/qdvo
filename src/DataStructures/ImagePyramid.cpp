@@ -1,5 +1,9 @@
 #include "ImagePyramid.h"
 #include <cmath>
+#include "Logging.h"
+
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 QDVO::ImagePyramid::ImagePyramid(int levels)
 {
@@ -25,13 +29,16 @@ void QDVO::ImagePyramid::generate(cv::Mat& baseImage)
 
     this->imageLevels.at(0) = QDVO::Image(baseImage);
 
-    assert(this->imageLevels.size() == 1); // not supported yet.
+    std::vector<cv::Mat> images;
+    images.resize(this->imageLevels.size());
+    images.at(0) = baseImage;
 
-    /*for(size_t i = 1; i < this->imageLevels.size(); ++i)
+    for(size_t i = 1; i < this->imageLevels.size(); ++i)
     {
         //TODO replace this with a custom version. (no need for the gaussian down sample.)
-        cv::pyrDown(this->imageLevels.at(i-1), this->imageLevels.at(i), cv::Size(this->imageLevels.at(i-1).cols/2, this->imageLevels.at(i-1).rows/2));
-    }*/
+        cv::pyrDown(images.at(i-1), images.at(i), cv::Size(images.at(i-1).cols/2, images.at(i-1).rows/2));
+	this->imageLevels.at(i) = QDVO::Image(images.at(i));
+    }
 }
 
 QDVO::Image& QDVO::ImagePyramid::getImage(const size_t level)

@@ -41,7 +41,7 @@
 #define SEARCH_RADIUS_PADDING 5
 
 // define how many image pyramid levels are used during optiizations
-#define IMAGE_PYRAMID_LEVELS 1
+#define IMAGE_PYRAMID_LEVELS 4
 
 // define the default landmark inverse depth. This is the depth all landmarks are initialized with and for a monocular use case, will influence the scene scale.
 #define DEFAULT_LANDMARK_DINV 0.4

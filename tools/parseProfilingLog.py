@@ -33,6 +33,7 @@ def parseProfilingLog(logFilePath, printOutput=False):
         result[key]['p50_ms'] = p50
         result[key]['p90_ms'] = p90
         result[key]['p99_ms'] = p99
+        result[key]['mean_ms'] = sum(timings[key]) / len(timings[key])
 
         if printOutput:
             print("{}:".format(key))
@@ -40,6 +41,7 @@ def parseProfilingLog(logFilePath, printOutput=False):
             print("    P50: {:.6f} ms".format(p50))
             print("    P90: {:.6f} ms".format(p90))
             print("    P99: {:.6f} ms".format(p99))
+            print("    Mean: {:.6f} ms".format(result[key]['mean_ms']))
             print("")
 
     return result

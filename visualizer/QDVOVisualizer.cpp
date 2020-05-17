@@ -51,6 +51,14 @@ void QDVOVisualizer::transferVisualizationData() {
       cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
     }
 
+    // cv::Mat temp2;
+    // algorithm.graph.getCurrentFrame()
+    //    ->imagePyr.getImage(3)
+    //    .toOpenCVImage()
+    //    .convertTo(temp2, CV_8U);
+    // cv::imshow("test", temp2);
+    // cv::waitKey(1);
+
     // draw correspondence distributions.
     for (auto& cd :
          this->algorithm.graph.getCurrentFrame()->correspondenceDistributions) {
