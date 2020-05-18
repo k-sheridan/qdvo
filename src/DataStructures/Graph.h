@@ -51,12 +51,16 @@ class Graph {
   }
 
   /// Efficiently swap the previous and current frame.
-  void swapCurrentAndPreviousFrame() {
-    std::swap(currentFrameKey, previousFrameKey);
-  }
+  void swapCurrentAndBufferFrame();
+
+  /// Find the newest keyframe in the keyframe set.
+  KeyframeMap::key_type findLatestFrameKey();
 
   /// @return the key to the current frame.
   KeyframeMap::key_type getCurrentFrameKey() { return currentFrameKey; }
+
+  /// @return the key to the previous frame.
+  KeyframeMap::key_type getPreviousFrameKey() { return previousFrameKey; }
 
   CameraModelMap& getCameraModelMap() { return cameraModelMap; }
 
@@ -129,10 +133,11 @@ class Graph {
   /// into a keyframe.
   KeyframeMap::key_type currentFrameKey;
 
+  /// This frame is inactive. It should be used as a place to
+  /// store the previous frame.
+  KeyframeMap::key_type bufferFrameKey;
+
   /// Key to the previous current frame which was not marked as a keyframe.
-  /// This is not necessarily the actualy previous frame.
-  /// If you want the actual previous frame you must also search the active
-  /// keyframe set for the newest frame.
   KeyframeMap::key_type previousFrameKey;
 };
 }  // namespace QDVO

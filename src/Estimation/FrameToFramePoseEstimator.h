@@ -7,6 +7,7 @@
 #include "Optimizer/NumericalDifferentiator.h"
 #include "Optimizer/PSDSchurSolver.h"
 #include "Optimizer/Variables/SO3.h"
+#include "Profiling.h"
 #include "Types.h"
 
 namespace QDVO {
@@ -40,13 +41,21 @@ class DirectSE2ErrorTerm
     auto unprojectedPixel = cameraModel.unproject(
         frame1ScaledPixel.cast<double>() * sharedData.imageScaleRatio);
 
-    CHECK(unprojectedPixel.has_value(), "Failed to unproject pixel.");
+    if (!unprojectedPixel.has_value()) {
+      initialized = false;
+      LOG_ERROR("Failed to unproject pixel.");
+      return;
+    }
     frame1UnitBearing = unprojectedPixel.value().normalized();
     std::get<0>(variableKeys) = key;
+    initialized = true;
   }
 
   /// Data which is shared between error terms.
   const SharedData &sharedData;
+
+  /// Was this error term successfully created?
+  bool initialized = false;
 
   QDVO::ImageIntensityType frame1Intensity;
   Eigen::Matrix<double, 3, 1> frame1UnitBearing;
@@ -54,6 +63,11 @@ class DirectSE2ErrorTerm
   template <typename... Variables>
   void evaluate(ArgMin::VariableContainer<Variables...> &variables,
                 bool relinearize) {
+    if (!initialized) {
+      linearizationValid = false;
+      return;
+    }
+
     auto &R = *(std::get<0>(variablePointers));
 
     // I(dx) = I(Pi(R * Exp(dx) * b))
@@ -68,7 +82,7 @@ class DirectSE2ErrorTerm
                                     .at(keyframe.cameraModelKey)
                                     ->first);
 
-    auto pt = R.value * frame1UnitBearing;
+    auto pt = R.value.inverse() * frame1UnitBearing;
     Eigen::Matrix<double, 2, 2> dProj;
     auto px = cameraModel.project(pt, &dProj);
     if (!px.has_value()) {
@@ -143,7 +157,7 @@ class DirectSE2ErrorTerm
   }
 };
 
-/// The images used are from the highest level in the image pyramid. 
+/// The images used are from the highest level in the image pyramid.
 /// The coarse images are then normalized to make them illumination invariant.
 class FrameToFramePoseEstimator {
  public:
@@ -230,16 +244,23 @@ class FrameToFramePoseEstimator {
       for (int y = settings.pixelSeparation;
            y < znImage1.rows() - settings.pixelSeparation; ++y) {
         DirectSE2ErrorTerm et(sharedData, {x, y}, variableKey);
-        errorTermContainer.insert(et);
+        if (et.initialized) {
+          errorTermContainer.insert(et);
+        }
       }
     }
 
-    auto result = solver.solveLevenbergMarquardt(variableContainer,
-                                                 errorTermContainer, prior);
+    LOG_INFO("Created {} error terms",
+             errorTermContainer.getErrorTermMap<DirectSE2ErrorTerm>().size());
+    {
+      PROFILE("SolveFrame2FrameRotationDirect");
+      auto result = solver.solveLevenbergMarquardt(variableContainer,
+                                                   errorTermContainer, prior);
 
-    LOG_INFO("Initial error: {} -> final error: {} iterations: {}",
-             result.whitenedSqError.front(), result.whitenedSqError.back(),
-             result.whitenedSqError.size());
+      LOG_INFO("Initial error: {} -> final error: {} iterations: {}",
+               result.whitenedSqError.front(), result.whitenedSqError.back(),
+               result.whitenedSqError.size());
+    }
 
     T_frame1_frame2.so3() = variableContainer.at(variableKey).value;
     T_frame1_frame2.translation() = {0, 0, 0};

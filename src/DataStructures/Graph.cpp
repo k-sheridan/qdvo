@@ -10,8 +10,43 @@ namespace QDVO {
 Graph::Graph() {
   currentFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
   LOG_INFO("Initialized current frame.");
-  previousFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
+  bufferFrameKey = keyframes.insert(std::make_unique<QDVO::Frame>());
+  previousFrameKey = bufferFrameKey;
   LOG_INFO("Initialized previous frame.");
+}
+
+KeyframeMap::key_type Graph::findLatestFrameKey() {
+  KeyframeMap::key_type result;
+  for (auto it = keyframes.begin(); it != keyframes.end(); it++) {
+    auto key =
+        keyframes.getKeyFromDataIndex(std::distance(keyframes.begin(), it));
+    // Only initialized keyframes are returned.
+    if (!(*it)->initialized) {
+      continue;
+    }
+
+    if (result.isInvalid()) {
+      result = key;
+      continue;
+    }
+
+    if ((*it)->imustate.time > (*keyframes.at(result))->imustate.time) {
+      result = key;
+      continue;
+    }
+  }
+  return result;
+}
+
+void Graph::swapCurrentAndBufferFrame() {
+  std::swap(currentFrameKey, bufferFrameKey);
+
+  // Find the latest keyframe key and set the new previous keyframeId
+  auto latestFrameKey = findLatestFrameKey();
+  if (!latestFrameKey.isInvalid()) {
+    LOG_INFO("Updated previous frame key");
+    previousFrameKey = latestFrameKey;
+  }
 }
 
 void Graph::moveCurrentFrameIntoNewKeyframePosition() {

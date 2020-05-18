@@ -162,7 +162,7 @@ struct Params {
 class SWEParamTest : public SlidingWindowEstimatorTest,
                      public ::testing::WithParamInterface<Params> {};
 
-TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
+TEST_P(SWEParamTest, DISABLED_ThreeFrameCornersOnlySolve) {
   // Get the params.
   const Params& p = GetParam();
 

@@ -20,39 +20,47 @@ void QDVOVisualizer::initialize(std::unique_ptr<QDVO::CameraModel> cameraModel,
 }
 
 void QDVOVisualizer::transferVisualizationData() {
+  auto currentFrame = [&]() -> QDVO::Frame& {
+    auto latestFrameKey = algorithm.graph.findLatestFrameKey();
+    return *(*algorithm.graph.getKeyframeMap().at(latestFrameKey));
+  };
+
+  auto currentFrameKey = [&]() -> QDVO::KeyframeMap::key_type {
+    auto latestFrameKey = algorithm.graph.findLatestFrameKey();
+    return latestFrameKey;
+  };
+
   // draw current frame visualization
-  if (this->algorithm.graph.getCurrentFrame()
-          ->initialized)  // make sure the frame has been properly initialized
+  if (currentFrame()
+          .initialized)  // make sure the frame has been properly initialized
   {
     std::cout << "rendering the current frame" << std::endl;
     cv::Mat temp, render;
-    this->algorithm.graph.getCurrentFrame()
-        ->imagePyr.getImage()
-        .toOpenCVImage()
-        .convertTo(temp, CV_8U);
+    currentFrame().imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
     cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
 
     ColorMap hotCMap;
 
     std::unique_ptr<QDVO::CameraModel>& cm =
         this->algorithm.graph.getCameraModelMap()
-            .at(this->algorithm.graph.getCurrentFrame()->cameraModelKey)
+            .at(currentFrame().cameraModelKey)
             ->first;
     // draw current frame landmarks.
-    for (auto& key : this->algorithm.graph.getCurrentFrame()->landmarkKeys) {
-      auto landmarkIt = algorithm.graph.getLandmarkMap().at(key);
-      if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
-        continue;
-      }
-      auto& e = *landmarkIt;
-      Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
-      auto color = hotCMap.getColor(
-          std::clamp(float(1 / e.dinv / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f));
-      cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
-    }
+    // for (auto& key : currentFrame().landmarkKeys) {
+    //  auto landmarkIt = algorithm.graph.getLandmarkMap().at(key);
+    //  if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
+    //    continue;
+    //  }
+    //  auto& e = *landmarkIt;
+    //  Eigen::Matrix<SCALAR_TYPE, 2, 1> px = e.px;
+    //  auto color = hotCMap.getColor(
+    //      std::clamp(float(1 / e.dinv / MAX_VISUALIZATION_DEPTH),
+    //      0.0f, 1.0f));
+    //  cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
+    //}
 
     // cv::Mat temp2;
-    // algorithm.graph.getCurrentFrame()
+    // currentFrame()
     //    ->imagePyr.getImage(3)
     //    .toOpenCVImage()
     //    .convertTo(temp2, CV_8U);
@@ -60,35 +68,35 @@ void QDVOVisualizer::transferVisualizationData() {
     // cv::waitKey(1);
 
     // draw correspondence distributions.
-    for (auto& cd :
-         this->algorithm.graph.getCurrentFrame()->correspondenceDistributions) {
+    for (auto& cd : currentFrame().correspondenceDistributions) {
       auto landmarkIt = algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
       if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
         continue;
       }
       auto& l = *landmarkIt;
-      auto px = this->algorithm.graph.projectLandmarkToPixel(
-          this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
-          cd.landmarkKey);
-      auto point = this->algorithm.graph.projectLandmarkToCameraFrame(
-          this->algorithm.graph.getCurrentFrameKey(), l.parentFrameKey,
-          cd.landmarkKey);
 
-      if (px.has_value()) {
-        // TODO Draw the distribution.
+      if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE) {
+        auto px = this->algorithm.graph.projectLandmarkToPixel(
+            currentFrameKey(), l.parentFrameKey, cd.landmarkKey);
+        auto point = this->algorithm.graph.projectLandmarkToCameraFrame(
+            currentFrameKey(), l.parentFrameKey, cd.landmarkKey);
 
-        // Draw the landmark.
-        // if initialized, draw with a depth color.
-        if (cd.initialized) {
-          cv::circle(
-              render, cv::Point2f(px.value()(0), px.value()(1)), 2,
-              hotCMap.getColor(std::clamp(
-                  float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
-              -1);
-        } else {
-          // If not intiialized, draw purple.
-          cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
-                     cv::Scalar(255, 0, 204), -1);
+        if (px.has_value()) {
+          // TODO Draw the distribution.
+
+          // Draw the landmark.
+          // if initialized, draw with a depth color.
+          if (cd.initialized) {
+            cv::circle(
+                render, cv::Point2f(px.value()(0), px.value()(1)), 2,
+                hotCMap.getColor(std::clamp(
+                    float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
+                -1);
+          } else {
+            // If not intiialized, draw purple.
+            cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
+                       cv::Scalar(255, 0, 204), -1);
+          }
         }
       }
     }
@@ -102,8 +110,7 @@ void QDVOVisualizer::transferVisualizationData() {
   }
 
   // Set the pose of the current frame.
-  this->visualizationData.currentFramePose =
-      algorithm.graph.getCurrentFrame()->imustate.getSE3();
+  this->visualizationData.currentFramePose = currentFrame().imustate.getSE3();
 
   // Render and transfer the keyframes.
   int kfidx = 0;
@@ -111,8 +118,9 @@ void QDVOVisualizer::transferVisualizationData() {
   for (auto it = algorithm.graph.getKeyframeMap().begin();
        it != algorithm.graph.getKeyframeMap().end(); it++) {
     auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
+
     // If the keyframe is not the current frame.
-    if (!(key == algorithm.graph.getCurrentFrameKey()) && (*it)->initialized) {
+    if (!(key == currentFrameKey()) && (*it)->initialized) {
       cv::Mat temp, render;
       (*it)->imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
       cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);

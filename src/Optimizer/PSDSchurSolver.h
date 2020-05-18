@@ -12,6 +12,7 @@
 #include "Logging.h"
 #include "MetaHelpers.h"
 #include "ParallelAlgorithms/ParallelAlgorithms.h"
+#include "Profiling.h"
 #include "SlotArray.h"
 #include "SlotMap.h"
 
@@ -556,6 +557,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
   /// Linearizes all error terms stored in this container.
   void linearize(VariableContainer<Variables...> &variables,
                  ErrorTermContainer<ErrorTerms...> &errorTerms) {
+    PROFILE(std::string(typeid(ErrorTermContainer<ErrorTerms...>).name()) + "_linearize");
     // loop through all error terms and linearize all of them.
     internal::static_for(
         errorTerms.tupleOfErrorTermMaps, [&](auto i, auto &errorTermMap) {

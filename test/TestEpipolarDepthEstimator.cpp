@@ -8,7 +8,7 @@ class EpipolarDepthEstimationTest : public QDVOSimpleGraphTest {};
  * This test will simulate a epipolar depth search by creating two
  * images with a corner feature.
  */
-TEST_F(EpipolarDepthEstimationTest, EstimateDepth) {
+TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   // Insert a camera model into the graph.
   //  auto cameraModelKey =
   //  addCameraToGraph(std::make_unique<QDVO::EquidistantCameraModel>(*cm));
