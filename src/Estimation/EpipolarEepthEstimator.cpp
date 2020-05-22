@@ -32,8 +32,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   if (attempts > config->epipolar_depth_estimator.maximumAttempts) {
     // There have been too many attempts marginalize the landmark.
-    LOG_TRACE("Too many attempts to estimate the landmark depth have occured. Marginalizing point.");
-    landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
+    LOG_TRACE("Too many attempts to estimate the landmark depth have occured.");
+    //landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
 

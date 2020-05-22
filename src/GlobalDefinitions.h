@@ -35,7 +35,7 @@
 #define MINUMUM_ACTIVE_LANDMARKS 100
 
 // define the maximum radius for the correspondence search.
-#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 25
+#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35 
 
 // the number of extra radii that are searched after finding the first potential correspondence
 #define SEARCH_RADIUS_PADDING 5
