@@ -7,6 +7,7 @@ import math
 from sim3TrajectoryError import *
 from estimatorMetrics import * 
 from trackingStatusMetrics import * 
+from correspondenceDistributionMetrics import * 
 from percentiles import *
 
 def prettyDict(d, indent=0):
@@ -39,6 +40,8 @@ def computeMetrics(trackingData, groundtruth):
     metrics['frontend_visual_odometry_metrics'] = computeFEVOMetrics(trackingData)
 
     metrics['tracking_status_metrics'] = computeTrackingStatusMetrics(trackingData)
+    
+    metrics['correspondence_distribution_metrics'] = computeCorrespondenceDistributionMetrics(trackingData)
 
     # Print the metrics.
     print("Metrics:")

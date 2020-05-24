@@ -10,8 +10,14 @@ def computeTrackingStatusMetrics(trackingData):
     TRACKING_STATUS = 1
     INITIALIZING_STATUS = 0
 
+    result = {}
+    result['status'] = {}
+    result['status']['frames'] = {}
+
     for frameNumber in trackingData['frames']:
         trackingStatus = trackingData['frames'][frameNumber]['tracking_status']
+        result['status']['frames'][frameNumber] = trackingStatus
+
         if trackingStatus == LOST_TRACKING_STATUS and lastTrackingStatus != LOST_TRACKING_STATUS:
             lostTrackingEvents = lostTrackingEvents + 1
 
@@ -27,7 +33,6 @@ def computeTrackingStatusMetrics(trackingData):
         lastTrackingStatus = trackingStatus
         
 
-    result = {}
     result['lost_tracking_events'] = lostTrackingEvents
     result['frames_with_lost_tracking'] = framesWithLostTracking
     result['frames_with_tracking'] = framesWithTracking

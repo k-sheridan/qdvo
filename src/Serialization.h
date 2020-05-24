@@ -109,6 +109,7 @@ void serialize(Archive& ar,
 
 template <class Archive>
 void serialize(Archive& ar, QDVO::Frame& frame) {
+  ar& cereal::make_nvp("initialized", frame.initialized);
   ar& cereal::make_nvp("camera_model_key", frame.cameraModelKey);
   ar& cereal::make_nvp("extrinsic_key", frame.extrinsicKey);
   ar& cereal::make_nvp("imustate", frame.imustate);
