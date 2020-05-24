@@ -35,6 +35,12 @@ public:
     /// Solver used to refine the pose.
     Solver solver = Solver(lossFunction);
 
+    /// Result from last solve.
+    Solver::SolveResult lastSolveResult;
+
+    /// Keyframe key last solved for.
+    KeyframeMap::key_type lastSolvedFrameKey;
+
     /// The key to the pose being refined.
     ArgMin::VariableKey<ArgMin::SE3> poseKey;
 

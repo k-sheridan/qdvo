@@ -68,6 +68,9 @@ class SlidingWindowEstimator {
   /// Solver used to refine the pose.
   Solver solver = Solver(lossFunction);
 
+  /// Result of last solve.
+  Solver::SolveResult lastSolveResult;
+
   /// A map between a variable key used by the solver and a key used in the
   /// graph for camera poses.
   ArgMin::SlotArray<ArgMin::VariableKey<ArgMin::SE3>, KeyframeMap::key_type>

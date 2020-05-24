@@ -55,11 +55,15 @@ runtimes = parseProfilingLog(os.path.join(args.output, "log.txt"))
 json.dump(runtimes, profilingFile, indent=4, separators=(',', ': '))
 print(colored(f"Finished logging {len(runtimes.keys())} runtimes", 'green', attrs=['bold']))
 
+print(colored(f"Loading tracking log.", 'green', attrs=['bold']))
 # Open the tracking log json.
 trackingLog = json.load(open(os.path.join(args.output, "trackingLog.json")))  
 
+print(colored(f"Loaded tracking log.", 'green', attrs=['bold']))
+print(colored(f"Loading Ground Truth.", 'green', attrs=['bold']))
 # Open the ground truth csv.
 groundTruthCSV = open(groundTruthPath)
+print(colored(f"Loaded Ground Truth.", 'green', attrs=['bold']))
 
 # Compute metrics.
 print(colored('Computing metrics', 'green', attrs=['bold']))

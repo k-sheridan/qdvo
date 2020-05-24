@@ -15,8 +15,9 @@
 #include "DataStructures/Graph.h"
 #include "DataStructures/IMUState.h"
 #include "DataStructures/Landmark.h"
-#include "Estimation/SlidingWindowEstimator.h"
 #include "Estimation/FrontFndVisualOdometry.h"
+#include "Estimation/SlidingWindowEstimator.h"
+#include "Optimizer/PSDSchurSolver.h"
 
 namespace cereal {
 
@@ -124,9 +125,31 @@ void serialize(Archive& ar, QDVO::Graph& graph) {
 }
 
 template <class Archive>
-void serialize(Archive& ar, QDVO::SlidingWindowEstimator& swe) {}
+void serialize(Archive& ar, QDVO::FrontEndVisualOdometry::Solver::SolveResult& result) {
+  ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
+}
 
 template <class Archive>
-void serialize(Archive& ar, QDVO::FrontEndVisualOdometry& fevo) {}
+void serialize(Archive& ar, QDVO::SlidingWindowEstimator::Solver::SolveResult& result) {
+  ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
+}
+
+template <class Archive>
+void serialize(Archive& ar, QDVO::SlidingWindowEstimator& swe) {
+  std::vector<QDVO::KeyframeMap::key_type> frameKeys;
+  for (auto it = swe.poseKeyMap.begin(); it != swe.poseKeyMap.end(); it++) {
+    frameKeys.push_back(swe.poseKeyMap.getKeyFromDataIndex(
+        std::distance(swe.poseKeyMap.begin(), it)));
+  }
+  ar& cereal::make_nvp("frame_keys_in_window", frameKeys);
+
+  ar& cereal::make_nvp("solve_result", swe.lastSolveResult);
+}
+
+template <class Archive>
+void serialize(Archive& ar, QDVO::FrontEndVisualOdometry& fevo) {
+  ar& cereal::make_nvp("frame_key_solved_for", fevo.lastSolvedFrameKey);
+  ar& cereal::make_nvp("solve_result", fevo.lastSolveResult);
+}
 
 }  // namespace cereal

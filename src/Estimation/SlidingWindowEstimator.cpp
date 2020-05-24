@@ -139,6 +139,9 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 
+  // Set the last solve result.
+  lastSolveResult = result;
+
   LOG_INFO("Solver ran for {} iterations.", result.whitenedSqError.size());
   if (!result.whitenedSqError.empty()) {
     LOG_INFO("Initial squared error {} -> final squared error {}",

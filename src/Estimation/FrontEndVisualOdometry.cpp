@@ -61,4 +61,8 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
   LOG_INFO("Updating current frame pose.");
   currentFrame.imustate.attitude = variableContainer.at(poseKey).value.so3();
   currentFrame.imustate.pos = variableContainer.at(poseKey).value.translation();
+
+  // Set the solve result.
+  lastSolveResult = result;
+  lastSolvedFrameKey = graph.getCurrentFrameKey();
 }
