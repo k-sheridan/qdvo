@@ -6,12 +6,17 @@ from scipy.spatial.transform import Rotation as R
 import math
 from sim3TrajectoryError import *
 from estimatorMetrics import * 
+from trackingStatusMetrics import * 
+from percentiles import *
 
 def prettyDict(d, indent=0):
    for key, value in d.items():
       print('  ' * indent + str(key))
       if isinstance(value, dict):
-         prettyDict(value, indent+1)
+         if 'frames' in value.keys():
+             prettyDict(computePercentiles(list(value['frames'].values()), [0, 50, 90, 100]), indent+1)
+         else:
+             prettyDict(value, indent+1)
       else:
          print('  ' * (indent+1) + str(value))
 
@@ -33,6 +38,9 @@ def computeMetrics(trackingData, groundtruth):
     metrics['sliding_window_estimator_metrics'] = computeSWEMetrics(trackingData)
     metrics['frontend_visual_odometry_metrics'] = computeFEVOMetrics(trackingData)
 
+    metrics['tracking_status_metrics'] = computeTrackingStatusMetrics(trackingData)
+
+    # Print the metrics.
     print("Metrics:")
     prettyDict(metrics, 1)
 

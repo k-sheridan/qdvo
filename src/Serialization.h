@@ -144,6 +144,13 @@ void serialize(Archive& ar, QDVO::SlidingWindowEstimator& swe) {
   ar& cereal::make_nvp("frame_keys_in_window", frameKeys);
 
   ar& cereal::make_nvp("solve_result", swe.lastSolveResult);
+
+  std::vector<QDVO::LandmarkMap::key_type> landmarkKeys;
+  for (auto it = swe.dinvKeyMap.begin(); it != swe.dinvKeyMap.end(); it++) {
+    landmarkKeys.push_back(swe.dinvKeyMap.getKeyFromDataIndex(
+        std::distance(swe.dinvKeyMap.begin(), it)));
+  }
+  ar& cereal::make_nvp("landmark_keys_in_window", landmarkKeys);
 }
 
 template <class Archive>

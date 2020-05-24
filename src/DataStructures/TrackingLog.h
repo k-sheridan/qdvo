@@ -2,6 +2,7 @@
 
 #include "DataStructures/Graph.h"
 #include "Serialization.h"
+#include "BasicPipeline.h"
 
 namespace QDVO {
 /**
@@ -30,9 +31,11 @@ struct TrackingLog {
     QDVO::Graph& graph;
     QDVO::SlidingWindowEstimator& swe;
     QDVO::FrontEndVisualOdometry fevo;
+    QDVO::BasicPipeline::Status trackingStatus;
 
     template <class Archive>
     void serialize(Archive& ar) {
+      ar& cereal::make_nvp("tracking_status", trackingStatus);
       ar& cereal::make_nvp("graph", graph);
       ar& cereal::make_nvp("sliding_window_estimator", swe);
       ar& cereal::make_nvp("front_end_visual_odometry", fevo);
@@ -53,8 +56,8 @@ struct TrackingLog {
 
   /// Serialize the tracking state.
   void logTrackingState(Graph& graph, SlidingWindowEstimator& swe,
-                        FrontEndVisualOdometry& fevo) {
-    TrackingState ts = {graph, swe, fevo};
+                        FrontEndVisualOdometry& fevo, BasicPipeline::Status status) {
+    TrackingState ts = {graph, swe, fevo, status};
     archive& cereal::make_nvp(std::to_string(frameNumber), ts);
     ++frameNumber;
   }

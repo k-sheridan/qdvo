@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Logging.h"
 #include "GlobalDefinitions.h"
+#include "Logging.h"
 
 namespace QDVO {
 class Config {
@@ -42,6 +42,12 @@ class Config {
       double maximumDepth = 20;
       double resolution = 1;
     } epipolar_depth_estimator;
+
+    /// Thresholds which determine lost tracking.
+    struct LostTrackingSettings {
+      int visibleFeatureThreshold = 10;
+      double sqErrorThreshold = 100;
+    } lost_tracking_settings;
   };
 
   /// Set the parameters

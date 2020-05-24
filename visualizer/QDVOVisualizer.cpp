@@ -213,7 +213,8 @@ void QDVOVisualizer::runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
   if (trackingLog != nullptr) {
     SPDLOG_INFO("Logging tracking state.");
     trackingLog->logTrackingState(this->algorithm.graph, this->algorithm.swe,
-                                  this->algorithm.frontEndVisualOdometry);
+                                  this->algorithm.frontEndVisualOdometry,
+                                  this->algorithm.status);
   }
   this->algorithmMutex.unlock();
 

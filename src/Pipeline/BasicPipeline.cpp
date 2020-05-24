@@ -157,7 +157,55 @@ void QDVO::BasicPipeline::addFrame(
     graph.getCurrentFrame()->imustate =
         (*graph.getKeyframeMap().at(newKeyframeKey))->imustate;
   }
+
+  // Determine the current tracking status.
+  updateTrackingStatus();
+
   LOG_INFO("Finished adding frame.");
+}
+
+void QDVO::BasicPipeline::updateTrackingStatus() {
+  int nActiveKeyframes = 0;
+  for (auto& keyframe : graph.getKeyframeMap()) {
+    if (keyframe->status == QDVO::Frame::FrameStatus::ACTIVE) {
+      ++nActiveKeyframes;
+    }
+  }
+
+  // If there is only one keyframe, QDVO is still initializing.
+  if (nActiveKeyframes == 1) {
+    LOG_INFO("Tracking is initializing.");
+    status = Status::INITIALIZING;
+    return;
+  }
+
+  auto latestKeyframeKey = graph.findLatestFrameKey();
+  if (latestKeyframeKey.isInvalid()) {
+    LOG_ERROR("Latest keyframe is invalid");
+    status = Status::LOST_TRACKING;
+    return;
+  }
+  int nVisibleLandmarks = 0;
+  for (auto& cd : (*graph.getKeyframeMap().at(latestKeyframeKey))
+                      ->correspondenceDistributions) {
+    if (cd.initialized) {
+      ++nVisibleLandmarks;
+    }
+  }
+  CHECK(frontEndVisualOdometry.lastSolveResult.whitenedSqError.size() > 0,
+        "No iterations in FrontEndVisualOdometry.");
+
+  if (nVisibleLandmarks <=
+          config->lost_tracking_settings.visibleFeatureThreshold ||
+      frontEndVisualOdometry.lastSolveResult.whitenedSqError.back() >
+          config->lost_tracking_settings.sqErrorThreshold) {
+    LOG_ERROR("Lost tracking!");
+    status = Status::LOST_TRACKING;
+    return;
+  }
+
+  // If we get here, there is tracking.
+  status = Status::TRACKING;
 }
 
 void QDVO::BasicPipeline::runMarginalizationStrategy() {
