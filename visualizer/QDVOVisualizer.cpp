@@ -140,12 +140,27 @@ void QDVOVisualizer::transferVisualizationData() {
   // Set the pose of the current frame.
   this->visualizationData.currentFramePose = currentFrame().imustate.getSE3();
 
+  std::vector<QDVO::KeyframeMap::key_type> activeKeyframeKeys;
+  for (auto it = algorithm.graph.getKeyframeMap().begin();
+       it != algorithm.graph.getKeyframeMap().end(); it++) {
+    if ((*it)->status == QDVO::Frame::FrameStatus::ACTIVE) {
+      activeKeyframeKeys.push_back(algorithm.graph.getKeyframeMap().getKeyFromDataIndex(
+          std::distance(algorithm.graph.getKeyframeMap().begin(), it)));
+    }
+  }
+
+  // Sort the keys by the keyframe time in ascending order.
+  std::sort(activeKeyframeKeys.begin(), activeKeyframeKeys.end(),
+            [&](auto a, auto b) {
+              return (*algorithm.graph.getKeyframeMap().at(a))->imustate.time <
+                     (*algorithm.graph.getKeyframeMap().at(b))->imustate.time;
+            });
+
   // Render and transfer the keyframes.
   int kfidx = 0;
   int dataIndex = 0;
-  for (auto it = algorithm.graph.getKeyframeMap().begin();
-       it != algorithm.graph.getKeyframeMap().end(); it++) {
-    auto key = algorithm.graph.getKeyframeMap().getKeyFromDataIndex(dataIndex);
+  for (auto key : activeKeyframeKeys) {
+    auto it = algorithm.graph.getKeyframeMap().at(key);
 
     // If the keyframe is not the current frame.
     if (!(key == currentFrameKey()) && (*it)->initialized) {
