@@ -177,6 +177,7 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
   for (auto& errorTerm : errorTermMap) {
     if (errorTerm.residual.norm() >= config->pixelOutlierThreshold) {
       landmarksToMarginalize.push_back(errorTerm.landmarkKey);
+      LOG_INFO("outlier error: {}", errorTerm.residual.norm());
     }
   }
 
@@ -190,7 +191,12 @@ void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
     }
   }
 
-  LOG_INFO("Remove {} outlier landmarks.", marginalizedLandmarks);
+  LOG_INFO(
+      "Remove {} outlier landmarks. start error {} -> final error {} with {} "
+      "iterations",
+      marginalizedLandmarks, lastSolveResult.whitenedSqError.front(),
+      lastSolveResult.whitenedSqError.back(),
+      lastSolveResult.whitenedSqError.size());
 }
 
 void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {

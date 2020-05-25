@@ -29,7 +29,7 @@ def computeMetrics(trackingData, groundtruth):
     imuPoseEstimates, imuGroundTruth = extractImuTrajectories(trackingData, groundtruth)
 
     # Compute the trajectory error.
-    posRMSE, rotRMSE, scaleDifference, oepf, tepf, bepf = computeTrajectoryError(imuGroundTruth, imuPoseEstimates)
+    posRMSE, rotRMSE, scaleDifference, oepf, tepf, bepf, sepf = computeTrajectoryError(imuGroundTruth, imuPoseEstimates)
     metrics = {}
     metrics['trajectory_rsme'] = {}
     metrics['trajectory_rsme']['position_m'] = posRMSE
@@ -40,6 +40,7 @@ def computeMetrics(trackingData, groundtruth):
     metrics['odometry_error']['rotation_error_deg'] = oepf
     metrics['odometry_error']['translation_error_m'] = tepf
     metrics['odometry_error']['bearing_error_deg'] = bepf
+    metrics['odometry_error']['scale_error'] = sepf
 
     metrics['sliding_window_estimator_metrics'] = computeSWEMetrics(trackingData)
     metrics['frontend_visual_odometry_metrics'] = computeFEVOMetrics(trackingData)

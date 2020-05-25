@@ -6,7 +6,7 @@ import math
 # output: A dictionary in the form of ("pXXX", value) (ie "p50", 0.0388)
 def computePercentiles(data, percentiles):
     # clean the data.
-    data = [x for x in data if str(x) != 'nan'] 
+    data = [x for x in data if str(x) != 'nan' and str(x) != 'inf'] 
     data.sort()
     # return early if there is no data.
     if len(data) is 0:
