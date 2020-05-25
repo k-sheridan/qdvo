@@ -75,7 +75,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     /// The maximum number of iterations for the solve.
     int maximumIterations = 25;
     /// Stop after the error increases.
-    bool stopEarly = true;
+    bool stopEarly = false;
   } settings;
 
   struct SolveResult {

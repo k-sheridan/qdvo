@@ -144,8 +144,9 @@ void QDVOVisualizer::transferVisualizationData() {
   for (auto it = algorithm.graph.getKeyframeMap().begin();
        it != algorithm.graph.getKeyframeMap().end(); it++) {
     if ((*it)->status == QDVO::Frame::FrameStatus::ACTIVE) {
-      activeKeyframeKeys.push_back(algorithm.graph.getKeyframeMap().getKeyFromDataIndex(
-          std::distance(algorithm.graph.getKeyframeMap().begin(), it)));
+      activeKeyframeKeys.push_back(
+          algorithm.graph.getKeyframeMap().getKeyFromDataIndex(
+              std::distance(algorithm.graph.getKeyframeMap().begin(), it)));
     }
   }
 
@@ -197,10 +198,14 @@ void QDVOVisualizer::transferVisualizationData() {
                            0.0f, 1.0f));
             cv::circle(render, cv::Point2f(px(0), px(1)), 2, color, 1);
           } else {
-            auto color = hotCMap.getColor(
-                std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
-                           0.0f, 1.0f));
-            cv::circle(render, cv::Point2f(px(0), px(1)), 1, color, -1);
+            cv::circle(render, cv::Point2f(px(0), px(1)), 2,
+                       cv::Scalar(80, 255, 80), -1);
+          }
+        } else {
+          // If the landmark was ever used.
+          if (e.nObservations > 0) {
+            cv::circle(render, cv::Point2f(px(0), px(1)), 3,
+                       cv::Scalar(80, 80, 255), -1);
           }
         }
       }

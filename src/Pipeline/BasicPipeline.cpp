@@ -324,6 +324,12 @@ void QDVO::BasicPipeline::
         Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))),
         MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
         warpedPatch.value());
+
+    // If this landmark was observed increment the observation counter.
+    if (cdRef.initialized) {
+      ++l.nObservations;
+    }
+
     return 0;
   };
 
@@ -617,7 +623,8 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
               nearestNeighborDistance / maxPixelDistance;
           // Inverted noramlized depth error.
           double normalizedDepthError = std::abs(
-              1 - std::clamp(l.depthEstimator.error * l.dinv / maxDepthError, 0.0, 1.0));
+              1 - std::clamp(l.depthEstimator.error * l.dinv / maxDepthError,
+                             0.0, 1.0));
 
           CHECK(neighborDistNormalized <= 1 && neighborDistNormalized >= 0,
                 "The distance is not bounded.")

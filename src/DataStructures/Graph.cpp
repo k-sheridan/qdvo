@@ -74,8 +74,16 @@ void Graph::removeMarginalizedVariables() {
   std::vector<LandmarkMap::key_type> landmarkKeysToRemove;
   for (auto it = landmarks.begin(); it != landmarks.end(); it++) {
     if (it->status == Landmark::LandmarkStatus::MARGINALIZED) {
-      landmarkKeysToRemove.push_back(
-          landmarks.getKeyFromDataIndex(std::distance(landmarks.begin(), it)));
+      auto lKey =
+          landmarks.getKeyFromDataIndex(std::distance(landmarks.begin(), it));
+      // Only remove landmarks associated to
+      auto keyframeIt = keyframes.at(it->parentFrameKey);
+      if (keyframeIt != keyframes.end() &&
+          (*keyframeIt)->status != QDVO::Frame::FrameStatus::MARGINALIZED) {
+        // If the parent frame still exists skip this landmark.
+        continue;
+      }
+      landmarkKeysToRemove.push_back(lKey);
     }
   }
 
@@ -190,9 +198,12 @@ Vector3 Graph::projectLandmarkToCameraFrame(
   std::unique_ptr<Frame>& targetFrame = *(keyframes.at(targetFrameKey));
   std::unique_ptr<Frame>& sourceFrame = *(keyframes.at(sourceFrameKey));
 
-  Landmark& l = *(landmarks.at(landmarkKey));
+  auto landmarkIt = landmarks.at(landmarkKey);
+  CHECK(landmarkIt != landmarks.end(), "Landmark does not exist.");
+  Landmark& l = *(landmarkIt);
 
-  assert(l.parentFrameKey == sourceFrameKey);
+  CHECK(l.parentFrameKey == sourceFrameKey,
+        "Landmark is not child of source keyframe.");
 
   return projectLandmarkToCameraFrame(*targetFrame, *sourceFrame, l);
 }
@@ -203,9 +214,14 @@ Result<Vector2> Graph::projectLandmarkToPixel(
   std::unique_ptr<Frame>& targetFrame = *(keyframes.at(targetFrameKey));
   std::unique_ptr<Frame>& sourceFrame = *(keyframes.at(sourceFrameKey));
 
-  Landmark& l = *(landmarks.at(landmarkKey));
+  auto landmarkIt = landmarks.at(landmarkKey);
+  if (landmarkIt == landmarks.end()) {
+    return {};
+  }
+  Landmark& l = *(landmarkIt);
 
-  assert(l.parentFrameKey == sourceFrameKey);
+  CHECK(l.parentFrameKey == sourceFrameKey,
+        "Landmark is not child of source keyframe.");
 
   return projectLandmarkToPixel(*targetFrame, *sourceFrame, l);
 }

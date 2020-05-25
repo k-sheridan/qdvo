@@ -25,6 +25,9 @@ public:
     /// A depth estimator used to initialize the depth of this landmark.
     EpipolarDepthEstimator depthEstimator;
 
+    /// Number of times a landmark was succesfully observed.
+    int nObservations = 0;
+
     /// An enum used to mark the state of this landmark. 
     enum LandmarkStatus{
         INACTIVE,
