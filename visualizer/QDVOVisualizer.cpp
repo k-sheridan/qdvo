@@ -82,7 +82,28 @@ void QDVOVisualizer::transferVisualizationData() {
             currentFrameKey(), l.parentFrameKey, cd.landmarkKey);
 
         if (px.has_value()) {
-          // TODO Draw the distribution.
+          // Draw the distribution.
+          auto centerPx = px.value().cast<int>();
+          int width = 17;
+          auto scores =
+              cd.extractScores(centerPx, Eigen::Vector2i(width, width));
+          for (int i = 0; i < width; ++i) {
+            for (int j = 0; j < width; ++j) {
+              auto score = scores(i, j);
+              if (score >= POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+                double interp = (score - POTENTIAL_CORRESPONDENCE_THRESHOLD) /
+                                (1.0 - POTENTIAL_CORRESPONDENCE_THRESHOLD);
+                int row = centerPx.y() + (i - (width - 1) / 2);
+                int col = centerPx.x() + (j - (width - 1) / 2);
+                if (row < 0 || col < 0 || row >= render.rows ||
+                    col >= render.cols) {
+                  continue;
+                }
+                render.at<cv::Vec3b>(row, col) =
+                    cv::Vec3b(0, (int)(interp * 255.0), 0);
+              }
+            }
+          }
 
           // Draw the landmark.
           // if initialized, draw with a depth color.

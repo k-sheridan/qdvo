@@ -62,13 +62,13 @@ class Config {
 
   /// Access the parameters.
   const Parameters* operator->() const {
-    LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
+    //LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
     return &parameters;
   }
 
   /// Access the parameters.
   const Parameters& params() const {
-    LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
+    //LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
     return parameters;
   }
 

@@ -9,7 +9,8 @@
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(
     unsigned width, unsigned height,
-    std::shared_ptr<const RadialSearchPattern> searchPattern) {
+    std::shared_ptr<const RadialSearchPattern> searchPattern)
+    : width(width), height(height) {
   this->correspondenceMap =
       QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
   this->radialSearchPattern = std::move(searchPattern);
@@ -175,8 +176,8 @@ Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic>
 QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
                                                 Eigen::Vector2i dimensions) {
   // Ensure that the dimensions are odd.
-  assert(dimensions.x() % 2 == 1);
-  assert(dimensions.y() % 2 == 1);
+  CHECK(dimensions.x() % 2 == 1, "");
+  CHECK(dimensions.y() % 2 == 1, "");
 
   Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic> result(
       dimensions.y(), dimensions.x());
@@ -186,10 +187,13 @@ QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
   for (int x = -(dimensions.x() - 1) / 2; x <= (dimensions.x() - 1) / 2; ++x) {
     for (int y = -(dimensions.y() - 1) / 2; y <= (dimensions.y() - 1) / 2;
          ++y) {
-      auto& pc = correspondenceMap.get(center + Eigen::Vector2i(x, y));
+      auto px = center + Eigen::Vector2i(x, y);
       double score = -1;
-      if (pc.initialized()) {
-        score = pc.score;
+      if (px(0) >= 0 && px(1) >= 0 && px(0) < width && px(1) < height) {
+        auto& pc = correspondenceMap.get(px);
+        if (pc.initialized()) {
+          score = pc.score;
+        }
       }
 
       result(y + (dimensions.y() - 1) / 2, x + (dimensions.x() - 1) / 2) =

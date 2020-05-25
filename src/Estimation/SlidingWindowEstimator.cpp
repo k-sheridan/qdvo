@@ -385,7 +385,7 @@ void SlidingWindowEstimator::marginalizeLandmark(
   auto& landmark = *landmarkIt;
   auto variableIt = dinvKeyMap.at(landmarkKey);
   if (variableIt == dinvKeyMap.end()) {
-    LOG_ERROR("Could not marginalize variable key.");
+    LOG_DEBUG("Landmark key did not exist in the SWE.");
     // Set the landmark to marginalized.
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;

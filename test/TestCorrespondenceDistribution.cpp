@@ -101,6 +101,63 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   EXPECT_NEAR(residual.value().norm(), std::sqrt(50), 1e-6);
 }
 
+TEST_F(CorrespondenceDistributionTest, BasicMultipleSolutions) {
+  std::shared_ptr<QDVO::RadialSearchPattern> rsp(
+      new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
+  std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
+  QDVO::CorrespondenceDistribution dist(512, 512, rsp);
+
+  QDVO::Image image;
+  image.getImageData() = Eigen::MatrixXf(512, 512);
+  image.getImageData().setZero();
+
+  // Set a single pixel in the center to high.
+  image.getImageData()(256, 256) = 1.0;
+  image.getImageData()(256, 264) = 1.0;
+
+  // Get a template patch from the image.
+  auto patchResult =
+      image.getSubPixelPatch(QDVO::Vector2(256, 256), PATCH_WIDTH);
+
+  ASSERT_TRUE(patchResult.has_value());
+
+  QDVO::Frame f;
+  cv::Mat cvMat;
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
+  f.updateImage(cvMat);
+
+  dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
+                              Eigen::Vector2i(256, 256), 25, patchComparer,
+                              patchResult.value());
+
+  LOG_INFO(
+      "Correspondence distribution around center: \n{}\n",
+      dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
+
+  std::vector<QDVO::Vector2> errors;
+  std::vector<QDVO::Scalar> scores;
+  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
+  EXPECT_EQ(errors.size(), scores.size());
+  for (auto score : scores) {
+    EXPECT_GE(score, POTENTIAL_CORRESPONDENCE_THRESHOLD);
+  }
+
+  // Compute the residual using the correspondence distribution.
+  auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
+  EXPECT_TRUE(residual.has_value());
+  EXPECT_EQ(residual.value().norm(), 0);
+
+  // Now compute the residual from a different point.
+  residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256 + 4));
+  EXPECT_TRUE(residual.has_value());
+  EXPECT_NEAR(residual.value().norm(), 4, 1e-6);
+
+  // Now compute the residual from a different point.
+  residual = dist.computeResidual(*cm, f, QDVO::Vector2(256 + 4, 256));
+  EXPECT_TRUE(residual.has_value());
+  EXPECT_NEAR(residual.value().norm(), 0, 1e-6);
+}
+
 TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));

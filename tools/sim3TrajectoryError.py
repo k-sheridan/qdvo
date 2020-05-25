@@ -169,7 +169,7 @@ def computeTrajectoryError(trajectory1, trajectory2):
                 translationErrorPerFrame['frames'][frameNumber] = np.linalg.norm(dt2 - dt1)
                 v1 = (dt1/np.linalg.norm(dt1))
                 v2 = (dt2/np.linalg.norm(dt2))
-                translationBearingErrorPerFrame['frames'][frameNumber] = 180/math.pi * math.acos(np.dot(np.squeeze(np.asarray(v1)), np.squeeze(np.asarray(v1)))) 
+                translationBearingErrorPerFrame['frames'][frameNumber] = abs(180/math.pi * math.acos(np.dot(np.squeeze(np.asarray(v2)), np.squeeze(np.asarray(v1))))) 
             except:
                 continue
         return orientationErrorPerFrame, translationErrorPerFrame, translationBearingErrorPerFrame

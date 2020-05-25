@@ -666,8 +666,8 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
         "Too few active landmarks, activating unintialized landmarks. This may "
         "cause tracking loss.");
 
-    activateLandmarks(inactiveUninitializedVisibleLandmarks,
-                      MINUMUM_ACTIVE_LANDMARKS);
+    // Start with the set of landmarks observed atleast once.
+    activateLandmarks(inactiveUninitializedVisibleLandmarks, MINUMUM_ACTIVE_LANDMARKS);
 
     LOG_INFO(
         "{} active visible landmarks after activating "

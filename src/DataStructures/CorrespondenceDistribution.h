@@ -47,6 +47,9 @@ class CorrespondenceDistribution {
   /// of.
   LandmarkMap::key_type landmarkKey;
 
+  /// Width and height of the image.
+  const int width, height;
+
   CorrespondenceDistribution(
       unsigned width, unsigned height,
       std::shared_ptr<const RadialSearchPattern> patternPtr);
