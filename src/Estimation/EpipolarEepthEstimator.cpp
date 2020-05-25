@@ -188,10 +188,11 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   if (error > thisError) {
     error = thisError;
     landmark.dinv = 1.0 / depths.at(std::distance(scores.begin(), maxScoreIt));
+    hypotheses = endIdx - startIdx + 1;
     LOG_TRACE(
         "Updated depth. New estimated depth is: {} with and error of: {} and "
         "{} hypotheses.",
-        1.0 / landmark.dinv, thisError, endIdx - startIdx + 1);
+        1.0 / landmark.dinv, thisError, hypotheses);
   }
 
   // Finally, check if the current estimate meets our initialization

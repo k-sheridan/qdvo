@@ -26,6 +26,9 @@ class EpipolarDepthEstimator {
   /// Keeps track of the number of attempted updates.
   int attempts = 0;
 
+  /// Number of hypotheses in the previous best update.
+  int hypotheses = 0;
+
   /// Return whether the landmark was seen at least once during an update.
   bool observedAtLeastOnce() {
     return error < std::numeric_limits<double>::max();

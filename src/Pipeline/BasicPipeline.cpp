@@ -575,10 +575,16 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
     }
   }
 
+  // Normalizing factors.
+  const double maxPixelDistance = Eigen::Vector2d(cm->width, cm->height).norm();
+  const double maxDepthError = config->epipolar_depth_estimator.maximumDepth -
+                               config->epipolar_depth_estimator.minimumDepth;
+
   // Lambda which selects the best initialized active landmark.
   auto selectBestLandmark =
       [&](const std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>&
-              choices)
+              choices,
+          bool weightOnError = false)
       -> QDVO::Result<std::tuple<LandmarkMap::key_type, QDVO::Vector2>> {
     // Make an empty result.
     QDVO::Result<std::tuple<LandmarkMap::key_type, QDVO::Vector2>> result;
@@ -600,11 +606,34 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
 
         double nearestNeighborDistance =
             minimumDistance(neighbors, std::get<QDVO::Vector2>(t));
+        // Skip if this landmark is too close to a neighbor.
+        if (nearestNeighborDistance < MINUMUM_LANDMARK_SEPERATION) {
+          continue;
+        }
+
+        // If we should weight on error, normalize the distance.
+        if (weightOnError) {
+          double neighborDistNormalized =
+              nearestNeighborDistance / maxPixelDistance;
+          // Inverted noramlized depth error.
+          double normalizedDepthError = std::abs(
+              1 - std::clamp(l.depthEstimator.error * l.dinv / maxDepthError, 0.0, 1.0));
+
+          CHECK(neighborDistNormalized <= 1 && neighborDistNormalized >= 0,
+                "The distance is not bounded.")
+          CHECK(normalizedDepthError <= 1 && normalizedDepthError >= 0,
+                "The depth error is not bounded.")
+
+          // Compute the weighted "distance".
+          nearestNeighborDistance =
+              neighborDistNormalized *
+                  (1 - config->activation_settings.depthErrorBias) +
+              normalizedDepthError * config->activation_settings.depthErrorBias;
+        }
 
         // If this landmark is far enough and the farthest so far, make it the
         // result.
-        if (nearestNeighborDistance > largestDistance &&
-            nearestNeighborDistance >= MINUMUM_LANDMARK_SEPERATION) {
+        if (nearestNeighborDistance > largestDistance) {
           result = t;
           largestDistance = nearestNeighborDistance;
         }
@@ -622,7 +651,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
   auto activateLandmarks =
       [&](const std::vector<std::tuple<LandmarkMap::key_type, QDVO::Vector2>>&
               choices,
-          int stopAfterNActiveLandmarks) {
+          int stopAfterNActiveLandmarks, bool weightOnDepthError = false) {
         bool shouldContinue = false;
         do {
           // Break if we have enough active landmarks.
@@ -631,7 +660,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
           }
 
           // Find a good landmark.
-          auto result = selectBestLandmark(choices);
+          auto result = selectBestLandmark(choices, weightOnDepthError);
 
           if (result.has_value()) {
             shouldContinue = true;
@@ -645,6 +674,12 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
                         std::get<QDVO::Vector2>(result.value()));
             // Increment the active landmark counter.
             ++nActiveLandmarks;
+
+            LOG_INFO(
+                "Activating landmark with depth: {} depth error: {} "
+                "hypotheses: {} epipolar depth updates: {}",
+                1.0 / l.dinv, l.depthEstimator.error,
+                l.depthEstimator.hypotheses, l.depthEstimator.attempts);
 
           } else {
             shouldContinue = false;
@@ -667,7 +702,8 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
         "cause tracking loss.");
 
     // Start with the set of landmarks observed atleast once.
-    activateLandmarks(inactiveUninitializedVisibleLandmarks, MINUMUM_ACTIVE_LANDMARKS);
+    activateLandmarks(inactiveUninitializedVisibleLandmarks,
+                      MINUMUM_ACTIVE_LANDMARKS, true);
 
     LOG_INFO(
         "{} active visible landmarks after activating "

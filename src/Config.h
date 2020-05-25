@@ -38,7 +38,7 @@ class Config {
       int maximumAttempts = 50;
       double maximumErrorPerDepth = 0.1;
       int maximumHypotheses = 10;
-      double minimumDepth = 0.1;
+      double minimumDepth = 0.4;
       double maximumDepth = 20;
       double resolution = 1;
     } epipolar_depth_estimator;
@@ -53,6 +53,10 @@ class Config {
       double minimumLandmarkRatio = 0.02;
       double maximumLandmarkRatio = 0.33;
     } marginalization_settings;
+
+    struct ActivationSettings {
+      double depthErrorBias = 0.75;
+    } activation_settings;
   };
 
   /// Set the parameters

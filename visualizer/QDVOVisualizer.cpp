@@ -75,7 +75,8 @@ void QDVOVisualizer::transferVisualizationData() {
       }
       auto& l = *landmarkIt;
 
-      if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE) {
+      if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE ||
+          l.status == QDVO::Landmark::LandmarkStatus::MARGINALIZED) {
         auto px = this->algorithm.graph.projectLandmarkToPixel(
             currentFrameKey(), l.parentFrameKey, cd.landmarkKey);
         auto point = this->algorithm.graph.projectLandmarkToCameraFrame(
@@ -84,7 +85,7 @@ void QDVOVisualizer::transferVisualizationData() {
         if (px.has_value()) {
           // Draw the distribution.
           auto centerPx = px.value().cast<int>();
-          int width = 17;
+          int width = 51;
           auto scores =
               cd.extractScores(centerPx, Eigen::Vector2i(width, width));
           for (int i = 0; i < width; ++i) {
@@ -105,18 +106,24 @@ void QDVOVisualizer::transferVisualizationData() {
             }
           }
 
-          // Draw the landmark.
-          // if initialized, draw with a depth color.
-          if (cd.initialized) {
-            cv::circle(
-                render, cv::Point2f(px.value()(0), px.value()(1)), 2,
-                hotCMap.getColor(std::clamp(
-                    float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
-                -1);
+          if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE) {
+            // Draw the landmark.
+            // if initialized, draw with a depth color.
+            if (cd.initialized) {
+              cv::circle(
+                  render, cv::Point2f(px.value()(0), px.value()(1)), 2,
+                  hotCMap.getColor(std::clamp(
+                      float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
+                  -1);
+            } else {
+              // If not intiialized, draw purple.
+              cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
+                         cv::Scalar(255, 0, 204), -1);
+            }
           } else {
-            // If not intiialized, draw purple.
+            // Draw marginalized landmarks as blue.
             cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
-                       cv::Scalar(255, 0, 204), -1);
+                       cv::Scalar(255, 0, 0), -1);
           }
         }
       }
@@ -166,14 +173,14 @@ void QDVOVisualizer::transferVisualizationData() {
           auto color = hotCMap.getColor(
               std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
                          0.0f, 1.0f));
-          cv::circle(render, cv::Point2f(px(0), px(1)), 3, color, -1);
+          cv::circle(render, cv::Point2f(px(0), px(1)), 4, color, -1);
         } else if (e.status == QDVO::Landmark::LandmarkStatus::INACTIVE) {
           if (e.depthEstimator.initialized) {
             // draw a smaller point.
             auto color = hotCMap.getColor(
                 std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
                            0.0f, 1.0f));
-            cv::circle(render, cv::Point2f(px(0), px(1)), 2, color, -1);
+            cv::circle(render, cv::Point2f(px(0), px(1)), 2, color, 1);
           } else {
             auto color = hotCMap.getColor(
                 std::clamp((float)((float)1 / e.dinv / MAX_VISUALIZATION_DEPTH),
