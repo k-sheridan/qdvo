@@ -21,7 +21,7 @@ class Config {
 
     /// Settings for the sliding window estimator.
     double huberWidth = 1;
-    double pixelOutlierThreshold = 3;
+    double pixelOutlierThreshold = 5;
 
     /// feature detection settings
     struct FeatureDetectionSettings {
@@ -31,6 +31,7 @@ class Config {
       double edgeWeight = 0.1;
       double invariantThreshold = 0.1;
       double minimumNormalizedGradientMagnitude = 0.0306;
+      double featureSeparation = 5;
     } feature_detection;
 
     /// Epipolar depth estimator settings.

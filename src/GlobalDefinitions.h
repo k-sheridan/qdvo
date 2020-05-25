@@ -29,7 +29,7 @@
 #define N_ACTIVE_LANDMARKS_DESIRED 300
 
 // The minimum active landmark seperation
-#define MINUMUM_LANDMARK_SEPERATION 5
+#define MINUMUM_LANDMARK_SEPERATION 10
 
 // the minimum number of active landmarks allowed before uninitialized landmarks are made active.
 #define MINUMUM_ACTIVE_LANDMARKS 100
