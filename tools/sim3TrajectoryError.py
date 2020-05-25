@@ -147,6 +147,33 @@ def computeTrajectoryError(trajectory1, trajectory2):
             sqRotError += dR.transpose().dot(dR)  
         return sqPosError[0,0], sqRotError[0,0]
 
+    def computeOdometryError():
+        translationErrorPerFrame = {}
+        translationBearingErrorPerFrame = {}
+        orientationErrorPerFrame = {}
+        translationErrorPerFrame['frames'] = {}
+        translationBearingErrorPerFrame['frames'] = {}
+        orientationErrorPerFrame['frames'] = {}
+        for frameNumber in trajectory1:
+            try:
+                T1 = trajectory1[frameNumber]
+                T2 = trajectory2[frameNumber]
+                T1_n = trajectory1[str(int(frameNumber)+1)]
+                T2_n = trajectory2[str(int(frameNumber)+1)]
+                dR1 = T1['so3'].inverse() * T1_n['so3']
+                dR2 = T2['so3'].inverse() * T2_n['so3']
+                dt1 = T1_n['pos'] - T1['pos']
+                dt2 = (T2_n['pos'] - T2['pos']) * scale
+
+                orientationErrorPerFrame['frames'][frameNumber] = 180 / math.pi * np.linalg.norm((dR1.inverse() * dR2).log())
+                translationErrorPerFrame['frames'][frameNumber] = np.linalg.norm(dt2 - dt1)
+                v1 = (dt1/np.linalg.norm(dt1))
+                v2 = (dt2/np.linalg.norm(dt2))
+                translationBearingErrorPerFrame['frames'][frameNumber] = 180/math.pi * math.acos(np.dot(np.squeeze(np.asarray(v1)), np.squeeze(np.asarray(v1)))) 
+            except:
+                continue
+        return orientationErrorPerFrame, translationErrorPerFrame, translationBearingErrorPerFrame
+
     initialError = computeSSE()
     currentError = initialError
     for i in range(1, 20):
@@ -162,7 +189,9 @@ def computeTrajectoryError(trajectory1, trajectory2):
     #print(f"SSE trajectory error {initialError} -> {currentError}")
     posRMSE = math.sqrt(currentError[0] / len(trajectory1))
     rotRMSE = math.sqrt(currentError[1] / len(trajectory1))
-    return posRMSE, rotRMSE, abs(scale[0,0])
+
+    rotErrorPerFrame, transErrorPerFrame, bearingErrorPerFrame = computeOdometryError()
+    return posRMSE, rotRMSE, abs(scale[0,0]), rotErrorPerFrame, transErrorPerFrame, bearingErrorPerFrame
 
 def extractImuTrajectories(trackingData, groundtruth):
     # Extract the imu pose estimates per frame.
