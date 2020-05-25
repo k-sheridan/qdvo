@@ -1,13 +1,13 @@
 #include "CameraModel.hpp"
+#include "Config.h"
 #include "DataStructures/Graph.h"
 #include "DataStructures/Patch.h"
 #include "EpipolarDepthEstimator.h"
 #include "GlobalDefinitions.h"
+#include "Logging.h"
 #include "PatchComparer.h"
 #include "PatchWarper.h"
-#include "Config.h"
 #include "Types.h"
-#include "Logging.h"
 
 using namespace QDVO;
 
@@ -18,12 +18,14 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // Ensure that the landmark is inactive.
   if (landmark.status != Landmark::LandmarkStatus::INACTIVE) {
     LOG_ERROR("Tried to run epipolar depth estimator on {} landmark.",
-                landmark.status);
+              landmark.status);
   }
 
   if (initialized) {
     // Return if the estimator already has finished.
-    LOG_TRACE("Tried to update landmark's depth estimator which was already initialized.");
+    LOG_TRACE(
+        "Tried to update landmark's depth estimator which was already "
+        "initialized.");
     return;
   }
 
@@ -33,7 +35,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   if (attempts > config->epipolar_depth_estimator.maximumAttempts) {
     // There have been too many attempts marginalize the landmark.
     LOG_TRACE("Too many attempts to estimate the landmark depth have occured.");
-    //landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
+    // landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }
 
@@ -118,7 +120,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
     if (scoreResult.has_value()) {
       depths.push_back(depth);
       scores.push_back(scoreResult.value());
-    } 
+    }
 
     // Increment the depth using pixel derivative.
     depth += config->epipolar_depth_estimator.resolution /
@@ -195,7 +197,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   // Finally, check if the current estimate meets our initialization
   // requirements.
   if (endIdx - startIdx <= config->epipolar_depth_estimator.maximumHypotheses &&
-      error <= config->epipolar_depth_estimator.maximumError) {
+      error <= config->epipolar_depth_estimator.maximumErrorPerDepth *
+                   depths.at(std::distance(scores.begin(), maxScoreIt))) {
     LOG_TRACE(
         "Landmark depth successfully estimated with {} hypotheses and and "
         "error of {}",

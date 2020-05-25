@@ -35,10 +35,10 @@ class Config {
 
     /// Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
-      int maximumAttempts = 6;
-      double maximumError = 0.2;
+      int maximumAttempts = 50;
+      double maximumErrorPerDepth = 0.1;
       int maximumHypotheses = 10;
-      double minimumDepth = 0.4;
+      double minimumDepth = 0.1;
       double maximumDepth = 20;
       double resolution = 1;
     } epipolar_depth_estimator;
@@ -48,6 +48,11 @@ class Config {
       int visibleFeatureThreshold = 10;
       double sqErrorThreshold = 100;
     } lost_tracking_settings;
+
+    struct MarginalizationSettings {
+      double minimumLandmarkRatio = 0.02;
+      double maximumLandmarkRatio = 0.33;
+    } marginalization_settings;
   };
 
   /// Set the parameters
@@ -62,13 +67,13 @@ class Config {
 
   /// Access the parameters.
   const Parameters* operator->() const {
-    //LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
+    // LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
     return &parameters;
   }
 
   /// Access the parameters.
   const Parameters& params() const {
-    //LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
+    // LOG_TRACE_IF(!initialized, "Accessing uninitialized config!");
     return parameters;
   }
 

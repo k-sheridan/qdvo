@@ -1,5 +1,6 @@
 #include "SlidingWindowEstimator.h"
 
+#include "Config.h"
 #include "Logging.h"
 
 using namespace QDVO;
@@ -230,7 +231,8 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
   // Step 1
   // Check if any keyframes have fewer than N% of the total active landmarks
   // visible.
-  constexpr double activeLandmarkRatioThreshold = 0.02;
+  const double activeLandmarkRatioThreshold =
+      config->marginalization_settings.minimumLandmarkRatio;
 
   // Compute the number of visible landmarks in the newest keyframe and the
   // number of visible landmarks hosted by each frame.
@@ -334,7 +336,16 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
 
     // Finalize the score.
     auto& score = *distanceScores.at(frameKey);
+
     score = sqrt(d_i_1) * score;
+
+    // Don't marginalize frames with too many useful features.
+    int nLandmarksInThisFrame = *visibleLandmarksHostedInEachFrame.at(frameKey);
+    double ratio = (double)nLandmarksInThisFrame /
+                   (double)nActiveVisibleLandmarksInCurrentFrame;
+    if (ratio > config->marginalization_settings.maximumLandmarkRatio) {
+      score = 0;
+    }
   }
 
   // Select the maximum distance keyframe.
@@ -345,9 +356,16 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
   auto keyToMarginalize = distanceScores.getKeyFromDataIndex(
       std::distance(distanceScores.begin(), selectedKeyframeKeyIt));
 
-  LOG_TRACE("Selected keyframe {}-{} with score {} for marginalization",
-            keyToMarginalize.index, keyToMarginalize.generation,
-            *selectedKeyframeKeyIt);
+  int nLandmarksInThisFrame =
+      *visibleLandmarksHostedInEachFrame.at(keyToMarginalize);
+  double ratio = (double)nLandmarksInThisFrame /
+                 (double)nActiveVisibleLandmarksInCurrentFrame;
+
+  LOG_TRACE(
+      "Selected keyframe {}-{} with score {} for marginalization. Feature "
+      "ratio: {}",
+      keyToMarginalize.index, keyToMarginalize.generation,
+      *selectedKeyframeKeyIt, ratio);
 
   marginalizeKeyframe(graph, keyToMarginalize);
 }
