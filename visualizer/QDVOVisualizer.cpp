@@ -197,11 +197,11 @@ void QDVOVisualizer::transferVisualizationData() {
   visualizationData.activePoints.clear();
   visualizationData.marginalizedPoints.clear();
   for (auto& landmark : algorithm.graph.getLandmarkMap()) {
-    QDVO::Frame& parentFrame =
-        *(*algorithm.graph.getKeyframeMap().at(landmark.parentFrameKey));
-    auto parentFramePose = parentFrame.imustate.getSE3();
-    QDVO::Vector3 point =
-        parentFramePose * landmark.bearing * (1 / landmark.dinv);
+    auto pointRes = algorithm.graph.projectLandmarkToOrigin(landmark);
+    if (!pointRes.has_value()) {
+      continue;
+    }
+    QDVO::Vector3 point = pointRes.value();
 
     if (landmark.status == QDVO::Landmark::INACTIVE &&
         landmark.depthEstimator.initialized) {

@@ -58,7 +58,8 @@ class QDVOVisualizer {
    * Sets up the algorithm by adding a camera model and
    * preallocating/precomputing.
    */
-  void initialize(std::unique_ptr<QDVO::CameraModel> cameraModel, const QDVO::SE3& T_imu_camera);
+  void initialize(std::unique_ptr<QDVO::CameraModel> cameraModel,
+                  const QDVO::SE3& T_imu_camera);
 
   void runQDVO(cv::Mat& image, double time, bool notifyVisualizer,
                QDVO::TrackingLog* trackingLog);
@@ -284,7 +285,10 @@ class ColorMap {
     return low + interp * (high - low);
   }
 
-  cv::Scalar getColor(float normalizedValue) {
+  cv::Scalar getColor(float normalizedValue, bool invert = true) {
+    if (invert) {
+      normalizedValue = std::abs(normalizedValue - 1);
+    }
     float fIndex = std::clamp(normalizedValue * this->n, 0.0f, 63.0f);
 
     int lIdx = std::floor(fIndex);

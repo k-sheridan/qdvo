@@ -239,4 +239,18 @@ QDVO::SE3 Graph::computeRelativeKeyframeTransform(const Frame& targetFrame,
          (sourceFrame.imustate.getSE3() * T_sfimu_sfcam);
 }
 
+QDVO::Result<QDVO::Vector3> Graph::projectLandmarkToOrigin(
+    QDVO::Landmark& landmark) {
+  auto parentIt = keyframes.at(landmark.parentFrameKey);
+  if (parentIt == keyframes.end()) {
+    return {};
+  }
+
+  auto& parent = *parentIt;
+
+  auto& T_i_c = *extrinsics.at(parent->extrinsicKey);
+
+  return parent->imustate.getSE3() * T_i_c * landmark.getEuclideanPoint();
+}
+
 }  // namespace QDVO
