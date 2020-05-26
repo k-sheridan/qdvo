@@ -9,7 +9,7 @@
 // configurable
 
 // the number of keyframes used in the sliding window estimator
-#define N_KEYFRAMES 8
+#define N_KEYFRAMES 12
 
 // the width of the image patch used. must be an odd number.
 #define PATCH_RADIUS 5
@@ -23,7 +23,7 @@
 #define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
 
 // the number of features the feature detector will find on every keyframe.
-#define N_FEATURES_DESIRED 300  
+#define N_FEATURES_DESIRED 400  
 
 // The number of active landmarks desired for a frame.
 #define N_ACTIVE_LANDMARKS_DESIRED 400

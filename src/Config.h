@@ -10,7 +10,7 @@ class Config {
  public:
   struct Parameters {
     /// global settings file
-    int nKeyframes = 7;
+    int nKeyframes = 12;
 
     /// Allow for certain functions to be executed in parallel.
     bool allowParallelExecution = true;
@@ -37,7 +37,7 @@ class Config {
     /// Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
       int maximumAttempts = 50;
-      double maximumErrorPerDepth = 0.1;
+      double maximumErrorPerDepth = 0.2;
       int maximumHypotheses = 10;
       double minimumDepth = 0.4;
       double maximumDepth = 20;
@@ -51,7 +51,7 @@ class Config {
     } lost_tracking_settings;
 
     struct MarginalizationSettings {
-      double minimumLandmarkRatio = 0.02;
+      double minimumLandmarkRatio = 0.0;
       double maximumLandmarkRatio = 0.33;
     } marginalization_settings;
 
