@@ -50,6 +50,9 @@ class CorrespondenceDistribution {
   /// Width and height of the image.
   const int width, height;
 
+  /// Covariance matrix of this correpsponence distributions.
+  Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
+
   CorrespondenceDistribution(
       unsigned width, unsigned height,
       std::shared_ptr<const RadialSearchPattern> patternPtr);
@@ -64,6 +67,10 @@ class CorrespondenceDistribution {
       const Eigen::Vector2i& centerPixel, const int floodRadius,
       std::shared_ptr<QDVO::PatchComparer> patchComparerPtr,
       QDVO::Patch warpedPatch);
+
+  /// Given an error and score vector, fit a gaussian.
+  Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian(
+      std::vector<QDVO::Vector2>& errors, std::vector<SCALAR_TYPE>& scores);
 
   /**
    * Efficiently evaluates the gradient of the negative log likelihood of the

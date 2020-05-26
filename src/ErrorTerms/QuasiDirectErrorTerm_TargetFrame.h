@@ -46,6 +46,13 @@ class QuasiDirectErrorTerm_TargetFrame
     this->targetFrameKey = targetFrameKey;
     this->landmarkKey = landmarkKey;
     this->correspondenceDistributionKey = cdKey;
+
+    Frame& targetFrame = *(*graph->getKeyframeMap().at(targetFrameKey));
+    auto& correspondenceDistribution =
+        *targetFrame.correspondenceDistributions.at(
+            correspondenceDistributionKey);
+
+    information = correspondenceDistribution.Sigma.inverse();
   }
 
   template <typename... Variables>

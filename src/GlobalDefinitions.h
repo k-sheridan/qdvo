@@ -26,7 +26,7 @@
 #define N_FEATURES_DESIRED 300  
 
 // The number of active landmarks desired for a frame.
-#define N_ACTIVE_LANDMARKS_DESIRED 300
+#define N_ACTIVE_LANDMARKS_DESIRED 400
 
 // The minimum active landmark seperation
 #define MINUMUM_LANDMARK_SEPERATION 10

@@ -51,6 +51,13 @@ class QuasiDirectErrorTerm : public ArgMin::ErrorTermBase<
     this->hostFrameKey = hostFrameKey;
     this->targetFrameKey = targetFrameKey;
     this->landmarkKey = landmarkKey;
+
+    Frame& targetFrame = *(*graph->getKeyframeMap().at(targetFrameKey));
+    auto& correspondenceDistribution =
+        *targetFrame.correspondenceDistributions.at(
+            correspondenceDistributionKey);
+
+    information = correspondenceDistribution.Sigma.inverse();
   }
 
   template <typename... Variables>

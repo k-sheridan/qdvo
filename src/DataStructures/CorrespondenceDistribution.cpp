@@ -14,6 +14,7 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution(
   this->correspondenceMap =
       QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
   this->radialSearchPattern = std::move(searchPattern);
+  Sigma.setIdentity();
 }
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
@@ -95,11 +96,40 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   // initilaized.
   if (!scoreArray.empty()) {
     initialized = true;
+    // Fit a gaussian.
+    Sigma = fitGaussian(errorArray, scoreArray);
   } else {
     LOG_TRACE("Could not initialize the correspondence distribution.");
   }
 
   return scoreArray.size();
+}
+
+Eigen::Matrix<QDVO::Scalar, 2, 2> QDVO::CorrespondenceDistribution::fitGaussian(
+    std::vector<QDVO::Vector2>& errors, std::vector<QDVO::Scalar>& scores) {
+  CHECK(errors.size() == scores.size(), "Vectors have different size.");
+
+  Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
+  Sigma.setIdentity();
+
+  if (scores.empty()) {
+    LOG_DEBUG("Failed to compute gaussian fit.");
+    return Sigma;
+  }
+
+  auto maxScoreIt = std::max_element(scores.begin(), scores.end());
+  int index = std::distance(scores.begin(), maxScoreIt);
+
+  auto centerPos = errors.at(index);
+
+  QDVO::Vector2 temp;
+  for (int i = 0; i < scores.size(); ++i) {
+    temp = (errors.at(i) - centerPos);
+    Sigma += scores.at(i) * temp * temp.transpose();
+  }
+  //LOG_INFO("Sig: {},{},{},{}", Sigma(0), Sigma(1), Sigma(2), Sigma(3));
+
+  return Sigma;
 }
 
 void QDVO::CorrespondenceDistribution::search(
