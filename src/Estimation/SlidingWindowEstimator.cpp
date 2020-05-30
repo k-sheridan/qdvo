@@ -367,7 +367,7 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
   double ratio = (double)nLandmarksInThisFrame /
                  (double)nActiveVisibleLandmarksInCurrentFrame;
 
-  LOG_TRACE(
+  LOG_INFO(
       "Selected keyframe {}-{} with score {} for marginalization. Feature "
       "ratio: {}",
       keyToMarginalize.index, keyToMarginalize.generation,

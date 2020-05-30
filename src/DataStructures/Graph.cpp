@@ -38,6 +38,13 @@ KeyframeMap::key_type Graph::findLatestFrameKey() {
   return result;
 }
 
+QDVO::Frame& Graph::findLatestFrame() {
+  auto key = findLatestFrameKey();
+  auto frameIt = keyframes.at(key);
+  CHECK(frameIt != keyframes.end(), "latest frame does not exist.");
+  return *(*frameIt);
+}
+
 void Graph::swapCurrentAndBufferFrame() {
   std::swap(currentFrameKey, bufferFrameKey);
 
@@ -129,9 +136,11 @@ Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly,
   LOG_INFO("Computing visible landmarks in current frame.");
   std::vector<std::tuple<LandmarkMap::key_type, Vector2>> visibleLandmarkPtrs;
 
-  auto& cm = cameraModelMap.at(getCurrentFrame()->cameraModelKey)->first;
+  QDVO::Frame& currentFrame = *(*keyframes.at(findLatestFrameKey()));
 
-  const SE3& T_cfimu_cfcam = *(extrinsics.at(getCurrentFrame()->extrinsicKey));
+  auto& cm = cameraModelMap.at(currentFrame.cameraModelKey)->first;
+
+  const SE3& T_cfimu_cfcam = *(extrinsics.at(currentFrame.extrinsicKey));
 
   // iterate through all keyframes and project their landmarks into the current
   // frame
@@ -146,9 +155,8 @@ Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly,
     const SE3& T_kfimu_kfcam = *(extrinsics.at(keyframe->extrinsicKey));
 
     // inv(T_w_cimu * T_imu_cam) * T_w_kimu * T_imu_cam
-    SE3 T_cf_kf =
-        (getCurrentFrame()->imustate.getSE3() * T_cfimu_cfcam).inverse() *
-        (keyframe->imustate.getSE3() * T_kfimu_kfcam);
+    SE3 T_cf_kf = (currentFrame.imustate.getSE3() * T_cfimu_cfcam).inverse() *
+                  (keyframe->imustate.getSE3() * T_kfimu_kfcam);
 
     for (auto& lKey : keyframe->landmarkKeys) {
       // Get the landmark.
@@ -177,7 +185,7 @@ Graph::getVisibleLandmarksInCurrentFrame(bool activeLandmarksOnly,
   }
 
   if (includeCurrentFrameLandmarks) {
-    for (auto& lKey : getCurrentFrame()->landmarkKeys) {
+    for (auto& lKey : currentFrame.landmarkKeys) {
       // Get the landmark.
       auto& l = *(landmarks.at(lKey));
 

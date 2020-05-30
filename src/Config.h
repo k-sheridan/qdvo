@@ -52,7 +52,7 @@ class Config {
 
     struct MarginalizationSettings {
       double minimumLandmarkRatio = 0.0;
-      double maximumLandmarkRatio = 0.33;
+      double maximumLandmarkRatio = 0.20;
     } marginalization_settings;
 
     struct ActivationSettings {

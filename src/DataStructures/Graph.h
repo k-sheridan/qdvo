@@ -56,6 +56,9 @@ class Graph {
   /// Find the newest keyframe in the keyframe set.
   KeyframeMap::key_type findLatestFrameKey();
 
+  /// Find the newest keyframe in the keyframe set.
+  QDVO::Frame& findLatestFrame();
+
   /// @return the key to the current frame.
   KeyframeMap::key_type getCurrentFrameKey() { return currentFrameKey; }
 
@@ -115,8 +118,7 @@ class Graph {
   QDVO::SE3 computeRelativeKeyframeTransform(const Frame& A, const Frame& B);
 
   /// Computes the landmark position in the origin.
-  QDVO::Result<QDVO::Vector3> projectLandmarkToOrigin(
-      QDVO::Landmark& landmark);
+  QDVO::Result<QDVO::Vector3> projectLandmarkToOrigin(QDVO::Landmark& landmark);
 
  private:
   /// Stores camera models, and initial estimates of the imu to camera

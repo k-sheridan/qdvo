@@ -511,17 +511,23 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
 
   //
   //
-  // Fill the quad tree with active landmarks.
+  // Fill the quad tree with visible landmarks.
   //
   //
-  for (auto& t : visibleLandmarks) {
-    LandmarkMap::key_type lKey = std::get<0>(t);
+  QDVO::Frame& latestFrame = graph.findLatestFrame();
+  auto latestFrameKey = graph.findLatestFrameKey();
+  for (auto& cd : latestFrame.correspondenceDistributions) {
+    LandmarkMap::key_type lKey = cd.landmarkKey;
 
     Landmark& l = *graph.getLandmarkMap().at(lKey);
 
-    if (l.status == QDVO::Landmark::ACTIVE) {
-      tree.insert(std::get<1>(t).cast<int>(), std::get<1>(t));
-      ++nActiveLandmarks;
+    if (l.status == QDVO::Landmark::ACTIVE && cd.initialized) {
+      auto pixel =
+          graph.projectLandmarkToPixel(latestFrameKey, l.parentFrameKey, lKey);
+      if (pixel.has_value()) {
+        tree.insert(pixel.value().cast<int>(), pixel.value());
+        ++nActiveLandmarks;
+      }
     }
   }
 
