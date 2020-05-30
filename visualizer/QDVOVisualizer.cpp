@@ -296,7 +296,7 @@ void QDVOVisualizer::runVisualization() {
           .SetBounds(0.3, 1, 0, 0.6);
 
   // create the keyframes.
-  this->visualizationData.keyframeImages.resize(N_KEYFRAMES);
+  this->visualizationData.keyframeImages.resize(N_KEYFRAMES - 2);
   this->visualizationData.keyframePoses.resize(N_KEYFRAMES);
 
   pangolin::View& keyframeView =

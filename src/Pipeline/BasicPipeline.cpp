@@ -67,22 +67,6 @@ void QDVO::BasicPipeline::addFrame(
   graph.getCurrentFrame()->imustate.time = time;
   graph.getCurrentFrame()->initialized = true;
 
-  // Try to get a coarse initialization for the imustate.
-  if (graph.getPreviousFrame()->initialized && false) {
-    PROFILE("FrameToFrameRotationEstimator");
-    QDVO::FrameToFramePoseEstimator f2fEstimator;
-    QDVO::SE3 T_previous_current;
-    bool success = f2fEstimator.estimateRelativePose(
-        graph, graph.getPreviousFrameKey(), graph.getCurrentFrameKey(),
-        T_previous_current);
-    LOG_INFO("Estimated Frame2Frame rotation: {}",
-             T_previous_current.so3().matrix());
-
-    // Set the initial attitude.
-    graph.getCurrentFrame()->imustate.attitude =
-        graph.getPreviousFrame()->imustate.attitude * T_previous_current.so3();
-  }
-
   // Initialize correspondence distributions
   {
     PROFILE("initializeCorrespondenceDistribution");
@@ -138,6 +122,13 @@ void QDVO::BasicPipeline::addFrame(
       runEpipolarDepthEstimators(newKeyframeKey);
     }
 
+    // TODO Try activating before marginalizing.
+    // activate new landmarks if necessary
+    {
+      PROFILE("activateNewLandmarks");
+      activateNewLandmarks();
+    }
+
     // marginalize excess keyframes.
     {
       PROFILE("runMarginalizationStrategy");
@@ -146,12 +137,6 @@ void QDVO::BasicPipeline::addFrame(
 
     // Remove the marginalized keys.
     graph.removeMarginalizedVariables();
-
-    // activate new landmarks if necessary
-    {
-      PROFILE("activateNewLandmarks");
-      activateNewLandmarks();
-    }
 
     // Update the current frame estimate.
     graph.getCurrentFrame()->imustate =

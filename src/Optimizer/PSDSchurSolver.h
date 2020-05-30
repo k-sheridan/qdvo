@@ -120,6 +120,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
                   ErrorTermContainer<ErrorTerms...> &errorTerms) {
     LOG_TRACE("Initializing Solver.");
 
+    PROFILE(std::string(typeid(errorTerms).name()) + "_initializeSolver");
+
     removeOldVariablesFromSlotArrays(variables);
 
     addNewVariablesToSlotArrays(variables);
@@ -142,6 +144,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       VariableContainer<Variables...> &variables,
       ErrorTermContainer<ErrorTerms...> &errorTerms, GaussianPriorType &prior) {
     LOG_TRACE("Starting Levenberg-Marquardt solve.");
+    PROFILE(std::string(typeid(errorTerms).name()) +
+            "_solveLevenbergMarquardt");
     // Initialize the solver.
     initialize(variables, errorTerms);
 
@@ -375,6 +379,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       VariableContainer<Variables...> &variables,
       ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms,
       GaussianPriorType &prior) {
+    PROFILE(std::string(typeid(linearizedErrorTerms).name()) +
+            "_solveLinearSystem");
+
     LOG_TRACE(
         "Starting Schur Solve with problem dimension: {} and a correlated "
         "dimension of: {}",
@@ -557,7 +564,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
   /// Linearizes all error terms stored in this container.
   void linearize(VariableContainer<Variables...> &variables,
                  ErrorTermContainer<ErrorTerms...> &errorTerms) {
-    PROFILE(std::string(typeid(ErrorTermContainer<ErrorTerms...>).name()) + "_linearize");
+    PROFILE(std::string(typeid(ErrorTermContainer<ErrorTerms...>).name()) +
+            "_linearize");
     // loop through all error terms and linearize all of them.
     internal::static_for(
         errorTerms.tupleOfErrorTermMaps, [&](auto i, auto &errorTermMap) {
@@ -622,7 +630,10 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       GaussianPriorType &prior,
       ErrorTermContainer<ErrorTerms...> &linearizedErrorTerms,
       VariableContainer<Variables...> &variables) {
+    PROFILE(std::string(typeid(linearizedErrorTerms).name()) +
+            "_buildLinearSystem");
     // Initialize the current problem to the prior.
+
     setProblemToPrior(prior, variables);
 
     double whitenedSqError = 0;
@@ -728,6 +739,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       GaussianPrior<Scalar<ScalarType>, VariableGroup<Variables...>> &prior,
       VariableContainer<Variables...> &variables) {
     LOG_TRACE("Setting problem to prior.");
+
+    PROFILE(std::string(typeid(prior).name()) + "_setProblemToPrior");
+
     // Zero the problem.
     setZero();
 

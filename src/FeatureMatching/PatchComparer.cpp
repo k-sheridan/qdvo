@@ -5,15 +5,11 @@ QDVO::PatchComparer::PatchComparer() {}
 QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch,
                                                        Frame& targetFrame,
                                                        Eigen::Vector2i& pixel) {
-  cv::Rect roi(
-      cv::Point2i(pixel(0), pixel(1)) - cv::Point2i(PATCH_RADIUS, PATCH_RADIUS),
-      cv::Size2i(PATCH_WIDTH, PATCH_WIDTH));
-
   Eigen::Vector2i shift(PATCH_RADIUS, PATCH_RADIUS);
   Eigen::Vector2i tl = pixel - shift;
   Eigen::Vector2i br = pixel + shift;
 
-  assert(PATCH_WIDTH == 2 * PATCH_RADIUS + 1);
+  static_assert(PATCH_WIDTH == 2 * PATCH_RADIUS + 1);
 
   QDVO::ImageType& targetImage = targetFrame.imagePyr.getImage().getImageData();
 
