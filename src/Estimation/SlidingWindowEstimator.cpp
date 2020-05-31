@@ -136,6 +136,10 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   // Clean the prior before optimizing.
   prior.removeUnsedVariables(variableContainer);
 
+  // Write solver settings.
+  solver.settings.initialLambda = 1e3;
+  solver.settings.maximumIterations = 50;
+
   // Run the solver.
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
@@ -159,12 +163,12 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
     LOG_INFO("Removing outliers after successful optimization");
     removeOutliers(graph);
   } else {
-    LOG_ERROR("Error increased, still syncing update with graph.");
-    synchronizeGraph(graph);
+    // LOG_ERROR("Error increased, still syncing update with graph.");
+    // synchronizeGraph(graph);
 
     // remove outliers found during sliding window estimation
-    LOG_INFO("Removing outliers after unsuccessful optimization");
-    removeOutliers(graph);
+    // LOG_INFO("Removing outliers after unsuccessful optimization");
+    // removeOutliers(graph);
   }
 }
 

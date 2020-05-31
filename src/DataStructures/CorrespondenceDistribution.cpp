@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Config.h"
 #include "Landmark.h"
 #include "Logging.h"
 #include "Patch.h"
@@ -97,7 +98,9 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   if (!scoreArray.empty()) {
     initialized = true;
     // Fit a gaussian.
-    Sigma = fitGaussian(errorArray, scoreArray);
+    if (config->fitGaussian) {
+      Sigma = fitGaussian(errorArray, scoreArray);
+    }
   } else {
     LOG_TRACE("Could not initialize the correspondence distribution.");
   }
@@ -127,7 +130,7 @@ Eigen::Matrix<QDVO::Scalar, 2, 2> QDVO::CorrespondenceDistribution::fitGaussian(
     temp = (errors.at(i) - centerPos);
     Sigma += scores.at(i) * temp * temp.transpose();
   }
-  //LOG_INFO("Sig: {},{},{},{}", Sigma(0), Sigma(1), Sigma(2), Sigma(3));
+  // LOG_INFO("Sig: {},{},{},{}", Sigma(0), Sigma(1), Sigma(2), Sigma(3));
 
   return Sigma;
 }

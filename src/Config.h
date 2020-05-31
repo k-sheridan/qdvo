@@ -10,7 +10,7 @@ class Config {
  public:
   struct Parameters {
     /// global settings file
-    int nKeyframes = 12;
+    int nKeyframes = 8;
 
     /// Allow for certain functions to be executed in parallel.
     bool allowParallelExecution = true;
@@ -21,7 +21,9 @@ class Config {
 
     /// Settings for the sliding window estimator.
     double huberWidth = 1;
-    double pixelOutlierThreshold = 5;
+    double pixelOutlierThreshold = 3;
+
+    bool fitGaussian = true;
 
     /// feature detection settings
     struct FeatureDetectionSettings {
@@ -37,7 +39,7 @@ class Config {
     /// Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
       int maximumAttempts = 5000;
-      double maximumErrorPerDepth = 0.3;
+      double maximumErrorPerDepth = 0.1;
       int maximumHypotheses = 20;
       double minimumDepth = 0.4;
       double maximumDepth = 10;
@@ -51,8 +53,8 @@ class Config {
     } lost_tracking_settings;
 
     struct MarginalizationSettings {
-      double minimumLandmarkRatio = 0.02;
-      double maximumLandmarkRatio = 0.33;
+      double minimumLandmarkRatio = 0.001;
+      double maximumLandmarkRatio = 0.15;
     } marginalization_settings;
 
     struct ActivationSettings {

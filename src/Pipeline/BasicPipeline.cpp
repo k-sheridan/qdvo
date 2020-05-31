@@ -567,6 +567,12 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
       if (l.depthEstimator.initialized) {
         inactiveInitializedVisibleLandmarks.push_back(t);
       } else {
+        // TODO make this a parameter.
+        // Also add "good" uninitialized landmarks.
+        if (l.depthEstimator.error * l.dinv < 0.4 &&
+            1.0 / l.dinv > config->epipolar_depth_estimator.minimumDepth) {
+          inactiveInitializedVisibleLandmarks.push_back(t);
+        }
         inactiveUninitializedVisibleLandmarks.push_back(t);
       }
     }
@@ -686,7 +692,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
       };
 
   activateLandmarks(inactiveInitializedVisibleLandmarks,
-                    N_ACTIVE_LANDMARKS_DESIRED);
+                    N_ACTIVE_LANDMARKS_DESIRED, true);
 
   LOG_INFO(
       "{} Active visible landmarks after activating initialized "

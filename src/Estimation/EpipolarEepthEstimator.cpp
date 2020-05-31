@@ -186,6 +186,11 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
 
   // If the error has decreased, update the point.
   if (error > thisError) {
+    if (depths.at(std::distance(scores.begin(), maxScoreIt)) ==
+        config->epipolar_depth_estimator.minimumDepth) {
+      LOG_TRACE("Depth solution at lower boundary.");
+      return;
+    }
     error = thisError;
     landmark.dinv = 1.0 / depths.at(std::distance(scores.begin(), maxScoreIt));
     hypotheses = endIdx - startIdx + 1;
