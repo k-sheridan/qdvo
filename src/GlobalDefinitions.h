@@ -10,7 +10,7 @@
 // configurable
 
 // the number of keyframes used in the sliding window estimator
-#define N_KEYFRAMES 12
+#define N_KEYFRAMES 8
 
 // the width of the image patch used. must be an odd number.
 #define PATCH_RADIUS 5
@@ -21,7 +21,7 @@
 #define ZNCC_PATCH_COMPARISON
 
 // Potential correspondence threshold
-#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.95
 
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 400
@@ -34,7 +34,7 @@
 
 // the minimum number of active landmarks allowed before uninitialized landmarks
 // are made active.
-#define MINUMUM_ACTIVE_LANDMARKS 150
+#define MINUMUM_ACTIVE_LANDMARKS 100
 
 // define the maximum radius for the correspondence search.
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35

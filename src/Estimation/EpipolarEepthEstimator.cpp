@@ -140,7 +140,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
       depths.at(std::distance(scores.begin(), maxScoreIt)));
 
   if (*maxScoreIt < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
-    LOG_TRACE("Landmark has no match during epipolar depth search.");
+    LOG_INFO("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
   }

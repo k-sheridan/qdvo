@@ -36,12 +36,12 @@ class Config {
 
     /// Epipolar depth estimator settings.
     struct EpipolarDepthEstimatorSettings {
-      int maximumAttempts = 50;
-      double maximumErrorPerDepth = 0.2;
-      int maximumHypotheses = 10;
+      int maximumAttempts = 5000;
+      double maximumErrorPerDepth = 0.3;
+      int maximumHypotheses = 20;
       double minimumDepth = 0.4;
-      double maximumDepth = 20;
-      double resolution = 1;
+      double maximumDepth = 10;
+      double resolution = 0.5;
     } epipolar_depth_estimator;
 
     /// Thresholds which determine lost tracking.
@@ -51,8 +51,8 @@ class Config {
     } lost_tracking_settings;
 
     struct MarginalizationSettings {
-      double minimumLandmarkRatio = 0.0;
-      double maximumLandmarkRatio = 0.20;
+      double minimumLandmarkRatio = 0.02;
+      double maximumLandmarkRatio = 0.33;
     } marginalization_settings;
 
     struct ActivationSettings {
