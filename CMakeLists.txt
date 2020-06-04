@@ -69,8 +69,11 @@ add_subdirectory(thirdparty/spdlog)
 add_subdirectory(thirdparty/Sophus)
 add_subdirectory(thirdparty/yaml-cpp)
 
-SET(CMAKE_C_COMPILER clang)
-SET(CMAKE_CXX_COMPILER clang++)
+#SET(CMAKE_C_COMPILER clang)
+#SET(CMAKE_CXX_COMPILER clang++)
+
+SET(CMAKE_C_COMPILER gcc)
+SET(CMAKE_CXX_COMPILER g++)
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})

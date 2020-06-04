@@ -44,8 +44,9 @@ class PSDSchurSolver;
  * The uncorrelated variable set must be a subset of all variables.
  */
 template <typename ScalarType, typename LossFunctionType,
-          typename... ErrorTerms, typename... Variables,
-          typename... UncorrelatedVariables>
+          template <typename...> class ErrorTermGroup,
+          template <typename...> class VariableGroup, typename... ErrorTerms,
+          typename... Variables, typename... UncorrelatedVariables>
 class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
                      ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>,
                      VariableGroup<UncorrelatedVariables...>> {
