@@ -69,11 +69,8 @@ add_subdirectory(thirdparty/spdlog)
 add_subdirectory(thirdparty/Sophus)
 add_subdirectory(thirdparty/yaml-cpp)
 
-#SET(CMAKE_C_COMPILER clang)
-#SET(CMAKE_CXX_COMPILER clang++)
-
-SET(CMAKE_C_COMPILER gcc)
-SET(CMAKE_CXX_COMPILER g++)
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
 
 # add the library
 add_library(QDVO ${QDVO_SOURCE_FILES} ${QDVO_HEADER_FILES})
@@ -91,7 +88,7 @@ add_subdirectory(bench)
 add_subdirectory(visualizer)
 
 # Installation
-
+if(INSTALL_QDVO)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -115,7 +112,6 @@ install(EXPORT QDVOTargets
 
 
 install(FILES ${QDVO_HEADER_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QDVO)
-
 
 # config file
 
@@ -150,7 +146,7 @@ target_include_directories(QDVO
 )
 
 add_library(QDVO::QDVO ALIAS QDVO)
-
+endif()
 
 # debug cmake
 #macro(print_all_variables)
