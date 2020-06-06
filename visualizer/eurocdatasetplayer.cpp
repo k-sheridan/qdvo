@@ -8,6 +8,8 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <string>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 
 #include "Config.h"
 #include "DataStructures/TrackingLog.h"
@@ -39,7 +41,7 @@ void runDataset() {
   if (FLAGS_logTrackingData) {
     os = std::ofstream(FLAGS_trackingLogPath);
     trackingLog = std::make_unique<QDVO::TrackingLog>(
-        os, std::filesystem::absolute(FLAGS_datasetPath));
+        os, boost::filesystem::absolute(FLAGS_datasetPath).string());
   }
 
   // start to parse the euroc dataset.

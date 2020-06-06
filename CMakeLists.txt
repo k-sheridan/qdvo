@@ -88,7 +88,7 @@ add_subdirectory(bench)
 add_subdirectory(visualizer)
 
 # Installation
-
+if(INSTALL_QDVO)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -112,7 +112,6 @@ install(EXPORT QDVOTargets
 
 
 install(FILES ${QDVO_HEADER_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QDVO)
-
 
 # config file
 
@@ -147,7 +146,7 @@ target_include_directories(QDVO
 )
 
 add_library(QDVO::QDVO ALIAS QDVO)
-
+endif()
 
 # debug cmake
 #macro(print_all_variables)
