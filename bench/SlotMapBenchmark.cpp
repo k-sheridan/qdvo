@@ -1,6 +1,7 @@
 #include <benchmark/benchmark.h>
 
 #include <algorithm>
+#include <array>
 #include "Optimizer/SlotMap.h"
 
 using namespace ArgMin;
@@ -38,14 +39,18 @@ static void BM_SlotMapAt(benchmark::State &state) {
 }
 
 static void BM_VectorIterate(benchmark::State &state) {
-  std::vector<double> num1, num2, sum;
-  num1.resize(1e3, 1.9);
-  num2.resize(1e3, 5.0);
-  sum.resize(1e3, 0.0);
+  struct Data {
+    float num1 = 1.9;
+    float num2 = 5.0;
+    float sum = 0.0;
+    std::array<double, 11 * 11> waste;
+  };
+  std::vector<Data> data;
+  data.resize(1e3);
 
   for (auto _ : state) {
-    for (int i = 0; i < num1.size(); ++i) {
-      sum[i] = num1[i] * num2[i];
+    for (auto &d : data) {
+      d.sum = d.num1 * d.num2;
     }
   }
 }
@@ -58,7 +63,7 @@ static void BM_VectorTransformFloat(benchmark::State &state) {
 
   for (auto _ : state) {
     std::transform(num1.begin(), num1.end(), num2.begin(), sum.begin(),
-                   [](double a, double b) { return a * b; });
+                   [](float a, float b) { return a * b; });
   }
 }
 
