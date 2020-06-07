@@ -570,7 +570,8 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
         // TODO make this a parameter.
         // Also add "good" uninitialized landmarks.
         if (l.depthEstimator.error * l.dinv < 0.4 &&
-            1.0 / l.dinv > config->epipolar_depth_estimator.minimumDepth) {
+            1.0 / l.dinv > config->epipolar_depth_estimator.minimumDepth &&
+            l.depthEstimator.attempts > 1) {
           inactiveInitializedVisibleLandmarks.push_back(t);
         }
         inactiveUninitializedVisibleLandmarks.push_back(t);

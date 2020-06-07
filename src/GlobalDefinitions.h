@@ -24,13 +24,13 @@
 #define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
 
 // the number of features the feature detector will find on every keyframe.
-#define N_FEATURES_DESIRED 400
+#define N_FEATURES_DESIRED 600
 
 // The number of active landmarks desired for a frame.
 #define N_ACTIVE_LANDMARKS_DESIRED 400
 
 // The minimum active landmark seperation
-#define MINUMUM_LANDMARK_SEPERATION 10
+#define MINUMUM_LANDMARK_SEPERATION 5
 
 // the minimum number of active landmarks allowed before uninitialized landmarks
 // are made active.
