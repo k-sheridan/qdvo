@@ -4,7 +4,10 @@
  */
 
 #define SPDLOG_HEADER_ONLY
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO
+
+#ifndef SPDLOG_ACTIVE_LEVEL
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_ERROR
+#endif
 
 #include <stdlib.h>
 
@@ -78,4 +81,3 @@
 #else
 #define LOG_TRACE_IF(condition, ...) (void)0
 #endif
-

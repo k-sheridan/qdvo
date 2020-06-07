@@ -2,6 +2,12 @@
 
 #include <gtest/gtest.h>
 
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <fstream>
+#include <iostream>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 #include "CameraModel.hpp"
 #include "DataStructures/CorrespondenceDistribution.h"
 #include "DataStructures/Frame.h"
@@ -158,12 +164,12 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
            Eigen::Vector2d(std::floor(projectionResult.value().x()),
                            std::floor(projectionResult.value().y())));
 
-      LOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n",
-                   delta, projectionResult.value(),
-                   Eigen::Vector2d(std::floor(projectionResult.value().x()),
-                                   std::floor(projectionResult.value().y())),
-                   Eigen::Vector2d(ceilFn(projectionResult.value().x()),
-                                   ceilFn(projectionResult.value().y())));
+      LOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n", delta,
+                projectionResult.value(),
+                Eigen::Vector2d(std::floor(projectionResult.value().x()),
+                                std::floor(projectionResult.value().y())),
+                Eigen::Vector2d(ceilFn(projectionResult.value().x()),
+                                ceilFn(projectionResult.value().y())));
       // Create a high res 2x2 pixel patch.
       Eigen::Matrix<double, 20, 20> patch;
       patch.setZero();
@@ -188,9 +194,9 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
           patch.block<10, 10>(0, 10).cast<QDVO::ImageIntensityType>().sum();
 
       LOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
-                   image(std::floor(projectionResult.value().y()),
-                         std::floor(projectionResult.value().x())),
-                   patch.block<10, 10>(0, 0).sum());
+                image(std::floor(projectionResult.value().y()),
+                      std::floor(projectionResult.value().x())),
+                patch.block<10, 10>(0, 0).sum());
     }
 
     // Return the projection result.
@@ -247,5 +253,20 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
     sourceKeyframe.imustate.pos = pos;
     sourceKeyframe.imustate.attitude = attitude;
     return sourceKeyframeKey;
+  }
+};
+
+class QDVORealDataTest : public QDVOSimpleGraphTest {
+  /// Load a test image.
+  cv::Mat getTestImage() {
+    const std::string datasetPath =
+        boost::filesystem::current_path().string() +
+        "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";
+
+    // run qdvo
+    cv::Mat img =
+        cv::imread(datasetPath + "mav0/cam0/data/1520530308199447626.png",
+                   cv::IMREAD_GRAYSCALE);
+    return img;
   }
 };

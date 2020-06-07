@@ -57,9 +57,11 @@ static void BM_VectorIterate(benchmark::State &state) {
 
 static void BM_VectorTransformFloat(benchmark::State &state) {
   std::vector<float> num1, num2, sum;
+  std::vector<std::array<double, 11 * 11>> waste;
   num1.resize(1e3, 1.9);
   num2.resize(1e3, 5.0);
   sum.resize(1e3, 0.0);
+  waste.resize(1e3);
 
   for (auto _ : state) {
     std::transform(num1.begin(), num1.end(), num2.begin(), sum.begin(),
