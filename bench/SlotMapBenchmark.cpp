@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <array>
+
+#include "Optimizer/Containers/soa/soa_vector.h"
 #include "Optimizer/SlotMap.h"
 
 using namespace ArgMin;
@@ -69,9 +71,53 @@ static void BM_VectorTransformFloat(benchmark::State &state) {
   }
 }
 
+struct MyData {
+  float num1 = 1.9;
+  float num2 = 5.0;
+  float sum = 0.0;
+  std::array<double, 11 * 11> waste;
+};
+SOA_DEFINE_TYPE(MyData, num1, num2, sum, waste);
+
+static void BM_SOAVectorTransformFloat(benchmark::State &state) {
+  soa::vector<MyData> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto e : vec) {
+      e.sum = e.num1 * e.num2;
+    }
+  }
+}
+
+struct A {
+  float num1 = 1.9;
+  float num2 = 5.0;
+  float sum = 0.0;
+};
+struct B {
+  std::array<double, 11 * 11> waste;
+};
+struct MyDataCombined : public A, public B {};
+SOA_DEFINE_TYPE(MyDataCombined, num1, num2, sum, waste);
+
+static void BM_SOAVectorTransformFloatWithInheritance(benchmark::State &state) {
+  soa::vector<MyDataCombined> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto e : vec) {
+      e.sum = e.num1 * e.num2;
+    }
+  }
+}
+
 BENCHMARK(BM_SlotMapInsert)->Unit(benchmark::kNanosecond)->Iterations(100000);
 BENCHMARK(BM_SlotMapErase)->Unit(benchmark::kNanosecond)->Iterations(100000);
 BENCHMARK(BM_SlotMapAt)->Unit(benchmark::kNanosecond)->Iterations(100000);
 
 BENCHMARK(BM_VectorIterate)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_SOAVectorTransformFloat)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_SOAVectorTransformFloatWithInheritance)
+    ->Unit(benchmark::kNanosecond);
