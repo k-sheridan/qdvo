@@ -234,7 +234,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    * This adds a lambda to the diagonal members of A.
    */
   void addLambdaToLinearSystem(ScalarType lambda) {
-    A.block(0, 0, dimensionOfA, dimensionOfA).diagonal().array() += lambda;
+    A.diagonal().array() += lambda;
 
     internal::static_for(D, [&](auto i, auto &blockArray) {
       for (auto &block : blockArray) {
@@ -434,18 +434,10 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
 
         // It is possible that this matrix has more rows than needed.
-        negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension)
-            .noalias() =
-            (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv)
-                .eval();
+        negativeBDinvMatrix.noalias() = (bMatrix * -dinv).eval();
 
         // Add BDinvB' to A.
-        A.block(0, 0, dimensionOfA, dimensionOfA).noalias() +=
-            (negativeBDinvMatrix.block(0, 0, dimensionOfA,
-                                       RowVariable::dimension) *
-             bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension)
-                 .transpose())
-                .eval();
+        A.noalias() += (negativeBDinvMatrix * bMatrix.transpose()).eval();
       }
     });
 
@@ -469,21 +461,14 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, RowVariable::dimension, 1>
             &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
 
-        b_correlated.block(0, 0, dimensionOfA, 1).noalias() +=
-            (negativeBDinvMatrix.block(0, 0, dimensionOfA,
-                                       RowVariable::dimension) *
-             rhsBlockMatrix)
-                .eval();
+        b_correlated.noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
       }
     });
 
     LOG_TRACE(
         "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
     // Multiply the inverse schur complement of D by the correlated b vector.
-    dx.block(0, 0, dimensionOfA, 1) =
-        A.block(0, 0, dimensionOfA, dimensionOfA)
-            .ldlt()
-            .solve(b_correlated.block(0, 0, dimensionOfA, 1));
+    dx.block(0, 0, dimensionOfA, 1) = A.ldlt().solve(b_correlated);
 
     LOG_TRACE("Computing D^{-1} b_{uncorrelated}");
     // Multiply Dinv by the b_uncorrelated vector.
@@ -533,10 +518,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         assert(indexIt != indexMap.end());
 
         dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() +=
-            (negativeBDinvMatrix
-                 .block(0, 0, dimensionOfA, RowVariable::dimension)
-                 .transpose() *
-             dx.block(0, 0, dimensionOfA, 1))
+            (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1))
                 .eval();
       }
     });
@@ -985,9 +967,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         });
 
     // Resize the dense portion of dx.
-    if (dx.rows() < totalDimension) {
-      dx.resize(totalDimension, 1);
-    }
+    dx.resize(totalDimension, 1);
 
     // Resize A if necessary.
     assert(A.rows() == A.cols());
