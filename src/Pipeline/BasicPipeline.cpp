@@ -321,7 +321,7 @@ void QDVO::BasicPipeline::
   std::vector<int> result(visibleActiveLandmarks.size());
   // Run the initialization function for all active and visible landmarks.
   QDVO::ParallelAlgorithms::transform(
-      QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL,
+      QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,
       visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
       correspondenceDistributionKeys.begin(), result.begin(), initializationFn);
 

@@ -1,5 +1,8 @@
 #include "CorrespondenceDistribution.h"
 
+#include <enoki/array.h>
+#include <enoki/dynamic.h>
+
 #include <algorithm>
 
 #include "Config.h"

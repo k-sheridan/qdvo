@@ -32,6 +32,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 
+# Add thirdparty libraries
+add_subdirectory(thirdparty/googletest)
+add_subdirectory(thirdparty/benchmark)
+add_subdirectory(thirdparty/gflags)
+add_subdirectory(thirdparty/spdlog)
+add_subdirectory(thirdparty/Sophus)
+add_subdirectory(thirdparty/yaml-cpp)
+add_subdirectory(thirdparty/enoki)
+
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
@@ -46,6 +55,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/ParallelAlgorithms/
     ${PROJECT_SOURCE_DIR}/src/Pipeline/
     ${PROJECT_SOURCE_DIR}/thirdparty/
+    ${PROJECT_SOURCE_DIR}/thirdparty/enoki/include/
     )
 
 file(GLOB QDVO_HEADER_FILES
@@ -61,14 +71,6 @@ file(GLOB QDVO_SOURCE_FILES
     "${PROJECT_SOURCE_DIR}/src/*/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
-
-# Add thirdparty libraries
-add_subdirectory(thirdparty/googletest)
-add_subdirectory(thirdparty/benchmark)
-add_subdirectory(thirdparty/gflags)
-add_subdirectory(thirdparty/spdlog)
-add_subdirectory(thirdparty/Sophus)
-add_subdirectory(thirdparty/yaml-cpp)
 
 SET(CMAKE_C_COMPILER clang)
 SET(CMAKE_CXX_COMPILER clang++)

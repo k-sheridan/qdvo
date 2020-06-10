@@ -991,23 +991,23 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
     // Resize A if necessary.
     assert(A.rows() == A.cols());
-    if (A.rows() < dimensionOfA) {
-      A.resize(dimensionOfA, dimensionOfA);
-    }
+    // if (A.rows() < dimensionOfA) {
+    A.resize(dimensionOfA, dimensionOfA);
+    // }
 
     // Resize b_correlated if necessary
-    if (b_correlated.rows() < dimensionOfA) {
-      b_correlated.resize(dimensionOfA, 1);
-    }
+    // if (b_correlated.rows() < dimensionOfA) {
+    b_correlated.resize(dimensionOfA, 1);
+    //}
 
     // Resize the matrices of B if necessary
     internal::static_for(B, [&](auto i, auto &array) {
       typedef typename std::tuple_element<
           i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
       for (auto &matrix : array) {
-        if (matrix.rows() < dimensionOfA) {
-          matrix.resize(dimensionOfA, ThisVariable::dimension);
-        }
+        // if (matrix.rows() < dimensionOfA) {
+        matrix.resize(dimensionOfA, ThisVariable::dimension);
+        //}
       }
     });
 
@@ -1016,9 +1016,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       typedef typename std::tuple_element<
           i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
       for (auto &matrix : array) {
-        if (matrix.rows() < dimensionOfA) {
-          matrix.resize(dimensionOfA, ThisVariable::dimension);
-        }
+        // if (matrix.rows() < dimensionOfA) {
+        matrix.resize(dimensionOfA, ThisVariable::dimension);
+        //}
       }
     });
   }
