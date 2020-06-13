@@ -75,7 +75,6 @@ TEST(Enoki, CustomArray) {
   EXPECT_EQ(vecs[2].y(), 3);
 
   auto sum = enoki::hsum(vecs);
-  std::cout << typeid(sum).name() << std::endl;
   EXPECT_EQ(sum[0], 3);
   EXPECT_EQ(sum[1], 9);
   EXPECT_EQ(sum[2], 9);
@@ -150,8 +149,6 @@ struct RealData {
   void fn() { c = (a * b); }
 
   void fn2() {
-    std::cout << Value::Size << std::endl;
-    std::cout << sizeof(EigenM) << std::endl;
     for (int i = 0; i < EigenM::Size; ++i) {
       m[i] = m[i] * c[i];
     }
@@ -166,8 +163,6 @@ ENOKI_STRUCT_SUPPORT(RealData, a, b, c, m, d, p)
 TEST(Enoki, EigenMatrix) {
   using M_eigen = Eigen::Matrix<double, 6, 6>;
 
-  std::cout << sizeof(enoki::scalar_t<M_eigen>) << std::endl;
-
   RealData<enoki::Array<float, 11>> arr;
 
   arr.fn();
@@ -178,7 +173,6 @@ TEST(Enoki, EigenMatrix) {
   EXPECT_EQ(arr.c, 10);
 
   enoki::Packet<float> p;
-  std::cout << p.size() << std::endl;
 
   // enoki::DynamicArray<enoki::Packet<float, 1>> dArr;
   enoki::DynamicArray<enoki::Packet<M_eigen, 1>> dArr;
@@ -188,16 +182,14 @@ TEST(Enoki, EigenMatrix) {
   // dArr = enoki::arange<decltype(dArr)>(10) * 2;
   enoki::packet(dArr, 0);
 
-  // std::cout << enoki::hsum(dArr) << std::endl;
-
   for (int i = 0; i < dArr.size(); ++i) {
     auto &&s = slice(dArr, i);
     s.setIdentity();
     s.inverse();
     s *= i;
+    M_eigen a = s;
+    EXPECT_TRUE(a.isApprox(s, 1e-6));
   }
-
-  enoki::vectorize([](auto &&m) { std::cout << m << std::endl; }, dArr);
 
   RealData<enoki::DynamicArray<enoki::Packet<float>>> realArray;
   enoki::set_slices(realArray, 12);
@@ -208,8 +200,19 @@ TEST(Enoki, EigenMatrix) {
     s.m *= i;
   }
 
+  const auto someM = Eigen::Matrix<double, 3, 6>::Constant(2);
   for (int i = 0; i < enoki::slices(realArray); ++i) {
     auto &&s = enoki::slice(realArray, i);
-    std::cout << s.m << std::endl;
+    s.m += someM;
+  }
+
+  for (int i = 0; i < enoki::slices(realArray); ++i) {
+    auto &&s = enoki::slice(realArray, i);
+    Eigen::Matrix<double, 3, 6> M;
+    M.setIdentity();
+    M *= i;
+    M += someM;
+
+    EXPECT_TRUE(s.m.isApprox(M, 1e-6));
   }
 }
