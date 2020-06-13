@@ -163,22 +163,12 @@ struct RealData {
 };
 ENOKI_STRUCT_SUPPORT(RealData, a, b, c, m, d, p)
 
-namespace enoki {
-namespace detail {
-template <typename T, int R, int C>
-struct scalar<Eigen::Matrix<T, R, C>> {
-  using type = T;
-};
-}  // namespace detail
-}  // namespace enoki
-
 TEST(Enoki, EigenMatrix) {
-  using M_eigen = Eigen::Matrix<double, 3, 6>;
+  using M_eigen = Eigen::Matrix<double, 6, 6>;
 
   std::cout << sizeof(enoki::scalar_t<M_eigen>) << std::endl;
 
   RealData<enoki::Array<float, 11>> arr;
-  // RealData<float> arr;
 
   arr.fn();
   arr.fn2();
@@ -190,15 +180,36 @@ TEST(Enoki, EigenMatrix) {
   enoki::Packet<float> p;
   std::cout << p.size() << std::endl;
 
+  // enoki::DynamicArray<enoki::Packet<float, 1>> dArr;
   enoki::DynamicArray<enoki::Packet<M_eigen, 1>> dArr;
+  // enoki::DynamicArray<enoki::Packet<Eigen::Matrix<double, 1, 1>, 1>> dArr;
 
-  // enoki::set_slice(dArr, 10);
+  enoki::set_slices(dArr, 10);
+  // dArr = enoki::arange<decltype(dArr)>(10) * 2;
   enoki::packet(dArr, 0);
+
+  // std::cout << enoki::hsum(dArr) << std::endl;
 
   for (int i = 0; i < dArr.size(); ++i) {
     auto &&s = slice(dArr, i);
-    s.llt();
+    s.setIdentity();
+    s.inverse();
+    s *= i;
   }
 
   enoki::vectorize([](auto &&m) { std::cout << m << std::endl; }, dArr);
+
+  RealData<enoki::DynamicArray<enoki::Packet<float>>> realArray;
+  enoki::set_slices(realArray, 12);
+
+  for (int i = 0; i < enoki::slices(realArray); ++i) {
+    auto &&s = slice(realArray, i);
+    s.m.setIdentity();
+    s.m *= i;
+  }
+
+  for (int i = 0; i < enoki::slices(realArray); ++i) {
+    auto &&s = enoki::slice(realArray, i);
+    std::cout << s.m << std::endl;
+  }
 }
