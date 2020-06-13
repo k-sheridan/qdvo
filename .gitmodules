@@ -21,4 +21,4 @@
 	url = https://github.com/gflags/gflags
 [submodule "thirdparty/enoki"]
 	path = thirdparty/enoki
-	url = https://github.com/mitsuba-renderer/enoki
+	url = https://github.com/k-sheridan/enoki

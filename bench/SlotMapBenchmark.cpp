@@ -1,4 +1,7 @@
 #include <benchmark/benchmark.h>
+#include <enoki/array.h>
+#include <enoki/dynamic.h>
+#include <enoki/stl.h>
 
 #include <algorithm>
 #include <array>
@@ -91,9 +94,9 @@ static void BM_SOAVectorTransformFloat(benchmark::State &state) {
 }
 
 struct A {
-  float num1 = 1.9;
-  float num2 = 5.0;
-  float sum = 0.0;
+  double num1 = 1.9;
+  double num2 = 5.0;
+  double sum = 0.0;
 };
 struct B {
   std::array<double, 11 * 11> waste;
@@ -106,9 +109,40 @@ static void BM_SOAVectorTransformFloatWithInheritance(benchmark::State &state) {
   vec.resize(1e3);
 
   for (auto _ : state) {
-    for (auto e : vec) {
-      e.sum = e.num1 * e.num2;
+    for (auto &&e : vec) {
+      e.sum = std::exp(e.num2 + e.num1);
     }
+  }
+}
+
+template <typename Value>
+struct EnokiData {
+  using FloatA = enoki::float32_array_t<Value>;
+  using WasteA = enoki::replace_scalar_t<Value, enoki::Array<double, 11 * 11>>;
+
+  FloatA num1 = 1.9;
+  FloatA num2 = 5.0;
+  FloatA sum = 0.0;
+  WasteA waste;
+
+  void fn() { sum = num1 * num2; }
+
+  ENOKI_STRUCT(EnokiData, num1, num2, sum, waste)
+};
+ENOKI_STRUCT_SUPPORT(EnokiData, num1, num2, sum, waste)
+
+static void BM_EnokiSOA(benchmark::State &state) {
+  using Pack = enoki::Packet<double>;
+  EnokiData<enoki::DynamicArray<Pack>> dynamicData;
+  enoki::set_slices(dynamicData, 1e3);
+
+  std::cout << sizeof(Pack) << std::endl;
+  std::cout << enoki::slices(dynamicData) << std::endl;
+
+  for (auto _ : state) {
+    enoki::vectorize([](auto &&num1, auto &&num2,
+                        auto &&sum) { sum = enoki::exp(num2 + num1); },
+                     dynamicData.num1, dynamicData.num2, dynamicData.sum);
   }
 }
 
@@ -121,3 +155,4 @@ BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_SOAVectorTransformFloat)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_SOAVectorTransformFloatWithInheritance)
     ->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_EnokiSOA)->Unit(benchmark::kNanosecond);
