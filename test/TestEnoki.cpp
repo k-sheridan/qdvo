@@ -216,3 +216,23 @@ TEST(Enoki, EigenMatrix) {
     EXPECT_TRUE(s.m.isApprox(M, 1e-6));
   }
 }
+
+template <typename Value>
+struct DynamicData {
+  using Dyn =
+      enoki::replace_scalar_t<Value, std::vector<enoki::Packet<float>>>;
+
+  Dyn d;
+  Value x;
+
+  ENOKI_STRUCT(DynamicData, d, x)
+};
+ENOKI_STRUCT_SUPPORT(DynamicData, d, x)
+
+TEST(Enoki, DynamicData) {
+DynamicData<enoki::DynamicArray<enoki::Packet<float>>> arr;
+
+enoki::set_slices(arr, 10);
+
+
+}
