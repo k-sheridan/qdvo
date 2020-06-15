@@ -1,11 +1,10 @@
 #pragma once
 
+#include <Eigen/Core>
 #include <array>
 
 #include "Optimizer/SlotArray.h"
 #include "Optimizer/SlotMap.h"
-
-#include <Eigen/Core>
 
 namespace QDVO {
 
@@ -63,7 +62,8 @@ class SpatialMap {
   /**
    * Computes the index of the slot array key.
    */
-  size_t topHash(const int x, const int y) {
+  typename ArgMin::TypedSlotMapKey<BucketKey>::index_type topHash(const int x,
+                                                                  const int y) {
     return (x / BucketWidth) +
            (y / BucketWidth) * (MaxImageWidth / BucketWidth);
   }
@@ -81,4 +81,3 @@ class SpatialMap {
 };  // namespace QDVO
 
 }  // namespace QDVO
-
