@@ -3,6 +3,7 @@
 #include <random>
 #include <type_traits>
 
+#include "Logging.h"
 #include "Optimizer/BlockVector.h"
 #include "Optimizer/ErrorTermBase.h"
 #include "Optimizer/ErrorTermValidator.h"
@@ -18,8 +19,6 @@
 #include "Optimizer/Variables/InverseDepth.h"
 #include "Optimizer/Variables/SE3.h"
 #include "Optimizer/Variables/SimpleScalar.h"
-
-#include "Logging.h"
 
 using namespace ArgMin;
 
@@ -406,6 +405,7 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
   perturbation(0, 0) = -0.01;
   variableContainer.at(l3Key).update(perturbation);
 
+  solver.initialize(variableContainer, errorTermContainer);
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 
@@ -432,6 +432,8 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
   auto previousDssValue = variableContainer.at(dssKey).value;
   auto previousHostValue = variableContainer.at(hostKey).value;
   auto previousTargetValue = variableContainer.at(targetKey).value;
+
+  solver.initialize(variableContainer, errorTermContainer);
   result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer,
                                           prior);
   std::cout << "Iterations: " << result.whitenedSqError.size()
@@ -462,6 +464,7 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
 
   // Solve and verify the host and target key poses.
   // prior.removeUnsedVariables(variableContainer);
+  solver.initialize(variableContainer, errorTermContainer);
   result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer,
                                           prior);
   std::cout << "Iterations: " << result.whitenedSqError.size()
@@ -489,17 +492,18 @@ TEST_F(PSDSchurSolverTest, SolveSmallSlamProblemLM) {
   variableContainer.erase(hostKey);
 
   // prior.removeUnsedVariables(variableContainer);
+  solver.initialize(variableContainer, errorTermContainer);
   result = solver.solveLevenbergMarquardt(variableContainer, errorTermContainer,
                                           prior);
   std::cout << "Iterations: " << result.whitenedSqError.size()
             << " final error: " << result.whitenedSqError.back()
             << " solver dimension: " << solver.totalDimension << std::endl;
   EXPECT_NEAR(previousDssValue, variableContainer.at(dssKey).value, 1e-6);
-//  EXPECT_NEAR(
-//      (previousHostValue.inverse() * variableContainer.at(hostKey).value)
-//          .log()
-//          .norm(),
-//      0, 1e-6);
+  //  EXPECT_NEAR(
+  //      (previousHostValue.inverse() * variableContainer.at(hostKey).value)
+  //          .log()
+  //          .norm(),
+  //      0, 1e-6);
 }
 
 TEST(ErrorTermValidation, ValidateReprojectionError) {
@@ -582,6 +586,7 @@ TEST_F(PSDSchurSolverTest, MarginalizationTest) {
   perturbation(0, 0) = -0.01;
   variableContainer.at(l3Key).update(perturbation);
 
+  solver.initialize(variableContainer, errorTermContainer);
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 

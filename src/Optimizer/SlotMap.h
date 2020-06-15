@@ -238,10 +238,10 @@ public:
 
     /**
      * O(1)
-     * 
+     *
      * Increments the generation of a slot to invalidate all previously returned keys.
      * The key must be a valid key, otherwise an invalid key is returned.
-     * 
+     *
      * Equivalent to:
      * data = at(key1);
      * erase(key1);

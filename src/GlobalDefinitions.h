@@ -21,7 +21,7 @@
 #define ZNCC_PATCH_COMPARISON
 
 // Potential correspondence threshold
-#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.8
 
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 600
