@@ -1,17 +1,15 @@
-
 #include <gtest/gtest.h>
 
 #include <numeric>
 
 #include "Optimizer/SlotArray.h"
-#include "Optimizer/SlotMap.h"
 
 using namespace ArgMin;
 
 template <typename T>
 struct TypedKey : public SlotMapKeyBase {};
 
-TEST(SlotArray, Simple) {
+TEST(SlotArray, Simple_) {
   using SA = SlotArray<int, TypedKey<int>>;
 
   SA map;
@@ -61,7 +59,7 @@ TEST(SlotArray, Simple) {
   EXPECT_EQ(generatedKey.index, key5.index);
 }
 
-TEST(SlotArray, VerifyGeneration) {
+TEST(SlotArray, VerifyGeneration_) {
   using SA = SlotArray<int, TypedKey<int>>;
   using SM = SlotMap<double, TypedKey<int>>;
 
