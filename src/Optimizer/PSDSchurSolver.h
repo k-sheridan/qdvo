@@ -929,6 +929,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           if constexpr (!(internal::Is_in_tuple<
                             ThisVariable,
                             std::tuple<UncorrelatedVariables...>>::value)) {
+            // Clear the index map before.
+            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+
             for (size_t idx = 0; idx < variableMap.size(); ++idx) {
               auto key = variableMap.getKeyFromDataIndex(idx);
               assert(variables.variableExists(key));
@@ -938,6 +941,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
               dimensionOfA += ThisVariable::dimension;
             }
+
+	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
           }
         });
 
@@ -954,6 +959,10 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           if constexpr ((internal::Is_in_tuple<
                             ThisVariable,
                             std::tuple<UncorrelatedVariables...>>::value)) {
+
+            // Clear the index map before.
+            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+
             for (size_t idx = 0; idx < variableMap.size(); ++idx) {
               auto key = variableMap.getKeyFromDataIndex(idx);
               assert(variables.variableExists(key));
@@ -963,6 +972,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
               totalDimension += ThisVariable::dimension;
             }
+
+	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
           }
         });
 
