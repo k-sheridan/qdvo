@@ -45,6 +45,37 @@ struct BaseMetaData {
   /// Vector of slot generations.
   std::vector<Index> generations;
 
+  int numSlots() {
+    assert(occupancy.size() == generations.size());
+    return generations.size();
+  }
+
+  /// What is the generation of the slot.
+  Index generation(Index slotIndex) { return generations.at(slotIndex); }
+
+  /// Insert a new slot.
+  void addSlot() {
+    occupancy.push_back(false);
+    generations.push_back(0);
+  }
+
+  /// Insert one or more slots.
+  void resize(Index newSize) {
+    occupancy.resize(newSize, false);
+    generations.resize(newSize, 0);
+  }
+
+  /// Is the slot occupied?
+  bool free(Index slotIndex) {
+    assert(slotIndex < numSlots());
+    return !occupancy.at(slotIndex);
+  }
+
+  void setOccupancy(Index slotIndex, bool occupied) {
+    assert(slotIndex < numSlots());
+    occupancy.at(slotIndex) = occupied;
+  }
+
   void clear() {
     occupancy.clear();
     generations.clear();
@@ -56,6 +87,18 @@ struct ContiguousMetaData : BaseMetaData<Index> {
   /// Mappings between the contigous data container and the slots.
   std::vector<Index> slotToDataIndex;
   std::vector<Index> dataToSlotIndex;
+
+  void resize(Index newSize) {
+    BaseMetaData<Index>::resize(newSize);
+    slotToDataIndex.resize(newSize);
+  }
+
+  void addSlot() {
+    BaseMetaData<Index>::addSlot();
+    int numSlots = BaseMetaData<Index>::numSlots();
+    slotToDataIndex.push_back(0);
+    assert(slotToDataIndex.size() == numSlots);
+  }
 
   void clear() {
     BaseMetaData<Index>::clear();
@@ -131,8 +174,8 @@ class SlotMap {
   using Index = size_t;
 
   /// Select the metadata type for this slotmap.
-  using MetaData =
-      select_metadata<Direct, KeyValueInsertion, typename KeyType::generation_type>;
+  using MetaData = select_metadata<Direct, KeyValueInsertion,
+                                   typename KeyType::generation_type>;
 
   /// SoA containing the metadata used for bookkeeping.
   MetaData metadata;
@@ -157,38 +200,41 @@ class SlotMap {
   /**
    * O(1)
    */
-  template <typename = typename std::enable_if<!KeyValueInsertion>::type>
   KeyType insert(DataType value) {
-    Index slotIndex;
+    static_assert(!KeyValueInsertion,
+                  "This insertion method is not possible for this type.");
 
-    if (metadata.freeSlots.empty()) {
-      // add new slot
-      slotIndex = slots.size();
-      slots.emplace_back();
-    } else {
-      slotIndex = freeSlots.back();
-      freeSlots.pop_back();
+    if constexpr (!Direct) {
+      Index slotIndex;
+
+      if (metadata.freeSlots.empty()) {
+        // add new slot
+        slotIndex = metadata.numSlots();
+        metadata.addSlot();
+      } else {
+        slotIndex = metadata.freeSlots.back();
+        metadata.freeSlots.pop_back();
+      }
+
+      // get slot reference
+      assert(metadata.free(slotIndex) == true);
+
+      // set up slot
+      // set slot to not free
+      metadata.setOccupancy(slotIndex, true);
+      metadata.slotToDataIndex.at(slotIndex) = data.size();
+
+      // push a new data member to the back of the data arrays.
+      data.push_back(std::move(value));
+      metadata.dataToSlotIndex.push_back(slotIndex);
+
+      // setup key.
+      KeyType key;
+      key.index = slotIndex;
+      key.generation = metadata.generation(slotIndex);
+
+      return key;
     }
-
-    // get slot reference
-    Slot &slot = slots.at(slotIndex);
-    assert(slot.free == true);
-
-    // set up slot
-    // set slot to not free
-    slot.free = false;
-    slot.dataIndex = data.size();
-
-    // push a new data member to the back of the data arrays.
-    data.push_back(std::move(value));
-    dataToSlotIndex.push_back(slotIndex);
-
-    // setup key.
-    KeyType key;
-    key.index = slotIndex;
-    key.generation = slot.generation;
-
-    return key;
   }
 
   /**
@@ -196,83 +242,108 @@ class SlotMap {
    * The insert result lets the user know if an element was overwritten, or if a
    * failure occured.
    */
-  template <typename = typename std::enable_if<KeyValueInsertion>::type>
   InsertResult insert(KeyType key, DataType value) {
-    const size_t slotIndex = key.index;
+    static_assert(KeyValueInsertion,
+                  "This insertion method is not possible for this type.");
 
-    // Insert a new slot if necessary.
-    if (slotIndex >= slots.size()) {
-      slots.resize(slotIndex + 1);
+    if constexpr (!Direct) {
+      const Index slotIndex = key.index;
+
+      // Insert a new slot if necessary.
+      if (slotIndex >= metadata.numSlots()) {
+        metadata.resize(slotIndex + 1);
+      }
+
+      // Update the slot generation.
+      metadata.generations.at(slotIndex) = key.generation;
+
+      // Is the slot free?
+      if (metadata.free(slotIndex)) {
+        // set up slot
+        // set slot to not free
+        metadata.setOccupancy(slotIndex, true);
+        metadata.slotToDataIndex.at(slotIndex) = data.size();
+
+        // push a new data member to the back of the data arrays.
+        data.push_back(std::move(value));
+        metadata.dataToSlotIndex.push_back(slotIndex);
+
+        return InsertResult::SUCCESS_NO_OVERWRITE;
+
+      } else {
+        // Overwrite the slot.
+        data.at(metadata.slotToDataIndex.at(slotIndex)) = value;
+        assert(metadata.dataToSlotIndex.at(
+                   metadata.slotToDataIndex.at(slotIndex)) == slotIndex);
+
+        return InsertResult::SUCCESS_OVERWRITE;
+      }
     }
+  }
 
-    // get slot reference
-    Slot &slot = slots.at(slotIndex);
-
-    // Update the slot generation.
-    slot.generation = key.generation;
-
-    // Is the slot free?
-    if (slot.free) {
-      // set up slot
-      // set slot to not free
-      slot.free = false;
-      slot.dataIndex = data.size();
-
-      // push a new data member to the back of the data arrays.
-      data.push_back(std::move(value));
-      dataToSlotIndex.push_back(slotIndex);
-
-      return InsertResult::SUCCESS_NO_OVERWRITE;
-
-    } else {
-      // Overwrite the slot.
-      data.at(slot.dataIndex) = value;
-      assert(dataToSlotIndex.at(slot.dataIndex) == slotIndex);
-
-      return InsertResult::SUCCESS_OVERWRITE;
-    }
+  /**
+   * O(1)
+   * This variant of insert requires that the data type has a
+   * default constructor.
+   *
+   * If, data already exists at this key the data is returned by reference.
+   * If, the key does not exist, data is emplaced and returned.
+   */
+  DataType &insert(KeyType key) {
+    static_assert(KeyValueInsertion,
+                  "This insertion method is not possible for this type.");
+    // TODO This can be optimized for the direct implementation.
+    insert(key, DataType());
+    return *at(key);
   }
 
   /**
    * O(1)
    */
   void erase(const KeyType &key) {
-    // check if there are enough slots
-    if (slots.size() <= key.index) {
-      return;
+    if constexpr (!Direct) {
+      // check if there are enough slots
+      if (metadata.numSlots() <= key.index) {
+        return;
+      }
+
+      // check if the generations match
+      if (metadata.generation(key.index) != key.generation) {
+        return;
+      }
+
+      if (metadata.free(key.index)) {
+        return;
+      }
+
+      assert(metadata.slotToDataIndex.at(key.index) < data.size());
+
+      // swap the data to be deleted with the last data element.
+      std::swap(data.at(metadata.slotToDataIndex.at(key.index)), data.back());
+      std::swap(
+          metadata.dataToSlotIndex.at(metadata.slotToDataIndex.at(key.index)),
+          metadata.dataToSlotIndex.back());
+
+      // fix the slot pointing to the swapped data
+      metadata.slotToDataIndex.at(
+          metadata.dataToSlotIndex.at(metadata.slotToDataIndex.at(key.index))) =
+          metadata.slotToDataIndex.at(key.index);
+
+      // increment the deleted slots generation
+      const Index deletedSlotIndex = metadata.dataToSlotIndex.back();
+      ++metadata.generations.at(deletedSlotIndex);
+
+      // pop the data from the back
+      data.pop_back();
+      metadata.dataToSlotIndex.pop_back();
+
+      // free the slot
+      metadata.setOccupancy(deletedSlotIndex, false);
+      // If this is not a slot array, push back to the free slot list.
+      if constexpr (!KeyValueInsertion) {
+        metadata.freeSlots.push_back(deletedSlotIndex);
+      }
     }
-
-    const auto &slot = slots.at(key.index);
-
-    // check if the generations match
-    if (slot.generation != key.generation) {
-      return;
-    }
-
-    if (slot.free) {
-      return;
-    }
-
-    assert(slot.dataIndex < data.size());
-
-    // swap the data to be deleted with the last data element.
-    std::swap(data.at(slot.dataIndex), data.back());
-    std::swap(dataToSlotIndex.at(slot.dataIndex), dataToSlotIndex.back());
-
-    // fix the slot pointing to the swapped data
-    slots.at(dataToSlotIndex.at(slot.dataIndex)).dataIndex = slot.dataIndex;
-
-    // increment the deleted slots generation
-    const size_t deletedSlotIndex = dataToSlotIndex.back();
-    ++slots.at(deletedSlotIndex).generation;
-
-    // pop the data from the back
-    data.pop_back();
-    dataToSlotIndex.pop_back();
-
-    // free the slot
-    slots.at(deletedSlotIndex).free = true;
-    freeSlots.push_back(deletedSlotIndex);
   }
 
   /**
@@ -281,24 +352,22 @@ class SlotMap {
    */
   Iterator at(const KeyType &key) {
     // check if there are enough slots
-    if (slots.size() <= key.index) {
+    if (metadata.numSlots() <= key.index) {
       return data.end();
     }
-
-    const auto &slot = slots.at(key.index);
 
     // check if the generations match
-    if (slot.generation != key.generation) {
+    if (metadata.generation(key.index) != key.generation) {
       return data.end();
     }
 
-    if (slot.free) {
+    if (metadata.free(key.index)) {
       return data.end();
     }
 
-    assert(slot.dataIndex < data.size());
+    assert(metadata.slotToDataIndex.at(key.index) < data.size());
 
-    return data.begin() + slot.dataIndex;
+    return data.begin() + metadata.slotToDataIndex.at(key.index);
   }
 
   ConstIterator at(const KeyType &key) const { return at(key); }
@@ -340,25 +409,23 @@ class SlotMap {
    */
   KeyType updateSlotGeneration(const KeyType &key) {
     // check if there are enough slots
-    if (slots.size() <= key.index) {
+    if (metadata.numSlots() <= key.index) {
       return KeyType();
     }
-
-    auto &slot = slots.at(key.index);
 
     // check if the generations match
-    if (slot.generation != key.generation) {
+    if (metadata.generation(key.index) != key.generation) {
       return KeyType();
     }
 
-    if (slot.free) {
+    if (metadata.free(key.index)) {
       return KeyType();
     }
 
     KeyType newKey = key;
 
-    ++slot.generation;
-    newKey.generation = slot.generation;
+    ++metadata.generations.at(key.index);
+    newKey.generation = metadata.generation(key.index);
 
     return newKey;
   }
@@ -369,16 +436,18 @@ class SlotMap {
    * Asserts that the data index is valid.
    */
   KeyType getKeyFromDataIndex(size_t dataIndex) {
-    assert(dataIndex < dataToSlotIndex.size());
-    size_t slotIndex = dataToSlotIndex.at(dataIndex);
+    if constexpr (!Direct) {
+      assert(dataIndex < metadata.dataToSlotIndex.size());
+      size_t slotIndex = metadata.dataToSlotIndex.at(dataIndex);
 
-    KeyType result;
+      KeyType result;
 
-    result.index = slotIndex;
-    assert(slotIndex < slots.size());
-    result.generation = slots.at(slotIndex).generation;
+      result.index = slotIndex;
+      assert(slotIndex < metadata.numSlots());
+      result.generation = metadata.generation(slotIndex);
 
-    return result;
+      return result;
+    }
   }
 
   /**
