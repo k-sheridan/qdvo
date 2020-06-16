@@ -1,5 +1,8 @@
 #pragma once
 
+#include <enoki/array.h>
+#include <enoki/dynamic.h>
+
 #include <algorithm>
 #include <memory>
 #include <unordered_set>
@@ -10,6 +13,24 @@
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
 #include "Types.h"
+
+/**
+ * Vectorizable SoA container for the potential correspondences.
+ */
+namespace QDVO {
+template <typename Value>
+struct PotentialCorrespondence {
+  using Pixel = enoki::Array<enoki::uint32_array_t<Value>, 2>;
+
+  /// Pixel of the correspondence.
+  Pixel pixel;
+  /// Score of correspondence.
+  Value score;
+
+  ENOKI_STRUCT(PotentialCorrespondence, pixel, score)
+};
+}  // namespace QDVO
+ENOKI_STRUCT_SUPPORT(QDVO::PotentialCorrespondence, pixel, score)
 
 namespace QDVO {
 
@@ -39,6 +60,10 @@ class CorrespondenceDistribution {
 
   /// Covariance matrix of this correpsponence distributions.
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
+
+  /// SoA of potential correspondences.
+  PotentialCorrespondence<enoki::DynamicArray<enoki::Packet<float>>>
+      potentialCorrespondences;
 
   CorrespondenceDistribution();
 

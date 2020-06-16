@@ -13,6 +13,10 @@
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution() {
   Sigma.setIdentity();
+  // TODO find a better size to initialize to.
+  enoki::set_slices(potentialCorrespondences, 900);
+  assert(potentialCorrespondences.score.capacity() == 900);
+  assert(potentialCorrespondences.pixel[0].capacity() == 900);
 }
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
@@ -28,6 +32,46 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
     QDVO::Patch warpedPatch, float threshold) {
   CHECK(!initialized,
         "The correspondence distribution must not be initialized.");
+
+  const int width = floodRadius * 2 + 1;
+  const int lx = std::max(0 + PATCH_RADIUS, centerPixel.x() - floodRadius);
+  const int hx = std::min(cameraModel.imageWidth() - 1 - PATCH_RADIUS,
+                          centerPixel.x() + floodRadius);
+  const int ly = std::max(0 + PATCH_RADIUS, centerPixel.y() - floodRadius);
+  const int hy = std::min(cameraModel.imageHeight() - 1 - PATCH_RADIUS,
+                          centerPixel.y() + floodRadius);
+
+  QDVO::PatchComparer comp;
+
+  Eigen::Vector2i px;
+  int currentSlice = 0;
+
+  for (int x = lx; x <= hx; ++x) {
+    for (int y = ly; y <= hy; ++y) {
+      px = {x, y};
+      QDVO::Result<float> score = comp.compare(warpedPatch, frame, px);
+
+      if (score.has_value() && score.value() >= threshold) {
+        if (currentSlice >= potentialCorrespondences.score.capacity()) {
+          auto temp = potentialCorrespondences;
+          enoki::set_slices(potentialCorrespondences, (currentSlice + 1) * 2);
+          potentialCorrespondences = temp;
+          enoki::set_slices(potentialCorrespondences, (currentSlice + 1) * 2);
+          assert(currentSlice < potentialCorrespondences.score.capacity());
+        }
+
+        auto&& s = enoki::slice(potentialCorrespondences, currentSlice);
+
+        s.score = score.value();
+        s.pixel[0] = px.x();
+        s.pixel[1] = px.y();
+
+        ++currentSlice;
+      }
+    }
+  }
+
+  enoki::set_slices(potentialCorrespondences, currentSlice);
 }
 
 Eigen::Matrix<QDVO::Scalar, 2, 2>
