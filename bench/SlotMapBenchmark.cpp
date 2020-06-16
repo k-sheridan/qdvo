@@ -11,16 +11,18 @@
 
 using namespace ArgMin;
 
+template <bool Direct>
 static void BM_SlotMapInsert(benchmark::State &state) {
-  SlotMap<double, SlotMapKeyBase> map;
+  SlotMap<double, SlotMapKeyBase, std::vector<double>, Direct> map;
 
   for (auto _ : state) {
     map.insert(1.0);
   }
 }
 
+template <bool Direct>
 static void BM_SlotMapErase(benchmark::State &state) {
-  SlotMap<double, SlotMapKeyBase> map;
+  SlotMap<double, SlotMapKeyBase, std::vector<double>, Direct> map;
   std::vector<SlotMapKeyBase> keys;
   for (int i = 0; i < state.max_iterations; ++i) {
     keys.push_back(map.insert(1.0));
@@ -31,8 +33,9 @@ static void BM_SlotMapErase(benchmark::State &state) {
   }
 }
 
+template <bool Direct>
 static void BM_SlotMapAt(benchmark::State &state) {
-  SlotMap<double, SlotMapKeyBase> map;
+  SlotMap<double, SlotMapKeyBase, std::vector<double>, Direct> map;
   std::vector<SlotMapKeyBase> keys;
   for (int i = 0; i < state.max_iterations; ++i) {
     keys.push_back(map.insert(1.0));
@@ -145,10 +148,14 @@ static void BM_EnokiSOA(benchmark::State &state) {
                      dynamicData.num1, dynamicData.num2, dynamicData.sum);
   }
 }
-
-BENCHMARK(BM_SlotMapInsert)->Unit(benchmark::kNanosecond)->Iterations(100000);
-BENCHMARK(BM_SlotMapErase)->Unit(benchmark::kNanosecond)->Iterations(100000);
-BENCHMARK(BM_SlotMapAt)->Unit(benchmark::kNanosecond)->Iterations(100000);
+constexpr bool Direct = false;
+constexpr bool Contiguous = true;
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
 
 BENCHMARK(BM_VectorIterate)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
