@@ -150,12 +150,12 @@ static void BM_EnokiSOA(benchmark::State &state) {
 }
 constexpr bool Direct = false;
 constexpr bool Contiguous = true;
-BENCHMARK_TEMPLATE(BM_SlotMapInsert, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
-BENCHMARK_TEMPLATE(BM_SlotMapErase, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
-BENCHMARK_TEMPLATE(BM_SlotMapAt, Direct)->Unit(benchmark::kNanosecond)->Iterations(100000000);
-BENCHMARK_TEMPLATE(BM_SlotMapInsert, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
-BENCHMARK_TEMPLATE(BM_SlotMapErase, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
-BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(100000000);
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
 
 BENCHMARK(BM_VectorIterate)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
