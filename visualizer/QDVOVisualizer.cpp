@@ -145,8 +145,7 @@ void QDVOVisualizer::transferVisualizationData() {
        it != algorithm.graph.getKeyframeMap().end(); it++) {
     if ((*it)->status == QDVO::Frame::FrameStatus::ACTIVE) {
       activeKeyframeKeys.push_back(
-          algorithm.graph.getKeyframeMap().getKeyFromDataIndex(
-              std::distance(algorithm.graph.getKeyframeMap().begin(), it)));
+          algorithm.graph.getKeyframeMap().getKeyFromIterator(it));
     }
   }
 

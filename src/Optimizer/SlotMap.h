@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 #include <set>
 #include <vector>
 
@@ -131,6 +132,136 @@ using select_metadata = std::conditional_t<
                        ContiguousValueInsertMetaData<IndexType>>>;
 
 /**
+ * Iterator wrapper
+ * This iterator has a ++ operator which searches for an occupied slot.
+ */
+template <typename SlotVector, typename DataContainer>
+class OccupiedSlotIterator {
+ public:
+  using iterator_category = std::random_access_iterator_tag;
+  using value_type = typename DataContainer::value_type;
+  using difference_type = std::ptrdiff_t;
+  using pointer = typename DataContainer::pointer;
+  using reference = typename DataContainer::reference;
+
+  OccupiedSlotIterator(typename SlotVector::iterator &&slotIterator,
+                       typename SlotVector::iterator &&slotEnd,
+                       typename DataContainer::iterator &&dataIterator)
+      : slotIterator(slotIterator),
+        slotEnd(slotEnd),
+        dataIterator(dataIterator) {}
+
+  OccupiedSlotIterator &operator++() {
+    // If the slot iterator is at the end don't continue.
+    if (slotIterator == slotEnd) {
+      return *this;
+    }
+
+    // Search for the next occupied slot.
+    do {
+      ++dataIterator;
+      ++slotIterator;
+    } while (slotIterator != slotEnd && !slotIterator->occupied);
+
+    return *this;
+  }
+
+  OccupiedSlotIterator operator++(int) {
+    OccupiedSlotIterator tmp(*this);
+    operator++();
+    return tmp;
+  }
+
+  bool operator==(const OccupiedSlotIterator &rhs) const {
+    return slotIterator == rhs.slotIterator;
+  }
+
+  bool operator!=(const OccupiedSlotIterator &rhs) const {
+    return slotIterator != rhs.slotIterator;
+  }
+
+  reference &operator*() {
+    assert(slotIterator->occupied);
+    return *dataIterator;
+  }
+
+  OccupiedSlotIterator operator+(const difference_type &movement) {
+    dataIterator += movement;
+    slotIterator += movement;
+    return *this;
+  }
+
+  difference_type operator-(const OccupiedSlotIterator &rawIterator) {
+    return std::distance(rawIterator.getDataIterator(),
+                         this->getDataIterator());
+  }
+
+  typename DataContainer::iterator getDataIterator() const {
+    return dataIterator;
+  };
+
+ protected:
+  typename SlotVector::iterator slotIterator;
+  typename SlotVector::iterator slotEnd;
+  typename DataContainer::iterator dataIterator;
+};
+
+/**
+ * ConstIterator wrapper
+ * This iterator has a ++ operator which searches for an occupied slot.
+ */
+template <typename SlotVector, typename DataContainer>
+class ConstOccupiedSlotIterator {
+ public:
+  ConstOccupiedSlotIterator(
+      OccupiedSlotIterator<SlotVector, DataContainer> &iterator)
+      : it(iterator) {}
+
+  ConstOccupiedSlotIterator &operator++() {
+    ++it;
+    return *this;
+  }
+
+  ConstOccupiedSlotIterator operator++(int) {
+    ConstOccupiedSlotIterator tmp(*this);
+    operator++();
+    return tmp;
+  }
+
+  bool operator==(const ConstOccupiedSlotIterator &rhs) const {
+    return getDataIterator() == rhs.getDataIterator();
+  }
+
+  bool operator!=(const ConstOccupiedSlotIterator &rhs) const {
+    return getDataIterator() != rhs.getDataIterator();
+  }
+
+  const typename OccupiedSlotIterator<SlotVector, DataContainer>::reference &
+  operator*() {
+    return *it;
+  }
+
+  ConstOccupiedSlotIterator operator+(
+      const typename OccupiedSlotIterator<
+          SlotVector, DataContainer>::difference_type &movement) {
+    return it + movement;
+  }
+
+  typename OccupiedSlotIterator<SlotVector, DataContainer>::difference_type
+  operator-(const ConstOccupiedSlotIterator &rawIterator) {
+    return std::distance(rawIterator.getDataIterator(),
+                         this->getDataIterator());
+  }
+
+  typename DataContainer::iterator getDataIterator() const {
+    return it->getDataIterator;
+  };
+
+ protected:
+  OccupiedSlotIterator<SlotVector, DataContainer> it;
+};
+
+/**
  * SlotMap is an associative container which provides constant time random
  * access, constant time insert, and constant time erase.
  */
@@ -142,15 +273,24 @@ class SlotMap {
   static_assert(std::is_integral<typename KeyType::index_type>::value);
   static_assert(std::is_integral<typename KeyType::generation_type>::value);
 
-  /// Iterator type for this slot map.
-  using Iterator = typename DataContainer::iterator;
-  using ConstIterator = typename DataContainer::const_iterator;
-
   using Index = size_t;
 
   /// Select the metadata type for this slotmap.
   using MetaData = select_metadata<Direct, KeyValueInsertion,
                                    typename KeyType::generation_type>;
+
+  /// Slot vector used in this class.
+  using SlotVector = decltype(std::declval<MetaData>().slots);
+
+  /// Iterator type for this slot map.
+  using Iterator =
+      std::conditional_t<Direct,
+                         OccupiedSlotIterator<SlotVector, DataContainer>,
+                         typename DataContainer::iterator>;
+  using ConstIterator =
+      std::conditional_t<Direct,
+                         ConstOccupiedSlotIterator<SlotVector, DataContainer>,
+                         typename DataContainer::const_iterator>;
 
   /// SoA containing the metadata used for bookkeeping.
   MetaData metadata;
@@ -161,6 +301,8 @@ class SlotMap {
  public:
   typedef KeyType key_type;
   typedef DataType data_type;
+
+  using data_container = DataContainer;
 
   enum InsertResult { SUCCESS_NO_OVERWRITE, SUCCESS_OVERWRITE, FAILURE };
 
@@ -539,7 +681,7 @@ class SlotMap {
     } else {
       // check if there are enough slots
       if (metadata.slots.size() <= key.index) {
-        return data.end();
+        return end();
       }
 
       // Fetch the slot info.
@@ -547,16 +689,17 @@ class SlotMap {
 
       // check if the generations match
       if (slot.generation != key.generation) {
-        return data.end();
+        return end();
       }
 
       if (!slot.occupied) {
-        return data.end();
+        return end();
       }
 
       assert(key.index < data.size());
 
-      return data.begin() + key.index;
+      return {metadata.slots.begin() + key.index, metadata.slots.end(),
+              data.begin() + key.index};
     }
   }
 
@@ -567,18 +710,38 @@ class SlotMap {
    * iterator pointing to the beginning of this containers internal data
    * container.
    */
-  Iterator begin() { return data.begin(); }
+  Iterator begin() {
+    if constexpr (!Direct) {
+      return data.begin();
+    } else {
+      Iterator it = {metadata.slots.begin(), metadata.slots.end(),
+                     data.begin()};
 
-  ConstIterator begin() const { return data.begin(); }
+      // If the first slot is not occupied iterate.
+      if (!metadata.slots.front().occupied) {
+        ++it;
+      }
+
+      return it;
+    }
+  }
+
+  ConstIterator begin() const { return begin(); }
 
   /**
    * O(1)
    * iterator pointing to one past the end of this containers internal data
    * container.
    */
-  Iterator end() { return data.end(); }
+  Iterator end() {
+    if constexpr (!Direct) {
+      return data.end();
+    } else {
+      return {metadata.slots.end(), metadata.slots.end(), data.end()};
+    }
+  }
 
-  ConstIterator end() const { return data.end(); }
+  ConstIterator end() const { return end(); }
 
   /**
    * O(1)
@@ -630,6 +793,20 @@ class SlotMap {
 
   /**
    * O(1)
+   * Given an iterator construct its associated key.
+   */
+  KeyType getKeyFromIterator(Iterator it) {
+    if constexpr (!Direct) {
+      return getKeyFromDataIndex(std::distance(begin(), it));
+    } else {
+      return getKeyFromDataIndex(
+          std::distance(data.begin(), it.getDataIterator()));
+    }
+  }
+
+ private:
+  /**
+   * O(1)
    * constructs a variable key index and generation from a data index.
    * Asserts that the data index is valid.
    */
@@ -655,14 +832,6 @@ class SlotMap {
 
       return result;
     }
-  }
-
-  /**
-   * O(1)
-   * Given an iterator construct its associated key.
-   */
-  KeyType getKeyFromIterator(ConstIterator it) {
-    return getKeyFromDataIndex(std::distance(begin(), it));
   }
 };
 

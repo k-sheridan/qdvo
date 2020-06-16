@@ -45,13 +45,13 @@ void test1() {
   EXPECT_EQ(key5.index, 3);
 
   int i = 0;
-  for (auto& e : map) {
+  for (const auto& e : map) {
     EXPECT_TRUE(e > 0);
     ++i;
   }
   EXPECT_EQ(i, 4);
 
-  auto generatedKey = map.getKeyFromDataIndex(map.at(key5) - map.begin());
+  auto generatedKey = map.getKeyFromIterator(map.at(key5));
 
   EXPECT_EQ(generatedKey.index, key5.index);
   EXPECT_EQ(generatedKey.generation, key5.generation);
@@ -150,9 +150,10 @@ void test3() {
   }
   EXPECT_EQ(i, 3);
 
-  auto generatedKey = map.getKeyFromDataIndex(map.at(key5) - map.begin());
+  auto generatedKey = map.getKeyFromIterator(map.at(key5));
 
   EXPECT_EQ(generatedKey.index, key5.index);
+  EXPECT_EQ(generatedKey.generation, key5.generation);
 }
 TEST(ContiguousSlotArray, Simple) { test3<false>(); }
 TEST(DirectSlotArray, Simple) { test3<true>(); }
@@ -179,7 +180,7 @@ void test4() {
   array.erase(key2);
   array.insert(key3, 3);
 
-  auto generatedKey = array.getKeyFromDataIndex(array.at(key3) - array.begin());
+  auto generatedKey = array.getKeyFromIterator(array.at(key3));
 
   // Now the generated key should work with the slot map.
   EXPECT_NE(map.at(generatedKey), map.end());

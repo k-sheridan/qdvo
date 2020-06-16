@@ -16,8 +16,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
 
   for (auto it = graph.getKeyframeMap().begin();
        it != graph.getKeyframeMap().end(); it++) {
-    auto keyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(
-        it - graph.getKeyframeMap().begin());
+    auto keyframeKey = graph.getKeyframeMap().getKeyFromIterator(it);
 
     // Check if this keyframe is the current frame or it is not active.
     if (keyframeKey == graph.getCurrentFrameKey() ||
@@ -34,7 +33,7 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
     bool keyframeNotInSWE = true;
     for (auto innerIt = poseKeyMap.begin(); innerIt != poseKeyMap.end();
          innerIt++) {
-      auto key = poseKeyMap.getKeyFromDataIndex(innerIt - poseKeyMap.begin());
+      auto key = poseKeyMap.getKeyFromIterator(innerIt);
       if (key == keyframeKey) {
         keyframeNotInSWE = false;
       }
@@ -117,11 +116,8 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
         QuasiDirectErrorTerm qdet(
             sourceFramePoseVariableKey, targetFramePoseVariableKey,
             dinvVariableKey, Eigen::Matrix<double, 2, 2>::Identity(),
-            (*it)->correspondenceDistributions.getKeyFromDataIndex(
-                std::distance((*it)->correspondenceDistributions.begin(),
-                              cdIt)),
-            &graph, observedLandmarkIt->parentFrameKey, keyframeKey,
-            cd.landmarkKey);
+            (*it)->correspondenceDistributions.getKeyFromIterator(cdIt), &graph,
+            observedLandmarkIt->parentFrameKey, keyframeKey, cd.landmarkKey);
 
         errorTermContainer.insert(qdet);
 
@@ -217,8 +213,8 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
   for (auto it = graph.getKeyframeMap().begin();
        it != graph.getKeyframeMap().end(); it++) {
     if ((*it)->status == Frame::FrameStatus::ACTIVE) {
-      activeKeyframeKeys.push_back(graph.getKeyframeMap().getKeyFromDataIndex(
-          std::distance(graph.getKeyframeMap().begin(), it)));
+      activeKeyframeKeys.push_back(
+          graph.getKeyframeMap().getKeyFromIterator(it));
     }
   }
 
@@ -363,8 +359,8 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
       std::max_element(distanceScores.begin(), distanceScores.end());
 
   CHECK(selectedKeyframeKeyIt != distanceScores.end(), "No maximum score.");
-  auto keyToMarginalize = distanceScores.getKeyFromDataIndex(
-      std::distance(distanceScores.begin(), selectedKeyframeKeyIt));
+  auto keyToMarginalize =
+      distanceScores.getKeyFromIterator(selectedKeyframeKeyIt);
 
   int nLandmarksInThisFrame =
       *visibleLandmarksHostedInEachFrame.at(keyToMarginalize);
@@ -382,7 +378,7 @@ void SlidingWindowEstimator::runMarginalizationStrategy(QDVO::Graph& graph) {
 
 void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
   for (auto it = poseKeyMap.begin(); it != poseKeyMap.end(); it++) {
-    auto key = poseKeyMap.getKeyFromDataIndex(it - poseKeyMap.begin());
+    auto key = poseKeyMap.getKeyFromIterator(it);
     auto& keyframe = (*graph.getKeyframeMap().at(key));
     auto& variable = variableContainer.at(*it);
     keyframe->imustate.pos = variable.value.translation();
@@ -390,7 +386,7 @@ void SlidingWindowEstimator::synchronizeGraph(QDVO::Graph& graph) {
   }
 
   for (auto it = dinvKeyMap.begin(); it != dinvKeyMap.end(); it++) {
-    auto key = dinvKeyMap.getKeyFromDataIndex(it - dinvKeyMap.begin());
+    auto key = dinvKeyMap.getKeyFromIterator(it);
     // Get the landmark.
     auto landmarkIt = graph.getLandmarkMap().at(key);
     if (landmarkIt == graph.getLandmarkMap().end()) {

@@ -310,21 +310,21 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    * @param Variables which will be updated.
    */
   void ensureUpdateIsRevertible(VariableContainer<Variables...> &variables) {
-    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
-                                                            auto &variableMap) {
-      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-          ThisVariable;
+    internal::static_for(
+        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+              ThisVariable;
 
-      for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
-        auto &variable = *(it);
+          for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
+            auto &variable = *(it);
 
-        auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+            auto key = variableMap.getKeyFromIterator(it);
 
-        assert(dxBlockVector.blockExists(key));
+            assert(dxBlockVector.blockExists(key));
 
-        variable.ensureUpdateIsRevertible(dxBlockVector.getRowBlock(key));
-      }
-    });
+            variable.ensureUpdateIsRevertible(dxBlockVector.getRowBlock(key));
+          }
+        });
   }
 
   /**
@@ -336,25 +336,25 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    */
   template <bool Revert = false>
   void applyUpdateToVariables(VariableContainer<Variables...> &variables) {
-    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
-                                                            auto &variableMap) {
-      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-          ThisVariable;
+    internal::static_for(
+        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
+          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+              ThisVariable;
 
-      for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
-        auto &variable = *(it);
+          for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
+            auto &variable = *(it);
 
-        auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+            auto key = variableMap.getKeyFromIterator(it);
 
-        assert(dxBlockVector.blockExists(key));
+            assert(dxBlockVector.blockExists(key));
 
-        if constexpr (Revert) {
-          variable.update(-dxBlockVector.getRowBlock(key));
-        } else {
-          variable.update(dxBlockVector.getRowBlock(key));
-        }
-      }
-    });
+            if constexpr (Revert) {
+              variable.update(-dxBlockVector.getRowBlock(key));
+            } else {
+              variable.update(dxBlockVector.getRowBlock(key));
+            }
+          }
+        });
   }
 
   /**
@@ -415,8 +415,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension>
             &bMatrix = *(it);
 
-        auto key =
-            matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+        auto key = matrixSlotArray.getKeyFromIterator(it);
         assert(variables.variableExists(key));
 
         // At this point Dinv should have been computed.
@@ -454,8 +453,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension>
             &negativeBDinvMatrix = *(it);
 
-        auto key =
-            matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+        auto key = matrixSlotArray.getKeyFromIterator(it);
         assert(variables.variableExists(key));
 
         const Eigen::Matrix<ScalarType, RowVariable::dimension, 1>
@@ -481,8 +479,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, RowVariable::dimension,
                             RowVariable::dimension> &DinvMatrix = *(it);
 
-        auto key =
-            matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+        auto key = matrixSlotArray.getKeyFromIterator(it);
         assert(variables.variableExists(key));
 
         const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension>
@@ -509,8 +506,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, Eigen::Dynamic, RowVariable::dimension>
             &negativeBDinvMatrix = *(it);
 
-        auto key =
-            matrixSlotArray.getKeyFromDataIndex(it - matrixSlotArray.begin());
+        auto key = matrixSlotArray.getKeyFromIterator(it);
         assert(variables.variableExists(key));
 
         auto &indexMap = std::get<IndexMap<RowVariable>>(variableToIndexMaps);
@@ -530,7 +526,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           ThisVariable;
 
       for (auto it = indexMap.begin(); it != indexMap.end(); it++) {
-        auto key = indexMap.getKeyFromDataIndex(it - indexMap.begin());
+        auto key = indexMap.getKeyFromIterator(it);
 
         assert(dxBlockVector.blockExists(key));
 
@@ -792,8 +788,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
       for (auto it = priorRHSRowMap.begin(); it != priorRHSRowMap.end(); it++) {
         //  Get the key for this block.
-        auto key =
-            priorRHSRowMap.getKeyFromDataIndex(it - priorRHSRowMap.begin());
+        auto key = priorRHSRowMap.getKeyFromIterator(it);
         if (variables.variableExists(key)) {
           // add the block to b.
           addBlockToRHS(key, *(it));
@@ -919,63 +914,64 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     dimensionOfA = 0;
 
     /// compute the index map starting with only the correlated variables.
-    internal::static_for(
-        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
-          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-              ThisVariable;
+    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
+                                                            auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
 
-          // Only set the dimensions if this variable is not part of the
-          // uncorrelated set.
-          if constexpr (!(internal::Is_in_tuple<
-                            ThisVariable,
-                            std::tuple<UncorrelatedVariables...>>::value)) {
-            // Clear the index map before.
-            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+      // Only set the dimensions if this variable is not part of the
+      // uncorrelated set.
+      if constexpr (!(internal::Is_in_tuple<
+                        ThisVariable,
+                        std::tuple<UncorrelatedVariables...>>::value)) {
+        // Clear the index map before.
+        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
 
-            for (size_t idx = 0; idx < variableMap.size(); ++idx) {
-              auto key = variableMap.getKeyFromDataIndex(idx);
-              assert(variables.variableExists(key));
+        for (auto it = variableMap.begin(); it != variableMap.end(); ++it) {
+          auto key = variableMap.getKeyFromIterator(it);
+          assert(variables.variableExists(key));
 
-              std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
-                  .insert(key, dimensionOfA);
+          std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
+              .insert(key, dimensionOfA);
 
-              dimensionOfA += ThisVariable::dimension;
-            }
+          dimensionOfA += ThisVariable::dimension;
+        }
 
-	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
-          }
-        });
+        assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() ==
+               variableMap.size());
+      }
+    });
 
     totalDimension = dimensionOfA;
 
     /// Compute the remaining variables in the index map (uncorrelated set).
-    internal::static_for(
-        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
-          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-              ThisVariable;
+    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
+                                                            auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
 
-          // Only set the dimensions if this variable is part of the
-          // uncorrelated set.
-          if constexpr ((internal::Is_in_tuple<
-                            ThisVariable,
-                            std::tuple<UncorrelatedVariables...>>::value)) {
+      // Only set the dimensions if this variable is part of the
+      // uncorrelated set.
+      if constexpr ((internal::Is_in_tuple<
+                        ThisVariable,
+                        std::tuple<UncorrelatedVariables...>>::value)) {
+        // Clear the index map before.
+        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
 
-            // Clear the index map before.
-            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+        for (auto it = variableMap.begin(); it != variableMap.end(); ++it) {
+          auto key = variableMap.getKeyFromIterator(it);
+          assert(variables.variableExists(key));
 
-            for (size_t idx = 0; idx < variableMap.size(); ++idx) {
-              auto key = variableMap.getKeyFromDataIndex(idx);
-              assert(variables.variableExists(key));
+          std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
+              .insert(key, totalDimension);
 
-              std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
-                  .insert(key, totalDimension);
+          totalDimension += ThisVariable::dimension;
+        }
 
-              totalDimension += ThisVariable::dimension;
-            }
-
-	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
-          }
-        });
+        assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() ==
+               variableMap.size());
+      }
+    });
 
     // Resize the dense portion of dx.
     dx.resize(totalDimension, 1);
@@ -1026,8 +1022,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       Eigen::Matrix<ScalarType, ThisVariable::dimension, 1> zeroRHSMatrix =
           RHSBlockVector::template MatrixBlock<ThisVariable>::Zero();
 
-      for (size_t idx = 0; idx < variableMap.size(); ++idx) {
-        auto key = variableMap.getKeyFromDataIndex(idx);
+      for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
+        auto key = variableMap.getKeyFromIterator(it);
         assert(variables.variableExists(key));
         // Only do this for uncorrelated variables.
         if constexpr (internal::Is_in_tuple<
@@ -1087,7 +1083,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       auto &variableMap = dxBlockVector.template getRowMap<ThisVariable>();
 
       for (auto it = variableMap.begin(); it != variableMap.end(); it++) {
-        auto key = variableMap.getKeyFromDataIndex(it - variableMap.begin());
+        auto key = variableMap.getKeyFromIterator(it);
 
         if (!variables.variableExists(key)) {
           std::get<std::vector<decltype(key)>>(keysToErase).push_back(key);

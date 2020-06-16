@@ -18,8 +18,7 @@ Graph::Graph() {
 KeyframeMap::key_type Graph::findLatestFrameKey() {
   KeyframeMap::key_type result;
   for (auto it = keyframes.begin(); it != keyframes.end(); it++) {
-    auto key =
-        keyframes.getKeyFromDataIndex(std::distance(keyframes.begin(), it));
+    auto key = keyframes.getKeyFromIterator(it);
     // Only initialized keyframes are returned.
     if (!(*it)->initialized) {
       continue;
@@ -81,8 +80,7 @@ void Graph::removeMarginalizedVariables() {
   std::vector<LandmarkMap::key_type> landmarkKeysToRemove;
   for (auto it = landmarks.begin(); it != landmarks.end(); it++) {
     if (it->status == Landmark::LandmarkStatus::MARGINALIZED) {
-      auto lKey =
-          landmarks.getKeyFromDataIndex(std::distance(landmarks.begin(), it));
+      auto lKey = landmarks.getKeyFromIterator(it);
       // Only remove landmarks associated to
       auto keyframeIt = keyframes.at(it->parentFrameKey);
       if (keyframeIt != keyframes.end() &&
@@ -104,8 +102,7 @@ void Graph::removeMarginalizedVariables() {
   std::vector<KeyframeMap::key_type> keyframeKeysToRemove;
   for (auto it = keyframes.begin(); it != keyframes.end(); it++) {
     if ((*it)->status == Frame::FrameStatus::MARGINALIZED) {
-      keyframeKeysToRemove.push_back(
-          keyframes.getKeyFromDataIndex(std::distance(keyframes.begin(), it)));
+      keyframeKeysToRemove.push_back(keyframes.getKeyFromIterator(it));
     }
   }
 

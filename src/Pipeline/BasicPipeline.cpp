@@ -342,8 +342,7 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
   double smallestPixelFlowScore = std::numeric_limits<double>::max();
   for (auto it = graph.getKeyframeMap().begin();
        it != graph.getKeyframeMap().end(); it++) {
-    auto thisKey = graph.getKeyframeMap().getKeyFromDataIndex(
-        it - graph.getKeyframeMap().begin());
+    auto thisKey = graph.getKeyframeMap().getKeyFromIterator(it);
     if (thisKey == graph.getCurrentFrameKey() ||
         (*it)->status == QDVO::Frame::FrameStatus::INACTIVE) {
       continue;
@@ -391,8 +390,7 @@ std::pair<double, double> QDVO::BasicPipeline::computePixelFlowForCurrentFrame(
       continue;
     }
 
-    auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(
-        landmarkIt - graph.getLandmarkMap().begin());
+    auto lKey = graph.getLandmarkMap().getKeyFromIterator(landmarkIt);
 
     auto keyframePixel =
         graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
@@ -418,8 +416,7 @@ std::pair<double, double> QDVO::BasicPipeline::computePixelFlowForCurrentFrame(
       continue;
     }
 
-    auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(
-        landmarkIt - graph.getLandmarkMap().begin());
+    auto lKey = graph.getLandmarkMap().getKeyFromIterator(landmarkIt);
 
     auto keyframePixel =
         graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
@@ -454,8 +451,8 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
   for (auto keyframeIt = graph.getKeyframeMap().begin();
        keyframeIt != graph.getKeyframeMap().end(); keyframeIt++) {
     Frame& sourceKeyframe = *(*keyframeIt);
-    auto sourceKeyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(
-        keyframeIt - graph.getKeyframeMap().begin());
+    auto sourceKeyframeKey =
+        graph.getKeyframeMap().getKeyFromIterator(keyframeIt);
 
     // Check if this keyframe is active and has parallax with the
     // most recent keyframe.
