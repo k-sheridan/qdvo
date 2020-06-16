@@ -29,7 +29,7 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
   std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
-  QDVO::CorrespondenceDistribution dist(512, 512, rsp);
+  QDVO::CorrespondenceDistribution dist;
 
   QDVO::Image image;
   image.getImageData() = Eigen::MatrixXf(512, 512);
@@ -50,20 +50,12 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
-                              Eigen::Vector2i(256, 256), 25, patchComparer,
+                              Eigen::Vector2i(256, 256), 25,
                               patchResult.value());
 
   LOG_INFO(
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
-
-  std::vector<QDVO::Vector2> errors;
-  std::vector<QDVO::Scalar> scores;
-  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
-  EXPECT_EQ(errors.size(), scores.size());
-  for (auto score : scores) {
-    EXPECT_GE(score, POTENTIAL_CORRESPONDENCE_THRESHOLD);
-  }
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
@@ -105,7 +97,7 @@ TEST_F(CorrespondenceDistributionTest, BasicMultipleSolutions) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
   std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
-  QDVO::CorrespondenceDistribution dist(512, 512, rsp);
+  QDVO::CorrespondenceDistribution dist;
 
   QDVO::Image image;
   image.getImageData() = Eigen::MatrixXf(512, 512);
@@ -127,20 +119,12 @@ TEST_F(CorrespondenceDistributionTest, BasicMultipleSolutions) {
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
-                              Eigen::Vector2i(256, 256), 25, patchComparer,
+                              Eigen::Vector2i(256, 256), 25,
                               patchResult.value());
 
   LOG_INFO(
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
-
-  std::vector<QDVO::Vector2> errors;
-  std::vector<QDVO::Scalar> scores;
-  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
-  EXPECT_EQ(errors.size(), scores.size());
-  for (auto score : scores) {
-    EXPECT_GE(score, POTENTIAL_CORRESPONDENCE_THRESHOLD);
-  }
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));
@@ -162,7 +146,7 @@ TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
   std::shared_ptr<QDVO::RadialSearchPattern> rsp(
       new QDVO::RadialSearchPattern(MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS));
   std::shared_ptr<QDVO::PatchComparer> patchComp(new QDVO::PatchComparer());
-  QDVO::CorrespondenceDistribution dist(512, 512, rsp);
+  QDVO::CorrespondenceDistribution dist;
 
   QDVO::Image image;
   image.getImageData() = Eigen::MatrixXf(512, 512);
@@ -183,17 +167,12 @@ TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
-                              Eigen::Vector2i(256, 256), 25, patchComparer,
+                              Eigen::Vector2i(256, 256), 25,
                               patchResult.value());
 
   LOG_INFO(
       "Correspondence distribution around center: \n{}\n",
       dist.extractScores(Eigen::Vector2i(256, 256), Eigen::Vector2i(17, 17)));
-
-  std::vector<QDVO::Vector2> errors;
-  std::vector<QDVO::Scalar> scores;
-  dist.search(*cm, f, QDVO::Vector2(256, 256), 25, true, errors, scores);
-  EXPECT_EQ(errors.size(), scores.size());
 
   // Compute the residual using the correspondence distribution.
   auto residual = dist.computeResidual(*cm, f, QDVO::Vector2(256, 256));

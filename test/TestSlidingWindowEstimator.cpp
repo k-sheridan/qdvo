@@ -42,9 +42,8 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
         auto projectionResult =
             graph.projectLandmarkToPixel(target, source, landmark);
         if (projectionResult.has_value()) {
-          target.correspondenceDistributions.insert(CorrespondenceDistribution(
-              targetCameraModel.imageWidth(), targetCameraModel.imageHeight(),
-              radialSearchPattern));
+          target.correspondenceDistributions.insert(
+              CorrespondenceDistribution());
 
           Eigen::Vector2i center(std::round(projectionResult.value()(0)),
                                  std::round(projectionResult.value()(1)));
@@ -59,7 +58,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                           ->initializeDistribution(
                               targetCameraModel, target, landmarkKey, center,
                               MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS,
-                              patchComparer, warpedPatch.value());
+                              warpedPatch.value());
 
           LOG_TRACE("Pixel center: {}", center);
 

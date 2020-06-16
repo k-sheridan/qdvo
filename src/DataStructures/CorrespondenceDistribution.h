@@ -26,19 +26,9 @@ class PatchComparer;
  */
 class CorrespondenceDistribution {
  public:
-  struct PotentialCorrespondence {
-    SCALAR_TYPE score = -1;  // match score.
-
-    bool initialized() { return score != -1; }
-    void reset() { score = -1; }
-  };
-
   /// The warped template patch to be used for the creation of the
   /// correspondence distribution.
   Patch warpedPatch;
-
-  /// Serves as a method for finding nearest neighbors.
-  SpatialMap<PotentialCorrespondence> correspondenceMap;
 
   /// Is this correspondence distribution currently not being used.
   bool initialized = false;
@@ -47,30 +37,23 @@ class CorrespondenceDistribution {
   /// of.
   LandmarkMap::key_type landmarkKey;
 
-  /// Width and height of the image.
-  const int width, height;
-
   /// Covariance matrix of this correpsponence distributions.
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
-  CorrespondenceDistribution(
-      unsigned width, unsigned height,
-      std::shared_ptr<const RadialSearchPattern> patternPtr);
+  CorrespondenceDistribution();
 
   /**
    * Will perform an initial radial search for potential correspondences to get
    * an idea of the structure of the raw patch comparison function.
    * @return Number of valid potential correspondences during initialization.
    */
-  int initializeDistribution(
-      CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
-      const Eigen::Vector2i& centerPixel, const int floodRadius,
-      std::shared_ptr<QDVO::PatchComparer> patchComparerPtr,
-      QDVO::Patch warpedPatch);
+  int initializeDistribution(CameraModel& cameraModel, Frame& frame,
+                             LandmarkMap::key_type landmarkKey,
+                             const Eigen::Vector2i& centerPixel,
+                             const int floodRadius, QDVO::Patch warpedPatch);
 
   /// Given an error and score vector, fit a gaussian.
-  Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian(
-      std::vector<QDVO::Vector2>& errors, std::vector<SCALAR_TYPE>& scores);
+  Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian();
 
   /**
    * Efficiently evaluates the gradient of the negative log likelihood of the
@@ -94,8 +77,7 @@ class CorrespondenceDistribution {
    */
   void search(CameraModel& cameraModel, Frame& frame,
               const QDVO::Vector2& centerPixel, const unsigned searchRadius,
-              bool minimalSearch, std::vector<QDVO::Vector2>& errors,
-              std::vector<SCALAR_TYPE>& scores);
+              bool minimalSearch);
 
   /**
    * Computes a matrix which stores the scores in a region of the correspondence
@@ -107,16 +89,6 @@ class CorrespondenceDistribution {
    */
   Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic> extractScores(
       Eigen::Vector2i center, Eigen::Vector2i dimensions);
-
- private:
-  // pre-allocated quantities.
-  std::vector<SCALAR_TYPE> scoreArray, expScoreArray;
-  std::vector<QDVO::Vector2> errorArray, weightedErrorArray;
-
-  std::shared_ptr<const QDVO::RadialSearchPattern>
-      radialSearchPattern;  // shared among all correspondence distributions.
-                            // NOT TO BE MODIFIED!
-  std::shared_ptr<QDVO::PatchComparer> patchComparer;
 };
 
 }  // namespace QDVO

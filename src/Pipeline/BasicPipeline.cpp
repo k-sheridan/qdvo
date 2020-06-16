@@ -265,8 +265,8 @@ void QDVO::BasicPipeline::
   for (int i = 0; i < visibleActiveLandmarks.size(); ++i) {
     // create another correspondence distribution
     correspondenceDistributionKeys.push_back(
-        cf->correspondenceDistributions.insert(QDVO::CorrespondenceDistribution(
-            cm->width, cm->height, radialSearchPatternPtr)));
+        cf->correspondenceDistributions.insert(
+            QDVO::CorrespondenceDistribution()));
   }
 
   auto initializationFn =
@@ -307,8 +307,7 @@ void QDVO::BasicPipeline::
     cdRef.initializeDistribution(
         cm, *(graph.getCurrentFrame()), lKey,
         Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))),
-        MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
-        warpedPatch.value());
+        MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, warpedPatch.value());
 
     // If this landmark was observed increment the observation counter.
     if (cdRef.initialized) {
