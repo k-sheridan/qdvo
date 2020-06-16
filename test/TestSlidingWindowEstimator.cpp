@@ -58,7 +58,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                           ->initializeDistribution(
                               targetCameraModel, target, landmarkKey, center,
                               MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS,
-                              warpedPatch.value());
+                              warpedPatch.value(), 0.8);
 
           LOG_TRACE("Pixel center: {}", center);
 

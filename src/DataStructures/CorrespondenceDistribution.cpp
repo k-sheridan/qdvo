@@ -25,7 +25,7 @@ void QDVO::CorrespondenceDistribution::reset() {
 int QDVO::CorrespondenceDistribution::initializeDistribution(
     CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
     const Eigen::Vector2i& centerPixel, const int floodRadius,
-    QDVO::Patch warpedPatch) {
+    QDVO::Patch warpedPatch, float threshold) {
   CHECK(!initialized,
         "The correspondence distribution must not be initialized.");
 }

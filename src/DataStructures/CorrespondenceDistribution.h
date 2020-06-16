@@ -47,10 +47,11 @@ class CorrespondenceDistribution {
    * an idea of the structure of the raw patch comparison function.
    * @return Number of valid potential correspondences during initialization.
    */
-  int initializeDistribution(CameraModel& cameraModel, Frame& frame,
-                             LandmarkMap::key_type landmarkKey,
-                             const Eigen::Vector2i& centerPixel,
-                             const int floodRadius, QDVO::Patch warpedPatch);
+  int initializeDistribution(
+      CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
+      const Eigen::Vector2i& centerPixel, const int floodRadius,
+      QDVO::Patch warpedPatch,
+      float threshold = POTENTIAL_CORRESPONDENCE_THRESHOLD);
 
   /// Given an error and score vector, fit a gaussian.
   Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian();
