@@ -20,7 +20,7 @@
 namespace QDVO {
 template <typename Value>
 struct PotentialCorrespondence {
-  using Pixel = enoki::Array<enoki::uint32_array_t<Value>, 2>;
+  using Pixel = enoki::Array<enoki::float32_array_t<Value>, 2>;
 
   /// Pixel of the correspondence.
   Pixel pixel;
@@ -31,6 +31,28 @@ struct PotentialCorrespondence {
 };
 }  // namespace QDVO
 ENOKI_STRUCT_SUPPORT(QDVO::PotentialCorrespondence, pixel, score)
+
+/**
+ * Vectorizable SoA container for the nearby potential correspondences.
+ */
+namespace QDVO {
+template <typename Value>
+struct NearbyPotentialCorrespondence {
+  using RelativePixel = enoki::Array<enoki::float32_array_t<Value>, 2>;
+
+  /// Pixel offset of the correspondence.
+  RelativePixel pixelOffset;
+  /// Score of correspondence.
+  Value score;
+  /// Squared distance of the correspondence.
+  Value squaredDistance;
+
+  ENOKI_STRUCT(NearbyPotentialCorrespondence, pixelOffset, score,
+               squaredDistance)
+};
+}  // namespace QDVO
+ENOKI_STRUCT_SUPPORT(QDVO::NearbyPotentialCorrespondence, pixelOffset, score,
+                     squaredDistance)
 
 namespace QDVO {
 
@@ -47,6 +69,9 @@ class PatchComparer;
  */
 class CorrespondenceDistribution {
  public:
+  /// Scalar used for enoki.
+  using EnokiScalar = float;
+
   /// The warped template patch to be used for the creation of the
   /// correspondence distribution.
   Patch warpedPatch;
@@ -62,8 +87,12 @@ class CorrespondenceDistribution {
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
   /// SoA of potential correspondences.
-  PotentialCorrespondence<enoki::DynamicArray<enoki::Packet<float>>>
+  PotentialCorrespondence<enoki::DynamicArray<enoki::Packet<EnokiScalar>>>
       potentialCorrespondences;
+
+  /// SoA of nearby potential correspondences.
+  NearbyPotentialCorrespondence<enoki::DynamicArray<enoki::Packet<EnokiScalar>>>
+      nearbyPotentialCorrespondences;
 
   CorrespondenceDistribution();
 
@@ -94,16 +123,6 @@ class CorrespondenceDistribution {
    * sets the correspondence distribution into a dormant state.
    */
   void reset();
-
-  /**
-   * Search the correspondence distribution for close by potential
-   * correspondence distributions
-   * @return vector of z - centerPixel, vector of scores associated to the
-   * errors
-   */
-  void search(CameraModel& cameraModel, Frame& frame,
-              const QDVO::Vector2& centerPixel, const unsigned searchRadius,
-              bool minimalSearch);
 
   /**
    * Computes a matrix which stores the scores in a region of the correspondence

@@ -21,7 +21,7 @@
 #define ZNCC_PATCH_COMPARISON
 
 // Potential correspondence threshold
-#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.95
 
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 600
@@ -38,6 +38,9 @@
 
 // define the maximum radius for the correspondence search.
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35
+
+// define the maximum radius for the correspondence search.
+#define MAXIMUM_CORRESPONDENCE_RADIUS 15
 
 // the number of extra radii that are searched after finding the first potential
 // correspondence

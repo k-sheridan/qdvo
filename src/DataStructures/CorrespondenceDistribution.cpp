@@ -13,14 +13,97 @@
 
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution() {
   Sigma.setIdentity();
+
   // TODO find a better size to initialize to.
   enoki::set_slices(potentialCorrespondences, 900);
   assert(potentialCorrespondences.score.capacity() == 900);
   assert(potentialCorrespondences.pixel[0].capacity() == 900);
+
+  // TODO use a constexpr function to compute the size this actually should be.
+  enoki::set_slices(
+      nearbyPotentialCorrespondences,
+      MAXIMUM_CORRESPONDENCE_RADIUS * MAXIMUM_CORRESPONDENCE_RADIUS);
 }
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
-    CameraModel& cameraModel, Frame& frame, const QDVO::Vector2& px_0) {}
+    CameraModel& cameraModel, Frame& frame, const QDVO::Vector2& px_0) {
+  /*
+   * TODO
+   * 0) Determine if it is possible to compute this residual.
+   * Check bounds of initialization.
+   */
+
+  /*
+   * 1) compress the potential correspondences into a nearby potential
+   *correspondence array.
+   */
+  NearbyPotentialCorrespondence<EnokiScalar*> ptr =
+      enoki::slice_ptr(nearbyPotentialCorrespondences, 0);
+  size_t sizeAfterCompression = 0;
+
+  // Convert the center pixel to an enoki vector.
+  enoki::Array<EnokiScalar, 2> centerPixelPacket(px_0.x(), px_0.y());
+
+  NearbyPotentialCorrespondence<enoki::Packet<EnokiScalar>>
+      nearPotentialCorrespondence;
+
+  // Construct a nearby potential corresp. packet and compress it into the
+  // array.
+  auto compressionFn = [&ptr, &sizeAfterCompression, &centerPixelPacket,
+                        &nearPotentialCorrespondence](auto&& pixel,
+                                                      auto&& score) {
+    nearPotentialCorrespondence.score = score;
+    nearPotentialCorrespondence.pixelOffset = pixel - centerPixelPacket;
+    nearPotentialCorrespondence.squaredDistance =
+        enoki::squared_norm(nearPotentialCorrespondence.pixelOffset);
+
+    sizeAfterCompression += enoki::compress(
+        ptr, nearPotentialCorrespondence,
+        nearPotentialCorrespondence.squaredDistance <=
+            MAXIMUM_CORRESPONDENCE_RADIUS * MAXIMUM_CORRESPONDENCE_RADIUS);
+  };
+  enoki::vectorize(compressionFn, potentialCorrespondences.pixel,
+                   potentialCorrespondences.score);
+
+  enoki::set_slices(nearbyPotentialCorrespondences, sizeAfterCompression);
+
+  // There are no close correspondences.
+  if (sizeAfterCompression == 0) {
+    return {};
+  }
+
+  /*
+   * 2) compute the residual on the small nearby potential
+   *correspondence array.
+   */
+
+  enoki::Packet<EnokiScalar> gmmPacket =
+      enoki::zero<enoki::Packet<EnokiScalar>>();
+
+  enoki::Array<enoki::Packet<EnokiScalar>, 2> weightedErrorPacket =
+      enoki::zero<enoki::Array<enoki::Packet<EnokiScalar>, 2>>();
+
+  enoki::Packet<EnokiScalar> weights;
+
+  auto residualFn = [&gmmPacket, &weightedErrorPacket, &weights](
+                        auto&& score, auto&& squaredError, auto&& pixelOffset) {
+    weights = enoki::exp(squaredError / -2) * score;
+    gmmPacket += weights;
+    weightedErrorPacket += weights * pixelOffset;
+  };
+  enoki::vectorize(residualFn, nearbyPotentialCorrespondences.score,
+                   nearbyPotentialCorrespondences.squaredDistance,
+                   nearbyPotentialCorrespondences.pixelOffset);
+
+  const EnokiScalar gmm = hsum(gmmPacket);
+  assert(gmm > 1e-30);
+
+  enoki::Array<EnokiScalar, 2> residual(enoki::hsum(weightedErrorPacket.x()),
+                                        enoki::hsum(weightedErrorPacket.y()));
+  residual /= gmm;
+
+  return QDVO::Vector2(residual.x(), residual.y());
+}
 
 void QDVO::CorrespondenceDistribution::reset() {
   this->initialized = false;  // put this correspondence distribution to sleep.
@@ -32,6 +115,9 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
     QDVO::Patch warpedPatch, float threshold) {
   CHECK(!initialized,
         "The correspondence distribution must not be initialized.");
+
+  this->landmarkKey = landmarkKey;
+  this->warpedPatch = warpedPatch;
 
   const int width = floodRadius * 2 + 1;
   const int lx = std::max(0 + PATCH_RADIUS, centerPixel.x() - floodRadius);
@@ -72,15 +158,18 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   }
 
   enoki::set_slices(potentialCorrespondences, currentSlice);
+
+  if (currentSlice > 0) {
+    initialized = true;
+  }
+
+  return currentSlice;
 }
 
 Eigen::Matrix<QDVO::Scalar, 2, 2>
-QDVO::CorrespondenceDistribution::fitGaussian() {}
-
-void QDVO::CorrespondenceDistribution::search(
-    CameraModel& cameraModel, Frame& frame,
-    const QDVO::Vector2& centerPixelScalar, const unsigned searchRadius,
-    bool minimalSearch) {}
+QDVO::CorrespondenceDistribution::fitGaussian() {
+  return Sigma;
+}
 
 Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic>
 QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
