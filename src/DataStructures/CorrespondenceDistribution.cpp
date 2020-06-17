@@ -1,8 +1,5 @@
 #include "CorrespondenceDistribution.h"
 
-#include <enoki/array.h>
-#include <enoki/dynamic.h>
-
 #include <algorithm>
 
 #include "Config.h"
@@ -15,14 +12,12 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution() {
   Sigma.setIdentity();
 
   // TODO find a better size to initialize to.
-  enoki::set_slices(potentialCorrespondences, 900);
-  assert(potentialCorrespondences.score.capacity() == 900);
-  assert(potentialCorrespondences.pixel[0].capacity() == 900);
+  potentialCorrespondences.reserve(900);
+  assert(potentialCorrespondences.capacity() == 900);
 
   // TODO use a constexpr function to compute the size this actually should be.
-  enoki::set_slices(
-      nearbyPotentialCorrespondences,
-      MAXIMUM_CORRESPONDENCE_RADIUS * MAXIMUM_CORRESPONDENCE_RADIUS);
+  nearbyPotentialCorrespondences.reserve(MAXIMUM_CORRESPONDENCE_RADIUS *
+                                         MAXIMUM_CORRESPONDENCE_RADIUS);
 }
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
@@ -37,39 +32,35 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
    * 1) compress the potential correspondences into a nearby potential
    *correspondence array.
    */
-  NearbyPotentialCorrespondence<EnokiScalar*> ptr =
-      enoki::slice_ptr(nearbyPotentialCorrespondences, 0);
-  size_t sizeAfterCompression = 0;
+  constexpr float maxDistance = MAXIMUM_CORRESPONDENCE_RADIUS;
+  constexpr float maxDistanceSq = maxDistance * maxDistance;
+  const float x0 = px_0.x();
+  const float y0 = px_0.y();
+  float minSquaredError = std::numeric_limits<float>::max();
 
-  // Convert the center pixel to an enoki vector.
-  enoki::Array<EnokiScalar, 2> centerPixelPacket(px_0.x(), px_0.y());
+  for (auto&& s : potentialCorrespondences) {
+    s.dx = s.x - x0;
+    s.dy = s.y - y0;
+    s.squaredError = s.dx * s.dx + s.dy * s.dy;
+  }
 
-  NearbyPotentialCorrespondence<enoki::Packet<EnokiScalar>>
-      nearPotentialCorrespondence;
+  for (const auto&& s : potentialCorrespondences) {
+    if (s.squaredError < minSquaredError) {
+      minSquaredError = s.squaredError;
+    }
+  }
 
-  // Construct a nearby potential corresp. packet and compress it into the
-  // array.
-  auto compressionFn = [&ptr, &sizeAfterCompression, &centerPixelPacket,
-                        &nearPotentialCorrespondence](auto&& pixel,
-                                                      auto&& score) {
-    nearPotentialCorrespondence.score = score;
-    nearPotentialCorrespondence.pixelOffset = pixel - centerPixelPacket;
-    nearPotentialCorrespondence.squaredDistance =
-        enoki::squared_norm(nearPotentialCorrespondence.pixelOffset);
+  float sqErrorThreshold =
+      std::min(sqrt(minSquaredError) + (float)SEARCH_RADIUS_PADDING,
+               (float)MAXIMUM_CORRESPONDENCE_RADIUS);
+  sqErrorThreshold = sqErrorThreshold * sqErrorThreshold;
 
-    sizeAfterCompression += enoki::compress(
-        ptr, nearPotentialCorrespondence,
-        nearPotentialCorrespondence.squaredDistance <=
-            MAXIMUM_CORRESPONDENCE_RADIUS * MAXIMUM_CORRESPONDENCE_RADIUS);
-  };
-  enoki::vectorize(compressionFn, potentialCorrespondences.pixel,
-                   potentialCorrespondences.score);
-
-  enoki::set_slices(nearbyPotentialCorrespondences, sizeAfterCompression);
-
-  // There are no close correspondences.
-  if (sizeAfterCompression == 0) {
-    return {};
+  nearbyPotentialCorrespondences.clear();
+  for (const auto&& s : potentialCorrespondences) {
+    if (s.squaredError < sqErrorThreshold) {
+      nearbyPotentialCorrespondences.emplace_back(s.dx, s.dy, s.score,
+                                                  s.squaredError);
+    }
   }
 
   /*
@@ -77,38 +68,31 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
    *correspondence array.
    */
 
-  enoki::Packet<EnokiScalar> gmmPacket =
-      enoki::zero<enoki::Packet<EnokiScalar>>();
+  if (nearbyPotentialCorrespondences.empty()) {
+    return {};
+  }
 
-  enoki::Array<enoki::Packet<EnokiScalar>, 2> weightedErrorPacket =
-      enoki::zero<enoki::Array<enoki::Packet<EnokiScalar>, 2>>();
+  for (auto&& s : nearbyPotentialCorrespondences) {
+    s.weight = std::exp(s.squaredError / -2) * s.score;
+  }
 
-  enoki::Packet<EnokiScalar> weights;
+  float ex = 0;
+  float ey = 0;
+  float gmm = 0;
+  for (const auto&& s : nearbyPotentialCorrespondences) {
+    ex += s.dx * s.weight;
+    ey += s.dy * s.weight;
+    gmm += s.weight;
+  }
 
-  auto residualFn = [&gmmPacket, &weightedErrorPacket, &weights](
-                        auto&& score, auto&& squaredError, auto&& pixelOffset) {
-    weights = enoki::exp(squaredError / -2) * score;
-    gmmPacket += weights;
-    weightedErrorPacket += weights * pixelOffset;
-  };
-  enoki::vectorize(residualFn, nearbyPotentialCorrespondences.score,
-                   nearbyPotentialCorrespondences.squaredDistance,
-                   nearbyPotentialCorrespondences.pixelOffset);
-
-  const EnokiScalar gmm = hsum(gmmPacket);
-  assert(gmm > 1e-30);
-
-  enoki::Array<EnokiScalar, 2> residual(enoki::hsum(weightedErrorPacket.x()),
-                                        enoki::hsum(weightedErrorPacket.y()));
-  residual /= gmm;
-
-  assert(!std::isnan(residual.x()) && !std::isnan(residual.y()));
-
-  return QDVO::Vector2(residual.x(), residual.y());
+  return QDVO::Vector2(ex, ey) / gmm;
 }
 
 void QDVO::CorrespondenceDistribution::reset() {
   this->initialized = false;  // put this correspondence distribution to sleep.
+  potentialCorrespondences.clear();
+  nearbyPotentialCorrespondences.clear();
+  Sigma.setIdentity();
 }
 
 int QDVO::CorrespondenceDistribution::initializeDistribution(
@@ -132,7 +116,8 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
   QDVO::PatchComparer comp;
 
   Eigen::Vector2i px;
-  int currentSlice = 0;
+
+  potentialCorrespondences.clear();
 
   for (int x = lx; x <= hx; ++x) {
     for (int y = ly; y <= hy; ++y) {
@@ -140,32 +125,16 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
       QDVO::Result<float> score = comp.compare(warpedPatch, frame, px);
 
       if (score.has_value() && score.value() >= threshold) {
-        if (currentSlice >= potentialCorrespondences.score.capacity()) {
-          auto temp = potentialCorrespondences;
-          enoki::set_slices(potentialCorrespondences, (currentSlice + 1) * 2);
-          potentialCorrespondences = temp;
-          enoki::set_slices(potentialCorrespondences, (currentSlice + 1) * 2);
-          assert(currentSlice < potentialCorrespondences.score.capacity());
-        }
-
-        auto&& s = enoki::slice(potentialCorrespondences, currentSlice);
-
-        s.score = score.value();
-        s.pixel[0] = px.x();
-        s.pixel[1] = px.y();
-
-        ++currentSlice;
+        potentialCorrespondences.emplace_back(px.x(), px.y(), score.value());
       }
     }
   }
 
-  enoki::set_slices(potentialCorrespondences, currentSlice);
-
-  if (currentSlice > 0) {
+  if (potentialCorrespondences.size() > 0) {
     initialized = true;
   }
 
-  return currentSlice;
+  return potentialCorrespondences.size();
 }
 
 Eigen::Matrix<QDVO::Scalar, 2, 2>

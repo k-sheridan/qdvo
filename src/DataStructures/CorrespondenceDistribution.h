@@ -1,14 +1,12 @@
 #pragma once
 
-#include <enoki/array.h>
-#include <enoki/dynamic.h>
-
 #include <algorithm>
 #include <memory>
 #include <unordered_set>
 #include <vector>
 
 #include "GlobalDefinitions.h"
+#include "Optimizer/Containers/soa/soa_vector.h"
 #include "Patch.h"
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
@@ -18,41 +16,37 @@
  * Vectorizable SoA container for the potential correspondences.
  */
 namespace QDVO {
-template <typename Value>
 struct PotentialCorrespondence {
-  using Pixel = enoki::Array<enoki::float32_array_t<Value>, 2>;
-
   /// Pixel of the correspondence.
-  Pixel pixel;
+  float x, y;
   /// Score of correspondence.
-  Value score;
-
-  ENOKI_STRUCT(PotentialCorrespondence, pixel, score)
+  float score;
+  /// Squared distance of the correspondence.
+  float squaredError;
+  float dx, dy;
 };
 }  // namespace QDVO
-ENOKI_STRUCT_SUPPORT(QDVO::PotentialCorrespondence, pixel, score)
+SOA_DEFINE_TYPE(QDVO::PotentialCorrespondence, x, y, score, squaredError, dx,
+                dy);
 
 /**
  * Vectorizable SoA container for the nearby potential correspondences.
  */
 namespace QDVO {
-template <typename Value>
 struct NearbyPotentialCorrespondence {
-  using RelativePixel = enoki::Array<enoki::float32_array_t<Value>, 2>;
-
   /// Pixel offset of the correspondence.
-  RelativePixel pixelOffset;
+  float dx;
+  float dy;
   /// Score of correspondence.
-  Value score;
+  float score;
   /// Squared distance of the correspondence.
-  Value squaredDistance;
-
-  ENOKI_STRUCT(NearbyPotentialCorrespondence, pixelOffset, score,
-               squaredDistance)
+  float squaredError;
+  /// weight;
+  float weight;
 };
 }  // namespace QDVO
-ENOKI_STRUCT_SUPPORT(QDVO::NearbyPotentialCorrespondence, pixelOffset, score,
-                     squaredDistance)
+SOA_DEFINE_TYPE(QDVO::NearbyPotentialCorrespondence, dx, dy, score,
+                squaredError, weight);
 
 namespace QDVO {
 
@@ -69,9 +63,6 @@ class PatchComparer;
  */
 class CorrespondenceDistribution {
  public:
-  /// Scalar used for enoki.
-  using EnokiScalar = float;
-
   /// The warped template patch to be used for the creation of the
   /// correspondence distribution.
   Patch warpedPatch;
@@ -87,12 +78,10 @@ class CorrespondenceDistribution {
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
   /// SoA of potential correspondences.
-  PotentialCorrespondence<enoki::DynamicArray<enoki::Packet<EnokiScalar>>>
-      potentialCorrespondences;
+  soa::vector<PotentialCorrespondence> potentialCorrespondences;
 
   /// SoA of nearby potential correspondences.
-  NearbyPotentialCorrespondence<enoki::DynamicArray<enoki::Packet<EnokiScalar>>>
-      nearbyPotentialCorrespondences;
+  soa::vector<NearbyPotentialCorrespondence> nearbyPotentialCorrespondences;
 
   CorrespondenceDistribution();
 

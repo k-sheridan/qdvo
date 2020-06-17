@@ -90,7 +90,26 @@ static void BM_SOAVectorTransformFloat(benchmark::State &state) {
   vec.resize(1e3);
 
   for (auto _ : state) {
-    for (auto e : vec) {
+    for (auto &&e : vec) {
+      e.sum = e.num1 * e.num2;
+    }
+  }
+}
+
+struct MyDataD {
+  double num1 = 1.9;
+  double num2 = 5.0;
+  double sum = 0.0;
+  std::array<double, 11 * 11> waste;
+};
+SOA_DEFINE_TYPE(MyDataD, num1, num2, sum, waste);
+
+static void BM_SOAVectorTransformDouble(benchmark::State &state) {
+  soa::vector<MyDataD> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto &&e : vec) {
       e.sum = e.num1 * e.num2;
     }
   }
@@ -183,7 +202,52 @@ BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)
 BENCHMARK(BM_VectorIterate)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_SOAVectorTransformFloat)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_SOAVectorTransformDouble)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_SOAVectorTransformFloatWithInheritance)
     ->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_EnokiSOA)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_EnokiSOAManual)->Unit(benchmark::kNanosecond);
+
+struct MyDataI {
+  uint32_t num1 = 10;
+  uint32_t num2 = 13;
+  uint32_t sum = 0;
+  std::array<double, 11 * 11> waste;
+};
+SOA_DEFINE_TYPE(MyDataI, num1, num2, sum, waste);
+
+static void BM_SOAVectorTransform2Float(benchmark::State &state) {
+  soa::vector<MyData> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto &&e : vec) {
+      e.sum = (e.num1 * e.num2 + e.num1 * e.num1) / -2;
+    }
+  }
+}
+static void BM_SOAVectorTransform2Double(benchmark::State &state) {
+  soa::vector<MyDataD> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto &&e : vec) {
+      e.sum = (e.num1 * e.num2 + e.num1 * e.num1) / -2;
+    }
+  }
+}
+
+static void BM_SOAVectorTransform2Int(benchmark::State &state) {
+  soa::vector<MyDataI> vec;
+  vec.resize(1e3);
+
+  for (auto _ : state) {
+    for (auto &&e : vec) {
+      e.sum = (e.num1 * e.num2 + e.num1 * e.num1) / -2;
+    }
+  }
+}
+
+BENCHMARK(BM_SOAVectorTransform2Float)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_SOAVectorTransform2Double)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_SOAVectorTransform2Int)->Unit(benchmark::kNanosecond);
