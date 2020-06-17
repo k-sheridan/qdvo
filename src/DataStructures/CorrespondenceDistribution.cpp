@@ -102,6 +102,8 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
                                         enoki::hsum(weightedErrorPacket.y()));
   residual /= gmm;
 
+  assert(!std::isnan(residual.x()) && !std::isnan(residual.y()));
+
   return QDVO::Vector2(residual.x(), residual.y());
 }
 

@@ -97,9 +97,9 @@ static void BM_SOAVectorTransformFloat(benchmark::State &state) {
 }
 
 struct A {
-  double num1 = 1.9;
-  double num2 = 5.0;
-  double sum = 0.0;
+  float num1 = 1.9;
+  float num2 = 5.0;
+  float sum = 0.0;
 };
 struct B {
   std::array<double, 11 * 11> waste;
@@ -113,7 +113,7 @@ static void BM_SOAVectorTransformFloatWithInheritance(benchmark::State &state) {
 
   for (auto _ : state) {
     for (auto &&e : vec) {
-      e.sum = std::exp(e.num2 + e.num1);
+      e.sum = e.num2 * e.num1;
     }
   }
 }
@@ -139,23 +139,46 @@ static void BM_EnokiSOA(benchmark::State &state) {
   EnokiData<enoki::DynamicArray<Pack>> dynamicData;
   enoki::set_slices(dynamicData, 1e3);
 
-  std::cout << sizeof(Pack) << std::endl;
-  std::cout << enoki::slices(dynamicData) << std::endl;
-
   for (auto _ : state) {
-    enoki::vectorize([](auto &&num1, auto &&num2,
-                        auto &&sum) { sum = enoki::exp(num2 + num1); },
-                     dynamicData.num1, dynamicData.num2, dynamicData.sum);
+    enoki::vectorize(
+        [](auto &&num1, auto &&num2, auto &&sum) { sum = num2 * num1; },
+        dynamicData.num1, dynamicData.num2, dynamicData.sum);
   }
 }
+
+static void BM_EnokiSOAManual(benchmark::State &state) {
+  using Pack = enoki::Packet<double>;
+  EnokiData<enoki::DynamicArray<Pack>> dynamicData;
+  enoki::set_slices(dynamicData, 1e3);
+
+  for (auto _ : state) {
+    for (int i = 0; i < enoki::slices(dynamicData); ++i) {
+      auto &&s = enoki::slice(dynamicData, i);
+      s.sum = s.num1 * s.num2;
+    }
+  }
+}
+
 constexpr bool Direct = false;
 constexpr bool Contiguous = true;
-BENCHMARK_TEMPLATE(BM_SlotMapInsert, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
-BENCHMARK_TEMPLATE(BM_SlotMapErase, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
-BENCHMARK_TEMPLATE(BM_SlotMapAt, Direct)->Unit(benchmark::kNanosecond)->Iterations(1000000);
-BENCHMARK_TEMPLATE(BM_SlotMapInsert, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
-BENCHMARK_TEMPLATE(BM_SlotMapErase, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
-BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)->Unit(benchmark::kNanosecond)->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Direct)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Direct)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Direct)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapInsert, Contiguous)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapErase, Contiguous)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
+BENCHMARK_TEMPLATE(BM_SlotMapAt, Contiguous)
+    ->Unit(benchmark::kNanosecond)
+    ->Iterations(1000000);
 
 BENCHMARK(BM_VectorIterate)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_VectorTransformFloat)->Unit(benchmark::kNanosecond);
@@ -163,3 +186,4 @@ BENCHMARK(BM_SOAVectorTransformFloat)->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_SOAVectorTransformFloatWithInheritance)
     ->Unit(benchmark::kNanosecond);
 BENCHMARK(BM_EnokiSOA)->Unit(benchmark::kNanosecond);
+BENCHMARK(BM_EnokiSOAManual)->Unit(benchmark::kNanosecond);
