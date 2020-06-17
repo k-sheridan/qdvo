@@ -40,12 +40,15 @@ QDVO::Result<QDVO::Vector2> QDVO::EquidistantCameraModel::project(
     return {};
   }
 
-  SCALAR_TYPE psi = atan2(pointInCamera(1), pointInCamera(0));
-
   SCALAR_TYPE radius = this->distortionFn(theta);
 
-  Eigen::Matrix<SCALAR_TYPE, 2, 1> bearingDistorted(radius * cos(psi),
-                                                    radius * sin(psi));
+  Eigen::Matrix<SCALAR_TYPE, 2, 1> bearingDistorted;
+
+  if (radius > 1e-9) {
+    bearingDistorted = radius * homogenousPoint.head<2>().normalized();
+  } else {
+    bearingDistorted = homogenousPoint.head<2>();
+  }
 
   Eigen::Matrix<SCALAR_TYPE, 2, 1> pixel(
       bearingDistorted(0) * this->fx + this->cx,
