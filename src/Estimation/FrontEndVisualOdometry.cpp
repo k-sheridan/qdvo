@@ -47,7 +47,7 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
   LOG_INFO(
       "Solving for current frame pose with fixed landmarks and host frames.");
   solver.settings.initialLambda = 1e6;
-  solver.settings.maximumIterations = 50;
+  solver.settings.maximumIterations = 25;
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 

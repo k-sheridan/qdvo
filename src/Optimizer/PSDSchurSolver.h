@@ -44,8 +44,9 @@ class PSDSchurSolver;
  * The uncorrelated variable set must be a subset of all variables.
  */
 template <typename ScalarType, typename LossFunctionType,
-          typename... ErrorTerms, typename... Variables,
-          typename... UncorrelatedVariables>
+          template <typename...> class ErrorTermGroup,
+          template <typename...> class VariableGroup, typename... ErrorTerms,
+          typename... Variables, typename... UncorrelatedVariables>
 class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
                      ErrorTermGroup<ErrorTerms...>, VariableGroup<Variables...>,
                      VariableGroup<UncorrelatedVariables...>> {
@@ -233,7 +234,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
    * This adds a lambda to the diagonal members of A.
    */
   void addLambdaToLinearSystem(ScalarType lambda) {
-    A.block(0, 0, dimensionOfA, dimensionOfA).diagonal().array() += lambda;
+    A.diagonal().array() += lambda;
 
     internal::static_for(D, [&](auto i, auto &blockArray) {
       for (auto &block : blockArray) {
@@ -433,18 +434,10 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             &negativeBDinvMatrix = *(negativeBDinvMatrixIt);
 
         // It is possible that this matrix has more rows than needed.
-        negativeBDinvMatrix.block(0, 0, dimensionOfA, RowVariable::dimension)
-            .noalias() =
-            (bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension) * -dinv)
-                .eval();
+        negativeBDinvMatrix.noalias() = (bMatrix * -dinv).eval();
 
         // Add BDinvB' to A.
-        A.block(0, 0, dimensionOfA, dimensionOfA).noalias() +=
-            (negativeBDinvMatrix.block(0, 0, dimensionOfA,
-                                       RowVariable::dimension) *
-             bMatrix.block(0, 0, dimensionOfA, RowVariable::dimension)
-                 .transpose())
-                .eval();
+        A.noalias() += (negativeBDinvMatrix * bMatrix.transpose()).eval();
       }
     });
 
@@ -468,21 +461,14 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         const Eigen::Matrix<ScalarType, RowVariable::dimension, 1>
             &rhsBlockMatrix = b_uncorrelated.getRowBlock(key);
 
-        b_correlated.block(0, 0, dimensionOfA, 1).noalias() +=
-            (negativeBDinvMatrix.block(0, 0, dimensionOfA,
-                                       RowVariable::dimension) *
-             rhsBlockMatrix)
-                .eval();
+        b_correlated.noalias() += (negativeBDinvMatrix * rhsBlockMatrix).eval();
       }
     });
 
     LOG_TRACE(
         "Computing dx_{correlated} = (A - B D^{-1} B^{T})^{-1} b_{correlated}");
     // Multiply the inverse schur complement of D by the correlated b vector.
-    dx.block(0, 0, dimensionOfA, 1) =
-        A.block(0, 0, dimensionOfA, dimensionOfA)
-            .ldlt()
-            .solve(b_correlated.block(0, 0, dimensionOfA, 1));
+    dx.block(0, 0, dimensionOfA, 1) = A.ldlt().solve(b_correlated);
 
     LOG_TRACE("Computing D^{-1} b_{uncorrelated}");
     // Multiply Dinv by the b_uncorrelated vector.
@@ -532,10 +518,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         assert(indexIt != indexMap.end());
 
         dx.template block<RowVariable::dimension, 1>(*(indexIt), 0).noalias() +=
-            (negativeBDinvMatrix
-                 .block(0, 0, dimensionOfA, RowVariable::dimension)
-                 .transpose() *
-             dx.block(0, 0, dimensionOfA, 1))
+            (negativeBDinvMatrix.transpose() * dx.block(0, 0, dimensionOfA, 1))
                 .eval();
       }
     });
@@ -946,6 +929,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           if constexpr (!(internal::Is_in_tuple<
                             ThisVariable,
                             std::tuple<UncorrelatedVariables...>>::value)) {
+            // Clear the index map before.
+            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+
             for (size_t idx = 0; idx < variableMap.size(); ++idx) {
               auto key = variableMap.getKeyFromDataIndex(idx);
               assert(variables.variableExists(key));
@@ -955,6 +941,8 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
               dimensionOfA += ThisVariable::dimension;
             }
+
+	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
           }
         });
 
@@ -971,6 +959,10 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           if constexpr ((internal::Is_in_tuple<
                             ThisVariable,
                             std::tuple<UncorrelatedVariables...>>::value)) {
+
+            // Clear the index map before.
+            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+
             for (size_t idx = 0; idx < variableMap.size(); ++idx) {
               auto key = variableMap.getKeyFromDataIndex(idx);
               assert(variables.variableExists(key));
@@ -980,33 +972,33 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
 
               totalDimension += ThisVariable::dimension;
             }
+
+	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
           }
         });
 
     // Resize the dense portion of dx.
-    if (dx.rows() < totalDimension) {
-      dx.resize(totalDimension, 1);
-    }
+    dx.resize(totalDimension, 1);
 
     // Resize A if necessary.
     assert(A.rows() == A.cols());
-    if (A.rows() < dimensionOfA) {
-      A.resize(dimensionOfA, dimensionOfA);
-    }
+    // if (A.rows() < dimensionOfA) {
+    A.resize(dimensionOfA, dimensionOfA);
+    // }
 
     // Resize b_correlated if necessary
-    if (b_correlated.rows() < dimensionOfA) {
-      b_correlated.resize(dimensionOfA, 1);
-    }
+    // if (b_correlated.rows() < dimensionOfA) {
+    b_correlated.resize(dimensionOfA, 1);
+    //}
 
     // Resize the matrices of B if necessary
     internal::static_for(B, [&](auto i, auto &array) {
       typedef typename std::tuple_element<
           i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
       for (auto &matrix : array) {
-        if (matrix.rows() < dimensionOfA) {
-          matrix.resize(dimensionOfA, ThisVariable::dimension);
-        }
+        // if (matrix.rows() < dimensionOfA) {
+        matrix.resize(dimensionOfA, ThisVariable::dimension);
+        //}
       }
     });
 
@@ -1015,9 +1007,9 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
       typedef typename std::tuple_element<
           i, std::tuple<UncorrelatedVariables...>>::type ThisVariable;
       for (auto &matrix : array) {
-        if (matrix.rows() < dimensionOfA) {
-          matrix.resize(dimensionOfA, ThisVariable::dimension);
-        }
+        // if (matrix.rows() < dimensionOfA) {
+        matrix.resize(dimensionOfA, ThisVariable::dimension);
+        //}
       }
     });
   }

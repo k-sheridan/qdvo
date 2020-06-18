@@ -194,12 +194,13 @@ void QDVO::CorrespondenceDistribution::search(
       }
 
       // If the potential correspondence is good enough, it is influential.
-      if (pc->score >= POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+      if (pc->score > POTENTIAL_CORRESPONDENCE_THRESHOLD) {
         firstInfluentialPotentialCorrespondenceFound = true;
         // Compute z - px0
         errors.push_back(testPoint.cast<SCALAR_TYPE>() - centerPixelScalar);
         // Add the score.
-        scores.push_back(pc->score);
+        scores.push_back((pc->score - POTENTIAL_CORRESPONDENCE_THRESHOLD) /
+                         (1 - POTENTIAL_CORRESPONDENCE_THRESHOLD));
       }
     }
   }
