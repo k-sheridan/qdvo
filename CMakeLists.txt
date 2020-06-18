@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (NOT CMAKE_BUILD_TYPE MATCHES "Debug" AND NOT QDVO_DISABLE_OPTIMIZATIONS)
 message("Building with O3 on.")
-SET(CMAKE_CXX_FLAGS "-O3 -march=native")
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+SET(CMAKE_CXX_FLAGS "-O3")
 else() 
 message("Building without O3.")
 SET(CMAKE_CXX_FLAGS "-O0")
@@ -33,15 +32,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 find_package (OpenCV REQUIRED)
 find_package (Eigen3 REQUIRED)
 
-# Add thirdparty libraries
-add_subdirectory(thirdparty/googletest)
-add_subdirectory(thirdparty/benchmark)
-add_subdirectory(thirdparty/gflags)
-add_subdirectory(thirdparty/spdlog)
-add_subdirectory(thirdparty/Sophus)
-add_subdirectory(thirdparty/yaml-cpp)
-add_subdirectory(thirdparty/enoki)
-
 include_directories(${benchmark_INCLUDE_DIRS})
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${EIGEN3_INCLUDE_DIRS})
@@ -56,13 +46,11 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/ParallelAlgorithms/
     ${PROJECT_SOURCE_DIR}/src/Pipeline/
     ${PROJECT_SOURCE_DIR}/thirdparty/
-    ${PROJECT_SOURCE_DIR}/thirdparty/enoki/include/
     )
 
 file(GLOB QDVO_HEADER_FILES
     "${PROJECT_SOURCE_DIR}/src/*/*.h"
     "${PROJECT_SOURCE_DIR}/src/*/*/*.h"
-    "${PROJECT_SOURCE_DIR}/src/*/*/*/*.h"
     "${PROJECT_SOURCE_DIR}/src/*/*.hpp"
     "${PROJECT_SOURCE_DIR}/src/*.h"
     "${PROJECT_SOURCE_DIR}/src/*.hpp"
@@ -72,6 +60,14 @@ file(GLOB QDVO_SOURCE_FILES
     "${PROJECT_SOURCE_DIR}/src/*/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
+
+# Add thirdparty libraries
+add_subdirectory(thirdparty/googletest)
+add_subdirectory(thirdparty/benchmark)
+add_subdirectory(thirdparty/gflags)
+add_subdirectory(thirdparty/spdlog)
+add_subdirectory(thirdparty/Sophus)
+add_subdirectory(thirdparty/yaml-cpp)
 
 SET(CMAKE_C_COMPILER clang)
 SET(CMAKE_CXX_COMPILER clang++)
@@ -92,7 +88,7 @@ add_subdirectory(bench)
 add_subdirectory(visualizer)
 
 # Installation
-if(INSTALL_QDVO)
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -116,6 +112,7 @@ install(EXPORT QDVOTargets
 
 
 install(FILES ${QDVO_HEADER_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/QDVO)
+
 
 # config file
 
@@ -150,7 +147,7 @@ target_include_directories(QDVO
 )
 
 add_library(QDVO::QDVO ALIAS QDVO)
-endif()
+
 
 # debug cmake
 #macro(print_all_variables)

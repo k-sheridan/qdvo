@@ -265,8 +265,8 @@ void QDVO::BasicPipeline::
   for (int i = 0; i < visibleActiveLandmarks.size(); ++i) {
     // create another correspondence distribution
     correspondenceDistributionKeys.push_back(
-        cf->correspondenceDistributions.insert(
-            QDVO::CorrespondenceDistribution()));
+        cf->correspondenceDistributions.insert(QDVO::CorrespondenceDistribution(
+            cm->width, cm->height, radialSearchPatternPtr)));
   }
 
   auto initializationFn =
@@ -307,7 +307,8 @@ void QDVO::BasicPipeline::
     cdRef.initializeDistribution(
         cm, *(graph.getCurrentFrame()), lKey,
         Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))),
-        MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, warpedPatch.value());
+        MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
+        warpedPatch.value());
 
     // If this landmark was observed increment the observation counter.
     if (cdRef.initialized) {
@@ -341,7 +342,8 @@ bool QDVO::BasicPipeline::isCurrentFrameAKeyframe() {
   double smallestPixelFlowScore = std::numeric_limits<double>::max();
   for (auto it = graph.getKeyframeMap().begin();
        it != graph.getKeyframeMap().end(); it++) {
-    auto thisKey = graph.getKeyframeMap().getKeyFromIterator(it);
+    auto thisKey = graph.getKeyframeMap().getKeyFromDataIndex(
+        it - graph.getKeyframeMap().begin());
     if (thisKey == graph.getCurrentFrameKey() ||
         (*it)->status == QDVO::Frame::FrameStatus::INACTIVE) {
       continue;
@@ -389,7 +391,8 @@ std::pair<double, double> QDVO::BasicPipeline::computePixelFlowForCurrentFrame(
       continue;
     }
 
-    auto lKey = graph.getLandmarkMap().getKeyFromIterator(landmarkIt);
+    auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(
+        landmarkIt - graph.getLandmarkMap().begin());
 
     auto keyframePixel =
         graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
@@ -415,7 +418,8 @@ std::pair<double, double> QDVO::BasicPipeline::computePixelFlowForCurrentFrame(
       continue;
     }
 
-    auto lKey = graph.getLandmarkMap().getKeyFromIterator(landmarkIt);
+    auto lKey = graph.getLandmarkMap().getKeyFromDataIndex(
+        landmarkIt - graph.getLandmarkMap().begin());
 
     auto keyframePixel =
         graph.projectLandmarkToPixel(key, landmarkIt->parentFrameKey, lKey);
@@ -450,8 +454,8 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
   for (auto keyframeIt = graph.getKeyframeMap().begin();
        keyframeIt != graph.getKeyframeMap().end(); keyframeIt++) {
     Frame& sourceKeyframe = *(*keyframeIt);
-    auto sourceKeyframeKey =
-        graph.getKeyframeMap().getKeyFromIterator(keyframeIt);
+    auto sourceKeyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(
+        keyframeIt - graph.getKeyframeMap().begin());
 
     // Check if this keyframe is active and has parallax with the
     // most recent keyframe.
@@ -566,8 +570,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
         // TODO make this a parameter.
         // Also add "good" uninitialized landmarks.
         if (l.depthEstimator.error * l.dinv < 0.4 &&
-            1.0 / l.dinv > config->epipolar_depth_estimator.minimumDepth &&
-            l.depthEstimator.attempts > 1) {
+            1.0 / l.dinv > config->epipolar_depth_estimator.minimumDepth) {
           inactiveInitializedVisibleLandmarks.push_back(t);
         }
         inactiveUninitializedVisibleLandmarks.push_back(t);

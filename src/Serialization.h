@@ -30,7 +30,7 @@ void serialize(Archive& ar, ArgMin::TypedSlotMapKey<Variable>& key) {
 template <class Archive, typename ValueType, typename KeyType>
 void serialize(Archive& ar, ArgMin::SlotMap<ValueType, KeyType>& map) {
   for (auto it = map.begin(); it != map.end(); it++) {
-    auto key = map.getKeyFromIterator(it);
+    auto key = map.getKeyFromDataIndex(std::distance(map.begin(), it));
     ar& cereal::make_nvp(
         std::to_string(key.index) + "-" + std::to_string(key.generation),
         *(it));
@@ -43,7 +43,7 @@ template <class Archive, typename ValueType, typename KeyType>
 void serialize(Archive& ar,
                ArgMin::SlotMap<std::unique_ptr<ValueType>, KeyType>& map) {
   for (auto it = map.begin(); it != map.end(); it++) {
-    auto key = map.getKeyFromIterator(it);
+    auto key = map.getKeyFromDataIndex(std::distance(map.begin(), it));
     ar& cereal::make_nvp(
         std::to_string(key.index) + "-" + std::to_string(key.generation),
         *(*it));
@@ -126,14 +126,12 @@ void serialize(Archive& ar, QDVO::Graph& graph) {
 }
 
 template <class Archive>
-void serialize(Archive& ar,
-               QDVO::FrontEndVisualOdometry::Solver::SolveResult& result) {
+void serialize(Archive& ar, QDVO::FrontEndVisualOdometry::Solver::SolveResult& result) {
   ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
 }
 
 template <class Archive>
-void serialize(Archive& ar,
-               QDVO::SlidingWindowEstimator::Solver::SolveResult& result) {
+void serialize(Archive& ar, QDVO::SlidingWindowEstimator::Solver::SolveResult& result) {
   ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
 }
 
@@ -141,7 +139,8 @@ template <class Archive>
 void serialize(Archive& ar, QDVO::SlidingWindowEstimator& swe) {
   std::vector<QDVO::KeyframeMap::key_type> frameKeys;
   for (auto it = swe.poseKeyMap.begin(); it != swe.poseKeyMap.end(); it++) {
-    frameKeys.push_back(swe.poseKeyMap.getKeyFromIterator(it));
+    frameKeys.push_back(swe.poseKeyMap.getKeyFromDataIndex(
+        std::distance(swe.poseKeyMap.begin(), it)));
   }
   ar& cereal::make_nvp("frame_keys_in_window", frameKeys);
 
@@ -149,7 +148,8 @@ void serialize(Archive& ar, QDVO::SlidingWindowEstimator& swe) {
 
   std::vector<QDVO::LandmarkMap::key_type> landmarkKeys;
   for (auto it = swe.dinvKeyMap.begin(); it != swe.dinvKeyMap.end(); it++) {
-    landmarkKeys.push_back(swe.dinvKeyMap.getKeyFromIterator(it));
+    landmarkKeys.push_back(swe.dinvKeyMap.getKeyFromDataIndex(
+        std::distance(swe.dinvKeyMap.begin(), it)));
   }
   ar& cereal::make_nvp("landmark_keys_in_window", landmarkKeys);
 }

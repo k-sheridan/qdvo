@@ -176,8 +176,8 @@ class Marginalizer<Scalar<ScalarType>, VariableGroup<Variables...>,
                 }
 
                 // Add this error term to the deletion queue.
-                errorTermsToRemove.push_back(
-                    errorTermMap.getKeyFromIterator(errorTermIt));
+                errorTermsToRemove.push_back(errorTermMap.getKeyFromDataIndex(
+                    errorTermIt - errorTermMap.begin()));
               }
             }
           }

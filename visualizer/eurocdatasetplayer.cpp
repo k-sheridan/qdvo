@@ -1,8 +1,6 @@
 #include <gflags/gflags.h>
 #include <yaml-cpp/yaml.h>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
 #include <fstream>
@@ -41,7 +39,7 @@ void runDataset() {
   if (FLAGS_logTrackingData) {
     os = std::ofstream(FLAGS_trackingLogPath);
     trackingLog = std::make_unique<QDVO::TrackingLog>(
-        os, boost::filesystem::absolute(FLAGS_datasetPath).string());
+        os, std::filesystem::absolute(FLAGS_datasetPath));
   }
 
   // start to parse the euroc dataset.

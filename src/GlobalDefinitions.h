@@ -21,16 +21,16 @@
 #define ZNCC_PATCH_COMPARISON
 
 // Potential correspondence threshold
-#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.925
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.9
 
 // the number of features the feature detector will find on every keyframe.
-#define N_FEATURES_DESIRED 600
+#define N_FEATURES_DESIRED 400
 
 // The number of active landmarks desired for a frame.
 #define N_ACTIVE_LANDMARKS_DESIRED 400
 
 // The minimum active landmark seperation
-#define MINUMUM_LANDMARK_SEPERATION 5
+#define MINUMUM_LANDMARK_SEPERATION 10
 
 // the minimum number of active landmarks allowed before uninitialized landmarks
 // are made active.
@@ -38,9 +38,6 @@
 
 // define the maximum radius for the correspondence search.
 #define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35
-
-// define the maximum radius for the correspondence search.
-#define MAXIMUM_CORRESPONDENCE_RADIUS 15
 
 // the number of extra radii that are searched after finding the first potential
 // correspondence

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <opencv2/core.hpp>
@@ -17,7 +16,7 @@ class FrameToFramePoseEstimatorTest : public QDVOSyntheticImageTest {};
 
 TEST_F(FrameToFramePoseEstimatorTest, validateDirectErrorTerm) {
   const std::string datasetPath =
-      boost::filesystem::current_path().string() +
+      std::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";
 
   // run qdvo
@@ -94,7 +93,7 @@ TEST_F(FrameToFramePoseEstimatorTest, validateDirectErrorTerm) {
 
 TEST_F(FrameToFramePoseEstimatorTest, estimateFrameToFrameTransform) {
   const std::string datasetPath =
-      boost::filesystem::current_path().string() +
+      std::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";
 
   // run qdvo

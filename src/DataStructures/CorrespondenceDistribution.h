@@ -6,47 +6,10 @@
 #include <vector>
 
 #include "GlobalDefinitions.h"
-#include "Optimizer/Containers/soa/soa_vector.h"
 #include "Patch.h"
 #include "RadialSearchPattern.h"
 #include "SpatialMap.h"
 #include "Types.h"
-
-/**
- * Vectorizable SoA container for the potential correspondences.
- */
-namespace QDVO {
-struct PotentialCorrespondence {
-  /// Pixel of the correspondence.
-  float x, y;
-  /// Score of correspondence.
-  float score;
-  /// Squared distance of the correspondence.
-  float squaredError;
-  float dx, dy;
-};
-}  // namespace QDVO
-SOA_DEFINE_TYPE(QDVO::PotentialCorrespondence, x, y, score, squaredError, dx,
-                dy);
-
-/**
- * Vectorizable SoA container for the nearby potential correspondences.
- */
-namespace QDVO {
-struct NearbyPotentialCorrespondence {
-  /// Pixel offset of the correspondence.
-  float dx;
-  float dy;
-  /// Score of correspondence.
-  float score;
-  /// Squared distance of the correspondence.
-  float squaredError;
-  /// weight;
-  float weight;
-};
-}  // namespace QDVO
-SOA_DEFINE_TYPE(QDVO::NearbyPotentialCorrespondence, dx, dy, score,
-                squaredError, weight);
 
 namespace QDVO {
 
@@ -63,9 +26,19 @@ class PatchComparer;
  */
 class CorrespondenceDistribution {
  public:
+  struct PotentialCorrespondence {
+    SCALAR_TYPE score = -1;  // match score.
+
+    bool initialized() { return score != -1; }
+    void reset() { score = -1; }
+  };
+
   /// The warped template patch to be used for the creation of the
   /// correspondence distribution.
   Patch warpedPatch;
+
+  /// Serves as a method for finding nearest neighbors.
+  SpatialMap<PotentialCorrespondence> correspondenceMap;
 
   /// Is this correspondence distribution currently not being used.
   bool initialized = false;
@@ -74,16 +47,15 @@ class CorrespondenceDistribution {
   /// of.
   LandmarkMap::key_type landmarkKey;
 
+  /// Width and height of the image.
+  const int width, height;
+
   /// Covariance matrix of this correpsponence distributions.
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
-  /// SoA of potential correspondences.
-  soa::vector<PotentialCorrespondence> potentialCorrespondences;
-
-  /// SoA of nearby potential correspondences.
-  soa::vector<NearbyPotentialCorrespondence> nearbyPotentialCorrespondences;
-
-  CorrespondenceDistribution();
+  CorrespondenceDistribution(
+      unsigned width, unsigned height,
+      std::shared_ptr<const RadialSearchPattern> patternPtr);
 
   /**
    * Will perform an initial radial search for potential correspondences to get
@@ -93,11 +65,12 @@ class CorrespondenceDistribution {
   int initializeDistribution(
       CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
       const Eigen::Vector2i& centerPixel, const int floodRadius,
-      QDVO::Patch warpedPatch,
-      float threshold = POTENTIAL_CORRESPONDENCE_THRESHOLD);
+      std::shared_ptr<QDVO::PatchComparer> patchComparerPtr,
+      QDVO::Patch warpedPatch);
 
   /// Given an error and score vector, fit a gaussian.
-  Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian();
+  Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian(
+      std::vector<QDVO::Vector2>& errors, std::vector<SCALAR_TYPE>& scores);
 
   /**
    * Efficiently evaluates the gradient of the negative log likelihood of the
@@ -114,6 +87,17 @@ class CorrespondenceDistribution {
   void reset();
 
   /**
+   * Search the correspondence distribution for close by potential
+   * correspondence distributions
+   * @return vector of z - centerPixel, vector of scores associated to the
+   * errors
+   */
+  void search(CameraModel& cameraModel, Frame& frame,
+              const QDVO::Vector2& centerPixel, const unsigned searchRadius,
+              bool minimalSearch, std::vector<QDVO::Vector2>& errors,
+              std::vector<SCALAR_TYPE>& scores);
+
+  /**
    * Computes a matrix which stores the scores in a region of the correspondence
    * distribution.
    * @param center Center pixel of the region.
@@ -123,6 +107,16 @@ class CorrespondenceDistribution {
    */
   Eigen::Matrix<SCALAR_TYPE, Eigen::Dynamic, Eigen::Dynamic> extractScores(
       Eigen::Vector2i center, Eigen::Vector2i dimensions);
+
+ private:
+  // pre-allocated quantities.
+  std::vector<SCALAR_TYPE> scoreArray, expScoreArray;
+  std::vector<QDVO::Vector2> errorArray, weightedErrorArray;
+
+  std::shared_ptr<const QDVO::RadialSearchPattern>
+      radialSearchPattern;  // shared among all correspondence distributions.
+                            // NOT TO BE MODIFIED!
+  std::shared_ptr<QDVO::PatchComparer> patchComparer;
 };
 
 }  // namespace QDVO

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <opencv2/core.hpp>
@@ -39,7 +38,7 @@ class BasicPipelineTest : public ::testing::Test {
 
 TEST_F(BasicPipelineTest, DISABLED_RunDataset) {
   const std::string datasetPath =
-      boost::filesystem::current_path().string() +
+      std::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";
   std::string cam0CsvPath =
       datasetPath +
