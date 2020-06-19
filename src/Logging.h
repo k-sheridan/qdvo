@@ -4,7 +4,7 @@
  */
 
 #define SPDLOG_HEADER_ONLY
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_ERROR
 
 #include <stdlib.h>
 

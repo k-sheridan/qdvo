@@ -700,7 +700,7 @@ void QDVO::BasicPipeline::activateNewLandmarks() {
       nActiveLandmarks);
 
   // if necessary activate uninitialized landmarks
-  if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS) {
+  if (nActiveLandmarks < MINUMUM_ACTIVE_LANDMARKS / 2) {
     LOG_WARN(
         "Too few active landmarks, activating unintialized landmarks. This may "
         "cause tracking loss.");

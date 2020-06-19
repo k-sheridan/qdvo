@@ -42,7 +42,7 @@ class Config {
       double maximumErrorPerDepth = 0.1;
       int maximumHypotheses = 20;
       double minimumDepth = 0.4;
-      double maximumDepth = 10;
+      double maximumDepth = 20;
       double resolution = 0.5;
     } epipolar_depth_estimator;
 
