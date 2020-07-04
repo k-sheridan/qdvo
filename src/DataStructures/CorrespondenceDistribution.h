@@ -50,6 +50,9 @@ class CorrespondenceDistribution {
   /// Width and height of the image.
   const int width, height;
 
+  /// Dimension ratios. From original to the patch level.
+  QDVO::Scalar widthRatio, heightRatio;
+
   /// Covariance matrix of this correpsponence distributions.
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
@@ -70,7 +73,8 @@ class CorrespondenceDistribution {
 
   /// Given an error and score vector, fit a gaussian.
   Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian(
-      std::vector<QDVO::Vector2>& errors, std::vector<SCALAR_TYPE>& scores);
+      QDVO::Frame& frame, std::vector<QDVO::Vector2>& errors,
+      std::vector<SCALAR_TYPE>& scores);
 
   /**
    * Efficiently evaluates the gradient of the negative log likelihood of the
@@ -89,8 +93,9 @@ class CorrespondenceDistribution {
   /**
    * Search the correspondence distribution for close by potential
    * correspondence distributions
+   * The center pixel should be on level 0.
    * @return vector of z - centerPixel, vector of scores associated to the
-   * errors
+   * errors. The errors will be on the level associated with the patch.
    */
   void search(CameraModel& cameraModel, Frame& frame,
               const QDVO::Vector2& centerPixel, const unsigned searchRadius,

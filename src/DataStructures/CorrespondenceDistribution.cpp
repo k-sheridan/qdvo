@@ -8,6 +8,16 @@
 #include "Patch.h"
 #include "PatchComparer.h"
 
+SCALAR_TYPE computeWidthRatio(QDVO::Frame& frame, int fromLevel, int toLevel) {
+  return ((SCALAR_TYPE)(frame.imagePyr.getImage(toLevel).cols())) /
+         ((SCALAR_TYPE)(frame.imagePyr.getImage(fromLevel).cols()));
+}
+
+SCALAR_TYPE computeHeightRatio(QDVO::Frame& frame, int fromLevel, int toLevel) {
+  return ((SCALAR_TYPE)(frame.imagePyr.getImage(toLevel).rows())) /
+         ((SCALAR_TYPE)(frame.imagePyr.getImage(fromLevel).rows()));
+}
+
 QDVO::CorrespondenceDistribution::CorrespondenceDistribution(
     unsigned width, unsigned height,
     std::shared_ptr<const RadialSearchPattern> searchPattern)
@@ -16,6 +26,8 @@ QDVO::CorrespondenceDistribution::CorrespondenceDistribution(
       QDVO::SpatialMap<PotentialCorrespondence>(std::max(width, height));
   this->radialSearchPattern = std::move(searchPattern);
   Sigma.setIdentity();
+  widthRatio = 1;
+  heightRatio = 1;
 }
 
 QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
@@ -59,9 +71,16 @@ QDVO::Result<QDVO::Vector2> QDVO::CorrespondenceDistribution::computeResidual(
         return (expScore / gmm) * error;
       });
 
-  return std::accumulate(weightedErrorArray.begin(),
-                         weightedErrorArray.begin() + scoreArray.size(),
-                         QDVO::Vector2(0, 0));
+  // Compute the residual on the patch level.
+  auto residualScaled = std::accumulate(
+      weightedErrorArray.begin(),
+      weightedErrorArray.begin() + scoreArray.size(), QDVO::Vector2(0, 0));
+
+  // Scale the residual back to level 0.
+  return QDVO::Vector2(
+      (computeWidthRatio(frame, warpedPatch.getLevel(), 0) * residualScaled(0)),
+      (computeHeightRatio(frame, warpedPatch.getLevel(), 0) *
+       residualScaled(1)));
 }
 
 void QDVO::CorrespondenceDistribution::reset() {
@@ -86,6 +105,10 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
 
   this->landmarkKey = landmarkKey;
 
+  // ratio from original to patch level.
+  widthRatio = computeWidthRatio(frame, 0, warpedPatch.getLevel());
+  heightRatio = computeHeightRatio(frame, 0, warpedPatch.getLevel());
+
   // perform the search
   this->search(cameraModel, frame, centerPixel.cast<SCALAR_TYPE>(), floodRadius,
                false, errorArray, scoreArray);
@@ -99,7 +122,7 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
     initialized = true;
     // Fit a gaussian.
     if (config->fitGaussian) {
-      Sigma = fitGaussian(errorArray, scoreArray);
+      Sigma = fitGaussian(frame, errorArray, scoreArray);
     }
   } else {
     LOG_TRACE("Could not initialize the correspondence distribution.");
@@ -109,7 +132,8 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
 }
 
 Eigen::Matrix<QDVO::Scalar, 2, 2> QDVO::CorrespondenceDistribution::fitGaussian(
-    std::vector<QDVO::Vector2>& errors, std::vector<QDVO::Scalar>& scores) {
+    QDVO::Frame& frame, std::vector<QDVO::Vector2>& errors,
+    std::vector<QDVO::Scalar>& scores) {
   CHECK(errors.size() == scores.size(), "Vectors have different size.");
 
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
@@ -132,6 +156,10 @@ Eigen::Matrix<QDVO::Scalar, 2, 2> QDVO::CorrespondenceDistribution::fitGaussian(
   }
   // LOG_INFO("Sig: {},{},{},{}", Sigma(0), Sigma(1), Sigma(2), Sigma(3));
 
+  Eigen::Matrix<double, 2, 2> scaleMatrix;
+  scaleMatrix << computeWidthRatio(frame, warpedPatch.getLevel(), 0), 0, 0,
+      computeHeightRatio(frame, warpedPatch.getLevel(), 0);
+
   return Sigma;
 }
 
@@ -145,9 +173,15 @@ void QDVO::CorrespondenceDistribution::search(
   // Clear the score vector.
   scores.clear();
 
+  // Scaled the center pixel to the patch level.
+  QDVO::Vector2 centerPixelScaled(
+      (computeWidthRatio(frame, 0, warpedPatch.getLevel()) *
+       centerPixelScalar(0)),
+      (computeHeightRatio(frame, 0, warpedPatch.getLevel()) *
+       centerPixelScalar(1)));
   // Compute the integer center pixel.
-  Eigen::Vector2i centerPixel(std::round(centerPixelScalar(0)),
-                              std::round(centerPixelScalar(1)));
+  Eigen::Vector2i centerPixel(std::round(centerPixelScaled(0)),
+                              std::round(centerPixelScaled(1)));
 
   // Start the search.
   bool firstInfluentialPotentialCorrespondenceFound = false;
@@ -197,7 +231,7 @@ void QDVO::CorrespondenceDistribution::search(
       if (pc->score > POTENTIAL_CORRESPONDENCE_THRESHOLD) {
         firstInfluentialPotentialCorrespondenceFound = true;
         // Compute z - px0
-        errors.push_back(testPoint.cast<SCALAR_TYPE>() - centerPixelScalar);
+        errors.push_back(testPoint.cast<SCALAR_TYPE>() - centerPixelScaled);
         // Add the score.
         scores.push_back((pc->score - POTENTIAL_CORRESPONDENCE_THRESHOLD) /
                          (1 - POTENTIAL_CORRESPONDENCE_THRESHOLD));
@@ -224,7 +258,8 @@ QDVO::CorrespondenceDistribution::extractScores(Eigen::Vector2i center,
       auto px = center + Eigen::Vector2i(x, y);
       double score = -1;
       if (px(0) >= 0 && px(1) >= 0 && px(0) < width && px(1) < height) {
-        auto& pc = correspondenceMap.get(px);
+        auto& pc = correspondenceMap.get(Eigen::Vector2i(
+            std::round(widthRatio * px(0)), std::round(heightRatio * px(1))));
         if (pc.initialized()) {
           score = pc.score;
         }

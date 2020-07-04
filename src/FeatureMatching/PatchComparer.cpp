@@ -11,7 +11,8 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch,
 
   static_assert(PATCH_WIDTH == 2 * PATCH_RADIUS + 1);
 
-  QDVO::ImageType& targetImage = targetFrame.imagePyr.getImage().getImageData();
+  QDVO::ImageType& targetImage =
+      targetFrame.imagePyr.getImage(patch.getLevel()).getImageData();
 
   if (tl(0) < 0 || tl(1) < 0 || br(0) >= targetImage.cols() ||
       br(1) >= targetImage.rows()) {
