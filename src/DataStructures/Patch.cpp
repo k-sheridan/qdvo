@@ -1,94 +1,92 @@
 #include "Patch.h"
+
 #include <opencv2/core/eigen.hpp>
+
 #include "Image.h"
 
-QDVO::Patch::Patch()
-{
+QDVO::Patch::Patch() {}
 
+QDVO::Patch::Patch(Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& rawPatchData,
+                   int level) {
+  this->data = rawPatchData;
+  this->patchMean = this->data.sum() / (PATCH_WIDTH * PATCH_WIDTH);
+
+  this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
+
+  this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
+
+  this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
+
+  this->initialized = true;
+  this->level = level;
 }
 
-QDVO::Patch::Patch(Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>& rawPatchData)
-{
-    this->data = rawPatchData;
-    this->patchMean = this->data.sum() / (PATCH_WIDTH * PATCH_WIDTH);
+QDVO::Patch::Patch(cv::Mat& rawPatchData, float patchMean, float patchStdDev) {
+  assert(rawPatchData.type() == CV_8U);
+  assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
 
-    this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
+  // Eigen::Map<Eigen::Matrix<uint8_t, PATCH_WIDTH, PATCH_WIDTH,
+  // Eigen::RowMajor>> testPatchRaw( rawPatchData.ptr<uint8_t>() );
 
-    this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
+  // this->data = testPatchRaw.cast<float>();
+  cv2eigen(rawPatchData, this->data);
 
-    this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
+  this->patchMean = patchMean;
+  this->patchStdDev = patchStdDev;
 
-    this->initialized = true;
-    this->level = 0;
+  this->sumZeroMeanSquared =
+      this->patchStdDev * this->patchStdDev * (PATCH_WIDTH * PATCH_WIDTH);
+
+  this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
+
+  this->initialized = true;
+  this->level = 0;
 }
 
-QDVO::Patch::Patch(cv::Mat& rawPatchData, float patchMean, float patchStdDev)
-{
-    assert(rawPatchData.type() == CV_8U);
-    assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
+QDVO::Patch::Patch(cv::Mat& rawPatchData, float patchMean) {
+  assert(rawPatchData.type() == CV_8U);
+  assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
 
-    //Eigen::Map<Eigen::Matrix<uint8_t, PATCH_WIDTH, PATCH_WIDTH, Eigen::RowMajor>> testPatchRaw( rawPatchData.ptr<uint8_t>() );
+  // Eigen::Map<Eigen::Matrix<uint8_t, PATCH_WIDTH, PATCH_WIDTH,
+  // Eigen::RowMajor>> testPatchRaw( rawPatchData.ptr<uint8_t>() );
 
-    //this->data = testPatchRaw.cast<float>();
-    cv2eigen(rawPatchData, this->data);
+  // this->data = testPatchRaw.cast<float>();
 
-    this->patchMean = patchMean;
-    this->patchStdDev = patchStdDev;
+  cv2eigen(rawPatchData, this->data);
 
-    this->sumZeroMeanSquared = this->patchStdDev * this->patchStdDev * (PATCH_WIDTH * PATCH_WIDTH);
+  this->patchMean = patchMean;
 
-    this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
+  this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
 
-    this->initialized = true;
-    this->level = 0;
-    
+  this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
+
+  this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
+
+  this->initialized = true;
+  this->level = 0;
 }
 
-QDVO::Patch::Patch(cv::Mat& rawPatchData, float patchMean)
-{
-    assert(rawPatchData.type() == CV_8U);
-    assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
+QDVO::Patch::Patch(cv::Mat& rawPatchData) {
+  assert(rawPatchData.type() == CV_8U);
+  assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
 
-    //Eigen::Map<Eigen::Matrix<uint8_t, PATCH_WIDTH, PATCH_WIDTH, Eigen::RowMajor>> testPatchRaw( rawPatchData.ptr<uint8_t>() );
+  cv::Mat temp;
+  rawPatchData.convertTo(temp, CV_32F);
+  Eigen::Map<Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>, Eigen::RowMajor>
+      testPatchRaw(temp.ptr<float>(), PATCH_WIDTH, PATCH_WIDTH);
 
-    //this->data = testPatchRaw.cast<float>();
+  assert(testPatchRaw(9, 9) == temp.at<float>(9, 9));
 
-    cv2eigen(rawPatchData, this->data);
+  this->data = testPatchRaw.cast<float>();
 
-    this->patchMean = patchMean;
+  this->patchMean = this->data.sum() / (PATCH_WIDTH * PATCH_WIDTH);
 
-    this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
+  this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
 
-    this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
+  this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
 
-    this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
+  this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
 
-    this->initialized = true;
-    this->level = 0;
-}
-
-QDVO::Patch::Patch(cv::Mat& rawPatchData)
-{
-    assert(rawPatchData.type() == CV_8U);
-    assert(rawPatchData.cols == PATCH_WIDTH && rawPatchData.rows == PATCH_WIDTH);
-
-    cv::Mat temp;
-    rawPatchData.convertTo(temp, CV_32F);
-    Eigen::Map<Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH>, Eigen::RowMajor> testPatchRaw( temp.ptr<float>(), PATCH_WIDTH, PATCH_WIDTH);
-
-    assert(testPatchRaw(9, 9) ==  temp.at<float>(9,9));
-
-    this->data = testPatchRaw.cast<float>();
-
-    this->patchMean = this->data.sum() / (PATCH_WIDTH * PATCH_WIDTH);
-
-    this->zeroMeanMatrix = (this->data.array() - patchMean).eval();
-
-    this->sumZeroMeanSquared = this->zeroMeanMatrix.cwiseAbs2().sum();
-
-    this->patchStdDev = this->sumZeroMeanSquared / (PATCH_WIDTH * PATCH_WIDTH);
-
-    this->initialized = true;
-    this->level = 0;
-
+  this->initialized = true;
+  this->level = 0;
 }

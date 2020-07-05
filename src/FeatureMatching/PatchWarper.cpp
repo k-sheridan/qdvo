@@ -6,7 +6,7 @@ QDVO::PatchWarper::PatchWarper() {}
 
 void QDVO::PatchWarper::warpPatchToTargetFrame(
     QDVO::Result<Patch> &warpedPatch, Landmark &landmark, Frame &sourceFrame,
-    Frame &targetFrame, QDVO::Graph &graph, const int patchRadius) {
+    Frame &targetFrame, QDVO::Graph &graph, const int patchRadius, int level) {
   warpedPatch.reset();  // reset the patch.
 
   QDVO::SE3 T_w_sourceImu = sourceFrame.imustate.getSE3();
@@ -66,21 +66,41 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
     return;
   }
 
+  // Compute the dimension ratios.
+  SCALAR_TYPE sourceWidthRatio =
+      ((SCALAR_TYPE)(sourceFrame.imagePyr.getImage(level).cols())) /
+      ((SCALAR_TYPE)(sourceFrame.imagePyr.getImage(0).cols()));
+  SCALAR_TYPE sourceHeightRatio =
+      ((SCALAR_TYPE)(sourceFrame.imagePyr.getImage(level).rows())) /
+      ((SCALAR_TYPE)(sourceFrame.imagePyr.getImage(0).rows()));
+
+  SCALAR_TYPE targetWidthRatio =
+      ((SCALAR_TYPE)(targetFrame.imagePyr.getImage(level).cols())) /
+      ((SCALAR_TYPE)(targetFrame.imagePyr.getImage(0).cols()));
+  SCALAR_TYPE targetHeightRatio =
+      ((SCALAR_TYPE)(targetFrame.imagePyr.getImage(level).rows())) /
+      ((SCALAR_TYPE)(targetFrame.imagePyr.getImage(0).rows()));
+
   QDVO::Vector3 u, p;
   u(2) = 1;
 
   for (int deltaX = -patchRadius; deltaX <= patchRadius; ++deltaX) {
     for (int deltaY = -patchRadius; deltaY <= patchRadius; ++deltaY) {
       u.block(0, 0, 2, 1) =
-          u0.block(0, 0, 2, 1) + unprojJac * QDVO::Vector2(deltaX, deltaY);
+          u0.block(0, 0, 2, 1) +
+          unprojJac * QDVO::Vector2(deltaX / targetWidthRatio,
+                                    deltaY / targetHeightRatio);
       p = T_sourceCam_targetCam * (((p0.dot(n)) / (u.dot(n))) * u);
 
       QDVO::Vector2 px =
           px_source.value() + projJac * ((p.block(0, 0, 2, 1) / p(2)) -
                                          landmark.bearing.block(0, 0, 2, 1));
 
+      px(0) *= sourceWidthRatio;
+      px(1) *= sourceHeightRatio;
+
       auto brightness =
-          sourceFrame.imagePyr.getImage().getSubPixelIntensity(px);
+          sourceFrame.imagePyr.getImage(level).getSubPixelIntensity(px);
       if (!brightness.has_value()) {
         LOG_TRACE(
             "Could not warp patch. It was not possible to sample the source "
@@ -93,5 +113,5 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
     }
   }
 
-  warpedPatch = QDVO::Patch(imageData);
+  warpedPatch = QDVO::Patch(imageData, level);
 }

@@ -70,7 +70,7 @@ void QDVO::BasicPipeline::addFrame(
   // Initialize correspondence distributions
   {
     PROFILE("initializeCorrespondenceDistribution");
-    initializeCorrespondenceDistributionsForCurrentFrame();
+    initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame(), 0);
   }
 
   // Run front end visual odometry
@@ -235,19 +235,20 @@ void QDVO::BasicPipeline::createNewLandmarks(
   }
 }
 
-void QDVO::BasicPipeline::
-    initializeCorrespondenceDistributionsForCurrentFrame() {
+void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForFrame(
+    QDVO::Frame& frame, int level) {
   LOG_INFO("Initializing correspondence distributions for current frame.");
   // first update the patch comparers before initializing all the
   // correspondence distributions
   updatePatchComparers();
 
-  std::unique_ptr<QDVO::Frame>& cf = graph.getCurrentFrame();
+  CHECK(level == 0, "Only level 0 initialization ready.");
+
   std::unique_ptr<CameraModel>& cm =
-      graph.getCameraModelMap().at(cf->cameraModelKey)->first;
+      graph.getCameraModelMap().at(frame.cameraModelKey)->first;
 
   // second reset correspondence distributions
-  cf->resetCorrespondenceDistributions();
+  frame.resetCorrespondenceDistributions();
 
   // find the set of active landmarks visible in the current frame.
   // create and initialize the correspondence distribution for each of
@@ -265,8 +266,9 @@ void QDVO::BasicPipeline::
   for (int i = 0; i < visibleActiveLandmarks.size(); ++i) {
     // create another correspondence distribution
     correspondenceDistributionKeys.push_back(
-        cf->correspondenceDistributions.insert(QDVO::CorrespondenceDistribution(
-            cm->width, cm->height, radialSearchPatternPtr)));
+        frame.correspondenceDistributions.insert(
+            QDVO::CorrespondenceDistribution(cm->width, cm->height,
+                                             radialSearchPatternPtr)));
   }
 
   auto initializationFn =
@@ -280,7 +282,7 @@ void QDVO::BasicPipeline::
 
     CameraModel& cm = *(graph.getCameraModelMap().at(f.cameraModelKey)->first);
 
-    auto& cdRef = *cf->correspondenceDistributions.at(cdKey);
+    auto& cdRef = *frame.correspondenceDistributions.at(cdKey);
     CHECK(cdRef.initialized == false,
           "The correspondence distribution must not be initialized");
 
@@ -288,8 +290,7 @@ void QDVO::BasicPipeline::
         *(*graph.getKeyframeMap().at(l.parentFrameKey));
 
     // initialize the correspondence distribution
-    auto px0 = graph.projectLandmarkToPixel(*graph.getCurrentFrame(),
-                                            landmarkParentFrame, l);
+    auto px0 = graph.projectLandmarkToPixel(frame, landmarkParentFrame, l);
     if (!px0.has_value()) {
       LOG_TRACE("landmark not visible in its parent frame!");
       return 1;
@@ -298,14 +299,14 @@ void QDVO::BasicPipeline::
 
     // warp the patch.
     patchWarper->warpPatchToTargetFrame(warpedPatch, l, landmarkParentFrame,
-                                        *(graph.getCurrentFrame()), graph);
+                                        frame, graph, PATCH_RADIUS, level);
     if (!warpedPatch.has_value()) {
       LOG_TRACE("failed to warp patch");
       return 1;
     }
 
     cdRef.initializeDistribution(
-        cm, *(graph.getCurrentFrame()), lKey,
+        cm, frame, lKey,
         Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))),
         MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
         warpedPatch.value());

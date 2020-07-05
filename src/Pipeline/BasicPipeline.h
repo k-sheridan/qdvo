@@ -84,7 +84,8 @@ class BasicPipeline {
    * Does an initial search for potential correspondences between active
    * landmarks and the current frame.
    */
-  void initializeCorrespondenceDistributionsForCurrentFrame();
+  void initializeCorrespondenceDistributionsForFrame(QDVO::Frame& frame,
+                                                     int level = 0);
 
   /**
    * Attempts to initialize inactive landmarks using an epipolar search
@@ -138,4 +139,3 @@ class BasicPipeline {
 };
 
 }  // namespace QDVO
-
