@@ -123,6 +123,10 @@ int QDVO::CorrespondenceDistribution::initializeDistribution(
     // Fit a gaussian.
     if (config->fitGaussian) {
       Sigma = fitGaussian(frame, errorArray, scoreArray);
+    } else {
+      Sigma.setIdentity();
+      Sigma(0, 0) = 1.0 / (widthRatio * widthRatio);
+      Sigma(1, 1) = 1.0 / (heightRatio * heightRatio);
     }
   } else {
     LOG_TRACE("Could not initialize the correspondence distribution.");

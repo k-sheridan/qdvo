@@ -34,7 +34,6 @@ void QDVOVisualizer::transferVisualizationData() {
   if (currentFrame()
           .initialized)  // make sure the frame has been properly initialized
   {
-    std::cout << "rendering the current frame" << std::endl;
     cv::Mat temp, render;
     currentFrame().imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
     cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
