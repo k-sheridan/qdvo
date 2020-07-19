@@ -77,6 +77,12 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     int maximumIterations = 25;
     /// Stop after the error increases.
     bool stopEarly = false;
+    /// Allow the solver to parallelize linearization.
+    bool parallelizeErrorTermLinearization = false;
+    /// elements per thread cost model.
+    /// This is used to determine how many threads to use for parallelization of
+    /// error terms. This is meant to reduce the overhead of spawning n threads.
+    double errorTermsPerThread = 1000;
   } settings;
 
   struct SolveResult {
@@ -555,9 +561,22 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           auto linearizationFn = [&variables](auto &errorTerm) {
             errorTerm.evaluate(variables, true);
           };
-          QDVO::ParallelAlgorithms::for_each(
-              QDVO::ParallelAlgorithms::SEQUENTIAL, errorTermMap.begin(),
-              errorTermMap.end(), linearizationFn);
+          if (settings.parallelizeErrorTermLinearization) {
+            // Compute the number of threads to use for execution.
+            int nThreads =
+                std::max(std::ceil((double)errorTermMap.size() /
+                                   (double)settings.errorTermsPerThread),
+                         1.0);
+            LOG_INFO("Linearizing error term with {} threads", nThreads);
+            // Execute
+            QDVO::ParallelAlgorithms::for_each(
+                QDVO::ParallelAlgorithms::PARALLEL_CPU, errorTermMap.begin(),
+                errorTermMap.end(), linearizationFn, nThreads);
+          } else {
+            QDVO::ParallelAlgorithms::for_each(
+                QDVO::ParallelAlgorithms::SEQUENTIAL, errorTermMap.begin(),
+                errorTermMap.end(), linearizationFn);
+          }
         });
   }
 
@@ -919,63 +938,64 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     dimensionOfA = 0;
 
     /// compute the index map starting with only the correlated variables.
-    internal::static_for(
-        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
-          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-              ThisVariable;
+    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
+                                                            auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
 
-          // Only set the dimensions if this variable is not part of the
-          // uncorrelated set.
-          if constexpr (!(internal::Is_in_tuple<
-                            ThisVariable,
-                            std::tuple<UncorrelatedVariables...>>::value)) {
-            // Clear the index map before.
-            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+      // Only set the dimensions if this variable is not part of the
+      // uncorrelated set.
+      if constexpr (!(internal::Is_in_tuple<
+                        ThisVariable,
+                        std::tuple<UncorrelatedVariables...>>::value)) {
+        // Clear the index map before.
+        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
 
-            for (size_t idx = 0; idx < variableMap.size(); ++idx) {
-              auto key = variableMap.getKeyFromDataIndex(idx);
-              assert(variables.variableExists(key));
+        for (size_t idx = 0; idx < variableMap.size(); ++idx) {
+          auto key = variableMap.getKeyFromDataIndex(idx);
+          assert(variables.variableExists(key));
 
-              std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
-                  .insert(key, dimensionOfA);
+          std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
+              .insert(key, dimensionOfA);
 
-              dimensionOfA += ThisVariable::dimension;
-            }
+          dimensionOfA += ThisVariable::dimension;
+        }
 
-	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
-          }
-        });
+        assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() ==
+               variableMap.size());
+      }
+    });
 
     totalDimension = dimensionOfA;
 
     /// Compute the remaining variables in the index map (uncorrelated set).
-    internal::static_for(
-        variables.tupleOfVariableMaps, [&](auto i, auto &variableMap) {
-          typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
-              ThisVariable;
+    internal::static_for(variables.tupleOfVariableMaps, [&](auto i,
+                                                            auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
 
-          // Only set the dimensions if this variable is part of the
-          // uncorrelated set.
-          if constexpr ((internal::Is_in_tuple<
-                            ThisVariable,
-                            std::tuple<UncorrelatedVariables...>>::value)) {
+      // Only set the dimensions if this variable is part of the
+      // uncorrelated set.
+      if constexpr ((internal::Is_in_tuple<
+                        ThisVariable,
+                        std::tuple<UncorrelatedVariables...>>::value)) {
+        // Clear the index map before.
+        std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
 
-            // Clear the index map before.
-            std::get<IndexMap<ThisVariable>>(variableToIndexMaps).clear();
+        for (size_t idx = 0; idx < variableMap.size(); ++idx) {
+          auto key = variableMap.getKeyFromDataIndex(idx);
+          assert(variables.variableExists(key));
 
-            for (size_t idx = 0; idx < variableMap.size(); ++idx) {
-              auto key = variableMap.getKeyFromDataIndex(idx);
-              assert(variables.variableExists(key));
+          std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
+              .insert(key, totalDimension);
 
-              std::get<IndexMap<ThisVariable>>(variableToIndexMaps)
-                  .insert(key, totalDimension);
+          totalDimension += ThisVariable::dimension;
+        }
 
-              totalDimension += ThisVariable::dimension;
-            }
-
-	    assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() == variableMap.size());
-          }
-        });
+        assert(std::get<IndexMap<ThisVariable>>(variableToIndexMaps).size() ==
+               variableMap.size());
+      }
+    });
 
     // Resize the dense portion of dx.
     dx.resize(totalDimension, 1);

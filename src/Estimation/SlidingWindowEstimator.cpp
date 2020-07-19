@@ -140,6 +140,11 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   solver.settings.initialLambda = 1e3;
   solver.settings.maximumIterations = 25;
   solver.settings.stopEarly = true;
+  // Optionally enable parallel linearization.
+  if (config->allowParallelExecution) {
+    solver.settings.parallelizeErrorTermLinearization = true;
+    solver.settings.errorTermsPerThread = 500;
+  }
 
   // Run the solver.
   auto result = solver.solveLevenbergMarquardt(variableContainer,

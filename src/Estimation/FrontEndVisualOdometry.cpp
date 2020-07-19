@@ -49,6 +49,12 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
   solver.settings.initialLambda = 1e6;
   solver.settings.maximumIterations = 50;
   solver.settings.stopEarly = false;
+  // Optionally enable parallel linearization.
+  if (config->allowParallelExecution) {
+    solver.settings.parallelizeErrorTermLinearization = true;
+    solver.settings.errorTermsPerThread = 200;
+  }
+
   auto result = solver.solveLevenbergMarquardt(variableContainer,
                                                errorTermContainer, prior);
 

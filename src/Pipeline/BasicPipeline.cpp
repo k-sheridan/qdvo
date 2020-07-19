@@ -321,10 +321,19 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForFrame(
 
   std::vector<int> result(visibleActiveLandmarks.size());
   // Run the initialization function for all active and visible landmarks.
-  QDVO::ParallelAlgorithms::transform(
-      QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL,
-      visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
-      correspondenceDistributionKeys.begin(), result.begin(), initializationFn);
+  if (config->allowParallelExecution) {
+    QDVO::ParallelAlgorithms::transform(
+        QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,
+        visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
+        correspondenceDistributionKeys.begin(), result.begin(),
+        initializationFn);
+  } else {
+    QDVO::ParallelAlgorithms::transform(
+        QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL,
+        visibleActiveLandmarks.begin(), visibleActiveLandmarks.end(),
+        correspondenceDistributionKeys.begin(), result.begin(),
+        initializationFn);
+  }
 
   LOG_INFO(
       "Initialized correspondence distributions for this frame. Could "
