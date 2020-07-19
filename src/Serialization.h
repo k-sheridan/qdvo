@@ -102,8 +102,6 @@ template <class Archive>
 void serialize(Archive& ar,
                QDVO::CorrespondenceDistribution& correspondenceDistribution) {
   ar& cereal::make_nvp("initialized", correspondenceDistribution.initialized);
-  ar& cereal::make_nvp("warped_patch",
-                       correspondenceDistribution.warpedPatch.getImageData());
   ar& cereal::make_nvp("landmark_key", correspondenceDistribution.landmarkKey);
 }
 
@@ -126,12 +124,14 @@ void serialize(Archive& ar, QDVO::Graph& graph) {
 }
 
 template <class Archive>
-void serialize(Archive& ar, QDVO::FrontEndVisualOdometry::Solver::SolveResult& result) {
+void serialize(Archive& ar,
+               QDVO::FrontEndVisualOdometry::Solver::SolveResult& result) {
   ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
 }
 
 template <class Archive>
-void serialize(Archive& ar, QDVO::SlidingWindowEstimator::Solver::SolveResult& result) {
+void serialize(Archive& ar,
+               QDVO::SlidingWindowEstimator::Solver::SolveResult& result) {
   ar& cereal::make_nvp("iteration_sse", result.whitenedSqError);
 }
 

@@ -206,8 +206,11 @@ void QDVO::BasicPipeline::createNewLandmarks(
   std::unique_ptr<Frame>& keyframe = *graph.getKeyframeMap().at(keyframeKey);
 
   // Detect new features in the keyframe
-  std::vector<QDVO::Feature> newFeatures =
-      featureDetector->detectFeatures(*keyframe);
+  std::vector<QDVO::Feature> newFeatures;
+  {
+    PROFILE("detectFeatures");
+    newFeatures = featureDetector->detectFeatures(*keyframe);
+  }
 
   LOG_INFO("Found {} new landmarks", newFeatures.size());
 
@@ -459,41 +462,53 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
   auto patchComparerPtr = patchComparer;
 
   Frame& targetKeyframe = *(*graph.getKeyframeMap().at(mostRecentKeyframeKey));
+
+  auto depthEstimationFn = [&](QDVO::Landmark& landmark) {
+    // Get the source keyframe.
+    auto sourceKeyframeIt = graph.getKeyframeMap().at(landmark.parentFrameKey);
+    if (sourceKeyframeIt == graph.getKeyframeMap().end()) {
+      return;
+    }
+    auto& sourceKeyframe = *(*sourceKeyframeIt);
+
+    // Check if the landmark should be updated.
+    if (!landmark.depthEstimator.initialized &&
+        landmark.status == Landmark::LandmarkStatus::INACTIVE) {
+      // Update this landmark's depth
+      // estimator.
+      landmark.depthEstimator.update(graph, sourceKeyframe, targetKeyframe,
+                                     landmark, *patchComparerPtr, *patchWarper);
+    }
+  };
+
   // Iterate through all active keyframes and look for uninitialized
   // landmarks.
-  for (auto keyframeIt = graph.getKeyframeMap().begin();
-       keyframeIt != graph.getKeyframeMap().end(); keyframeIt++) {
-    Frame& sourceKeyframe = *(*keyframeIt);
-    auto sourceKeyframeKey = graph.getKeyframeMap().getKeyFromDataIndex(
-        keyframeIt - graph.getKeyframeMap().begin());
-
-    // Check if this keyframe is active and has parallax with the
-    // most recent keyframe.
-    if (sourceKeyframe.status == Frame::FrameStatus::ACTIVE &&
-        !(sourceKeyframeKey == mostRecentKeyframeKey)) {
-      // Iterate through all hosted landmarks in this
-      // keyframe.
-      for (auto landmarkKey : sourceKeyframe.landmarkKeys) {
-        // Get the landmark.
-        auto landmarkIt = graph.getLandmarkMap().at(landmarkKey);
-        if (landmarkIt == graph.getLandmarkMap().end()) {
-          LOG_TRACE("keyframe contained invalid landmark key");
-          continue;
-        }
-        auto& landmark = *(landmarkIt);
-
-        // Check if the landmark should be updated.
-        if (!landmark.depthEstimator.initialized &&
-            landmark.status == Landmark::LandmarkStatus::INACTIVE) {
-          // Update this landmark's depth
-          // estimator.
-          landmark.depthEstimator.update(graph, sourceKeyframe, targetKeyframe,
-                                         landmark, *patchComparerPtr,
-                                         *patchWarper);
-        }
+  if (config->allowParallelExecution) {
+    // Count the number of uninitialized landmarks.
+    int nUninitializedLandmarks = 0;
+    for (auto& l : graph.getLandmarkMap()) {
+      if (l.depthEstimator.initialized) {
+        ++nUninitializedLandmarks;
       }
     }
+    // Compute the number of threads.
+    int nThreads = std::max(
+        std::round((double)nUninitializedLandmarks /
+                   (double)config->epipolar_depth_estimator.landmarksPerThread),
+        1.0);
+    LOG_INFO("Running epipolar depth estimators with {} threads", nThreads);
+
+    QDVO::ParallelAlgorithms::for_each(
+        QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,
+        graph.getLandmarkMap().begin(), graph.getLandmarkMap().end(),
+        depthEstimationFn, nThreads);
+  } else {
+    QDVO::ParallelAlgorithms::for_each(
+        QDVO::ParallelAlgorithms::ExecutionType::SEQUENTIAL,
+        graph.getLandmarkMap().begin(), graph.getLandmarkMap().end(),
+        depthEstimationFn);
   }
+
   LOG_INFO("Finished running Epipolar Depth Estimators.");
 }
 

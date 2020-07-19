@@ -15,14 +15,17 @@ class Profiler {
  public:
   /// Start the clock upon construction of this class.
   Profiler(std::string functionName) : functionName(functionName) {
-    startTime = std::chrono::high_resolution_clock::now();
+    startTime = std::chrono::system_clock::now();
   }
 
   /// Upon desctruction log the time delta
   ~Profiler() {
     std::chrono::duration<double, std::milli> duration =
-        std::chrono::high_resolution_clock::now() - startTime;
-    LOG_INFO("{} : {:.6f} ms", functionName, duration.count());
+        std::chrono::system_clock::now() - startTime;
+    std::chrono::duration<double, std::milli> ts = startTime.time_since_epoch();
+
+    LOG_INFO("{} : {:.6f} ms : {:.6f} ms", functionName, duration.count(),
+             ts.count());
   }
 
  private:

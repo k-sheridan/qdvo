@@ -44,6 +44,7 @@ class Config {
       double minimumDepth = 0.4;
       double maximumDepth = 20;
       double resolution = 0.5;
+      int landmarksPerThread = 1;
     } epipolar_depth_estimator;
 
     /// Thresholds which determine lost tracking.

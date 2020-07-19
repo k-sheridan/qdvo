@@ -48,11 +48,13 @@ print(colored('Finished dataset.', 'green', attrs=['bold']))
 print(colored(f"Logging runtimes", 'green', attrs=['bold']))
 # Open the profiling file.
 profilingFile = open(os.path.join(args.output, "runtimes.json"), 'w+')
+traceFile = open(os.path.join(args.output, "profile.trace"), 'w+')
 
 # Extract the runtimes
-runtimes = parseProfilingLog(os.path.join(args.output, "log.txt"))
+runtimes, trace = parseProfilingLog(os.path.join(args.output, "log.txt"))
 # Write the runtimes to a json file.
 json.dump(runtimes, profilingFile, indent=4, separators=(',', ': '))
+json.dump(trace, traceFile, indent=0, separators=(',', ': '))
 print(colored(f"Finished logging {len(runtimes.keys())} runtimes", 'green', attrs=['bold']))
 
 print(colored(f"Loading tracking log.", 'green', attrs=['bold']))

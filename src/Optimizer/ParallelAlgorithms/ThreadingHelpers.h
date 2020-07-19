@@ -41,7 +41,7 @@ inline std::vector<std::tuple<int, int>> createListDividers(
     unsigned length, int nThreadsOverride = -1) {
   auto nThreads = getSuggestedThreadCount();
   // Allow the number of threads to be overriden.
-  if (nThreadsOverride >= 1) {
+  if (nThreadsOverride >= 1 && nThreadsOverride < nThreads) {
     nThreads = nThreadsOverride;
   }
 

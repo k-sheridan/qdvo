@@ -7,14 +7,39 @@ import math
 
 def parseProfilingLog(logFilePath, printOutput=False):
     timings = {}
+    events = []
+    trace = {}
+
     # parse the logs
     with open(logFilePath, 'r') as logFile:
         for line in logFile:
             if "Profiling" in line and "ms" in line:
-                functionName = re.findall("\[Profiling.*\]\s(.*)\s:\s.*ms", line)[0]
-                runtime = re.findall("\[Profiling.*\]\s.*\s:\s(.*)\sms", line)[0]
+                functionName = re.findall("\[Profiling.*\]\s(.*)\s:\s.*ms.*ms", line)[0]
+                runtime = re.findall("\[Profiling.*\]\s.*\s:\s(.*)\sms.*ms", line)[0]
+                timestamp = re.findall("\[Profiling.*\]\s.*\s:\s.*\sms\s:\s(.*)\sms", line)[0]
                 timings.setdefault(functionName, []).append(float(runtime))
-    
+                events.append([str(functionName), float(timestamp), float(runtime)])
+
+    # Log the trace events
+    trace['traceEvents'] = []
+    for functionName, timestamp, runtime in events:
+        event = {}
+        event['name'] = functionName
+        event['tid'] = 'mainThread'
+        event['pid'] = '1'
+        event['ph'] = 'B'
+        event['ts'] = timestamp * 1000
+        trace['traceEvents'].append(event);
+
+        eventEnd = {}
+        eventEnd['name'] = functionName
+        eventEnd['tid'] = 'mainThread'
+        eventEnd['pid'] = '1'
+        eventEnd['ph'] = 'E'
+        eventEnd['ts'] = (timestamp * 1000) + (runtime * 1000)
+        trace['traceEvents'].append(eventEnd);
+
+
     # sort each runtime list.
     for key in timings:
         timings[key].sort()
@@ -44,7 +69,7 @@ def parseProfilingLog(logFilePath, printOutput=False):
             print("    Mean: {:.6f} ms".format(result[key]['mean_ms']))
             print("")
 
-    return result
+    return result, trace
 
 if __name__ == "__main__":
     parseProfilingLog(sys.argv[1])
