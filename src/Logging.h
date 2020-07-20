@@ -78,4 +78,3 @@
 #else
 #define LOG_TRACE_IF(condition, ...) (void)0
 #endif
-

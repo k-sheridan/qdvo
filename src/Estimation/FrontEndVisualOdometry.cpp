@@ -48,7 +48,9 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
       "Solving for current frame pose with fixed landmarks and host frames.");
   solver.settings.initialLambda = 1e6;
   solver.settings.maximumIterations = 50;
-  solver.settings.stopEarly = false;
+  solver.settings.stopAfterErrorIncrease = false;
+  solver.settings.errorDeltaThreshold = 0;
+  solver.settings.updateThreshold = 1e-5;
   // Optionally enable parallel linearization.
   if (config->allowParallelExecution) {
     solver.settings.parallelizeErrorTermLinearization = true;

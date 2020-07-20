@@ -484,19 +484,23 @@ void QDVO::BasicPipeline::runEpipolarDepthEstimators(
   // Iterate through all active keyframes and look for uninitialized
   // landmarks.
   if (config->allowParallelExecution) {
-    // Count the number of uninitialized landmarks.
-    int nUninitializedLandmarks = 0;
-    for (auto& l : graph.getLandmarkMap()) {
-      if (l.depthEstimator.initialized) {
-        ++nUninitializedLandmarks;
+    int nThreads = -1;
+    if (config->epipolar_depth_estimator.enableThreadingCostModel) {
+      // Count the number of uninitialized landmarks.
+      int nUninitializedLandmarks = 0;
+      for (auto& l : graph.getLandmarkMap()) {
+        if (l.depthEstimator.initialized) {
+          ++nUninitializedLandmarks;
+        }
       }
+      // Compute the number of threads.
+      nThreads = std::max(
+          std::round(
+              (double)nUninitializedLandmarks /
+              (double)config->epipolar_depth_estimator.landmarksPerThread),
+          1.0);
+      LOG_INFO("Running epipolar depth estimators with {} threads", nThreads);
     }
-    // Compute the number of threads.
-    int nThreads = std::max(
-        std::round((double)nUninitializedLandmarks /
-                   (double)config->epipolar_depth_estimator.landmarksPerThread),
-        1.0);
-    LOG_INFO("Running epipolar depth estimators with {} threads", nThreads);
 
     QDVO::ParallelAlgorithms::for_each(
         QDVO::ParallelAlgorithms::ExecutionType::PARALLEL_CPU,

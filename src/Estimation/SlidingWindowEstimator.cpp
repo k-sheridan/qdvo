@@ -139,7 +139,9 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
   // Write solver settings.
   solver.settings.initialLambda = 1e3;
   solver.settings.maximumIterations = 25;
-  solver.settings.stopEarly = true;
+  solver.settings.stopAfterErrorIncrease = true;
+  solver.settings.errorDeltaThreshold = 0;
+  solver.settings.updateThreshold = 0;
   // Optionally enable parallel linearization.
   if (config->allowParallelExecution) {
     solver.settings.parallelizeErrorTermLinearization = true;

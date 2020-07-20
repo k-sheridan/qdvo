@@ -76,13 +76,17 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
     /// The maximum number of iterations for the solve.
     int maximumIterations = 25;
     /// Stop after the error increases.
-    bool stopEarly = false;
+    bool stopAfterErrorIncrease = false;
     /// Allow the solver to parallelize linearization.
     bool parallelizeErrorTermLinearization = false;
     /// elements per thread cost model.
     /// This is used to determine how many threads to use for parallelization of
     /// error terms. This is meant to reduce the overhead of spawning n threads.
     double errorTermsPerThread = 1000;
+    /// Stopping condition based on the length of the update.
+    double updateThreshold = 0;
+    /// Stopping condition based on the change in error.
+    double errorDeltaThreshold = 0;
   } settings;
 
   struct SolveResult {
@@ -220,7 +224,7 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
           applyUpdateToVariables<true>(variables);
 
           // Stop if requested.
-          if (settings.stopEarly) {
+          if (settings.stopAfterErrorIncrease) {
             LOG_TRACE("Stopping.");
             break;
           } else {
@@ -228,6 +232,26 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
             LOG_TRACE("Linearizing error terms.");
             linearize(variables, errorTerms);
           }
+        }
+
+        // Evaluate stopping conditons.
+        //
+        // Check if the change in error is too small.
+        double dErrorSquared =
+            std::abs(errorAfterUpdate - whitenedSqErrorBeforeSolve);
+        LOG_TRACE("Change in squared error {}", dErrorSquared);
+        if (dErrorSquared < settings.errorDeltaThreshold) {
+          LOG_TRACE(
+              "Stopping condition reached. Change in squared error too small.");
+          break;
+        }
+
+        // Check if the update was too small.
+        double updateLength = computeUpdateLength();
+        LOG_TRACE("norm of dx = {}", updateLength);
+        if (updateLength < settings.updateThreshold) {
+          LOG_TRACE("Update too small stopping optimization.");
+          break;
         }
 
       } else {
@@ -252,6 +276,22 @@ class PSDSchurSolver<Scalar<ScalarType>, LossFunction<LossFunctionType>,
         block.diagonal().array() += lambda;
       }
     });
+  }
+
+  /**
+   * Computes the norm of the update vector.
+   */
+  double computeUpdateLength() {
+    double squaredNorm = 0;
+    std::tuple<Variables *...> tupleOfVars;
+    internal::static_for(tupleOfVars, [&](auto i, auto &variableMap) {
+      typedef typename std::tuple_element<i, std::tuple<Variables...>>::type
+          ThisVariable;
+      for (const auto &dx : dxBlockVector.template getRowMap<ThisVariable>()) {
+        squaredNorm += dx.squaredNorm();
+      }
+    });
+    return sqrt(squaredNorm);
   }
 
   /**
