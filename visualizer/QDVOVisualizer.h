@@ -34,6 +34,8 @@ class QDVOVisualizer {
   /// Flag telling the visualizer that the dataset is done.
   std::atomic_bool datasetFinished = false;
 
+  int frameNumber = 0;
+
   std::mutex algorithmMutex;
 
   QDVO::CameraModelMap::key_type cameraModelKey;

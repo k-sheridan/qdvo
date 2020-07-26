@@ -2,6 +2,7 @@
 
 #include <pangolin/gl/gldraw.h>
 
+#include <opencv2/imgproc/imgproc.hpp>
 #include <string>
 
 #include "Profiling.h"
@@ -67,12 +68,17 @@ void QDVOVisualizer::transferVisualizationData() {
     // cv::waitKey(1);
 
     // draw correspondence distributions.
+    int nInitializedCorrespondenceDists = 0;
     for (auto& cd : currentFrame().correspondenceDistributions) {
       auto landmarkIt = algorithm.graph.getLandmarkMap().at(cd.landmarkKey);
       if (landmarkIt == algorithm.graph.getLandmarkMap().end()) {
         continue;
       }
       auto& l = *landmarkIt;
+
+      if (cd.initialized) {
+        ++nInitializedCorrespondenceDists;
+      }
 
       if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE ||
           l.status == QDVO::Landmark::LandmarkStatus::MARGINALIZED) {
@@ -127,6 +133,14 @@ void QDVOVisualizer::transferVisualizationData() {
         }
       }
     }
+
+    // Render the frame number
+    cv::putText(render, "Frame: " + std::to_string(frameNumber),
+                cv::Point(10, 20), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+                cv::Scalar(200, 200, 250), 1, 16);
+    cv::putText(render, "Landmark Observations: " + std::to_string(nInitializedCorrespondenceDists),
+                cv::Point(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+                cv::Scalar(200, 200, 250), 1, 16);
 
     this->visualizationData.currentFrameImage = pangolin::GlTexture(
         render.cols, render.rows, GL_RGB, false, 0, GL_RGB, GL_UNSIGNED_BYTE);
@@ -318,6 +332,8 @@ void QDVOVisualizer::runVisualization() {
       this->algorithmMutex.lock();
 
       this->transferVisualizationData();
+      // Increment the frame number.
+      ++frameNumber;
 
       this->algorithmMutex.unlock();
       // reset the flag
