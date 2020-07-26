@@ -23,7 +23,7 @@ class Config {
     double huberWidth = 1;
     double pixelOutlierThreshold = 3;
 
-    bool fitGaussian = true;
+    bool fitGaussian = false;
 
     /// The image pyramid level used for FEVO.
     int coarseImageCorrespondenceLevel = 2;
