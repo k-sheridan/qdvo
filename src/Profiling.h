@@ -30,7 +30,7 @@ class Profiler {
 
  private:
   std::string functionName;
-  std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+  std::chrono::time_point<std::chrono::system_clock> startTime;
 };
 }  // namespace QDVO
 

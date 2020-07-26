@@ -69,8 +69,8 @@ void QDVO::BasicPipeline::addFrame(
 
   // Initialize correspondence distributions
   {
-    PROFILE("initializeCorrespondenceDistribution");
-    initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame(), 0);
+    PROFILE("initializeCorrespondenceDistribution_coarse");
+    initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame());
   }
 
   // Run front end visual odometry
@@ -239,13 +239,11 @@ void QDVO::BasicPipeline::createNewLandmarks(
 }
 
 void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForFrame(
-    QDVO::Frame& frame, int level) {
+    QDVO::Frame& frame, int level, int searchRadius) {
   LOG_INFO("Initializing correspondence distributions for current frame.");
   // first update the patch comparers before initializing all the
   // correspondence distributions
   updatePatchComparers();
-
-  CHECK(level == 0, "Only level 0 initialization ready.");
 
   std::unique_ptr<CameraModel>& cm =
       graph.getCameraModelMap().at(frame.cameraModelKey)->first;
@@ -311,8 +309,7 @@ void QDVO::BasicPipeline::initializeCorrespondenceDistributionsForFrame(
     cdRef.initializeDistribution(
         cm, frame, lKey,
         Eigen::Vector2i(std::round(px0.value()(0)), std::round(px0.value()(1))),
-        MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS, patchComparer,
-        warpedPatch.value());
+        searchRadius, patchComparer, warpedPatch.value());
 
     // If this landmark was observed increment the observation counter.
     if (cdRef.initialized) {

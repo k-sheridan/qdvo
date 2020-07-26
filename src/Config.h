@@ -25,6 +25,9 @@ class Config {
 
     bool fitGaussian = true;
 
+    /// The image pyramid level used for FEVO.
+    int coarseImageCorrespondenceLevel = 2;
+
     /// feature detection settings
     struct FeatureDetectionSettings {
       int nFeaturesDesired = 400;
