@@ -53,6 +53,8 @@ class Config {
       double resolution = 0.5;
       int landmarksPerThread = 50;
       bool enableThreadingCostModel = true;
+      double minimumCorrespondenceThreshold =
+          POTENTIAL_CORRESPONDENCE_THRESHOLD;
     } epipolar_depth_estimator;
 
     /// Thresholds which determine lost tracking.

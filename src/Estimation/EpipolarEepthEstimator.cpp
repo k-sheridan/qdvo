@@ -26,7 +26,7 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
     LOG_TRACE(
         "Tried to update landmark's depth estimator which was already "
         "initialized.");
-    return;
+    // return;
   }
 
   // Increment the attempts.
@@ -139,7 +139,8 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
       depths.size(), *maxScoreIt,
       depths.at(std::distance(scores.begin(), maxScoreIt)));
 
-  if (*maxScoreIt < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+  if (*maxScoreIt <
+      config->epipolar_depth_estimator.minimumCorrespondenceThreshold) {
     LOG_INFO("Landmark has no match during epipolar depth search.");
     landmark.status = Landmark::LandmarkStatus::MARGINALIZED;
     return;
@@ -149,11 +150,14 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   int switches = 0;
   bool state = false;
   for (auto& score : scores) {
-    if ((score >= POTENTIAL_CORRESPONDENCE_THRESHOLD) && state == false) {
+    if ((score >=
+         config->epipolar_depth_estimator.minimumCorrespondenceThreshold) &&
+        state == false) {
       ++switches;
     }
 
-    state = (score >= POTENTIAL_CORRESPONDENCE_THRESHOLD);
+    state = (score >=
+             config->epipolar_depth_estimator.minimumCorrespondenceThreshold);
   }
 
   if (switches > 1) {
@@ -166,11 +170,14 @@ void EpipolarDepthEstimator::update(Graph& g, Frame& sourceKeyframe,
   int startIdx = -1;
   int endIdx = -1;
   for (int idx = 0; idx < scores.size(); ++idx) {
-    if (startIdx < 0 && scores.at(idx) >= POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+    if (startIdx < 0 &&
+        scores.at(idx) >=
+            config->epipolar_depth_estimator.minimumCorrespondenceThreshold) {
       startIdx = idx;
     }
     if (endIdx < 0 && startIdx >= 0 &&
-        scores.at(idx) < POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+        scores.at(idx) <
+            config->epipolar_depth_estimator.minimumCorrespondenceThreshold) {
       endIdx = idx;
       break;
     }
