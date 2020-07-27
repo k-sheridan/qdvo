@@ -20,8 +20,12 @@ class Config {
     double weightAvgTranslationalFlow = 0.12;
 
     /// Settings for the sliding window estimator.
-    double huberWidth = 1;
+    double huberWidth = 0.5;
     double pixelOutlierThreshold = 3;
+
+    // Maximum ratio of landmarks which can be removed as outliers for a single
+    // frame.
+    double maxOutlierRatio = 0.3;
 
     bool fitGaussian = false;
 

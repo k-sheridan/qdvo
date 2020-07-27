@@ -181,25 +181,48 @@ void SlidingWindowEstimator::run(QDVO::Graph& graph) {
 }
 
 void SlidingWindowEstimator::removeOutliers(QDVO::Graph& graph) {
+  // Count the number of visible landmarks in the current frame.
+  int nActiveLandmarks = 0;
+  for (const auto& l : graph.getLandmarkMap()) {
+    if (l.status == QDVO::Landmark::LandmarkStatus::ACTIVE) {
+      ++nActiveLandmarks;
+    }
+  }
   // Iterate through all visual error terms and check if any residuals are too
   // high.
-  std::vector<LandmarkMap::key_type> landmarksToMarginalize;
+  std::vector<std::pair<LandmarkMap::key_type, QDVO::Scalar>>
+      landmarksToMarginalize;
   auto& errorTermMap =
       errorTermContainer.getErrorTermMap<QDVO::QuasiDirectErrorTerm>();
   for (auto& errorTerm : errorTermMap) {
     if (errorTerm.residual.norm() >= config->pixelOutlierThreshold) {
-      landmarksToMarginalize.push_back(errorTerm.landmarkKey);
+      landmarksToMarginalize.push_back(
+          {errorTerm.landmarkKey, errorTerm.residual.norm()});
       LOG_INFO("outlier error: {}", errorTerm.residual.norm());
     }
   }
 
+  std::sort(landmarksToMarginalize.begin(), landmarksToMarginalize.end(),
+            [](const auto& a, const auto& b) { return a.second > b.second; });
+
+  CHECK(landmarksToMarginalize.empty() ||
+            landmarksToMarginalize.front().second >=
+                landmarksToMarginalize.back().second,
+        "Landmarks are not sorted.");
+
   // Marginalize all landmarks which are outliers.
   int marginalizedLandmarks = 0;
   for (auto& landmarkKey : landmarksToMarginalize) {
-    if (graph.getLandmarkMap().at(landmarkKey)->status !=
+    if (graph.getLandmarkMap().at(landmarkKey.first)->status !=
         Landmark::LandmarkStatus::MARGINALIZED) {
-      marginalizeLandmark(graph, landmarkKey);
+      marginalizeLandmark(graph, landmarkKey.first);
       ++marginalizedLandmarks;
+    }
+
+    // Check if we reached the maximum outlier ratio.
+    if ((double)marginalizedLandmarks / (double)nActiveLandmarks >=
+        config->maxOutlierRatio) {
+      break;
     }
   }
 
