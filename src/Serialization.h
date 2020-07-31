@@ -111,6 +111,8 @@ void serialize(Archive& ar, QDVO::Frame& frame) {
   ar& cereal::make_nvp("camera_model_key", frame.cameraModelKey);
   ar& cereal::make_nvp("extrinsic_key", frame.extrinsicKey);
   ar& cereal::make_nvp("imustate", frame.imustate);
+  ar& cereal::make_nvp("active",
+                       frame.status == QDVO::Frame::FrameStatus::ACTIVE);
   ar& cereal::make_nvp("correspondence_distributions",
                        frame.correspondenceDistributions);
 }

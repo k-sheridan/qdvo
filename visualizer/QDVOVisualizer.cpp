@@ -115,11 +115,21 @@ void QDVOVisualizer::transferVisualizationData() {
             // Draw the landmark.
             // if initialized, draw with a depth color.
             if (cd.initialized) {
+              // Draw the residual.
+              auto res = cd.computeResidual(*cm, currentFrame(), px.value());
+              if (res.has_value()) {
+                cv::line(render, cv::Point2f(px.value()(0), px.value()(1)),
+                         cv::Point2f(px.value()(0) + res.value()(0),
+                                     px.value()(1) + res.value()(1)),
+                         cv::Scalar(255, 255, 255), 1, 16);
+              }
+	      // Draw the point
               cv::circle(
                   render, cv::Point2f(px.value()(0), px.value()(1)), 2,
                   hotCMap.getColor(std::clamp(
                       float(point(2) / MAX_VISUALIZATION_DEPTH), 0.0f, 1.0f)),
-                  -1);
+                  -1, 16);
+
             } else {
               // If not intiialized, draw purple.
               cv::circle(render, cv::Point2f(px.value()(0), px.value()(1)), 2,
@@ -138,7 +148,9 @@ void QDVOVisualizer::transferVisualizationData() {
     cv::putText(render, "Frame: " + std::to_string(frameNumber),
                 cv::Point(10, 20), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
                 cv::Scalar(200, 200, 250), 1, 16);
-    cv::putText(render, "Landmark Observations: " + std::to_string(nInitializedCorrespondenceDists),
+    cv::putText(render,
+                "Landmark Observations: " +
+                    std::to_string(nInitializedCorrespondenceDists),
                 cv::Point(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
                 cv::Scalar(200, 200, 250), 1, 16);
 

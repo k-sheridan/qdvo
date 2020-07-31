@@ -50,7 +50,7 @@ void FrontEndVisualOdometry::run(QDVO::Graph& graph) {
   solver.settings.maximumIterations = 50;
   solver.settings.stopAfterErrorIncrease = false;
   solver.settings.errorDeltaThreshold = 0;
-  solver.settings.updateThreshold = 1e-5;
+  solver.settings.updateThreshold = 1e-9;
   // Optionally enable parallel linearization.
   if (config->allowParallelExecution) {
     solver.settings.parallelizeErrorTermLinearization = true;

@@ -21,7 +21,7 @@
 #define ZNCC_PATCH_COMPARISON
 
 // Potential correspondence threshold
-#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.95
+#define POTENTIAL_CORRESPONDENCE_THRESHOLD 0.925
 
 // the number of features the feature detector will find on every keyframe.
 #define N_FEATURES_DESIRED 400
@@ -37,14 +37,14 @@
 #define MINUMUM_ACTIVE_LANDMARKS 100
 
 // define the maximum radius for the correspondence search.
-#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35
+#define MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS 35 
 
 // the number of extra radii that are searched after finding the first potential
 // correspondence
 #define SEARCH_RADIUS_PADDING 3
 
 // define how many image pyramid levels are used during optiizations
-#define IMAGE_PYRAMID_LEVELS 4
+#define IMAGE_PYRAMID_LEVELS 3
 
 // define the default landmark inverse depth. This is the depth all landmarks
 // are initialized with and for a monocular use case, will influence the scene

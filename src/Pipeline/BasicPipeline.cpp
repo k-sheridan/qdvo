@@ -70,7 +70,8 @@ void QDVO::BasicPipeline::addFrame(
   // Initialize correspondence distributions
   {
     PROFILE("initializeCorrespondenceDistribution_coarse");
-    initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame());
+    initializeCorrespondenceDistributionsForFrame(
+        *graph.getCurrentFrame(), config->coarseImageCorrespondenceLevel);
   }
 
   // Run front end visual odometry
@@ -87,6 +88,12 @@ void QDVO::BasicPipeline::addFrame(
   }
 
   if (isKeyframe) {
+    if (config->coarseImageCorrespondenceLevel != 0) {
+      // Reinitialize correspondence distributions at level 0.
+      PROFILE("initializeCorrespondenceDistribution_fine");
+      initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame());
+    }
+
     // Move the current frame into the keyframe set
     auto newKeyframeKey = graph.getCurrentFrameKey();
     graph.moveCurrentFrameIntoKeyframePosition();
