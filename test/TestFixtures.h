@@ -158,12 +158,12 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
            Eigen::Vector2d(std::floor(projectionResult.value().x()),
                            std::floor(projectionResult.value().y())));
 
-      LOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n",
-                   delta, projectionResult.value(),
-                   Eigen::Vector2d(std::floor(projectionResult.value().x()),
-                                   std::floor(projectionResult.value().y())),
-                   Eigen::Vector2d(ceilFn(projectionResult.value().x()),
-                                   ceilFn(projectionResult.value().y())));
+      LOG_TRACE("delta: \n{}\n pixel: \n{}\n floor: \n{}\n ceil: \n{}\n", delta,
+                projectionResult.value(),
+                Eigen::Vector2d(std::floor(projectionResult.value().x()),
+                                std::floor(projectionResult.value().y())),
+                Eigen::Vector2d(ceilFn(projectionResult.value().x()),
+                                ceilFn(projectionResult.value().y())));
       // Create a high res 2x2 pixel patch.
       Eigen::Matrix<double, 20, 20> patch;
       patch.setZero();
@@ -188,9 +188,9 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
           patch.block<10, 10>(0, 10).cast<QDVO::ImageIntensityType>().sum();
 
       LOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
-                   image(std::floor(projectionResult.value().y()),
-                         std::floor(projectionResult.value().x())),
-                   patch.block<10, 10>(0, 0).sum());
+                image(std::floor(projectionResult.value().y()),
+                      std::floor(projectionResult.value().x())),
+                patch.block<10, 10>(0, 0).sum());
     }
 
     // Return the projection result.
@@ -234,6 +234,10 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
               std::round(projectionResult.value()(0))) = landmarkIntensity;
       }
     }
+
+    // Regenerate the image pyramid.
+    auto img = keyframe.imagePyr.getImage().toOpenCVImage();
+    keyframe.imagePyr.generate(img);
 
     // Return the projection result.
     return centerProjectionResult;

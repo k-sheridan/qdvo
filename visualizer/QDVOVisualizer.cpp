@@ -123,7 +123,7 @@ void QDVOVisualizer::transferVisualizationData() {
                                      px.value()(1) + res.value()(1)),
                          cv::Scalar(255, 255, 255), 1, 16);
               }
-	      // Draw the point
+              // Draw the point
               cv::circle(
                   render, cv::Point2f(px.value()(0), px.value()(1)), 2,
                   hotCMap.getColor(std::clamp(
@@ -153,6 +153,34 @@ void QDVOVisualizer::transferVisualizationData() {
                     std::to_string(nInitializedCorrespondenceDists),
                 cv::Point(10, 40), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
                 cv::Scalar(200, 200, 250), 1, 16);
+    cv::putText(
+        render,
+        "FEVO Start Error: " +
+            std::to_string(algorithm.frontEndVisualOdometry.lastSolveResult
+                               .whitenedSqError.front()),
+        cv::Point(10, 60), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+        cv::Scalar(200, 200, 250), 1, 16);
+    cv::putText(render,
+                "FEVO Final Error: " +
+                    std::to_string(algorithm.frontEndVisualOdometry
+                                       .lastSolveResult.whitenedSqError.back()),
+                cv::Point(10, 80), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+                cv::Scalar(200, 200, 250), 1, 16);
+    if (algorithm.swe.lastSolveResult.whitenedSqError.size()) {
+      cv::putText(
+          render,
+          "SWE Start Error: " +
+              std::to_string(
+                  algorithm.swe.lastSolveResult.whitenedSqError.front()),
+          cv::Point(10, 100), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+          cv::Scalar(200, 200, 250), 1, 16);
+      cv::putText(render,
+                  "SWE Final Error: " +
+                      std::to_string(
+                          algorithm.swe.lastSolveResult.whitenedSqError.back()),
+                  cv::Point(10, 120), cv::FONT_HERSHEY_COMPLEX_SMALL, 0.5,
+                  cv::Scalar(200, 200, 250), 1, 16);
+    }
 
     this->visualizationData.currentFrameImage = pangolin::GlTexture(
         render.cols, render.rows, GL_RGB, false, 0, GL_RGB, GL_UNSIGNED_BYTE);

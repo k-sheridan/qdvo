@@ -88,8 +88,8 @@ void QDVO::BasicPipeline::addFrame(
   }
 
   if (isKeyframe) {
-    if (config->coarseImageCorrespondenceLevel != 0) {
-      // Reinitialize correspondence distributions at level 0.
+    // Reinitialize correspondence distributions at level 0.
+    {
       PROFILE("initializeCorrespondenceDistribution_fine");
       initializeCorrespondenceDistributionsForFrame(*graph.getCurrentFrame());
     }

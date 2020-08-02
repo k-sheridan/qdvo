@@ -1,5 +1,10 @@
 #include "Frame.h"
 
+#include <opencv2/imgproc/imgproc.hpp>
+
+#include "Config.h"
+#include "Profiling.h"
+
 QDVO::Frame::Frame() {
   this->status = FrameStatus::INACTIVE;
   this->imagePyr = QDVO::ImagePyramid(IMAGE_PYRAMID_LEVELS);
@@ -21,7 +26,17 @@ void QDVO::Frame::updateImage(cv::Mat &baseImage) {
       throw std::runtime_error("image type not supported.");
   }
 
-  this->imagePyr.generate(baseImage);
+  // Median filter.
+  if (config->medianFilterImages) {
+    cv::Mat filteredBaseImage;
+    {
+      PROFILE("medianFilter");
+      cv::medianBlur(baseImage, filteredBaseImage, 3);
+    }
+    this->imagePyr.generate(filteredBaseImage);
+  } else {
+    this->imagePyr.generate(baseImage);
+  }
 }
 
 void QDVO::Frame::reset() {

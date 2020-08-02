@@ -27,7 +27,10 @@ class Config {
     // frame.
     double maxOutlierRatio = 0.3;
 
-    bool fitGaussian = false;
+    bool fitGaussian = true;
+
+    /// Should the median filter be applied to the input images.
+    bool medianFilterImages = true;
 
     /// The image pyramid level used for FEVO.
     int coarseImageCorrespondenceLevel = 0;
@@ -60,7 +63,7 @@ class Config {
     /// Thresholds which determine lost tracking.
     struct LostTrackingSettings {
       int visibleFeatureThreshold = 10;
-      double sqErrorThreshold = 100;
+      double sqErrorThreshold = 36;
     } lost_tracking_settings;
 
     struct MarginalizationSettings {

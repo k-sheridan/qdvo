@@ -158,7 +158,7 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
                                  QDVO::Vector3 sourceSo3,
                                  QDVO::Vector3 targetPos,
                                  QDVO::Vector3 targetSo3,
-                                 QDVO::Vector3 normalInSource) {
+                                 QDVO::Vector3 normalInSource, int level = 0) {
     // Create two keyframes at the same location.
     auto sourceKey = insertKeyframe(sourcePos, QDVO::SO3::exp(sourceSo3));
     auto targetKey = insertKeyframe(targetPos, QDVO::SO3::exp(targetSo3));
@@ -186,14 +186,14 @@ class PatchWarpAndCompareTest : public QDVOSyntheticImageTest {
 
     // Warp A patch in to the source and target frame.
     QDVO::Result<QDVO::Patch> patch1;
-    patchWarper->warpPatchToTargetFrame(patch1, landmark, source, target,
-                                        graph);
+    patchWarper->warpPatchToTargetFrame(patch1, landmark, source, target, graph,
+                                        level);
     EXPECT_TRUE(patch1.has_value());
 
     LOG_TRACE("patch1: \n{}\n", patch1->getImageData());
     QDVO::Result<QDVO::Patch> patch2;
-    patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source,
-                                        graph);
+    patchWarper->warpPatchToTargetFrame(patch2, landmark, source, source, graph,
+                                        level);
     EXPECT_TRUE(patch2.has_value());
 
     // Compare the two patches expecting that the score is above the threshhold.
@@ -251,4 +251,21 @@ TEST_F(PatchWarpAndCompareTest, EdgePerspectiveChange) {
                             QDVO::Vector3(1, 2, 0), QDVO::Vector3(0.1, 0, 0),
                             QDVO::Vector3(1, 2, 0), QDVO::Vector3(0, 0, 0),
                             QDVO::Vector3(0, 1, 0));
+
+  testEdgePerspectiveChange(QDVO::Vector2(255, 255), 0.5,
+                            QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(1, 0, 0), QDVO::Vector3(-0.1, 0, 0),
+                            QDVO::Vector3(0, 1, 0), 2);
+  testEdgePerspectiveChange(QDVO::Vector2(240, 255), 0.5,
+                            QDVO::Vector3(0, 0, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(0, 1, 0), QDVO::Vector3(0, 0.1, 0),
+                            QDVO::Vector3(0, 1, 0), 2);
+  testEdgePerspectiveChange(QDVO::Vector2(255, 200), 0.5,
+                            QDVO::Vector3(0, 0, 1), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(1, -0.1, 0), QDVO::Vector3(0, 0, 0.1),
+                            QDVO::Vector3(0, 1, 0), 2);
+  testEdgePerspectiveChange(QDVO::Vector2(255, 400), 0.5,
+                            QDVO::Vector3(1, 2, 0), QDVO::Vector3(0.1, 0, 0),
+                            QDVO::Vector3(1, 2, 0), QDVO::Vector3(0, 0, 0),
+                            QDVO::Vector3(0, 1, 0), 2);
 }
