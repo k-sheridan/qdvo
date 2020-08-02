@@ -4,6 +4,7 @@
 #include "Frame.h"
 #include "Landmark.h"
 #include "Logging.h"
+#include "Profiling.h"
 
 namespace QDVO {
 
@@ -275,6 +276,41 @@ QDVO::Result<QDVO::Vector3> Graph::projectLandmarkToOrigin(
   auto& T_i_c = *extrinsics.at(parent->extrinsicKey);
 
   return parent->imustate.getSE3() * T_i_c * landmark.getEuclideanPoint();
+}
+
+QDVO::Scalar Graph::computeAverageSceneDepthInFrame(
+    const QDVO::Frame& frame, double lowerDepthThreshold) {
+  PROFILE("computeAverageSceneDepth");
+
+  QDVO::Scalar depthSum = 0;
+  int nDepths = 0;
+  for (const auto& landmark : landmarks) {
+    auto keyframeIt = keyframes.at(landmark.parentFrameKey);
+    CHECK(keyframeIt != keyframes.end(), "parentFrame does not exist.");
+    const auto& sourceKeyframe = *keyframeIt;
+
+    if (landmark.status != Landmark::LandmarkStatus::ACTIVE) {
+      continue;
+    }
+
+    CHECK(sourceKeyframe->status == Frame::FrameStatus::ACTIVE,
+          "parent frame must be active.");
+
+    // Project point into frame.
+    auto pt_frame =
+        projectLandmarkToCameraFrame(frame, *sourceKeyframe, landmark);
+
+    if (pt_frame.z() > lowerDepthThreshold) {
+      depthSum += pt_frame.z();
+      ++nDepths;
+    }
+  }
+
+  if (nDepths == 0) {
+    return 1.0 / ((double)DEFAULT_LANDMARK_DINV);
+  }
+
+  return depthSum / (double)nDepths;
 }
 
 }  // namespace QDVO

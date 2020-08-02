@@ -33,6 +33,9 @@ TEST_F(QDVOSimpleGraphTest, TestProjectionHelpers) {
       (sourceKeyframe.imustate.getSE3() * extrinsic).inverse() *
       (targetKeyframe.imustate.getSE3() * extrinsic);
 
-  EXPECT_TRUE(referenceTransform.matrix().isApprox(keyframeTransform.matrix(), 1e-6));
-}
+  EXPECT_TRUE(
+      referenceTransform.matrix().isApprox(keyframeTransform.matrix(), 1e-6));
 
+  EXPECT_NEAR(graph.computeAverageSceneDepthInFrame(targetKeyframe),
+              (keyframeTransform * QDVO::Vector3(0, 0, 1)).z(), 1e-6);
+}

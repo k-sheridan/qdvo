@@ -120,6 +120,10 @@ class Graph {
   /// Computes the landmark position in the origin.
   QDVO::Result<QDVO::Vector3> projectLandmarkToOrigin(QDVO::Landmark& landmark);
 
+  /// Compute the average scene depth for a frame.
+  QDVO::Scalar computeAverageSceneDepthInFrame(
+      const Frame& frame, double lowerDepthThreshold = 0.01);
+
  private:
   /// Stores camera models, and initial estimates of the imu to camera
   /// extrinsic.

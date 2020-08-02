@@ -221,6 +221,10 @@ void QDVO::BasicPipeline::createNewLandmarks(
 
   LOG_INFO("Found {} new landmarks", newFeatures.size());
 
+  // Compute the average scene depth for the current keyframe.
+  double sceneDepth = graph.computeAverageSceneDepthInFrame(
+      *keyframe, 1.0 / (double)DEFAULT_LANDMARK_DINV);
+
   // add the landmarks to the keyframe's landmark vector
   std::unique_ptr<QDVO::CameraModel>& cm =
       graph.getCameraModelMap().at(keyframe->cameraModelKey)->first;
@@ -229,7 +233,7 @@ void QDVO::BasicPipeline::createNewLandmarks(
     Landmark lm;
     lm.px = Eigen::Matrix<SCALAR_TYPE, 2, 1>(f.px.x, f.px.y);
     lm.parentFrameKey = keyframeKey;
-    lm.dinv = DEFAULT_LANDMARK_DINV;
+    lm.dinv = 1.0 / sceneDepth;
 
     auto result = cm->unproject(lm.px);
     if (!result.has_value()) {
