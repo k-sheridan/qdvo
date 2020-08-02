@@ -30,7 +30,7 @@ class Config {
     bool fitGaussian = true;
 
     /// Should the median filter be applied to the input images.
-    bool medianFilterImages = true;
+    bool medianFilterImages = false;
 
     /// The image pyramid level used for FEVO.
     int coarseImageCorrespondenceLevel = 0;
