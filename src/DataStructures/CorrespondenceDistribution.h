@@ -56,6 +56,10 @@ class CorrespondenceDistribution {
   /// Covariance matrix of this correpsponence distributions.
   Eigen::Matrix<QDVO::Scalar, 2, 2> Sigma;
 
+  /// Potential correspondence threshold.
+  QDVO::Scalar potentialCorrespondenceThreshold =
+      POTENTIAL_CORRESPONDENCE_THRESHOLD;
+
   CorrespondenceDistribution(
       unsigned width, unsigned height,
       std::shared_ptr<const RadialSearchPattern> patternPtr);
@@ -69,7 +73,9 @@ class CorrespondenceDistribution {
       CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
       const Eigen::Vector2i& centerPixel, const int floodRadius,
       std::shared_ptr<QDVO::PatchComparer> patchComparerPtr,
-      QDVO::Patch warpedPatch);
+      QDVO::Patch warpedPatch,
+      QDVO::Scalar correspondenceThreshold =
+          POTENTIAL_CORRESPONDENCE_THRESHOLD);
 
   /// Given an error and score vector, fit a gaussian.
   Eigen::Matrix<QDVO::Scalar, 2, 2> fitGaussian(

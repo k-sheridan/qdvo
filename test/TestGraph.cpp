@@ -15,6 +15,8 @@ TEST_F(QDVOSimpleGraphTest, TestProjectionHelpers) {
   EXPECT_EQ(projResult.value()(1), cm->cy);
 
   auto& sourceKeyframe = *(*graph.getKeyframeMap().at(sourceKeyframeKey));
+  sourceKeyframe.status = QDVO::Frame::FrameStatus::ACTIVE;
+
   auto& targetKeyframe = *(*graph.getKeyframeMap().at(targetKeyframeKey));
   auto& landmark = *graph.getLandmarkMap().at(landmarkKey);
 
@@ -36,6 +38,7 @@ TEST_F(QDVOSimpleGraphTest, TestProjectionHelpers) {
   EXPECT_TRUE(
       referenceTransform.matrix().isApprox(keyframeTransform.matrix(), 1e-6));
 
-  EXPECT_NEAR(graph.computeAverageSceneDepthInFrame(targetKeyframe),
-              (keyframeTransform * QDVO::Vector3(0, 0, 1)).z(), 1e-6);
+  EXPECT_NEAR(graph.computeAverageSceneDepthInFrame(targetKeyframe, 0.01),
+              (keyframeTransform.inverse() * landmark.getEuclideanPoint()).z(),
+              1e-6);
 }

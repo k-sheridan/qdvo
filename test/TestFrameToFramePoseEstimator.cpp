@@ -15,7 +15,7 @@
 
 class FrameToFramePoseEstimatorTest : public QDVOSyntheticImageTest {};
 
-TEST_F(FrameToFramePoseEstimatorTest, validateDirectErrorTerm) {
+TEST_F(FrameToFramePoseEstimatorTest, DISABLED_validateDirectErrorTerm) {
   const std::string datasetPath =
       boost::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";

@@ -3,6 +3,7 @@
 #include "Estimation/SlidingWindowEstimator.h"
 #include "Logging.h"
 #include "Optimizer/ErrorTermValidator.h"
+#include "Ransac.h"
 #include "TestFixtures.h"
 
 class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
@@ -59,7 +60,7 @@ class SlidingWindowEstimatorTest : public QDVOSyntheticImageTest {
                           ->initializeDistribution(
                               targetCameraModel, target, landmarkKey, center,
                               MAXIMUM_CORRESPONDENCE_SEARCH_RADIUS,
-                              patchComparer, warpedPatch.value());
+                              patchComparer, warpedPatch.value(), 0.75);
 
           LOG_TRACE("Pixel center: {}", center);
 
@@ -162,7 +163,7 @@ struct Params {
 class SWEParamTest : public SlidingWindowEstimatorTest,
                      public ::testing::WithParamInterface<Params> {};
 
-TEST_P(SWEParamTest, DISABLED_ThreeFrameCornersOnlySolve) {
+TEST_P(SWEParamTest, ThreeFrameCornersOnlySolve) {
   // Get the params.
   const Params& p = GetParam();
 
@@ -243,6 +244,24 @@ TEST_P(SWEParamTest, DISABLED_ThreeFrameCornersOnlySolve) {
   // Initialize correspondence distributions.
   initializeCorrespondenceDistributuionsForFrame(targetKey1, sourceKey);
   initializeCorrespondenceDistributuionsForFrame(targetKey2, sourceKey);
+
+  // Ransac
+  QDVO::RansacPoseInitializer ransac;
+  QDVO::RansacPoseInitializer::RansacSettings ransacSettings;
+
+  auto correctPose =
+      (*graph.getKeyframeMap().at(targetKey2))->imustate.getSE3();
+
+  auto ransacResult = ransac.run(
+      graph, *(*graph.getKeyframeMap().at(targetKey2)), ransacSettings);
+
+  // Check that the ransac result is close.
+  EXPECT_NEAR(
+      (ransacResult.pose.so3().inverse() * correctPose.so3()).log().norm(), 0,
+      0.05);
+  EXPECT_NEAR(
+      (ransacResult.pose.translation() - correctPose.translation()).norm(), 0,
+      0.1);
 
   // Run the sliding window estimator.
   QDVO::SlidingWindowEstimator swe;

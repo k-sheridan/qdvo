@@ -2,6 +2,7 @@
 
 #include <random>
 
+#include "DataStructures/Graph.h"
 #include "Optimizer/Containers.h"
 #include "Optimizer/Variables/SE3.h"
 
@@ -24,11 +25,19 @@ class RansacPoseInitializer {
     gen.seed(1);
   }
 
-  template <typename... ErrorTerms, typename... Variables>
-  RansacResult run(ArgMin::ErrorTermContainer<ErrorTerms...>& errorTerms,
-                   ArgMin::VariableContainer<Variables...>& variables,
-                   const ArgMin::VariableKey<ArgMin::SE3>& poseKeyToSearch,
-                   const QDVO::SE3& initialGuess,
+  /// Compute the residual for a given correspondence distribution.
+  QDVO::Result<QDVO::Vector2> computeWhitenedSquaredError(
+      const QDVO::Graph& graph, const QDVO::Frame& frame,
+      QDVO::CorrespondenceDistribution& correspondenceDistribution,
+      const QDVO::SE3& frameImuState,
+      bool allowUninitializedCorrespondenceDistribution = false) {}
+
+  /**
+   * @param graph The main graph to fit the frame on.
+   * @param frame The frame to fit.
+   * @param settings Ransac settings
+   */
+  RansacResult run(QDVO::Graph& graph, QDVO::Frame& frame,
                    const RansacSettings& settings) {}
 
  private:

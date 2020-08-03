@@ -94,10 +94,14 @@ void QDVO::CorrespondenceDistribution::reset() {
 int QDVO::CorrespondenceDistribution::initializeDistribution(
     CameraModel& cameraModel, Frame& frame, LandmarkMap::key_type landmarkKey,
     const Eigen::Vector2i& centerPixel, const int floodRadius,
-    std::shared_ptr<QDVO::PatchComparer> patchComparer,
-    QDVO::Patch warpedPatch) {
+    std::shared_ptr<QDVO::PatchComparer> patchComparer, QDVO::Patch warpedPatch,
+    QDVO::Scalar correspondenceThreshold) {
   CHECK(!initialized,
         "The correspondence distribution must not be initialized.");
+
+  // Set the correspondence threshold;
+  potentialCorrespondenceThreshold = correspondenceThreshold;
+
   this->warpedPatch = warpedPatch;  // replace the patch
 
   this->patchComparer = std::move(
@@ -232,13 +236,13 @@ void QDVO::CorrespondenceDistribution::search(
       }
 
       // If the potential correspondence is good enough, it is influential.
-      if (pc->score > POTENTIAL_CORRESPONDENCE_THRESHOLD) {
+      if (pc->score > potentialCorrespondenceThreshold) {
         firstInfluentialPotentialCorrespondenceFound = true;
         // Compute z - px0
         errors.push_back(testPoint.cast<SCALAR_TYPE>() - centerPixelScaled);
         // Add the score.
-        scores.push_back((pc->score - POTENTIAL_CORRESPONDENCE_THRESHOLD) /
-                         (1 - POTENTIAL_CORRESPONDENCE_THRESHOLD));
+        scores.push_back((pc->score - potentialCorrespondenceThreshold) /
+                         (1 - potentialCorrespondenceThreshold));
       }
     }
   }
