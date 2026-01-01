@@ -17,3 +17,4 @@ docs/source/doxyoutput/
 .vscode/
 
 solveSudoku.m
+.DS_Store
