@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          token: ${{ secrets.CI_TOKEN }}
 
       - name: C++ Lint
         uses: cpp-linter/cpp-linter-action@v2
@@ -51,10 +50,9 @@ jobs:
         run: |
           if [ ! -d spdlog ]; then
             git clone https://github.com/gabime/spdlog.git
-            cd spdlog
-            cmake -S . -B build
-            cmake --build build -j
-            sudo cmake --install build
+            cmake -S spdlog -B spdlog/build
+            cmake --build spdlog/build -j
+            sudo cmake --install spdlog/build
           fi
 
       # -------------------- Sophus --------------------
@@ -68,10 +66,9 @@ jobs:
         run: |
           if [ ! -d Sophus ]; then
             git clone https://github.com/strasdat/Sophus
-            cd Sophus
-            cmake -S . -B build
-            cmake --build build -j
-            sudo cmake --install build
+            cmake -S Sophus -B Sophus/build
+            cmake --build Sophus/build -j
+            sudo cmake --install Sophus/build
           fi
 
       # -------------------- GTest --------------------
@@ -85,10 +82,9 @@ jobs:
         run: |
           if [ ! -d googletest ]; then
             git clone https://github.com/google/googletest
-            cd googletest
-            cmake -S . -B build
-            cmake --build build -j
-            sudo cmake --install build
+            cmake -S googletest -B googletest/build
+            cmake --build googletest/build -j
+            sudo cmake --install googletest/build
           fi
 
       # -------------------- Pangolin --------------------
@@ -102,10 +98,9 @@ jobs:
         run: |
           if [ ! -d Pangolin ]; then
             git clone https://github.com/stevenlovegrove/Pangolin
-            cd Pangolin
-            cmake -S . -B build
-            cmake --build build -j
-            sudo cmake --install build
+            cmake -S Pangolin -B Pangolin/build
+            cmake --build Pangolin/build -j
+            sudo cmake --install Pangolin/build
           fi
 
       # -------------------- Build --------------------
@@ -119,6 +114,7 @@ jobs:
       - name: Build
         run: |
           cmake --build build -j
+          cmake --build build --target QDVO
           cmake --build build --target test_qdvo
           cmake --build build --target benchmark_qdvo
 
@@ -134,10 +130,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-          token: ${{ secrets.CI_TOKEN }}
 
       - name: Install Dependencies
         run: |
@@ -169,6 +165,7 @@ jobs:
       - name: Build
         run: |
           cmake --build build -j
+          cmake --build build --target QDVO
           cmake --build build --target test_qdvo
           cmake --build build --target benchmark_qdvo
 
