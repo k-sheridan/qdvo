@@ -111,7 +111,7 @@ jobs:
             -DCMAKE_CXX_STANDARD=17 \
             -DCMAKE_C_COMPILER=clang \
             -DCMAKE_CXX_COMPILER=clang++ \
-            -DCMAKE_CXX_FLAGS="-Wno-error"
+            -DCMAKE_CXX_FLAGS="-Wno-error -Wno-shadow -Wno-unused-but-set-variable -Wno-deprecated-copy"
 
       - name: Build
         run: |
@@ -164,7 +164,7 @@ jobs:
             -DCMAKE_CXX_STANDARD=17 \
             -DCMAKE_C_COMPILER=clang \
             -DCMAKE_CXX_COMPILER=clang++ \
-            -DCMAKE_CXX_FLAGS="-Wno-error"
+            -DCMAKE_CXX_FLAGS="-Wno-error -Wno-shadow -Wno-unused-but-set-variable -Wno-deprecated-copy"
 
       - name: Build
         run: |
