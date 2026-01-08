@@ -37,7 +37,8 @@ jobs:
             libboost-dev \
             libboost-filesystem-dev \
             libgl1-mesa-dev \
-            libglew-dev
+            libglew-dev \
+            libepoxy-dev
 
       # -------------------- spdlog --------------------
       - name: Cache spdlog
@@ -103,7 +104,7 @@ jobs:
             sudo cmake --install Pangolin/build
           fi
 
-      # -------------------- Build --------------------
+      # -------------------- Project Build --------------------
       - name: Configure (Clang)
         run: |
           cmake -S . -B build \
@@ -152,7 +153,8 @@ jobs:
             libboost-dev \
             libboost-filesystem-dev \
             libgl1-mesa-dev \
-            libglew-dev
+            libglew-dev \
+            libepoxy-dev
 
       - name: Configure (Clang + ASAN)
         run: |
