@@ -123,8 +123,9 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
     image.getImageData().setZero();
 
     // Update the source keyframe's image.
+    cv::Mat tempMat = image.toOpenCVImage();
     cv::Mat cvMat;
-    image.toOpenCVImage().convertTo(cvMat, CV_16U);
+    tempMat.convertTo(cvMat, CV_16U);
     sourceKeyframe.updateImage(cvMat);
   }
 
@@ -236,7 +237,7 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
     }
 
     // Regenerate the image pyramid.
-    auto img = keyframe.imagePyr.getImage().toOpenCVImage();
+    cv::Mat img = keyframe.imagePyr.getImage().toOpenCVImage();
     keyframe.imagePyr.generate(img);
 
     // Return the projection result.
