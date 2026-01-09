@@ -14,7 +14,12 @@
  * Test fixture used to test BasicPipeline with the TUM VI datasets.
  */
 class BasicPipelineTest : public ::testing::Test {
-  void SetUp() {
+  void SetUp() override {
+#if defined(__SANITIZE_ADDRESS__) || defined(__has_feature)
+#if defined(__SANITIZE_ADDRESS__) || __has_feature(address_sanitizer)
+    GTEST_SKIP() << "Test disabled under AddressSanitizer";
+#endif
+#endif
     pipeline.initialize();
 
     std::unique_ptr<QDVO::CameraModel> cm(
@@ -37,7 +42,7 @@ class BasicPipelineTest : public ::testing::Test {
   QDVO::ExtrinsicMap::key_type extrinsicKey;
 };
 
-TEST_F(BasicPipelineTest, DISABLED_RunDataset) {
+TEST_F(BasicPipelineTest, RunDataset) {
   const std::string datasetPath =
       boost::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";
@@ -70,7 +75,7 @@ TEST_F(BasicPipelineTest, DISABLED_RunDataset) {
     cv::Mat img = cv::imread(datasetPath + "mav0/cam0/data/" + fileStr,
                              cv::IMREAD_GRAYSCALE);
 
-    pipeline.addFrame(img, t / 1e-9, cameraModelKey, extrinsicKey);
+    pipeline.addFrame(img, t, cameraModelKey, extrinsicKey);
 
     // increment csv
     std::getline(cam0CSV, csvLine);
