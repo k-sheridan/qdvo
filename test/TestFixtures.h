@@ -174,17 +174,17 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
 
       LOG_TRACE("patch: \n{}\n", patch);
 
-      image(ceilFn(projectionResult.value().y()),
-            ceilFn(projectionResult.value().x())) =
+      image(static_cast<Eigen::Index>(ceilFn(projectionResult.value().y())),
+            static_cast<Eigen::Index>(ceilFn(projectionResult.value().x()))) =
           patch.block<10, 10>(10, 10).cast<QDVO::ImageIntensityType>().sum();
-      image(std::floor(projectionResult.value().y()),
-            std::floor(projectionResult.value().x())) =
+      image(static_cast<Eigen::Index>(std::floor(projectionResult.value().y())),
+            static_cast<Eigen::Index>(std::floor(projectionResult.value().x()))) =
           patch.block<10, 10>(0, 0).cast<QDVO::ImageIntensityType>().sum();
-      image(ceilFn(projectionResult.value().y()),
-            std::floor(projectionResult.value().x())) =
+      image(static_cast<Eigen::Index>(ceilFn(projectionResult.value().y())),
+            static_cast<Eigen::Index>(std::floor(projectionResult.value().x()))) =
           patch.block<10, 10>(10, 0).cast<QDVO::ImageIntensityType>().sum();
-      image(std::floor(projectionResult.value().y()),
-            ceilFn(projectionResult.value().x())) =
+      image(static_cast<Eigen::Index>(std::floor(projectionResult.value().y())),
+            static_cast<Eigen::Index>(ceilFn(projectionResult.value().x()))) =
           patch.block<10, 10>(0, 10).cast<QDVO::ImageIntensityType>().sum();
 
       LOG_TRACE("image floor: \n{}\n patch floor sum: \n{}\n",
@@ -230,8 +230,8 @@ class QDVOSyntheticImageTest : public QDVOSimpleGraphTest {
       if (projectionResult.has_value()) {
         // Get the image and insert a bright pixel at the projected point.
         auto& image = keyframe.imagePyr.getImage().getImageData();
-        image(std::round(projectionResult.value()(1)),
-              std::round(projectionResult.value()(0))) = landmarkIntensity;
+        image(static_cast<Eigen::Index>(std::round(projectionResult.value()(1))),
+              static_cast<Eigen::Index>(std::round(projectionResult.value()(0)))) = landmarkIntensity;
       }
     }
 

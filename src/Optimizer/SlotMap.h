@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <cassert>
+#include <limits>
 
 namespace ArgMin
 {
