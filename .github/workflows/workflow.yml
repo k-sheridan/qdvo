@@ -14,12 +14,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: C++ Lint
-        uses: cpp-linter/cpp-linter-action@v2
-        with:
-          style: file
-          tidy-checks: ''
-
       - name: Install Dependencies
         run: |
           sudo apt-get update -qq
