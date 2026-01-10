@@ -19,10 +19,13 @@ class Image {
   Image(cv::Mat& cvImage) { cv::cv2eigen(cvImage, this->image); }
   Image() {}
 
-  cv::Mat toOpenCVImage() {
+  cv::Mat toOpenCVImage() const {
     cv::Mat img;
     cv::eigen2cv(this->image, img);
-    return img;
+    // Clone to ensure the returned cv::Mat owns its data, preventing lifetime
+    // issues with the Eigen matrix. Without this, eigen2cv creates a non-owning
+    // header that can lead to use-after-free in certain memory layouts (CI).
+    return img.clone();
   }
 
   ImageType& getImageData() { return image; }

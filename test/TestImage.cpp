@@ -15,8 +15,9 @@ TEST_F(ImageTest, Basic) {
   source.imagePyr.getImage().getImageData()(static_cast<Eigen::Index>(px.y()),
                                              static_cast<Eigen::Index>(px.x())) = 500;
 
+  cv::Mat tempMat = source.imagePyr.getImage().toOpenCVImage();
   cv::Mat cvMat;
-  source.imagePyr.getImage().toOpenCVImage().convertTo(cvMat, CV_16U);
+  tempMat.convertTo(cvMat, CV_16U);
   source.updateImage(cvMat);
 
   EXPECT_EQ(source.imagePyr.getImage()
