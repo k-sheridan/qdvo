@@ -61,6 +61,15 @@ file(GLOB QDVO_SOURCE_FILES
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
 )
 
+# ===============================
+# Suppress warnings / -Werror in third-party libraries
+# ===============================
+# This must be done before adding third-party subdirectories
+# so their own -Werror or warnings do not break the build.
+if(NOT MSVC)
+    add_compile_options(-Wno-error -Wno-shadow -Wno-unused-variable -Wno-unused-parameter)
+endif()
+
 # Add thirdparty libraries
 add_subdirectory(thirdparty/googletest)
 add_subdirectory(thirdparty/benchmark)

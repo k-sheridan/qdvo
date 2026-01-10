@@ -1,5 +1,7 @@
 #include "PatchComparer.h"
 
+#include <cmath>
+
 QDVO::PatchComparer::PatchComparer() {}
 
 QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch,
@@ -37,11 +39,22 @@ QDVO::Result<SCALAR_TYPE> QDVO::PatchComparer::compare(QDVO::Patch& patch,
     return {};
   }
 
+  SCALAR_TYPE denominator = sqrt(patch.getSumZeroMeanSquared() * testPatch.getSumZeroMeanSquared());
+
+  // Additional safety check for numerical stability (NaN/Inf from overflow/underflow)
+  if (!std::isfinite(denominator)) {
+    return {};
+  }
+
   SCALAR_TYPE resultingScore =
       (patch.getZeroMeanImageMatrix().array() *
        testPatch.getZeroMeanImageMatrix().array())
-          .sum() /
-      sqrt(patch.getSumZeroMeanSquared() * testPatch.getSumZeroMeanSquared());
+          .sum() / denominator;
+
+  // Ensure the score is finite before normalizing
+  if (!std::isfinite(resultingScore)) {
+    return {};
+  }
 
   return ((resultingScore + 1) / 2);
 }

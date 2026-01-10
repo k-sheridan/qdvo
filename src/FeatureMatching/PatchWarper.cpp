@@ -55,6 +55,7 @@ void QDVO::PatchWarper::warpPatchToTargetFrame(
   Eigen::Matrix<SCALAR_TYPE, 2, 2> unprojJac = projJac.inverse();
   assert(patchRadius == PATCH_RADIUS);
   Eigen::Matrix<float, PATCH_WIDTH, PATCH_WIDTH> imageData;
+  imageData.setZero();  // Initialize to zero to avoid uninitialized memory
 
   auto px_source = graph.getCameraModelMap()
                        .at(sourceFrame.cameraModelKey)

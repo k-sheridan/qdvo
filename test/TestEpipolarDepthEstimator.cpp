@@ -63,7 +63,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   image.getImageData() = Eigen::MatrixXf(512, 512);
   image.getImageData().setZero();
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(landmark.px(1)), std::round(landmark.px(0))) =
+  image.getImageData()(static_cast<Eigen::Index>(std::round(landmark.px(1))),
+                       static_cast<Eigen::Index>(std::round(landmark.px(0)))) =
       1.0;
 
   // Update the source keyframe's image.
@@ -104,7 +105,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
   std::cout << std::endl << targetPixel << landmark.px << std::endl;
 
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(targetPixel(1)), std::round(targetPixel(0))) =
+  image.getImageData()(static_cast<Eigen::Index>(std::round(targetPixel(1))),
+                       static_cast<Eigen::Index>(std::round(targetPixel(0)))) =
       1.0;
 
   // Update the source keyframe's image.
@@ -188,7 +190,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNoMatches) {
   image.getImageData() = Eigen::MatrixXf(512, 512);
   image.getImageData().setZero();
   // Set a single pixel in the center to high.
-  image.getImageData()(std::round(landmark.px(1)), std::round(landmark.px(0))) =
+  image.getImageData()(static_cast<Eigen::Index>(std::round(landmark.px(1))),
+                       static_cast<Eigen::Index>(std::round(landmark.px(0)))) =
       1.0;
 
   // Update the source keyframe's image.

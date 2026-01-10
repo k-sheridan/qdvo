@@ -12,7 +12,8 @@ TEST_F(ImageTest, Basic) {
 
   Eigen::Vector2d px(40, 200);
   source.imagePyr.getImage().getImageData().setZero();
-  source.imagePyr.getImage().getImageData()(px.y(), px.x()) = 500;
+  source.imagePyr.getImage().getImageData()(static_cast<Eigen::Index>(px.y()),
+                                             static_cast<Eigen::Index>(px.x())) = 500;
 
   cv::Mat cvMat;
   source.imagePyr.getImage().toOpenCVImage().convertTo(cvMat, CV_16U);
