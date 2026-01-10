@@ -35,9 +35,8 @@ void QDVOVisualizer::transferVisualizationData() {
   if (currentFrame()
           .initialized)  // make sure the frame has been properly initialized
   {
-    cv::Mat tempMat = currentFrame().imagePyr.getImage().toOpenCVImage();
     cv::Mat temp, render;
-    tempMat.convertTo(temp, CV_8U);
+    currentFrame().imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
     cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
 
     ColorMap hotCMap;
@@ -219,9 +218,8 @@ void QDVOVisualizer::transferVisualizationData() {
 
     // If the keyframe is not the current frame.
     if (!(key == currentFrameKey()) && (*it)->initialized) {
-      cv::Mat tempMat = (*it)->imagePyr.getImage().toOpenCVImage();
       cv::Mat temp, render;
-      tempMat.convertTo(temp, CV_8U);
+      (*it)->imagePyr.getImage().toOpenCVImage().convertTo(temp, CV_8U);
       cv::cvtColor(temp, render, cv::COLOR_GRAY2RGB);
 
       // Set the pose.

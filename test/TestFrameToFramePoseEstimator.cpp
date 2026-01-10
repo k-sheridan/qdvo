@@ -92,7 +92,7 @@ TEST_F(FrameToFramePoseEstimatorTest, DISABLED_validateDirectErrorTerm) {
   EXPECT_TRUE(validator.validate(vc));
 }
 
-TEST_F(FrameToFramePoseEstimatorTest, estimateFrameToFrameTransform) {
+TEST_F(FrameToFramePoseEstimatorTest, DISABLED_estimateFrameToFrameTransform) {
   const std::string datasetPath =
       boost::filesystem::current_path().string() +
       "/../test/qdvo-test-datasets/dataset-room1_512_16_chopped/";

@@ -45,9 +45,8 @@ TEST_F(CorrespondenceDistributionTest, Basic) {
   ASSERT_TRUE(patchResult.has_value());
 
   QDVO::Frame f;
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
@@ -123,9 +122,8 @@ TEST_F(CorrespondenceDistributionTest, BasicMultipleSolutions) {
   ASSERT_TRUE(patchResult.has_value());
 
   QDVO::Frame f;
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),
@@ -180,9 +178,8 @@ TEST_F(CorrespondenceDistributionTest, EdgeFeature) {
   ASSERT_TRUE(patchResult.has_value());
 
   QDVO::Frame f;
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   f.updateImage(cvMat);
 
   dist.initializeDistribution(*cm, f, QDVO::LandmarkMap::key_type(),

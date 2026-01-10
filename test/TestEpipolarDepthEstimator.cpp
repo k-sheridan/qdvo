@@ -68,9 +68,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
       1.0;
 
   // Update the source keyframe's image.
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   sourceKeyframe.updateImage(cvMat);
 
   // Create the target keyframe.
@@ -110,9 +109,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepth) {
                        static_cast<Eigen::Index>(std::round(targetPixel(0)))) =
       1.0;
 
-  // Update the target keyframe's image.
-  tempMat = image.toOpenCVImage();
-  tempMat.convertTo(cvMat, CV_16U);
+  // Update the source keyframe's image.
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   targetKeyframe.updateImage(cvMat);
 
   EXPECT_NE(targetKeyframe.imagePyr.getImage().getImageData().sum(), 0);
@@ -197,9 +195,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNoMatches) {
       1.0;
 
   // Update the source keyframe's image.
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   sourceKeyframe.updateImage(cvMat);
 
   // Create the target keyframe.
@@ -232,9 +229,8 @@ TEST_F(EpipolarDepthEstimationTest, DISABLED_EstimateDepthWithNoMatches) {
   EXPECT_EQ(landmarkInTarget(1), 0);
   EXPECT_EQ(landmarkInTarget(2), 2);
 
-  // Update the target keyframe's image.
-  tempMat = image.toOpenCVImage();
-  tempMat.convertTo(cvMat, CV_16U);
+  // Update the source keyframe's image.
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   targetKeyframe.updateImage(cvMat);
 
   // Before running the depth estimator, set the landmark depth to the incorrect
@@ -315,9 +311,8 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
       .setConstant(1);
 
   // Update the source keyframe's image.
-  cv::Mat tempMat = image.toOpenCVImage();
   cv::Mat cvMat;
-  tempMat.convertTo(cvMat, CV_16U);
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   sourceKeyframe.updateImage(cvMat);
 
   // Create the target keyframe.
@@ -357,9 +352,8 @@ TEST_F(EpipolarDepthEstimationTest, EstimateDepthAlongEdge) {
       .block(std::round(targetPixel(1)), 0, 1, 512)
       .setConstant(1);
 
-  // Update the target keyframe's image.
-  tempMat = image.toOpenCVImage();
-  tempMat.convertTo(cvMat, CV_16U);
+  // Update the source keyframe's image.
+  image.toOpenCVImage().convertTo(cvMat, CV_16U);
   targetKeyframe.updateImage(cvMat);
 
   // Before running the depth estimator, set the landmark depth to the incorrect
