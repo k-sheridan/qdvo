@@ -61,12 +61,16 @@ cmake --build build
 # Install basic Python packages
 pip3 install --break-system-packages numpy scipy termcolor
 
-# Build and install sophuspy from source
+# Build and install sophuspy from source with explicit compiler settings
 git clone https://github.com/craigstar/SophusPy
 cd SophusPy
+export CC=clang
+export CXX=clang++
 pip3 install --break-system-packages .
 cd ..
 ```
+
+**Note:** Setting `CC` and `CXX` to use clang ensures sophuspy is compiled with the same compiler as QDVO, preventing ABI compatibility issues that can cause segmentation faults.
 
 ### 6. Run Evaluation
 

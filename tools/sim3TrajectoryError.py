@@ -7,7 +7,7 @@ import math
 
 
 def quaternionToSO3(w, x, y, z):
-    r = R.from_quat([w, x, y, z])
+    r = R.from_quat([x, y, z, w])
     return sophus.SO3(np.array(r.as_matrix()))
 
 
@@ -78,7 +78,7 @@ def computeTrajectoryError(trajectory1, trajectory2):
     # dR(phi)_dphi = Jrinv((R1.inverse() * R_sim * R2).log()) * R2.inverse()
 
     # Order: [translation, rotation, scale]
-    R_sim = sophus.SO3.exp([0, 0, 0])
+    R_sim = sophus.SO3.exp(np.array([0.0, 0.0, 0.0]))
     t_sim = np.zeros([3, 1])
     scale = 1.0
 
@@ -86,7 +86,7 @@ def computeTrajectoryError(trajectory1, trajectory2):
     # output: [rotation, translation, scale]
     def applyUpdate(R_sim, t_sim, scale, dx):
         return R_sim * sophus.SO3.exp(
-            dx[3:6, 0:1]), t_sim + dx[0:3, 0:1], scale + dx[6:7, 0:1]
+            dx[3:6, 0]), t_sim + dx[0:3, 0:1], scale + dx[6, 0]
 
     # output: [dt, dR]
     def computeError(R1, t1, R2, t2, R_sim, t_sim, scale):
@@ -217,7 +217,7 @@ def computeTrajectoryError(trajectory1, trajectory2):
     rotErrorPerFrame, transErrorPerFrame, bearingErrorPerFrame, scaleErrorPerFrame = computeOdometryError(
     )
     return posRMSE, rotRMSE, abs(
-        scale[0, 0]
+        scale
     ), rotErrorPerFrame, transErrorPerFrame, bearingErrorPerFrame, scaleErrorPerFrame
 
 

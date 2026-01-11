@@ -37,3 +37,11 @@ The most complete example on how to use ArgMin is in this test: [TestArgMinExamp
 ## ArgMin: Documentation
 The most complete documentation of ArgMin's SSEOptimizer can be found [here](docs/source/SSEOptimizer.md)
 
+## Running QDVO
+
+### Running Tests
+To build and run QDVO's unit tests and benchmarks, see the [test README](test/README.md) for detailed Docker-based instructions.
+
+### Running Evaluation
+To evaluate QDVO on EuRoC format datasets and compute trajectory accuracy metrics, see the [tools README](tools/README.md) for evaluation scripts and usage instructions.
+
