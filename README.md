@@ -45,3 +45,33 @@ To build and run QDVO's unit tests and benchmarks, see the [test README](test/RE
 ### Running Evaluation
 To evaluate QDVO on EuRoC format datasets and compute trajectory accuracy metrics, see the [tools README](tools/README.md) for evaluation scripts and usage instructions.
 
+If everything is working well, the instructions should yeild metrics like this. You can also run the visualizer during this process to view the output:
+```bash
+Metrics:
+  trajectory_rsme
+    position_m
+      0.1657926505967792
+    rotation_rad
+      0.05437238494597787
+  scale_ratio
+    0.5152414387714908
+  odometry_error
+    rotation_error_deg
+      p0
+        0.006621794467815206
+      p50
+        0.15924600009760104
+      p90
+        0.4366704606080118
+      p100
+        25.575861632348452
+    translation_error_m
+      p0
+        0.00015554824151368935
+      p50
+        0.005760766429027332
+      p90
+        0.012452360493189065
+      p100
+        0.35052730009526634
+```
