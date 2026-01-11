@@ -1,7 +1,7 @@
 import json
 import csv
 import numpy as np
-import sophus
+import sophuspy as sophus
 from scipy.spatial.transform import Rotation as R
 import math
 
